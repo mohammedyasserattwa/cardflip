@@ -131,8 +131,10 @@ flutter:
     - Images/cards/librarypage/13/
     - Images/cards/librarypage/14/
     - Images/cards/librarypage/15/
+    - Images/banners/profilepage/
     # - Images/banners/categorypage/
     - Images/banners/librarypage/
+    - Images/avatars/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
