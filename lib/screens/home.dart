@@ -2,6 +2,7 @@
 
 import 'dart:ffi';
 import 'dart:io';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 import "package:flutter/material.dart";
 import '../models/homeModel.dart';
@@ -99,11 +100,26 @@ class _HomeState extends State<Home> {
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: <Widget>[
-                    Deck(cardgenerator: cardgenerator),
+                    Deck(
+                        cardgenerator: cardgenerator,
+                        width: 139,
+                        height: 116.67,
+                        path:
+                            "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
                     SizedBox(width: 13),
-                    Deck(cardgenerator: cardgenerator),
+                    Deck(
+                        cardgenerator: cardgenerator,
+                        width: 139,
+                        height: 116.67,
+                        path:
+                            "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
                     SizedBox(width: 13),
-                    Deck(cardgenerator: cardgenerator),
+                    Deck(
+                        cardgenerator: cardgenerator,
+                        width: 139,
+                        height: 116.67,
+                        path:
+                            "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
                   ],
                 ),
               ),
@@ -116,7 +132,30 @@ class _HomeState extends State<Home> {
                     fontFamily: "Poppins-Medium",
                     fontSize: 21,
                     color: Color(0xff212523))),
-          )
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(15, 10, 2, 0),
+            child: SizedBox(
+              height: 236,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: <Widget>[
+                  Column(
+                    children: [
+                      Container(
+                        child: Deck(
+                            cardgenerator: cardgenerator,
+                            width: 125.04,
+                            height: 103.8,
+                            path:
+                                "Images/cards/homepage/2/2_1/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -127,52 +166,56 @@ class Deck extends StatelessWidget {
   const Deck({
     Key? key,
     required this.cardgenerator,
+    required this.height,
+    required this.width,
+    required this.path,
   }) : super(key: key);
 
   final CardGenerator cardgenerator;
-
+  final double height;
+  final double width;
+  final String path;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {},
       child: Container(
         decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage(
-                  "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-              fit: BoxFit.cover),
+          image: DecorationImage(image: AssetImage(path), fit: BoxFit.cover),
         ),
-        width: 139,
-        height: 116.67,
+        width: width,
+        height: height,
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Column(
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("Images/icons/star.png"),
-                          fit: BoxFit.cover),
-                    ),
-                    width: 15,
-                    height: 15,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: Text(
-                      "${cardgenerator.rating}",
-                      style: TextStyle(
-                        fontFamily: "PolySans_Neutral.ttf",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff2D2D2D),
+                  Row(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage("Images/icons/star.png"),
+                              fit: BoxFit.cover),
+                        ),
+                        width: 15,
+                        height: 15,
                       ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 48,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: Text(
+                          "${cardgenerator.rating}",
+                          style: TextStyle(
+                            fontFamily: "PolySans_Neutral.ttf",
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xff2D2D2D),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   GestureDetector(
                     onTap: () {},
@@ -190,10 +233,12 @@ class Deck extends StatelessWidget {
               ),
               SizedBox(height: 15),
               Flexible(
-                child: Text(
+                child: AutoSizeText(
                   cardgenerator.deck,
-                  maxLines: 2,
+                  maxLines: 3,
                   overflow: TextOverflow.ellipsis,
+                  minFontSize: 12,
+                  stepGranularity: 1,
                   style: TextStyle(
                     fontFamily: "Poppins-SemiBold",
                     color: Color(0xff131414).withOpacity(0.6),

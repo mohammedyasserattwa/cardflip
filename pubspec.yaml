@@ -32,6 +32,8 @@ dependencies:
   flutter:
     sdk: flutter
   no_glow_scroll: ^0.0.1
+  percent_indicator: ^4.0.1
+  auto_size_text: ^3.0.0
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -81,22 +83,38 @@ flutter:
     - Images/cards/homepage/1_3/13/
     - Images/cards/homepage/1_3/14/
     - Images/cards/homepage/1_3/15/
-    # - Images/cards/homepage/2/0/
-    # - Images/cards/homepage/2/1/
-    # - Images/cards/homepage/2/2/
-    # - Images/cards/homepage/2/3/
-    # - Images/cards/homepage/2/4/
-    # - Images/cards/homepage/2/5/
-    # - Images/cards/homepage/2/6/
-    # - Images/cards/homepage/2/7/
-    # - Images/cards/homepage/2/8/
-    # - Images/cards/homepage/2/9/
-    # - Images/cards/homepage/2/10/
-    # - Images/cards/homepage/2/11/
-    # - Images/cards/homepage/2/12/
-    # - Images/cards/homepage/2/13/
-    # - Images/cards/homepage/2/14/
-    # - Images/cards/homepage/2/15/
+    - Images/cards/homepage/2/2_1/0/
+    - Images/cards/homepage/2/2_1/1/
+    - Images/cards/homepage/2/2_1/2/
+    - Images/cards/homepage/2/2_1/3/
+    - Images/cards/homepage/2/2_1/4/
+    - Images/cards/homepage/2/2_1/5/
+    - Images/cards/homepage/2/2_1/6/
+    - Images/cards/homepage/2/2_1/7/
+    - Images/cards/homepage/2/2_1/8/
+    - Images/cards/homepage/2/2_1/9/
+    - Images/cards/homepage/2/2_1/10/
+    - Images/cards/homepage/2/2_1/11/
+    - Images/cards/homepage/2/2_1/12/
+    - Images/cards/homepage/2/2_1/13/
+    - Images/cards/homepage/2/2_1/14/
+    - Images/cards/homepage/2/2_1/15/
+    - Images/cards/homepage/2/2_2/0/
+    - Images/cards/homepage/2/2_2/1/
+    - Images/cards/homepage/2/2_2/2/
+    - Images/cards/homepage/2/2_2/3/
+    - Images/cards/homepage/2/2_2/4/
+    - Images/cards/homepage/2/2_2/5/
+    - Images/cards/homepage/2/2_2/6/
+    - Images/cards/homepage/2/2_2/7/
+    - Images/cards/homepage/2/2_2/8/
+    - Images/cards/homepage/2/2_2/9/
+    - Images/cards/homepage/2/2_2/10/
+    - Images/cards/homepage/2/2_2/11/
+    - Images/cards/homepage/2/2_2/12/
+    - Images/cards/homepage/2/2_2/13/
+    - Images/cards/homepage/2/2_2/14/
+    - Images/cards/homepage/2/2_2/15/
     - Images/cards/librarypage/0/
     - Images/cards/librarypage/1/
     - Images/cards/librarypage/2/
@@ -113,7 +131,7 @@ flutter:
     - Images/cards/librarypage/13/
     - Images/cards/librarypage/14/
     - Images/cards/librarypage/15/
-    - Images/banners/categorypage/
+    # - Images/banners/categorypage/
     - Images/banners/librarypage/
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -25,7 +25,7 @@ class CardGenerator {
   }
 
   int get getshape {
-    return Random().nextInt(3) + 1;
+    return Random().nextInt(3);
   }
 
   String get deck {
