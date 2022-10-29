@@ -8,8 +8,7 @@ import "package:flutter/material.dart";
 import '../data/dummy_data.dart';
 import '../data/card_generator.dart';
 import '../models/libraryModel.dart';
-
-
+import '../widgets/navibar.dart';
 
 class Library extends StatefulWidget {
   const Library({super.key});
@@ -24,196 +23,198 @@ class _LibraryState extends State<Library> {
 
   @override
   Widget build(BuildContext context) {
-    
-        return Container(
-          height: 1000,
-          width: double.infinity,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("Images/backgrounds/librarypage.png"),
-                fit: BoxFit.cover),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("Images/banners/librarypage/${cardgenerator.librarycolor}.png"),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                width: 400,
-                height: 190,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SafeArea(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 20.0, top: 5.0),
-                            child: Container(
-                              alignment: Alignment.centerLeft,
-                              child: GestureDetector(
-                                  onTap: () {},
-                                  child: Container(
-                                      decoration: const BoxDecoration(
-                                        image: DecorationImage(
-                                            image: AssetImage(
-                                                "Images/icons/arrow-left-s-line.png"),
-                                            fit: BoxFit.cover),
-                                      ),
-                                      width: 40,
-                                      height: 40,
-                                      child: const Text(""))),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 20.0),
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              child: GestureDetector(
-                                  onTap: () {},
-                                  child: Container(
-                                      decoration: const BoxDecoration(
-                                        image: DecorationImage(
-                                            image: AssetImage(
-                                                "Images/icons/more-fill.png"),
-                                            fit: BoxFit.cover),
-                                      ),
-                                      width: 40,
-                                      height: 40,
-                                      child: const Text(""))),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 40.0, top: 40.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: const [
-                          Text(
-                            "Library",
-                            textAlign: TextAlign.end,
-                            style: TextStyle(
-                              fontFamily: "PolySans_Median",
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
-                              fontSize: 48,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+    return Scaffold(
+      bottomNavigationBar: NavBar(),
+      body: Container(
+        height: 1000,
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("Images/backgrounds/librarypage.png"),
+              fit: BoxFit.cover),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                      "Images/banners/librarypage/${cardgenerator.librarycolor}.png"),
+                  fit: BoxFit.cover,
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              width: 400,
+              height: 190,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 20, 0, 7),
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      child: GestureDetector(
-                          onTap: () {},
+                  SafeArea(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20.0, top: 5.0),
                           child: Container(
-                              decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        "Images/icons/allsquare.png"),
-                                    fit: BoxFit.cover),
-                              ),
-                              width: 48,
-                              height: 48,
-                              child: const Center(
-                                  child: Text(
-                                "All",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  fontFamily: "PolySans",
-                                ),
-                              )))),
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(0, 20, 0, 7),
-                    child: Text(
-                      "Created \nby You",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontFamily: "PolySans_Neutral",
-                      ),
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(0, 20, 0, 7),
-                    child: Text(
-                      "Created by \nOthers",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontFamily: "PolySans_Neutral",
-                      ),
+                            alignment: Alignment.centerLeft,
+                            child: GestureDetector(
+                                onTap: () {},
+                                child: Container(
+                                    decoration: const BoxDecoration(
+                                      image: DecorationImage(
+                                          image: AssetImage(
+                                              "Images/icons/arrow-left-s-line.png"),
+                                          fit: BoxFit.cover),
+                                    ),
+                                    width: 40,
+                                    height: 40,
+                                    child: const Text(""))),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 20.0),
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            child: GestureDetector(
+                                onTap: () {},
+                                child: Container(
+                                    decoration: const BoxDecoration(
+                                      image: DecorationImage(
+                                          image: AssetImage(
+                                              "Images/icons/more-fill.png"),
+                                          fit: BoxFit.cover),
+                                    ),
+                                    width: 40,
+                                    height: 40,
+                                    child: const Text(""))),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 20, 7),
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      child: GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                              decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                    image:
-                                        AssetImage("Images/icons/filter.png"),
-                                    fit: BoxFit.cover),
-                              ),
-                              width: 48,
-                              height: 48,
-                              child: Text(""))),
+                    padding: const EdgeInsets.only(left: 40.0, top: 40.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: const [
+                        Text(
+                          "Library",
+                          textAlign: TextAlign.end,
+                          style: TextStyle(
+                            fontFamily: "PolySans_Median",
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                            fontSize: 48,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-              Expanded(
-                child: NoGlowScroll(
-                  child: ListView(
-                    children: new List.generate(
-                        6,
-                        (index) => Padding(
-                          padding: const EdgeInsets.only(bottom:21.0,right:21,left:21),
-                          child: new Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Deck(
-                                      cardgenerator: cardgenerator,
-                                      width: 163.13,
-                                      height: 158.67,
-                                      path:
-                                          "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                                  Deck(
-                                      cardgenerator: cardgenerator,
-                                      width: 163.13,
-                                      height: 158.67,
-                                      path:
-                                          "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                                ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 0, 7),
+                  child: Container(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image:
+                                      AssetImage("Images/icons/allsquare.png"),
+                                  fit: BoxFit.cover),
+                            ),
+                            width: 48,
+                            height: 48,
+                            child: const Center(
+                                child: Text(
+                              "All",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontFamily: "PolySans",
                               ),
-                        )),
+                            )))),
                   ),
                 ),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(0, 20, 0, 7),
+                  child: Text(
+                    "Created \nby You",
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontFamily: "PolySans_Neutral",
+                    ),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.fromLTRB(0, 20, 0, 7),
+                  child: Text(
+                    "Created by \nOthers",
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontFamily: "PolySans_Neutral",
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 20, 20, 7),
+                  child: Container(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage("Images/icons/filter.png"),
+                                  fit: BoxFit.cover),
+                            ),
+                            width: 48,
+                            height: 48,
+                            child: Text(""))),
+                  ),
+                ),
+              ],
+            ),
+            Expanded(
+              child: NoGlowScroll(
+                child: ListView(
+                  children: new List.generate(
+                      6,
+                      (index) => Padding(
+                            padding: const EdgeInsets.only(
+                                bottom: 21.0, right: 21, left: 21),
+                            child: new Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Deck(
+                                    cardgenerator: cardgenerator,
+                                    width: 163.13,
+                                    height: 158.67,
+                                    path:
+                                        "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
+                                Deck(
+                                    cardgenerator: cardgenerator,
+                                    width: 163.13,
+                                    height: 158.67,
+                                    path:
+                                        "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
+                              ],
+                            ),
+                          )),
+                ),
               ),
-            ],
-          ),
-        );
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
