@@ -35,4 +35,7 @@ class CardGenerator {
   double get rating {
     return ratings[Random().nextInt(ratings.length)];
   }
+  int get librarycolor{
+    return Random().nextInt(18);
+  }
 }
