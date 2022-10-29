@@ -140,18 +140,68 @@ class _HomeState extends State<Home> {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: <Widget>[
-                  Column(
-                    children: [
-                      Container(
-                        child: Deck(
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Deck(
                             cardgenerator: cardgenerator,
                             width: 125.04,
                             height: 103.8,
                             path:
                                 "Images/cards/homepage/2/2_1/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                      )
+                        Deck(
+                          cardgenerator: cardgenerator,
+                          width: 120.67,
+                          height: 125.1,
+                          path:
+                              "Images/cards/homepage/2/2_4/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Deck(
+                          cardgenerator: cardgenerator,
+                          width: 128.54,
+                          height: 140.18,
+                          path:
+                              "Images/cards/homepage/2/2_2/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                        ),
+                        Deck(
+                          cardgenerator: cardgenerator,
+                          width: 128.54,
+                          height: 84.29,
+                          path:
+                              "Images/cards/homepage/2/2_5/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                        ),
+                      ],
+                    ),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Deck(
+                        cardgenerator: cardgenerator,
+                        width: 125.04,
+                        height: 103.8,
+                        path:
+                            "Images/cards/homepage/2/2_1/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                      ),
+                      Deck(
+                        cardgenerator: cardgenerator,
+                        width: 120.67,
+                        height: 125.1,
+                        path:
+                            "Images/cards/homepage/2/2_4/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
@@ -195,7 +245,7 @@ class Deck extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           image: DecorationImage(
                               image: AssetImage("Images/icons/star.png"),
                               fit: BoxFit.cover),
