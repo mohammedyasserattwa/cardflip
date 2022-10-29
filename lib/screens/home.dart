@@ -8,6 +8,7 @@ import "package:flutter/material.dart";
 import '../models/homeModel.dart';
 import '../data/dummy_data.dart';
 import '../data/card_generator.dart';
+import '../widgets/deck.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -30,11 +31,10 @@ class _HomeState extends State<Home> {
             image: AssetImage("Images/backgrounds/homepage.png"),
             fit: BoxFit.cover),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: ListView(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(26, 45, 0, 0),
+            padding: const EdgeInsets.fromLTRB(26, 23, 0, 0),
             child: Stack(
               children: [
                 Container(
@@ -105,21 +105,24 @@ class _HomeState extends State<Home> {
                         width: 139,
                         height: 116.67,
                         path:
-                            "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
+                            "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                        min: 3),
                     SizedBox(width: 13),
                     Deck(
                         cardgenerator: cardgenerator,
                         width: 139,
                         height: 116.67,
                         path:
-                            "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
+                            "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                        min: 3),
                     SizedBox(width: 13),
                     Deck(
                         cardgenerator: cardgenerator,
                         width: 139,
                         height: 116.67,
                         path:
-                            "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
+                            "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                        min: 3),
                   ],
                 ),
               ),
@@ -137,12 +140,55 @@ class _HomeState extends State<Home> {
             padding: const EdgeInsets.fromLTRB(15, 10, 2, 0),
             child: SizedBox(
               height: 236,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Column(
+              child: NoGlowScroll(
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Deck(
+                              cardgenerator: cardgenerator,
+                              width: 125.04,
+                              height: 103.8,
+                              path:
+                                  "Images/cards/homepage/2/2_1/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                              min: 2),
+                          Deck(
+                              cardgenerator: cardgenerator,
+                              width: 125.04,
+                              height: 125.1,
+                              path:
+                                  "Images/cards/homepage/2/2_4/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                              min: 3),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Deck(
+                              cardgenerator: cardgenerator,
+                              width: 128.54,
+                              height: 140.18,
+                              path:
+                                  "Images/cards/homepage/2/2_2/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                              min: 3),
+                          Deck(
+                              cardgenerator: cardgenerator,
+                              width: 128.54,
+                              height: 84.29,
+                              path:
+                                  "Images/cards/homepage/2/2_5/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                              min: 1),
+                        ],
+                      ),
+                    ),
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Deck(
@@ -150,156 +196,67 @@ class _HomeState extends State<Home> {
                             width: 125.04,
                             height: 103.8,
                             path:
-                                "Images/cards/homepage/2/2_1/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
+                                "Images/cards/homepage/2/2_1/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                            min: 2),
                         Deck(
-                          cardgenerator: cardgenerator,
-                          width: 120.67,
-                          height: 125.1,
-                          path:
-                              "Images/cards/homepage/2/2_4/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
-                        ),
+                            cardgenerator: cardgenerator,
+                            width: 120.67,
+                            height: 125.1,
+                            path:
+                                "Images/cards/homepage/2/2_4/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                            min: 3),
                       ],
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Deck(
-                          cardgenerator: cardgenerator,
-                          width: 128.54,
-                          height: 140.18,
-                          path:
-                              "Images/cards/homepage/2/2_2/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
-                        ),
-                        Deck(
-                          cardgenerator: cardgenerator,
-                          width: 128.54,
-                          height: 84.29,
-                          path:
-                              "Images/cards/homepage/2/2_5/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
-                        ),
-                      ],
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Deck(
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(30, 25, 0, 0),
+            child: Text("Categories",
+                style: TextStyle(
+                    fontFamily: "Poppins-Medium",
+                    fontSize: 21,
+                    color: Color(0xff212523))),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(15, 10, 2, 0),
+            child: SizedBox(
+              height: 116.67,
+              child: NoGlowScroll(
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: <Widget>[
+                    Deck(
                         cardgenerator: cardgenerator,
-                        width: 125.04,
-                        height: 103.8,
+                        width: 139,
+                        height: 116.67,
                         path:
-                            "Images/cards/homepage/2/2_1/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
-                      ),
-                      Deck(
+                            "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                        min: 3),
+                    SizedBox(width: 13),
+                    Deck(
                         cardgenerator: cardgenerator,
-                        width: 120.67,
-                        height: 125.1,
+                        width: 139,
+                        height: 116.67,
                         path:
-                            "Images/cards/homepage/2/2_4/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
-                      ),
-                    ],
-                  ),
-                ],
+                            "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                        min: 3),
+                    SizedBox(width: 13),
+                    Deck(
+                        cardgenerator: cardgenerator,
+                        width: 139,
+                        height: 116.67,
+                        path:
+                            "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                        min: 3),
+                  ],
+                ),
               ),
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class Deck extends StatelessWidget {
-  const Deck({
-    Key? key,
-    required this.cardgenerator,
-    required this.height,
-    required this.width,
-    required this.path,
-  }) : super(key: key);
-
-  final CardGenerator cardgenerator;
-  final double height;
-  final double width;
-  final String path;
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {},
-      child: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(image: AssetImage(path), fit: BoxFit.cover),
-        ),
-        width: width,
-        height: height,
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage("Images/icons/star.png"),
-                              fit: BoxFit.cover),
-                        ),
-                        width: 15,
-                        height: 15,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 5),
-                        child: Text(
-                          "${cardgenerator.rating}",
-                          style: TextStyle(
-                            fontFamily: "PolySans_Neutral.ttf",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                            color: Color(0xff2D2D2D),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage("Images/icons/more.png"),
-                            fit: BoxFit.cover),
-                      ),
-                      width: 21,
-                      height: 22,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 15),
-              Flexible(
-                child: AutoSizeText(
-                  cardgenerator.deck,
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  minFontSize: 12,
-                  stepGranularity: 1,
-                  style: TextStyle(
-                    fontFamily: "Poppins-SemiBold",
-                    color: Color(0xff131414).withOpacity(0.6),
-                    fontSize: 16,
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-              )
-            ],
-          ),
-        ),
       ),
     );
   }
