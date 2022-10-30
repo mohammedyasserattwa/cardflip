@@ -12,7 +12,7 @@ void main() {
 class MyApp extends StatelessWidget {
   final subRoutes = ["Library", "Deck"];
 
-  final List<Widget> navScreens = [const Library(), const DeckScreen()];
+  final List<Widget> navScreens = [const Library(),  DeckScreen()];
   GoRouter router() {
     return GoRouter(routes: [
       GoRoute(
