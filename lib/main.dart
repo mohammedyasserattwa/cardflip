@@ -2,6 +2,7 @@ import 'package:cardflip/screens/DeckScreen.dart';
 import 'package:cardflip/screens/library.dart';
 import 'package:flutter/material.dart';
 import "screens/home.dart";
+import "screens/category.dart";
 import 'package:go_router/go_router.dart';
 import "widgets/navibar.dart";
 
@@ -10,9 +11,13 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  final subRoutes = ["Library", "Deck"];
+  final subRoutes = ["Library", "Deck", "Category"];
 
-  final List<Widget> navScreens = [const Library(), const DeckScreen()];
+  final List<Widget> navScreens = [
+    const Library(),
+    const DeckScreen(),
+    const Category()
+  ];
   GoRouter router() {
     return GoRouter(routes: [
       GoRoute(

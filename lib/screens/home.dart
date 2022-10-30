@@ -236,7 +236,9 @@ class _HomeState extends State<Home> {
                               const SizedBox(width: 10),
                           itemCount: 3,
                           itemBuilder: (context, index) => Deck(
-                              onTap: () {},
+                              onTap: () {
+                                context.go("/Category");
+                              },
                               cardgenerator: cardgenerator3,
                               width: 139,
                               height: 116.67,
