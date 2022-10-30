@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cardflip/screens/Login.dart';
 import '../data/User.dart';
 import '../models/LoginModel.dart';
-import '../screens/Input.dart';
+import '../widgets/Input.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);

@@ -88,14 +88,14 @@ class _ProfileState extends State<Profile> {
                               padding:
                                   const EdgeInsets.fromLTRB(30, 50, 45, 10),
                               child: Container(
-                                width:150,
+                                width: 150,
                                 child: AutoSizeText(
-                                  "Omar Wael",
+                                  " ${model.fname}",
                                   textAlign: TextAlign.left,
                                   overflow: TextOverflow.ellipsis,
                                   minFontSize: 12,
                                   stepGranularity: 1,
-                                  maxLines:2,
+                                  maxLines: 2,
                                   style: TextStyle(
                                     fontFamily: "PolySans_Median",
                                     color: Colors.black,
