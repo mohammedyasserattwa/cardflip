@@ -6,7 +6,7 @@ import 'package:cardflip/screens/register.dart';
 import 'package:flutter/material.dart';
 import '../data/User.dart';
 import '../models/LoginModel.dart';
-import '../widgets/Input.dart';
+import '../screens/Input.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -16,11 +16,12 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  loginModel Object2 = loginModel(User());
+  loginModel Object = loginModel(User());
 
   @override
   Widget build(BuildContext context) {
     return Form(
+      key: Input.loginKey,
       child: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -46,7 +47,7 @@ class _LoginState extends State<Login> {
                 children: [
                   Container(
                     padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.40),
+                        top: MediaQuery.of(context).size.height * 0.35),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -60,17 +61,13 @@ class _LoginState extends State<Login> {
                                   obscureText: false,
                                   color: Color(0xFFF98800),
                                   validator: (val) {
-                                    if (val == null && val!.isEmpty) {
+                                    if (val == null || val.isEmpty) {
                                       return "Please enter a valid email address or username";
-                                    } else if (val != (Object2.email) ||
-                                        val != (Object2.fname)) {
-                                      return "wrong email address or username";
-                                    } else if (val == Object2.email ||
-                                        val == Object2.fname) {
+                                    } else {
                                       return null;
                                     }
                                   },
-                                  Object2: Object2),
+                                  Object: Object),
                               SizedBox(
                                 height: 30,
                               ),
@@ -80,15 +77,13 @@ class _LoginState extends State<Login> {
                                   obscureText: true,
                                   color: Color.fromARGB(255, 184, 145, 229),
                                   validator: (val) {
-                                    if (val == null && val!.isEmpty) {
+                                    if (val == null || val.isEmpty) {
                                       return "Please enter a minimum 8 characters";
-                                    } else if (val != (Object2.password)) {
-                                      return "wrong password";
-                                    } else if (val == Object2.password) {
+                                    } else {
                                       return null;
                                     }
                                   },
-                                  Object2: Object2),
+                                  Object: Object),
                               SizedBox(
                                 height: 40,
                               ),
@@ -97,10 +92,13 @@ class _LoginState extends State<Login> {
                                 height: 58,
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Home()));
+                                    if (Input.loginKey.currentState!
+                                        .validate()) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Home()));
+                                    }
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Color(0xFF191C32),
@@ -189,3 +187,15 @@ class _LoginState extends State<Login> {
     );
   }
 }
+
+// if (val == Object.email ||
+//                                         val == Object.fname)
+//if (val == Object.password)
+
+// else if (val != (Object.email) ||
+//                                         val != (Object.fname)) {
+//                                       return "Wrong email address or Username";
+//                                     }
+//  else if (val != Object.password) {
+//                                       return "wrong password";
+//                                     }

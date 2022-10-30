@@ -7,14 +7,14 @@ class loginModel {
   loginModel(User data) : _data = data;
 
   String? get fname {
-    return _data.first_name;
+    return _data.firstname;
   }
 
   String? get password {
-    return _data.password;
+    return _data.getPassword;
   }
 
   String? get email {
-    return _data.email;
+    return _data.getEmail;
   }
 }

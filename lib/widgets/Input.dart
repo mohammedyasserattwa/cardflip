@@ -4,23 +4,24 @@ import 'package:flutter/material.dart';
 import '../models/LoginModel.dart';
 
 class Input extends StatelessWidget {
-  const Input(
-      {Key? key,
-      required this.Object2,
-      required this.validator,
-      required this.hintTextOne,
-      required this.icon,
-      required this.obscureText,
-      required this.color})
-      : super(key: key);
+  Input({
+    Key? key,
+    required this.Object,
+    required this.validator,
+    required this.hintTextOne,
+    required this.icon,
+    required this.obscureText,
+    required this.color,
+  }) : super(key: key);
 
-  final loginModel Object2;
+  final loginModel Object;
   final bool obscureText;
-
   final String? Function(String?) validator;
   final String hintTextOne;
   final IconData icon;
   final Color? color;
+  static final registerKey = GlobalKey<FormState>();
+  static final loginKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +43,18 @@ class Input extends StatelessWidget {
         hintStyle: TextStyle(
           color: Color(0xFF9395A4),
           decoration: TextDecoration.none,
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide(
+            color: Colors.transparent,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30),
+          borderSide: BorderSide(
+            color: Colors.transparent,
+          ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),

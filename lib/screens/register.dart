@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cardflip/screens/Login.dart';
 import '../data/User.dart';
 import '../models/LoginModel.dart';
-import '../widgets/Input.dart';
+import '../screens/Input.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -14,11 +14,12 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  loginModel Object2 = loginModel(User());
+  loginModel Object = loginModel(User());
 
   @override
   Widget build(BuildContext context) {
     return Form(
+      key: Input.registerKey,
       child: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -48,7 +49,7 @@ class _RegisterState extends State<Register> {
                 children: [
                   Container(
                     padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.27),
+                        top: MediaQuery.of(context).size.height * 0.24),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -68,7 +69,7 @@ class _RegisterState extends State<Register> {
                                       return 'Please enter your  username';
                                     }
                                   },
-                                  Object2: Object2),
+                                  Object: Object),
                               SizedBox(
                                 height: 15,
                               ),
@@ -81,10 +82,10 @@ class _RegisterState extends State<Register> {
                                     if (val != null && val.isNotEmpty) {
                                       return null;
                                     } else {
-                                      return 'Please enter your  username';
+                                      return 'Please enter your  email';
                                     }
                                   },
-                                  Object2: Object2),
+                                  Object: Object),
                               SizedBox(
                                 height: 15,
                               ),
@@ -94,16 +95,13 @@ class _RegisterState extends State<Register> {
                                   obscureText: true,
                                   color: Color.fromARGB(255, 184, 145, 229),
                                   validator: (val) {
-                                    if (val == null && val!.isEmpty) {
-                                      return "Please enter a minimum 8 characters";
-                                    } else if (val != (Object2.password)) {
-                                      return "wrong password";
-                                    } else if (val == Object2.password) {
+                                    if (val != null && val.isNotEmpty) {
                                       return null;
+                                    } else {
+                                      return 'Please enter your  password';
                                     }
-                                    return null;
                                   },
-                                  Object2: Object2),
+                                  Object: Object),
                               SizedBox(
                                 height: 30,
                               ),
@@ -112,10 +110,13 @@ class _RegisterState extends State<Register> {
                                 height: 58,
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Login()));
+                                    if (Input.registerKey.currentState!
+                                        .validate()) {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Login()));
+                                    }
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Color(0xFF191C32),
