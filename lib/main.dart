@@ -1,8 +1,8 @@
 import 'package:cardflip/screens/DeckScreen.dart';
+import 'package:cardflip/screens/FlashcardScreen.dart';
 import 'package:cardflip/screens/library.dart';
 import 'package:flutter/material.dart';
 import "screens/home.dart";
-import 'package:go_router/go_router.dart';
 import "widgets/navibar.dart";
 
 void main() {
@@ -10,42 +10,31 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  final subRoutes = ["Library", "Deck"];
+  final subRoutes = ["/", "Library", "Deck", "Flashcard"];
 
-  final List<Widget> navScreens = [const Library(),  DeckScreen()];
-  GoRouter router() {
-    return GoRouter(routes: [
-      GoRoute(
-        path: "/",
-        builder: (BuildContext context, GoRouterState state) => const Home(),
-        routes: List.generate(
-            navScreens.length,
-            (index) => GoRoute(
-                  path: subRoutes[index],
-                  builder: (BuildContext context, GoRouterState state) =>
-                      navScreens[index],
-                )),
-
-        // [
-        //   GoRoute(
-        //     path: "Library",
-        //     builder: (BuildContext context, GoRouterState state) =>
-        //         const Library(),
-        //   ),
-        // ]
-      ),
-    ]);
-  }
+  final List<Widget> navScreens = [
+    const Home(),
+    const Library(),
+    DeckScreen(),
+    const Flashcard()
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      routerConfig: router(),
+      home: const Home(),
+      // initialRoute: "/",
+      // routes: {
+      //   "/": (context) => navScreens[0],
+      //   "/Library": (context) => navScreens[1],
+      //   "/Deck": (context) => navScreens[2],
+      //   "/Flashcard": (context) => navScreens[3],
+      // }
     );
   }
 }

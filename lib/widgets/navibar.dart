@@ -1,11 +1,7 @@
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import "package:go_router/go_router.dart";
 import 'package:flutter/material.dart';
-
 import '../screens/home.dart';
-import '../screens/library.dart';
-import '../screens/DeckScreen.dart';
+import "../screens/library.dart";
 
 class NavBar extends StatelessWidget {
   final navItems = {"Home", "Library"};
@@ -15,6 +11,8 @@ class NavBar extends StatelessWidget {
     const Icon(Icons.library_books_outlined),
     // const Icon(Icons.person_outline)
   };
+
+  NavBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +27,14 @@ class NavBar extends StatelessWidget {
         selectedItemColor: const Color.fromARGB(255, 255, 255, 255),
         unselectedItemColor: const Color(0xffA8A8A8),
         onTap: (int label) {
-          context.go((label != 0) ? "/${navItems.elementAt(label)}" : "/");
+          if (label == 0)
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return Home();
+            }));
+          else if (label == 1)
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return Library();
+            }));
         },
         items: List.generate(
             navItems.length,

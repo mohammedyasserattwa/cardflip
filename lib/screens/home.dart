@@ -3,6 +3,7 @@
 import 'dart:ffi';
 import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cardflip/screens/DeckScreen.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 import "package:flutter/material.dart";
 import '../models/homeModel.dart';
@@ -117,7 +118,8 @@ class _HomeState extends State<Home> {
                           itemCount: 3,
                           itemBuilder: (context, index) => Deck(
                               onTap: () {
-                                context.go("/Deck");
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) => DeckScreen()));
                               },
                               cardgenerator: cardgenerator,
                               width: 139,

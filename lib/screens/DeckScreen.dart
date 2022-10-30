@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 
 import '../data/card_generator.dart';
 import '../widgets/navibar.dart';
 import '../widgets/deck.dart';
+import 'FlashcardScreen.dart';
 
 class DeckScreen extends StatelessWidget {
-  
-  final CardGenerator cardgenerator = new CardGenerator();
+  final CardGenerator cardgenerator = CardGenerator();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -314,7 +312,13 @@ class DeckScreen extends StatelessWidget {
                                   path:
                                       "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
                                   min: 3,
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const Flashcard()));
+                                  },
                                 ),
                                 Deck(
                                   cardgenerator: cardgenerator,
@@ -323,7 +327,13 @@ class DeckScreen extends StatelessWidget {
                                   path:
                                       "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
                                   min: 3,
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const Flashcard()));
+                                  },
                                 ),
                               ],
                             ),
