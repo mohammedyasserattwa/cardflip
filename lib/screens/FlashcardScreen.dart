@@ -20,30 +20,80 @@ class Flashcard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Container(
-                child: Text(""),
-                width: 10,
-                height: 10,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("Images/backgrounds/close_button.png")),
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 20.0, right: 20, top: 30, bottom: 10),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      child: Text(""),
+                      width: 50,
+                      height: 50,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage("Images/icons/close_button.png")),
+                      ),
+                    ),
+                    Container(
+                      child: Text(""),
+                      width: 50,
+                      height: 50,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage("Images/icons/more-three.png")),
+                      ),
+                    )
+                  ]),
+            ),
+            Stack(
+              children: [
+                Container(
+                  width: 343,
+                  height: 511.97,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("Images/cards/flashcards/2.png"),
+                        fit: BoxFit.fill),
+                  ),
+                  child: Text(""),
                 ),
-              ),
-              Container(
-                child: Text(""),
-                width: 10,
-                height: 10,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("Images/icons/more.png")),
+                Column(
+                  children: [
+                    SizedBox(height: 30),
+                    Container(
+                      width: 343,
+                      height: 511.97,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage("Images/cards/flashcards/1.png"),
+                            fit: BoxFit.fill),
+                      ),
+                      child: Text(""),
+                    ),
+                  ],
                 ),
-              )
-            ]),
+                Column(
+                  children: [
+                    SizedBox(height: 60),
+                    Container(
+                      width: 343,
+                      height: 550.97,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage("Images/cards/flashcards/0.png"),
+                            fit: BoxFit.fill),
+                      ),
+                      child: Text(""),
+                    ),
+                  ],
+                )
+              ],
+            )
           ],
         ),
       ),
-      bottomNavigationBar: NavBar(),
+      // bottomNavigationBar: NavBar(),
     );
   }
 }
