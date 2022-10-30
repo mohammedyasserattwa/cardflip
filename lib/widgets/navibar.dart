@@ -2,13 +2,15 @@ import "package:go_router/go_router.dart";
 import 'package:flutter/material.dart';
 import '../screens/home.dart';
 import "../screens/library.dart";
+import '../screens/Profile.dart';
 
 class NavBar extends StatelessWidget {
-  final navItems = {"Home", "Library"};
+  final navItems = {"Home", "Library","Profile"};
 
   final navIcons = {
     const Icon(Icons.home_rounded),
     const Icon(Icons.library_books_outlined),
+    const Icon(Icons.person_outline_rounded),
     // const Icon(Icons.person_outline)
   };
 
@@ -27,14 +29,19 @@ class NavBar extends StatelessWidget {
         selectedItemColor: const Color.fromARGB(255, 255, 255, 255),
         unselectedItemColor: const Color(0xffA8A8A8),
         onTap: (int label) {
-          if (label == 0)
+          if (label == 0) {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return Home();
+              return const Home();
             }));
-          else if (label == 1)
+          } else if (label == 1) {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return Library();
+              return const Library();
             }));
+          } else if (label == 2) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return const Profile();
+            }));
+          }
         },
         items: List.generate(
             navItems.length,

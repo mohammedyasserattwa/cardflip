@@ -8,6 +8,8 @@ import "package:flutter/material.dart";
 import '../models/ProfileModel.dart';
 import '../data/dummy_data.dart';
 import '../data/card_generator.dart';
+import '../widgets/navibar.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
@@ -23,44 +25,25 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 1000,
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage("Images/backgrounds/homepage.png"),
-            fit: BoxFit.cover),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-            child: Stack(
+    return Scaffold(
+      bottomNavigationBar: NavBar(),
+      body: Container(
+        height: 1000,
+        width: double.infinity,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("Images/backgrounds/profilepage.png"),
+              fit: BoxFit.cover),
+        ),
+        child: Expanded(
+          child: NoGlowScroll(
+            child: ListView(
               children: [
-                Container(
-                  child: Container(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                      "Images/banners/profilepage/0.png"),
-                                  fit: BoxFit.cover),
-                            ),
-                            width: 398,
-                            height: 140,
-                            child: Text(""))),
-                  ),
-                ),
-                Container(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Stack(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(50, 40, 10, 10),
+                      Container(
                         child: Container(
                           alignment: Alignment.centerRight,
                           child: GestureDetector(
@@ -68,27 +51,147 @@ class _ProfileState extends State<Profile> {
                               child: Container(
                                   decoration: const BoxDecoration(
                                     image: DecorationImage(
-                                        image:
-                                            AssetImage("Images/avatars/1.png"),
+                                        image: AssetImage(
+                                            "Images/banners/profilepage/0.png"),
                                         fit: BoxFit.cover),
                                   ),
-                                  width: 68,
-                                  height: 68,
+                                  width: 398,
+                                  height: 190,
                                   child: Text(""))),
                         ),
                       ),
-                      const SizedBox(width: 5),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 40, 45, 10),
-                        child: Container(
-                          child: Text(
-                            "Name",
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              fontFamily: "PolySans_Median",
-                              color: Color.fromARGB(255, 25, 24, 26),
-                              fontSize: 40,
+                      Container(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(38, 45, 10, 10),
+                              child: Container(
+                                alignment: Alignment.centerRight,
+                                child: GestureDetector(
+                                    onTap: () {},
+                                    child: Container(
+                                        decoration: const BoxDecoration(
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  "Images/avatars/1.png"),
+                                              fit: BoxFit.cover),
+                                        ),
+                                        width: 85,
+                                        height: 85,
+                                        child: Text(""))),
+                              ),
                             ),
+                            const SizedBox(width: 5),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(30, 50, 45, 10),
+                              child: Container(
+                                width:150,
+                                child: AutoSizeText(
+                                  "Omar Wael",
+                                  textAlign: TextAlign.left,
+                                  overflow: TextOverflow.ellipsis,
+                                  minFontSize: 12,
+                                  stepGranularity: 1,
+                                  maxLines:2,
+                                  style: TextStyle(
+                                    fontFamily: "PolySans_Median",
+                                    color: Colors.black,
+                                    fontSize: 40,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(19, 180, 10, 0),
+                        child: Container(
+                          alignment: Alignment.centerLeft,
+                          child: GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                  decoration: const BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                            "Images/icons/editprofile.png"),
+                                        fit: BoxFit.cover),
+                                  ),
+                                  width: 103,
+                                  height: 34,
+                                  child: Center(
+                                    child: Text(
+                                      "Edit Profile",
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontFamily: "PolySans_Median"),
+                                    ),
+                                  ))),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(26, 0, 0, 0),
+                  child: Text(
+                    "Badges",
+                    style: TextStyle(
+                      fontFamily: "PolySans_Median",
+                      fontSize: 25,
+                    ),
+                  ),
+                ),
+                Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage("Images/icons/badges1.png"),
+                              fit: BoxFit.cover),
+                        ),
+                        height: 50,
+                        width: 50,
+                      ),
+                      Container(
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage("Images/icons/badges2.png"),
+                              fit: BoxFit.cover),
+                        ),
+                        height: 50,
+                        width: 50,
+                      ),
+                      Container(
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage("Images/icons/badges3.png"),
+                              fit: BoxFit.cover),
+                        ),
+                        height: 50,
+                        width: 50,
+                      ),
+                      Container(
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage("Images/icons/morebadges.png"),
+                              fit: BoxFit.cover),
+                        ),
+                        height: 50,
+                        width: 50,
+                        child: Center(
+                          child: Text(
+                            "+32",
+                            style: TextStyle(
+                                fontSize: 25,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
@@ -96,216 +199,135 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 150, 10, 0),
-                  child: Container(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                      "Images/icons/editprofile.png"),
-                                  fit: BoxFit.cover),
-                            ),
-                            width: 80,
-                            height: 18,
-                            child: Text("Edit Profile"))),
+                  padding: const EdgeInsets.fromLTRB(32, 0, 0, 0),
+                  child: Text(
+                    "Recent Decks",
+                    style: TextStyle(
+                      fontFamily: "Poppins-Medium",
+                      fontSize: 21,
+                      color: Color(0xff212523),
+                    ),
                   ),
                 ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(26, 0, 0, 0),
-            child: Text(
-              "Badges",
-              style: TextStyle(
-                fontFamily: "PolySans_Median",
-                fontSize: 25,
-              ),
-            ),
-          ),
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("Images/icons/badges1.png"),
-                        fit: BoxFit.cover),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 10, 2, 0),
+                  child: SizedBox(
+                    height: 116.67,
+                    child: NoGlowScroll(
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: <Widget>[
+                          Deck(
+                              cardgenerator: cardgenerator,
+                              width: 139,
+                              height: 116.67,
+                              path:
+                                  "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
+                          SizedBox(width: 13),
+                          Deck(
+                              cardgenerator: cardgenerator,
+                              width: 139,
+                              height: 116.67,
+                              path:
+                                  "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
+                          SizedBox(width: 13),
+                          Deck(
+                              cardgenerator: cardgenerator,
+                              width: 139,
+                              height: 116.67,
+                              path:
+                                  "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
+                        ],
+                      ),
+                    ),
                   ),
-                  height: 50,
-                  width: 50,
                 ),
-                Container(
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("Images/icons/badges2.png"),
-                        fit: BoxFit.cover),
-                  ),
-                  height: 50,
-                  width: 50,
-                ),
-                Container(
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("Images/icons/badges3.png"),
-                        fit: BoxFit.cover),
-                  ),
-                  height: 50,
-                  width: 50,
-                ),
-                Container(
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("Images/icons/morebadges.png"),
-                        fit: BoxFit.cover),
-                  ),
-                  height: 50,
-                  width: 50,
-                  child: Center(
-                    child: Text(
-                      "+32",
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(30, 25, 0, 0),
+                  child: Text("Top Rated Decks",
                       style: TextStyle(
-                          fontSize: 25,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
+                          fontFamily: "Poppins-Medium",
+                          fontSize: 21,
+                          color: Color(0xff212523))),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 10, 2, 0),
+                  child: SizedBox(
+                    height: 116.67,
+                    child: NoGlowScroll(
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: <Widget>[
+                          Deck(
+                              cardgenerator: cardgenerator,
+                              width: 139,
+                              height: 116.67,
+                              path:
+                                  "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
+                          SizedBox(width: 13),
+                          Deck(
+                              cardgenerator: cardgenerator,
+                              width: 139,
+                              height: 116.67,
+                              path:
+                                  "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
+                          SizedBox(width: 13),
+                          Deck(
+                              cardgenerator: cardgenerator,
+                              width: 139,
+                              height: 116.67,
+                              path:
+                                  "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(30, 35, 0, 0),
+                  child: Text("Leaderboard",
+                      style: TextStyle(
+                          fontFamily: "Poppins-Medium",
+                          fontSize: 21,
+                          color: Color(0xff212523))),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 10, 2, 10),
+                  child: SizedBox(
+                    height: 116.67,
+                    child: NoGlowScroll(
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: <Widget>[
+                          Deck(
+                              cardgenerator: cardgenerator,
+                              width: 139,
+                              height: 116.67,
+                              path:
+                                  "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
+                          SizedBox(width: 13),
+                          Deck(
+                              cardgenerator: cardgenerator,
+                              width: 139,
+                              height: 116.67,
+                              path:
+                                  "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
+                          SizedBox(width: 13),
+                          Deck(
+                              cardgenerator: cardgenerator,
+                              width: 139,
+                              height: 116.67,
+                              path:
+                                  "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(32, 0, 0, 0),
-            child: Text(
-              "Recent Decks",
-              style: TextStyle(
-                fontFamily: "Poppins-Medium",
-                fontSize: 21,
-                color: Color(0xff212523),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(15, 10, 2, 0),
-            child: SizedBox(
-              height: 116.67,
-              child: NoGlowScroll(
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    Deck(
-                        cardgenerator: cardgenerator,
-                        width: 139,
-                        height: 116.67,
-                        path:
-                            "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                    SizedBox(width: 13),
-                    Deck(
-                        cardgenerator: cardgenerator,
-                        width: 139,
-                        height: 116.67,
-                        path:
-                            "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                    SizedBox(width: 13),
-                    Deck(
-                        cardgenerator: cardgenerator,
-                        width: 139,
-                        height: 116.67,
-                        path:
-                            "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(30, 25, 0, 0),
-            child: Text("Top Rated Decks",
-                style: TextStyle(
-                    fontFamily: "Poppins-Medium",
-                    fontSize: 21,
-                    color: Color(0xff212523))),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(15, 10, 2, 0),
-            child: SizedBox(
-              height: 116.67,
-              child: NoGlowScroll(
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    Deck(
-                        cardgenerator: cardgenerator,
-                        width: 139,
-                        height: 116.67,
-                        path:
-                            "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                    SizedBox(width: 13),
-                    Deck(
-                        cardgenerator: cardgenerator,
-                        width: 139,
-                        height: 116.67,
-                        path:
-                            "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                    SizedBox(width: 13),
-                    Deck(
-                        cardgenerator: cardgenerator,
-                        width: 139,
-                        height: 116.67,
-                        path:
-                            "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(30, 35, 0, 0),
-            child: Text("Leaderboard",
-                style: TextStyle(
-                    fontFamily: "Poppins-Medium",
-                    fontSize: 21,
-                    color: Color(0xff212523))),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(15, 10, 2, 0),
-            child: SizedBox(
-              height: 116.67,
-              child: NoGlowScroll(
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: <Widget>[
-                    Deck(
-                        cardgenerator: cardgenerator,
-                        width: 139,
-                        height: 116.67,
-                        path:
-                            "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                    SizedBox(width: 13),
-                    Deck(
-                        cardgenerator: cardgenerator,
-                        width: 139,
-                        height: 116.67,
-                        path:
-                            "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                    SizedBox(width: 13),
-                    Deck(
-                        cardgenerator: cardgenerator,
-                        width: 139,
-                        height: 116.67,
-                        path:
-                            "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

@@ -65,7 +65,7 @@ class Deck extends StatelessWidget {
                   GestureDetector(
                     onTap: () {},
                     child: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage("Images/icons/more.png"),
                             fit: BoxFit.cover),
@@ -76,7 +76,7 @@ class Deck extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Flexible(
                 child: AutoSizeText(
                   cardgenerator.deck,
@@ -86,7 +86,7 @@ class Deck extends StatelessWidget {
                   stepGranularity: 1,
                   style: TextStyle(
                     fontFamily: "Poppins-SemiBold",
-                    color: Color(0xff131414).withOpacity(0.6),
+                    color: const Color(0xff131414).withOpacity(0.6),
                     fontSize: 16,
                   ),
                   textAlign: TextAlign.left,

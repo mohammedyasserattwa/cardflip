@@ -45,7 +45,9 @@ class DeckScreen extends StatelessWidget {
                           child: Container(
                             alignment: Alignment.centerRight,
                             child: GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
                                 child: Container(
                                     decoration: const BoxDecoration(
                                       image: DecorationImage(
