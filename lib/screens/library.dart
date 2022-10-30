@@ -52,26 +52,9 @@ class _LibraryState extends State<Library> {
                 children: [
                   SafeArea(
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20.0, top: 5.0),
-                          child: Container(
-                            alignment: Alignment.centerLeft,
-                            child: GestureDetector(
-                                onTap: () {},
-                                child: Container(
-                                    decoration: const BoxDecoration(
-                                      image: DecorationImage(
-                                          image: AssetImage(
-                                              "Images/icons/arrow-left-s-line.png"),
-                                          fit: BoxFit.cover),
-                                    ),
-                                    width: 40,
-                                    height: 40,
-                                    child: const Text(""))),
-                          ),
-                        ),
+                        
                         Padding(
                           padding: const EdgeInsets.only(right: 20.0),
                           child: Container(
@@ -118,7 +101,7 @@ class _LibraryState extends State<Library> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 20, 0, 7),
+                  padding: const EdgeInsets.fromLTRB(25, 20, 0, 7),
                   child: Container(
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
@@ -156,7 +139,7 @@ class _LibraryState extends State<Library> {
                 const Padding(
                   padding: EdgeInsets.fromLTRB(0, 20, 0, 7),
                   child: Text(
-                    "Created by \nOthers",
+                    "Created \nby Others",
                     style: TextStyle(
                       fontSize: 15,
                       fontFamily: "PolySans_Neutral",
@@ -164,7 +147,24 @@ class _LibraryState extends State<Library> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 20, 7),
+                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 7),
+                  child: Container(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage("Images/icons/add.png"),
+                                  fit: BoxFit.cover),
+                            ),
+                            width: 48,
+                            height: 48,
+                            child: Text(""))),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 20, 25, 7),
                   child: Container(
                     alignment: Alignment.centerRight,
                     child: GestureDetector(

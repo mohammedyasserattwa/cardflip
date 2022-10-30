@@ -26,7 +26,6 @@ class CardGenerator {
       if (colorqueue.contains(color)) {
         continue;
       }
-      print(colorqueue.toString() + 'Color: ${color}');
       colorqueue.add(color);
       return color;
     }
