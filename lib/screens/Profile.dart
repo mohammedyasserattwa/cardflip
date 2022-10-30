@@ -1,4 +1,6 @@
 //import 'dart:ffi';
+// ignore_for_file: file_names, avoid_unnecessary_containers, prefer_const_constructors
+
 import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
@@ -15,6 +17,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  // ignore: unnecessary_new
   ProfileModel model = new ProfileModel(new DummyData());
   CardGenerator cardgenerator = new CardGenerator();
 

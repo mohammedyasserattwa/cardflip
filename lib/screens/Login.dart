@@ -6,7 +6,7 @@ import 'package:cardflip/screens/register.dart';
 import 'package:flutter/material.dart';
 import '../data/User.dart';
 import '../models/LoginModel.dart';
-import '../screens/Input.dart';
+import '../widgets/Input.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
