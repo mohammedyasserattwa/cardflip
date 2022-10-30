@@ -10,6 +10,7 @@ import '../models/homeModel.dart';
 import '../data/dummy_data.dart';
 import '../data/card_generator.dart';
 import '../widgets/deck.dart';
+import '../screens/category.dart';
 import '../widgets/navibar.dart';
 import 'package:go_router/go_router.dart';
 
@@ -118,8 +119,10 @@ class _HomeState extends State<Home> {
                           itemCount: 3,
                           itemBuilder: (context, index) => Deck(
                               onTap: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) => DeckScreen()));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => DeckScreen()));
                               },
                               cardgenerator: cardgenerator,
                               width: 139,
@@ -239,7 +242,10 @@ class _HomeState extends State<Home> {
                           itemCount: 3,
                           itemBuilder: (context, index) => Deck(
                               onTap: () {
-                                context.go("/Category");
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Category()));
                               },
                               cardgenerator: cardgenerator3,
                               width: 139,
