@@ -18,10 +18,18 @@ class CardGenerator {
     "Calculus"
   ];
   List<double> ratings = [1, 1.5, 2, 2.3, 2.5, 3, 3.5, 3.8, 4, 4.5, 4.1, 5];
-  // List<String> Categories = [];
+  List<int> colorqueue = [];
 
   int get getcolor {
-    return Random().nextInt(16);
+    while (true) {
+      int color = Random().nextInt(16);
+      if (colorqueue.contains(color)) {
+        continue;
+      }
+      print(colorqueue.toString() + 'Color: ${color}');
+      colorqueue.add(color);
+      return color;
+    }
   }
 
   int get getshape {
@@ -35,7 +43,8 @@ class CardGenerator {
   double get rating {
     return ratings[Random().nextInt(ratings.length)];
   }
-  int get librarycolor{
+
+  int get librarycolor {
     return Random().nextInt(18);
   }
 }

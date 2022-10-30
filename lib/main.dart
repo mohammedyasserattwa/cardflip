@@ -1,25 +1,42 @@
+import 'package:cardflip/screens/DeckScreen.dart';
 import 'package:cardflip/screens/library.dart';
 import 'package:flutter/material.dart';
 import "screens/home.dart";
 import 'package:go_router/go_router.dart';
+import "widgets/navibar.dart";
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final GoRouter _router = GoRouter(routes: [
-    GoRoute(
+  final subRoutes = ["Library", "Deck"];
+
+  final List<Widget> navScreens = [const Library(), const DeckScreen()];
+  GoRouter router() {
+    return GoRouter(routes: [
+      GoRoute(
         path: "/",
         builder: (BuildContext context, GoRouterState state) => const Home(),
-        routes: [
-          GoRoute(
-            path: "Library",
-            builder: (BuildContext context, GoRouterState state) =>
-                const Library(),
-          )
-        ])
-  ]);
+        routes: List.generate(
+            navScreens.length,
+            (index) => GoRoute(
+                  path: subRoutes[index],
+                  builder: (BuildContext context, GoRouterState state) =>
+                      navScreens[index],
+                )),
+
+        // [
+        //   GoRoute(
+        //     path: "Library",
+        //     builder: (BuildContext context, GoRouterState state) =>
+        //         const Library(),
+        //   ),
+        // ]
+      ),
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
@@ -28,7 +45,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      routerConfig: _router,
+      routerConfig: router(),
     );
   }
 }

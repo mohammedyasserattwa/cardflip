@@ -4,15 +4,17 @@ import '../data/card_generator.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 class Deck extends StatelessWidget {
-  const Deck(
-      {Key? key,
-      required this.cardgenerator,
-      required this.height,
-      required this.width,
-      required this.path,
-      required this.min})
-      : super(key: key);
+  const Deck({
+    Key? key,
+    required this.cardgenerator,
+    required this.height,
+    required this.width,
+    required this.path,
+    required this.min,
+    required this.onTap,
+  }) : super(key: key);
 
+  final Function() onTap;
   final CardGenerator cardgenerator;
   final double height;
   final double width;
@@ -21,7 +23,7 @@ class Deck extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
           image: DecorationImage(image: AssetImage(path), fit: BoxFit.cover),
@@ -50,7 +52,7 @@ class Deck extends StatelessWidget {
                         padding: const EdgeInsets.only(left: 5),
                         child: Text(
                           "${cardgenerator.rating}",
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: "PolySans_Neutral.ttf",
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
