@@ -11,4 +11,12 @@ class HomeModel {
   String get lname {
     return _data.lname;
   }
+
+  int get flashcardnumber {
+    return _data.flashcard;
+  }
+
+  double get rating {
+    return _data.ratingnumber;
+  }
 }

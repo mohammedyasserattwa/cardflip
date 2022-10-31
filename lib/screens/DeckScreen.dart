@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_string_interpolations
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
@@ -6,9 +8,13 @@ import '../data/card_generator.dart';
 import '../widgets/navibar.dart';
 import '../widgets/deck.dart';
 import 'FlashcardScreen.dart';
+import '../models/homeModel.dart';
+import '../data/dummy_data.dart';
 
 class DeckScreen extends StatelessWidget {
   final CardGenerator cardgenerator = CardGenerator();
+  HomeModel model = HomeModel(DummyData());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,10 +129,10 @@ class DeckScreen extends StatelessWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Text(
-                          "48 Flashcards",
+                        Text(
+                          "${model.flashcardnumber}",
                           textAlign: TextAlign.start,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: "PolySans_Median",
                             fontWeight: FontWeight.w500,
                             color: Color(0xff514F55),
@@ -195,10 +201,10 @@ class DeckScreen extends StatelessWidget {
                         const SizedBox(
                           width: 10,
                         ),
-                        const Text(
-                          "Salma Ahmed",
+                        Text(
+                          "${model.fname}",
                           textAlign: TextAlign.start,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: "PolySans_Slim",
                             fontWeight: FontWeight.w500,
                             color: Color(0xff514F55),
@@ -226,10 +232,10 @@ class DeckScreen extends StatelessWidget {
                         const SizedBox(
                           width: 5,
                         ),
-                        const Text(
-                          "3.5",
+                        Text(
+                          "${model.rating}",
                           textAlign: TextAlign.start,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: "PolySans_Slim",
                             fontWeight: FontWeight.w500,
                             color: Color(0xff514F55),
