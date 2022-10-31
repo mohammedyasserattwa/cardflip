@@ -77,6 +77,21 @@ class MyApp extends StatelessWidget {
               const Library(),
           routes: [
             GoRoute(
+              path: "Deck",
+              builder: (BuildContext context, GoRouterState state) =>
+                  DeckScreen(),
+              routes: [
+                GoRoute(
+                    path: "Flashcards",
+                    builder: (BuildContext context, GoRouterState state) =>
+                        Flashcard()),
+                GoRoute(
+                    path: "Test",
+                    builder: (BuildContext context, GoRouterState state) =>
+                        const Test()),
+              ],
+            ),
+            GoRoute(
                 path: "Adddeck",
                 builder: (BuildContext context, GoRouterState state) =>
                     const Adddeck())
