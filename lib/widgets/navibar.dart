@@ -29,6 +29,7 @@ class NavBar extends StatelessWidget {
         selectedItemColor: const Color.fromARGB(255, 255, 255, 255),
         unselectedItemColor: const Color(0xffA8A8A8),
         onTap: (int label) {
+<<<<<<< Updated upstream
           if (label == 0) {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return const Home();
@@ -42,6 +43,11 @@ class NavBar extends StatelessWidget {
               return const Profile();
             }));
           }
+=======
+          if (label == 1)
+            GoRouter.of(context).go('/Library');
+          else if (label == 0) GoRouter.of(context).go('/');
+>>>>>>> Stashed changes
         },
         items: List.generate(
             navItems.length,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 
 import '../data/card_generator.dart';
@@ -249,7 +250,9 @@ class DeckScreen extends StatelessWidget {
                   child: Container(
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          GoRouter.of(context).go('/Deck/Flashcards');
+                        },
                         child: Container(
                             decoration: const BoxDecoration(
                               image: DecorationImage(
@@ -318,8 +321,7 @@ class DeckScreen extends StatelessWidget {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                const Flashcard()));
+                                            builder: (context) => Flashcard()));
                                   },
                                 ),
                                 Deck(
@@ -333,8 +335,7 @@ class DeckScreen extends StatelessWidget {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                const Flashcard()));
+                                            builder: (context) => Flashcard()));
                                   },
                                 ),
                               ],
