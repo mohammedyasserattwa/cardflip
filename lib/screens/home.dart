@@ -119,14 +119,7 @@ class _HomeState extends State<Home> {
                           itemCount: 3,
                           itemBuilder: (context, index) => Deck(
                               onTap: () {
-<<<<<<< Updated upstream
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => DeckScreen()));
-=======
                                 GoRouter.of(context).go('/Deck');
->>>>>>> Stashed changes
                               },
                               cardgenerator: cardgenerator,
                               width: 139,
