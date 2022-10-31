@@ -102,8 +102,6 @@ class MyApp extends StatelessWidget {
               ],
             ),
           ]),
-<<<<<<< Updated upstream
-=======
       GoRoute(
           path: "/Profile",
           builder: (BuildContext context, GoRouterState state) =>
@@ -125,7 +123,6 @@ class MyApp extends StatelessWidget {
               ],
             ),
           ]),
->>>>>>> Stashed changes
     ],
   );
 
