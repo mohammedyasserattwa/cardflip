@@ -96,7 +96,7 @@ class _AdddeckState extends State<Adddeck> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(0.5))),
-                    hintText: 'Enter a search term',
+                    hintText: 'Enter the deck title',
                   ),
                 ),
                 Text(
@@ -114,7 +114,7 @@ class _AdddeckState extends State<Adddeck> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(0.5))),
-                    hintText: 'Enter a search term',
+                    hintText: 'Enter the deck description',
                   ),
                 ),
               ]),
