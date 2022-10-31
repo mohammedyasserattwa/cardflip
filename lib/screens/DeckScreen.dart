@@ -130,7 +130,7 @@ class DeckScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          "${model.flashcardnumber}",
+                          "${model.flashcardnumber} Flashcards",
                           textAlign: TextAlign.start,
                           style: const TextStyle(
                             fontFamily: "PolySans_Median",
@@ -283,7 +283,9 @@ class DeckScreen extends StatelessWidget {
                   child: Container(
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          GoRouter.of(context).go('/Home/Deck/Test');
+                        },
                         child: Container(
                             decoration: const BoxDecoration(
                               image: DecorationImage(
@@ -324,10 +326,8 @@ class DeckScreen extends StatelessWidget {
                                       "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
                                   min: 3,
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Flashcard()));
+                                    GoRouter.of(context)
+                                        .go('/Home/Deck/Flashcards');
                                   },
                                 ),
                                 Deck(
@@ -338,10 +338,8 @@ class DeckScreen extends StatelessWidget {
                                       "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
                                   min: 3,
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Flashcard()));
+                                    GoRouter.of(context)
+                                        .go('/Home/Deck/Flashcards');
                                   },
                                 ),
                               ],

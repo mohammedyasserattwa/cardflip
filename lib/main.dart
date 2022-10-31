@@ -2,6 +2,7 @@ import 'package:cardflip/screens/DeckScreen.dart';
 import 'package:cardflip/screens/FlashcardScreen.dart';
 import 'package:cardflip/screens/adddeck.dart';
 import 'package:cardflip/screens/library.dart';
+import 'package:cardflip/screens/test.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import "screens/home.dart";
@@ -37,6 +38,11 @@ class MyApp extends StatelessWidget {
                           builder:
                               (BuildContext context, GoRouterState state) =>
                                   Flashcard()),
+                      GoRoute(
+                          path: "Test",
+                          builder:
+                              (BuildContext context, GoRouterState state) =>
+                                  const Test()),
                     ],
                   ),
                   GoRoute(
@@ -55,6 +61,11 @@ class MyApp extends StatelessWidget {
                                 builder: (BuildContext context,
                                         GoRouterState state) =>
                                     Flashcard()),
+                            GoRoute(
+                                path: "Test",
+                                builder: (BuildContext context,
+                                        GoRouterState state) =>
+                                    const Test()),
                           ],
                         ),
                       ]),
@@ -84,9 +95,37 @@ class MyApp extends StatelessWidget {
                     path: "Flashcards",
                     builder: (BuildContext context, GoRouterState state) =>
                         Flashcard()),
+                GoRoute(
+                    path: "Test",
+                    builder: (BuildContext context, GoRouterState state) =>
+                        const Test()),
               ],
             ),
           ]),
+<<<<<<< Updated upstream
+=======
+      GoRoute(
+          path: "/Profile",
+          builder: (BuildContext context, GoRouterState state) =>
+              const Profile(),
+          routes: [
+            GoRoute(
+              path: "Deck",
+              builder: (BuildContext context, GoRouterState state) =>
+                  DeckScreen(),
+              routes: [
+                GoRoute(
+                    path: "Flashcards",
+                    builder: (BuildContext context, GoRouterState state) =>
+                        Flashcard()),
+                GoRoute(
+                    path: "Test",
+                    builder: (BuildContext context, GoRouterState state) =>
+                        const Test()),
+              ],
+            ),
+          ]),
+>>>>>>> Stashed changes
     ],
   );
 

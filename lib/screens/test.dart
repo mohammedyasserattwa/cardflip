@@ -30,153 +30,158 @@ class _TestState extends State<Test> {
               fit: BoxFit.cover),
         ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SafeArea(
+            Padding(
+              padding: const EdgeInsets.all(30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 0, 0, 10),
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      child: GestureDetector(
-                          child: Container(
-                              decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        "Images/icons/close_button.png"),
-                                    fit: BoxFit.cover),
-                              ),
-                              width: 25,
-                              height: 25,
-                              child: Text(""))),
-                    ),
+                  Container(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                      "Images/icons/close_button.png"),
+                                  fit: BoxFit.cover),
+                            ),
+                            width: 25,
+                            height: 25,
+                            child: Text(""))),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 10, 30, 0),
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      child: GestureDetector(
-                          child: Container(
-                              decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        "Images/icons/more-fill.png"),
-                                    fit: BoxFit.cover),
-                              ),
-                              width: 30,
-                              height: 30,
-                              child: Text(""))),
-                    ),
+                  Container(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                        child: Container(
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image:
+                                      AssetImage("Images/icons/more-fill.png"),
+                                  fit: BoxFit.cover),
+                            ),
+                            width: 30,
+                            height: 30,
+                            child: Text(""))),
                   ),
                 ],
               ),
             ),
+            const SizedBox(
+              height: 30,
+            ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(50, 50, 50, 0),
+              padding: const EdgeInsets.fromLTRB(50, 0, 50, 0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
                     decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
                       image: DecorationImage(
                           image: AssetImage("Images/backgrounds/Group 33.png"),
                           fit: BoxFit.cover),
                     ),
-                    width: 343,
-                    height: 596,
+                    width: 453,
+                    height: 556,
                     child: Column(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 120,
                         ),
-                        Container(
-                            child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Container(
-                              child: Center(
-                                child: Text(
-                                  "${model.q}",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 25,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                model.q,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                    fontSize: 25,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(
+                                height: 60,
+                              ),
+                              Container(
+                                decoration: const BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15)),
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          "Images/backgrounds/Group 481722.png"),
+                                      fit: BoxFit.cover),
+                                ),
+                                height: 50,
+                                width: 150,
+                                child: Center(
+                                  child: Text(
+                                    model.c1,
+                                    style: const TextStyle(
+                                        fontSize: 25,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 60,
-                            ),
-                            Container(
-                              decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        "Images/backgrounds/Group 481722.png"),
-                                    fit: BoxFit.cover),
+                              const SizedBox(
+                                height: 20,
                               ),
-                              height: 50,
-                              width: 150,
-                              child: Center(
-                                child: Text(
-                                  "${model.c1}",
-                                  style: TextStyle(
-                                      fontSize: 25,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
+                              Container(
+                                decoration: const BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15)),
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          "Images/backgrounds/Group 481722.png"),
+                                      fit: BoxFit.cover),
+                                ),
+                                height: 50,
+                                width: 150,
+                                child: Center(
+                                  child: Text(
+                                    model.c2,
+                                    style: TextStyle(
+                                        fontSize: 25,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Container(
-                              decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        "Images/backgrounds/Group 481722.png"),
-                                    fit: BoxFit.cover),
+                              SizedBox(
+                                height: 20,
                               ),
-                              height: 50,
-                              width: 150,
-                              child: Center(
-                                child: Text(
-                                  "${model.c2}",
-                                  style: TextStyle(
-                                      fontSize: 25,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
+                              Container(
+                                decoration: const BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15)),
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          "Images/backgrounds/Group 481722.png"),
+                                      fit: BoxFit.cover),
+                                ),
+                                height: 50,
+                                width: 150,
+                                child: Center(
+                                  child: Text(
+                                    "${model.c3}",
+                                    style: TextStyle(
+                                        fontSize: 25,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Container(
-                              decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        "Images/backgrounds/Group 481722.png"),
-                                    fit: BoxFit.cover),
-                              ),
-                              height: 50,
-                              width: 150,
-                              child: Center(
-                                child: Text(
-                                  "${model.c3}",
-                                  style: TextStyle(
-                                      fontSize: 25,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                          ],
-                        )),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
