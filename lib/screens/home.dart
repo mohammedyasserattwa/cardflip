@@ -119,7 +119,7 @@ class _HomeState extends State<Home> {
                           itemCount: 3,
                           itemBuilder: (context, index) => Deck(
                               onTap: () {
-                                GoRouter.of(context).go('/Deck');
+                                GoRouter.of(context).go('/Home/Deck');
                               },
                               cardgenerator: cardgenerator,
                               width: 139,
@@ -151,7 +151,9 @@ class _HomeState extends State<Home> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Deck(
-                                  onTap: () {},
+                                  onTap: () {
+                                    GoRouter.of(context).go('/Home/Deck');
+                                  },
                                   cardgenerator: cardgenerator2,
                                   width: 125.04,
                                   height: 103.8,
@@ -159,7 +161,9 @@ class _HomeState extends State<Home> {
                                       "Images/cards/homepage/2/2_1/${cardgenerator2.getcolor}/${cardgenerator2.getshape}.png",
                                   min: 2),
                               Deck(
-                                  onTap: () {},
+                                  onTap: () {
+                                    GoRouter.of(context).go('/Home/Deck');
+                                  },
                                   cardgenerator: cardgenerator2,
                                   width: 125.04,
                                   height: 125.1,
@@ -175,7 +179,9 @@ class _HomeState extends State<Home> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Deck(
-                                  onTap: () {},
+                                  onTap: () {
+                                    GoRouter.of(context).go('/Home/Deck');
+                                  },
                                   cardgenerator: cardgenerator2,
                                   width: 128.54,
                                   height: 140.18,
@@ -183,7 +189,9 @@ class _HomeState extends State<Home> {
                                       "Images/cards/homepage/2/2_2/${cardgenerator2.getcolor}/${cardgenerator2.getshape}.png",
                                   min: 3),
                               Deck(
-                                  onTap: () {},
+                                  onTap: () {
+                                    GoRouter.of(context).go('/Home/Deck');
+                                  },
                                   cardgenerator: cardgenerator2,
                                   width: 128.54,
                                   height: 84.29,
@@ -197,7 +205,9 @@ class _HomeState extends State<Home> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Deck(
-                                onTap: () {},
+                                onTap: () {
+                                  GoRouter.of(context).go('/Home/Deck');
+                                },
                                 cardgenerator: cardgenerator2,
                                 width: 125.04,
                                 height: 103.8,
@@ -205,7 +215,9 @@ class _HomeState extends State<Home> {
                                     "Images/cards/homepage/2/2_1/${cardgenerator2.getcolor}/${cardgenerator2.getshape}.png",
                                 min: 2),
                             Deck(
-                                onTap: () {},
+                                onTap: () {
+                                  GoRouter.of(context).go('/Home/Deck');
+                                },
                                 cardgenerator: cardgenerator2,
                                 width: 120.67,
                                 height: 125.1,
@@ -239,10 +251,7 @@ class _HomeState extends State<Home> {
                           itemCount: 3,
                           itemBuilder: (context, index) => Deck(
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Category()));
+                                GoRouter.of(context).go('/Home/Category');
                               },
                               cardgenerator: cardgenerator3,
                               width: 139,

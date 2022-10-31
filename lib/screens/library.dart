@@ -4,6 +4,7 @@ import 'dart:ffi';
 import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cardflip/widgets/deck.dart';
+import 'package:go_router/go_router.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 import "package:flutter/material.dart";
 import '../data/dummy_data.dart';
@@ -191,14 +192,17 @@ class _LibraryState extends State<Library> {
                             children: [
                               Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Deck(
                                       cardgenerator: cardgenerator,
                                       width: 163.13,
                                       height: 158.67,
                                       min: 3,
-                                      onTap: () {},
+                                      onTap: () {
+                                        GoRouter.of(context)
+                                            .go('/Library/Deck');
+                                      },
                                       path:
                                           "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
                                   Deck(
@@ -206,12 +210,15 @@ class _LibraryState extends State<Library> {
                                       width: 163.13,
                                       height: 158.67,
                                       min: 3,
-                                      onTap: () {},
+                                      onTap: () {
+                                        GoRouter.of(context)
+                                            .go('/Library/Deck');
+                                      },
                                       path:
                                           "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
                                 ],
                               ),
-                              SizedBox(height: 40),
+                              SizedBox(height: 20),
                             ],
                           )),
                 ),

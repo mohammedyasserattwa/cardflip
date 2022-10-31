@@ -257,7 +257,7 @@ class DeckScreen extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
                         onTap: () {
-                          GoRouter.of(context).go('/Deck/Flashcards');
+                          GoRouter.of(context).go('/Home/Deck/Flashcards');
                         },
                         child: Container(
                             decoration: const BoxDecoration(

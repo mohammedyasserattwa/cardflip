@@ -4,6 +4,7 @@ import 'package:cardflip/main.dart';
 import 'package:cardflip/screens/home.dart';
 import 'package:cardflip/screens/register.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../data/User.dart';
 import '../models/LoginModel.dart';
 import '../widgets/Input.dart';
@@ -94,10 +95,7 @@ class _LoginState extends State<Login> {
                                   onPressed: () {
                                     if (Input.loginKey.currentState!
                                         .validate()) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => Home()));
+                                      GoRouter.of(context).go('/Home');
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(

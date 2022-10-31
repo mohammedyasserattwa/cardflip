@@ -5,7 +5,7 @@ import "../screens/library.dart";
 import '../screens/Profile.dart';
 
 class NavBar extends StatelessWidget {
-  final navItems = {"Home", "Library","Profile"};
+  final navItems = {"Home", "Library", "Profile"};
 
   final navIcons = {
     const Icon(Icons.home_rounded),
@@ -31,7 +31,9 @@ class NavBar extends StatelessWidget {
         onTap: (int label) {
           if (label == 1)
             GoRouter.of(context).go('/Library');
-          else if (label == 0) GoRouter.of(context).go('/');
+          else if (label == 0)
+            GoRouter.of(context).go('/Home');
+          else if (label == 2) GoRouter.of(context).go('/Profile');
         },
         items: List.generate(
             navItems.length,

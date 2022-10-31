@@ -1,5 +1,7 @@
 import 'package:cardflip/screens/DeckScreen.dart';
 import 'package:cardflip/screens/FlashcardScreen.dart';
+import 'package:cardflip/screens/Login.dart';
+import 'package:cardflip/screens/Profile.dart';
 import 'package:cardflip/screens/library.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -16,23 +18,85 @@ class MyApp extends StatelessWidget {
   final GoRouter _router = GoRouter(
     routes: [
       GoRoute(
-          path: "/",
-          builder: (BuildContext context, GoRouterState state) => const Home()),
-      GoRoute(
-          path: "/Library",
-          builder: (BuildContext context, GoRouterState state) => const Library()),
-      GoRoute(
-        path: "/Deck",
-        builder: (BuildContext context, GoRouterState state) => DeckScreen(),
+        path: "/",
+        builder: (BuildContext context, GoRouterState state) => const Login(),
         routes: [
           GoRoute(
-              path: "Flashcards",
+                path: "Home",
+                builder: (BuildContext context, GoRouterState state) =>
+                    const Home(),
+                routes: [
+                  GoRoute(
+                    path: "Deck",
+                    builder: (BuildContext context, GoRouterState state) =>
+                        DeckScreen(),
+                    routes: [
+                      GoRoute(
+                          path: "Flashcards",
+                          builder:
+                              (BuildContext context, GoRouterState state) =>
+                                  Flashcard()),
+                    ],
+                  ),
+                  GoRoute(
+                      path: "Category",
+                      builder: (BuildContext context, GoRouterState state) =>
+                          const Category(),
+                      routes: [
+                        GoRoute(
+                          path: "Deck",
+                          builder:
+                              (BuildContext context, GoRouterState state) =>
+                                  DeckScreen(),
+                          routes: [
+                            GoRoute(
+                                path: "Flashcards",
+                                builder: (BuildContext context,
+                                        GoRouterState state) =>
+                                    Flashcard()),
+                          ],
+                        ),
+                      ]),
+                ]),
+        ]
+      ),
+      GoRoute(
+          path: "/Library",
+          builder: (BuildContext context, GoRouterState state) =>
+              const Library(),
+          routes: [
+            GoRoute(
+              path: "Deck",
               builder: (BuildContext context, GoRouterState state) =>
-                  Flashcard()),
-        ],
+                  DeckScreen(),
+              routes: [
+                GoRoute(
+                    path: "Flashcards",
+                    builder: (BuildContext context, GoRouterState state) =>
+                        Flashcard()),
+              ],
+            ),
+          ]),
+      GoRoute(
+        path: "/Profile",
+        builder: (BuildContext context, GoRouterState state) => const Profile(),
+        routes: [
+            GoRoute(
+              path: "Deck",
+              builder: (BuildContext context, GoRouterState state) =>
+                  DeckScreen(),
+              routes: [
+                GoRoute(
+                    path: "Flashcards",
+                    builder: (BuildContext context, GoRouterState state) =>
+                        Flashcard()),
+              ],
+            ),
+          ]
       ),
     ],
   );
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(

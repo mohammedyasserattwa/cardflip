@@ -55,7 +55,9 @@ class _CategoryState extends State<Category> {
                         child: Container(
                           alignment: Alignment.centerLeft,
                           child: GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
                               child: Container(
                                   decoration: const BoxDecoration(
                                     image: DecorationImage(
@@ -113,7 +115,10 @@ class _CategoryState extends State<Category> {
                                               borderRadius:
                                                   BorderRadius.circular(8.0),
                                               child: Deck(
-                                                  onTap: () {},
+                                                  onTap: () {
+                                                    GoRouter.of(context)
+                                                        .go('/Home/Category/Deck');
+                                                  },
                                                   cardgenerator: cardgenerator,
                                                   // width: 148,
                                                   // height: 119,
