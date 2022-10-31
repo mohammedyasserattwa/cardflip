@@ -39,8 +39,8 @@ class _LoginState extends State<Login> {
                   'Welcome\nBack',
                   style: TextStyle(
                     color: Color(0xFF191C32),
-                    fontFamily: 'Poppins',
-                    fontSize: 38,
+                    fontFamily: 'PolySans_Median',
+                    fontSize: 48,
                   ),
                 ),
               ),

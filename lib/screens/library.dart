@@ -11,6 +11,7 @@ import '../data/dummy_data.dart';
 import '../data/card_generator.dart';
 import '../models/libraryModel.dart';
 import '../widgets/navibar.dart';
+import '../widgets/deck.dart';
 
 class Library extends StatefulWidget {
   const Library({super.key});
@@ -152,7 +153,9 @@ class _LibraryState extends State<Library> {
                   child: Container(
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          GoRouter.of(context).go('/Library/Adddeck');
+                        },
                         child: Container(
                             decoration: const BoxDecoration(
                               image: DecorationImage(

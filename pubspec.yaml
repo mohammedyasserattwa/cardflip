@@ -247,9 +247,10 @@ flutter:
     - Images/banners/profilepage/
     - Images/banners/deckpage/
     - Images/banners/librarypage/
-    - Images/banners/leaderboardpage/
+    - Images/banners/adddeck/
     - Images/avatars/
     - Images/vectors/
+    - Images/banners/leaderboardpage/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

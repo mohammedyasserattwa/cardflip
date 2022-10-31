@@ -1,11 +1,12 @@
 import 'package:cardflip/screens/DeckScreen.dart';
 import 'package:cardflip/screens/FlashcardScreen.dart';
-import 'package:cardflip/screens/Login.dart';
-import 'package:cardflip/screens/Profile.dart';
+import 'package:cardflip/screens/adddeck.dart';
 import 'package:cardflip/screens/library.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import "screens/home.dart";
+import "screens/profile.dart";
+import "screens/login.dart";
 import "screens/category.dart";
 import 'package:go_router/go_router.dart';
 import "widgets/navibar.dart";
@@ -18,10 +19,10 @@ class MyApp extends StatelessWidget {
   final GoRouter _router = GoRouter(
     routes: [
       GoRoute(
-        path: "/",
-        builder: (BuildContext context, GoRouterState state) => const Login(),
-        routes: [
-          GoRoute(
+          path: "/",
+          builder: (BuildContext context, GoRouterState state) => const Login(),
+          routes: [
+            GoRoute(
                 path: "Home",
                 builder: (BuildContext context, GoRouterState state) =>
                     const Home(),
@@ -58,12 +59,21 @@ class MyApp extends StatelessWidget {
                         ),
                       ]),
                 ]),
-        ]
-      ),
+          ]),
       GoRoute(
           path: "/Library",
           builder: (BuildContext context, GoRouterState state) =>
               const Library(),
+          routes: [
+            GoRoute(
+                path: "Adddeck",
+                builder: (BuildContext context, GoRouterState state) =>
+                    const Adddeck())
+          ]),
+      GoRoute(
+          path: "/Profile",
+          builder: (BuildContext context, GoRouterState state) =>
+              const Profile(),
           routes: [
             GoRoute(
               path: "Deck",
@@ -77,23 +87,6 @@ class MyApp extends StatelessWidget {
               ],
             ),
           ]),
-      GoRoute(
-        path: "/Profile",
-        builder: (BuildContext context, GoRouterState state) => const Profile(),
-        routes: [
-            GoRoute(
-              path: "Deck",
-              builder: (BuildContext context, GoRouterState state) =>
-                  DeckScreen(),
-              routes: [
-                GoRoute(
-                    path: "Flashcards",
-                    builder: (BuildContext context, GoRouterState state) =>
-                        Flashcard()),
-              ],
-            ),
-          ]
-      ),
     ],
   );
 
@@ -108,14 +101,6 @@ class MyApp extends StatelessWidget {
       routeInformationProvider: _router.routeInformationProvider,
       routeInformationParser: _router.routeInformationParser,
       routerDelegate: _router.routerDelegate,
-      // home: const Home(),
-      // initialRoute: "/",
-      // routes: {
-      //   "/": (context) => navScreens[0],
-      //   "/Library": (context) => navScreens[1],
-      //   "/Deck": (context) => navScreens[2],
-      //   "/Flashcard": (context) => navScreens[3],
-      // }
     );
   }
 }
