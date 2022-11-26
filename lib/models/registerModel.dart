@@ -7,7 +7,7 @@ class RegisterModel {
   RegisterModel(User data) : _data = data;
 
   String? get fname {
-    return _data.first_name;
+    return _data.firstname;
   }
 
   String? get password {

@@ -10,7 +10,7 @@ import '../models/LoginModel.dart';
 import '../widgets/Input.dart';
 
 class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
+  const Login({super.key});
 
   @override
   _LoginState createState() => _LoginState();
@@ -18,6 +18,7 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   loginModel Object = loginModel(User());
+  loginModel ObjectTwo = loginModel(User());
 
   @override
   Widget build(BuildContext context) {
@@ -63,10 +64,14 @@ class _LoginState extends State<Login> {
                                   color: Color(0xFFF98800),
                                   validator: (val) {
                                     if (val == null || val.isEmpty) {
-                                      return "Please enter a valid email address or username";
+                                      return "Please enter a valid email address or username.";
                                     } else {
                                       return null;
                                     }
+                                    // return "${ObjectTwo.fname}";
+                                    // if (val == "${Object.fname}") {
+                                    //   return "${Object.fname}";
+                                    // }
                                   },
                                   Object: Object),
                               SizedBox(
@@ -79,7 +84,7 @@ class _LoginState extends State<Login> {
                                   color: Color.fromARGB(255, 184, 145, 229),
                                   validator: (val) {
                                     if (val == null || val.isEmpty) {
-                                      return "Please enter a minimum 8 characters";
+                                      return "Please enter a valid password.";
                                     } else {
                                       return null;
                                     }

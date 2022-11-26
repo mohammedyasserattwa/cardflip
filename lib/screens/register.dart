@@ -1,7 +1,8 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, library_private_types_in_public_api, non_constant_identifier_names, unused_local_variable
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, library_private_types_in_public_api, non_constant_identifier_names, unused_local_variable, body_might_complete_normally_nullable
 
 import 'package:flutter/material.dart';
 import 'package:cardflip/screens/Login.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import '../data/User.dart';
 import '../models/LoginModel.dart';
 import '../widgets/Input.dart';
@@ -66,7 +67,7 @@ class _RegisterState extends State<Register> {
                                     if (val != null && val.isNotEmpty) {
                                       return null;
                                     } else {
-                                      return 'Please enter your  username';
+                                      return '* Required';
                                     }
                                   },
                                   Object: Object),
@@ -78,13 +79,11 @@ class _RegisterState extends State<Register> {
                                   icon: Icons.email_rounded,
                                   obscureText: false,
                                   color: Color(0xFF5FC88F),
-                                  validator: (val) {
-                                    if (val != null && val.isNotEmpty) {
-                                      return null;
-                                    } else {
-                                      return 'Please enter your  email';
-                                    }
-                                  },
+                                  validator: MultiValidator([
+                                    RequiredValidator(errorText: "* Required"),
+                                    EmailValidator(
+                                        errorText: "Enter valid email"),
+                                  ]),
                                   Object: Object),
                               SizedBox(
                                 height: 15,
@@ -94,13 +93,15 @@ class _RegisterState extends State<Register> {
                                   icon: Icons.lock_outline,
                                   obscureText: true,
                                   color: Color.fromARGB(255, 184, 145, 229),
-                                  validator: (val) {
-                                    if (val != null && val.isNotEmpty) {
-                                      return null;
-                                    } else {
-                                      return 'Please enter your  password';
-                                    }
-                                  },
+                                  validator: MultiValidator([
+                                    RequiredValidator(errorText: "* Required"),
+                                    MinLengthValidator(6,
+                                        errorText:
+                                            "Password should be atleast 6 characters"),
+                                    MaxLengthValidator(15,
+                                        errorText:
+                                            "Password should not be greater than 15 characters")
+                                  ]),
                                   Object: Object),
                               SizedBox(
                                 height: 30,

@@ -1,9 +1,9 @@
-// ignore_for_file: unnecessary_this
+// ignore_for_file: unnecessary_this, file_names, non_constant_identifier_names
 
 class User {
   //PARAMETERS
-  String? first_name;
-  String? last_Name;
+  String? firstname = "tester";
+  String? lastname;
   int? age;
   String? gender;
   String? email;
@@ -12,11 +12,11 @@ class User {
   List? _badges;
 
   //SETTER & GETTERS
-  get firstname => this.first_name;
-  set firstname(value) => this.first_name = value;
+  get fname => this.firstname;
+  set fname(value) => this.firstname = value;
 
-  get lastName => this.last_Name;
-  set lastName(value) => this.last_Name = value;
+  get lname => this.lastname;
+  set lname(value) => this.lastname = value;
 
   get getAge => this.age;
   set setAge(age) => this.age = age;
@@ -38,8 +38,8 @@ class User {
 
   //CONSTRUCTOR
   User(
-      {this.first_name,
-      this.last_Name,
+      {this.firstname,
+      this.lastname,
       this.age,
       this.gender,
       this.email,

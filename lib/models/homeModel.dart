@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import "package:cardflip/data/dummy_data.dart";
 
 class HomeModel {
