@@ -14,7 +14,7 @@ class NavBar extends StatelessWidget {
     // const Icon(Icons.person_outline)
   };
 
-  NavBar({super.key});
+  NavBar({key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +30,10 @@ class NavBar extends StatelessWidget {
         unselectedItemColor: const Color(0xffA8A8A8),
         onTap: (int label) {
           if (label == 1)
-            GoRouter.of(context).go('/Library');
+            GoRouter.of(context).go('/Home/Library');
           else if (label == 0)
             GoRouter.of(context).go('/Home');
-          else if (label == 2) GoRouter.of(context).go('/Profile');
+          else if (label == 2) GoRouter.of(context).go('/Home/Profile');
         },
         items: List.generate(
             navItems.length,

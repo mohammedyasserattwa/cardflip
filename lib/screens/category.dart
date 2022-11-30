@@ -1,19 +1,16 @@
 // ignore_for_file: unnecessary_new, prefer_const_constructors
 
-import 'dart:ffi';
-import 'dart:io';
-import 'package:auto_size_text/auto_size_text.dart';
+
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 import "package:flutter/material.dart";
 import '../models/categoryModel.dart';
-import '../data/dummy_data.dart';
 import '../data/card_generator.dart';
 import '../widgets/deck.dart';
 import '../widgets/navibar.dart';
 import 'package:go_router/go_router.dart';
 
 class Category extends StatefulWidget {
-  const Category({super.key});
+  const Category({key});
 
   @override
   State<Category> createState() => _CategoryState();
@@ -116,8 +113,8 @@ class _CategoryState extends State<Category> {
                                                   BorderRadius.circular(8.0),
                                               child: Deck(
                                                   onTap: () {
-                                                    GoRouter.of(context)
-                                                        .go('/Home/Category/Deck');
+                                                    GoRouter.of(context).go(
+                                                        '/Home/Category/Deck');
                                                   },
                                                   cardgenerator: cardgenerator,
                                                   // width: 148,
@@ -131,7 +128,10 @@ class _CategoryState extends State<Category> {
                                               borderRadius:
                                                   BorderRadius.circular(8.0),
                                               child: Deck(
-                                                  onTap: () {},
+                                                  onTap: () {
+                                                    GoRouter.of(context).go(
+                                                        '/Home/Category/Deck');
+                                                  },
                                                   cardgenerator: cardgenerator,
                                                   // width: 148,
                                                   // height: 119,
@@ -152,7 +152,10 @@ class _CategoryState extends State<Category> {
                                             borderRadius:
                                                 BorderRadius.circular(10.0),
                                             child: Deck(
-                                                onTap: () {},
+                                                onTap: () {
+                                                  GoRouter.of(context).go(
+                                                      '/Home/Category/Deck');
+                                                },
                                                 cardgenerator: cardgenerator2,
                                                 // width: 148,
                                                 // height: 119,

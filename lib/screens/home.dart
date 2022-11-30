@@ -1,16 +1,11 @@
 // ignore_for_file: unnecessary_new, prefer_const_constructors
 
-import 'dart:ffi';
-import 'dart:io';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cardflip/screens/DeckScreen.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 import "package:flutter/material.dart";
 import '../models/homeModel.dart';
 import '../data/dummy_data.dart';
 import '../data/card_generator.dart';
 import '../widgets/deck.dart';
-import '../screens/category.dart';
 import '../widgets/navibar.dart';
 import 'package:go_router/go_router.dart';
 
@@ -119,7 +114,7 @@ class _HomeState extends State<Home> {
                           itemCount: 3,
                           itemBuilder: (context, index) => Deck(
                               onTap: () {
-                                GoRouter.of(context).go('/Home/Deck');
+                                context.go('/Home/Deck');
                               },
                               cardgenerator: cardgenerator,
                               width: 139,

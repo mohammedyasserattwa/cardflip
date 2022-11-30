@@ -52,7 +52,7 @@ class _LoginState extends State<Login> {
                         top: MediaQuery.of(context).size.height * 0.35),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                      children: <Widget>[
                         Container(
                           margin: EdgeInsets.only(left: 25, right: 25),
                           child: Column(
@@ -84,7 +84,11 @@ class _LoginState extends State<Login> {
                                   color: Color.fromARGB(255, 184, 145, 229),
                                   validator: (val) {
                                     if (val == null || val.isEmpty) {
+<<<<<<< Updated upstream
                                       return "Please enter a valid password.";
+=======
+                                      return "Please enter a password.";
+>>>>>>> Stashed changes
                                     } else {
                                       return null;
                                     }

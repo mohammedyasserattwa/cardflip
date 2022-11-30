@@ -7,7 +7,7 @@ import '../data/testdata.dart';
 import '../data/card_generator.dart';
 
 class Test extends StatefulWidget {
-  const Test({super.key});
+  const Test({key});
 
   @override
   State<Test> createState() => _TestState();

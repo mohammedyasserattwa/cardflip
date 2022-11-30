@@ -14,7 +14,7 @@ import '../widgets/navibar.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({super.key});
+  const Profile({key});
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -210,7 +210,7 @@ class _ProfileState extends State<Profile> {
                             height: 116.67,
                             min: 3,
                             onTap: () {
-                              GoRouter.of(context).go('/Profile/Deck');
+                              GoRouter.of(context).go('/Home/Profile/Deck');
                             },
                             path:
                                 "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
@@ -221,7 +221,7 @@ class _ProfileState extends State<Profile> {
                             height: 116.67,
                             min: 3,
                             onTap: () {
-                              GoRouter.of(context).go('/Profile/Deck');
+                              GoRouter.of(context).go('/Home/Profile/Deck');
                             },
                             path:
                                 "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
@@ -230,7 +230,7 @@ class _ProfileState extends State<Profile> {
                             cardgenerator: cardgenerator,
                             min: 3,
                             onTap: () {
-                              GoRouter.of(context).go('/Profile/Deck');
+                              GoRouter.of(context).go('/Home/Profile/Deck');
                             },
                             width: 139,
                             height: 116.67,
@@ -261,7 +261,7 @@ class _ProfileState extends State<Profile> {
                             cardgenerator: cardgenerator,
                             min: 3,
                             onTap: () {
-                              GoRouter.of(context).go('/Profile/Deck');
+                              GoRouter.of(context).go('/Home/Profile/Deck');
                             },
                             width: 139,
                             height: 116.67,
@@ -272,7 +272,7 @@ class _ProfileState extends State<Profile> {
                             cardgenerator: cardgenerator,
                             min: 3,
                             onTap: () {
-                              GoRouter.of(context).go('/Profile/Deck');
+                              GoRouter.of(context).go('/Home/Profile/Deck');
                             },
                             width: 139,
                             height: 116.67,
@@ -283,7 +283,7 @@ class _ProfileState extends State<Profile> {
                             cardgenerator: cardgenerator,
                             min: 3,
                             onTap: () {
-                              GoRouter.of(context).go('/Profile/Deck');
+                              GoRouter.of(context).go('/Home/Profile/Deck');
                             },
                             width: 139,
                             height: 116.67,
@@ -314,7 +314,7 @@ class _ProfileState extends State<Profile> {
                             cardgenerator: cardgenerator,
                             min: 3,
                             onTap: () {
-                              GoRouter.of(context).go('/Profile/Deck');
+                              GoRouter.of(context).go('/Home/Profile/Deck');
                             },
                             width: 139,
                             height: 116.67,
@@ -325,7 +325,7 @@ class _ProfileState extends State<Profile> {
                             cardgenerator: cardgenerator,
                             min: 3,
                             onTap: () {
-                              GoRouter.of(context).go('/Profile/Deck');
+                              GoRouter.of(context).go('/Home/Profile/Deck');
                             },
                             width: 139,
                             height: 116.67,
@@ -336,7 +336,7 @@ class _ProfileState extends State<Profile> {
                             cardgenerator: cardgenerator,
                             min: 3,
                             onTap: () {
-                              GoRouter.of(context).go('/Profile/Deck');
+                              GoRouter.of(context).go('/Home/Profile/Deck');
                             },
                             width: 139,
                             height: 116.67,
@@ -354,4 +354,3 @@ class _ProfileState extends State<Profile> {
     );
   }
 }
-

@@ -1,7 +1,6 @@
 // ignore_for_file: unnecessary_new
 
-import 'dart:ffi';
-import 'dart:io';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 import "package:flutter/material.dart";
@@ -12,7 +11,7 @@ import '../widgets/navibar.dart';
 import '../widgets/deck.dart';
 
 class Adddeck extends StatefulWidget {
-  const Adddeck({super.key});
+  const Adddeck({key});
 
   @override
   State<Adddeck> createState() => _AdddeckState();

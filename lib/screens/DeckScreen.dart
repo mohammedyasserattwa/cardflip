@@ -53,7 +53,7 @@ class DeckScreen extends StatelessWidget {
                             alignment: Alignment.centerRight,
                             child: GestureDetector(
                                 onTap: () {
-                                  Navigator.pop(context);
+                                  context.pop();
                                 },
                                 child: Container(
                                     decoration: const BoxDecoration(
@@ -257,7 +257,8 @@ class DeckScreen extends StatelessWidget {
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
                         onTap: () {
-                          GoRouter.of(context).go('/Home/Deck/Flashcards');
+                          // Navigator.pop(context, true);
+                          context.go('/Home/Deck/Flashcards');
                         },
                         child: Container(
                             decoration: const BoxDecoration(

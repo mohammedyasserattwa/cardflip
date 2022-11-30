@@ -1,25 +1,53 @@
+import 'dart:async';
+
 import "package:flutter/material.dart";
 import "../models/flashcardModel.dart";
 import '../widgets/navibar.dart';
+import "../widgets/card_widget.dart";
 
 class Flashcard extends StatefulWidget {
-  Flashcard({super.key});
+  Flashcard({key});
 
   @override
   State<Flashcard> createState() => _FlashcardState();
 }
 
-class _FlashcardState extends State<Flashcard> {
+class _FlashcardState extends State<Flashcard>
+    with SingleTickerProviderStateMixin {
   final model = FlashcardModel();
-  void _pop() {
+  // dynamic size = 0;
+  int _currentCard = 0;
+  double _beginAnimation = 0;
+  double _endAnimation = 0;
+
+  @override
+  void initState() {
+    _currentCard = model.queue;
+  }
+
+  void _pop() async {
     setState(() {
-      model.pop();
+      _beginAnimation = MediaQuery.of(context).size.width / 2;
+      _endAnimation = MediaQuery.of(context).size.width * 2;
     });
+    if (_currentCard > 0) {
+      _currentCard =
+          await Future.delayed(const Duration(milliseconds: 250), () {
+        return _currentCard - 1;
+      });
+    }
+    if (_currentCard == 0) {
+      print("5alas");
+    }
   }
 
   void _push() {
+    if (_currentCard < model.queue) {
+      _currentCard++;
+    }
     setState(() {
-      model.push();
+      _endAnimation = 0;
+      _beginAnimation = MediaQuery.of(context).size.width * 2;
     });
   }
 
@@ -70,89 +98,51 @@ class _FlashcardState extends State<Flashcard> {
                     )
                   ]),
             ),
-            Stack(
-              children: [
-                for (int i = 0, j = 2, k = 0;
-                    i < model.queue;
-                    i++, j--, k += 30)
+            GestureDetector(
+              child: Stack(
+                children: [
+                  CardWidget.emptyCard(image: model.getImages[0]),
                   Column(
                     children: [
-                      SizedBox(
-                        height: k.toDouble(),
+                      const SizedBox(
+                        height: 30,
                       ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Card(
-                            image:
-                                "Images/cards/flashcards/${(j == 1) ? 0 : j}.png",
-                            front: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          right: 30.0, top: 60),
-                                      child: Container(
-                                          width: 36,
-                                          height: 36,
-                                          decoration: const BoxDecoration(
-                                            image: DecorationImage(
-                                              image: AssetImage(
-                                                  "Images/icons/star-fill.png"),
-                                              fit: BoxFit.fill,
-                                            ),
-                                          ),
-                                          child: Text("")),
-                                    ),
-                                  ],
-                                ),
-                                // SizedBox(
-                                //   height: 150,
-                                // ),
-                                Center(
-                                    child: Text(
-                                  model.terms[i],
-                                  style: const TextStyle(
-                                    fontFamily: "PolySans_Median",
-                                    fontSize: 48,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color(0xff1B4F55),
-                                  ),
-                                )),
-                                const Padding(
-                                  padding: EdgeInsets.only(bottom: 40.0),
-                                  child: Center(
-                                      child: Text(
-                                    "Click to flip the card",
-                                    style: TextStyle(
-                                        fontFamily: "PolySans_Slim",
-                                        fontWeight: FontWeight.w300,
-                                        color: Color(0xff484848),
-                                        fontSize: 20),
-                                  )),
-                                ),
-                              ],
-                            ),
-                            back: Center(
-                                child: Text(
-                              model.definitions[i],
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                fontFamily: "PolySans_Median",
-                                fontSize: 48,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xff1B4F55),
-                              ),
-                            ))),
-                      ),
+                      CardWidget.emptyCard(image: model.getImages[1]),
                     ],
                   ),
-              ],
+                  Column(
+                    children: [
+                      const SizedBox(
+                        height: 60,
+                      ),
+                      CardWidget.celebrationCard(image: model.getImages[2]),
+                    ],
+                  ),
+                  for (int i = 0; i < _currentCard; i++)
+                    Column(
+                      children: [
+                        const SizedBox(
+                          height: 60,
+                        ),
+                        (i == _currentCard - 1)
+                            ? CardWidget(
+                                begin: _beginAnimation,
+                                end: _endAnimation,
+                                term: model.getTerms[i],
+                                definition: model.getDefinitions[i],
+                                image: model.getImages[2],
+                              )
+                            : CardWidget(
+                                term: model.getTerms[i],
+                                definition: model.getDefinitions[i],
+                                image: model.getImages[2],
+                              )
+                      ],
+                    )
+                ],
+              ),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 75.0),
               child: Row(
@@ -185,69 +175,5 @@ class _FlashcardState extends State<Flashcard> {
       ),
       // bottomNavigationBar: NavBar(),
     );
-  }
-}
-
-class Card extends StatefulWidget {
-  const Card({
-    Key? key,
-    required this.front,
-    required this.back,
-    required this.image,
-  }) : super(key: key);
-
-  final Widget front;
-  final Widget back;
-  final String image;
-
-  @override
-  State<Card> createState() => _CardState();
-}
-
-class _CardState extends State<Card> {
-  bool isBack = true;
-  double angle = 0;
-  void _flip() {
-    setState(() {
-      angle = (angle + 3.14159265) % (2 * 3.14159265);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: _flip,
-      child: TweenAnimationBuilder(
-          tween: Tween<double>(begin: 0, end: angle),
-          duration: Duration(seconds: 1),
-          builder: (BuildContext context, double val, __) {
-            if (val >= (3.14159265 / 2)) {
-              isBack = false;
-            } else {
-              isBack = true;
-            }
-            return Transform(
-              alignment: Alignment.center,
-              transform: Matrix4.identity()
-                ..setEntry(3, 2, 0.001)
-                ..rotateY(val),
-              child: (Container(
-                width: 343,
-                height: 511.97,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage(widget.image), fit: BoxFit.fill),
-                ),
-                child: isBack
-                    ? widget.front
-                    : Transform(
-                        alignment: Alignment.center,
-                        transform: Matrix4.identity()..rotateY(3.14159265),
-                        child: widget.back),
-              )),
-            );
-          }),
-    );
-    //
   }
 }

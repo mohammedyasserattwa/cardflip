@@ -9,7 +9,7 @@ import 'FlashcardScreen.dart';
 class Leaderboard extends StatelessWidget {
   final CardGenerator cardgenerator = CardGenerator();
 
-  Leaderboard({super.key});
+  Leaderboard({key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

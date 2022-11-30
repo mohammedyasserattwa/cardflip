@@ -1,7 +1,6 @@
 // ignore_for_file: unnecessary_new
 
-import 'dart:ffi';
-import 'dart:io';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cardflip/widgets/deck.dart';
 import 'package:go_router/go_router.dart';
@@ -14,7 +13,7 @@ import '../widgets/navibar.dart';
 import '../widgets/deck.dart';
 
 class Library extends StatefulWidget {
-  const Library({super.key});
+  const Library({key});
 
   @override
   State<Library> createState() => _LibraryState();
@@ -154,7 +153,7 @@ class _LibraryState extends State<Library> {
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
                         onTap: () {
-                          GoRouter.of(context).go('/Library/Adddeck');
+                          GoRouter.of(context).go('/Home/Library/Adddeck');
                         },
                         child: Container(
                             decoration: const BoxDecoration(
@@ -204,7 +203,7 @@ class _LibraryState extends State<Library> {
                                       min: 3,
                                       onTap: () {
                                         GoRouter.of(context)
-                                            .go('/Library/Deck');
+                                            .go('/Home/Library/Deck');
                                       },
                                       path:
                                           "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
@@ -215,7 +214,7 @@ class _LibraryState extends State<Library> {
                                       min: 3,
                                       onTap: () {
                                         GoRouter.of(context)
-                                            .go('/Library/Deck');
+                                            .go('/Home/Library/Deck');
                                       },
                                       path:
                                           "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
