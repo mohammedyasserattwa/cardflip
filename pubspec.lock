@@ -99,8 +99,7 @@ packages:
       name: go_router
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< Updated upstream
-    version: "5.1.1"
+    version: "3.1.1"
   intl:
     dependency: transitive
     description:
@@ -108,9 +107,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.17.0"
-=======
-    version: "3.1.1"
->>>>>>> Stashed changes
   js:
     dependency: transitive
     description:

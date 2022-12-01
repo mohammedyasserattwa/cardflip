@@ -84,11 +84,7 @@ class _LoginState extends State<Login> {
                                   color: Color.fromARGB(255, 184, 145, 229),
                                   validator: (val) {
                                     if (val == null || val.isEmpty) {
-<<<<<<< Updated upstream
                                       return "Please enter a valid password.";
-=======
-                                      return "Please enter a password.";
->>>>>>> Stashed changes
                                     } else {
                                       return null;
                                     }
