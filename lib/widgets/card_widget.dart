@@ -47,6 +47,7 @@ class CardWidget extends StatefulWidget {
 class _CardWidgetState extends State<CardWidget> {
   final double _cardWidth = 343;
   final double _cardHeight = 511.97;
+  IconData star = Icons.star_border;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -75,17 +76,30 @@ class _CardWidgetState extends State<CardWidget> {
                           Padding(
                             padding:
                                 const EdgeInsets.only(right: 30.0, top: 60),
-                            child: Container(
-                                width: 36,
-                                height: 36,
-                                decoration: const BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage(
-                                        "Images/icons/star-fill.png"),
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                                child: Text("")),
+                            child: GestureDetector(
+                                onTap: () {
+                                  if (star == Icons.star_border) {
+                                    setState(() {
+                                      star = Icons.star;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      star = Icons.star_border;
+                                    });
+                                  }
+                                },
+                                child: Icon(star, size: 36)),
+                            // child: Container(
+                            //     width: 36,
+                            //     height: 36,
+                            //     decoration: const BoxDecoration(
+                            //       image: DecorationImage(
+                            //         image: AssetImage(
+                            //             "Images/icons/star-fill.png"),
+                            //         fit: BoxFit.fill,
+                            //       ),
+                            //     ),
+                            //     child: Text("")),
                           ),
                         ],
                       ),
