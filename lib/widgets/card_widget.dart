@@ -1,44 +1,47 @@
 import 'package:flip_card/flip_card.dart';
 import "package:flutter/material.dart";
+import 'package:cardflip/data/card.dart' as CardHandler;
 
 class CardWidget extends StatefulWidget {
-  const CardWidget({
+  CardWidget({
     Key? key,
     required this.image,
-    required this.term,
-    required this.definition,
+    required this.card,
     this.begin = 0.0,
     this.end = 0.0,
     this.empty = false,
     this.celebration = false,
+    required this.updateParent,
   }) : super(key: key);
-  const CardWidget.emptyCard({
+  CardWidget.emptyCard({
     super.key,
     required this.image,
-    this.term = "",
-    this.definition = "",
+    this.card,
     this.begin = 0.0,
     this.end = 0.0,
     this.empty = true,
     this.celebration = false,
+    required this.updateParent,
   });
-  const CardWidget.celebrationCard({
+  CardWidget.celebrationCard({
     super.key,
     required this.image,
-    this.term = "",
-    this.definition = "",
+    this.card,
     this.begin = 0.0,
     this.end = 0.0,
     this.empty = false,
     this.celebration = true,
+    required this.updateParent,
   });
   final String image;
-  final String term;
-  final String definition;
+  // final String term;
+  // final String definition;
+  CardHandler.Card? card = CardHandler.Card(term: "", definition: "");
   final double begin;
   final double end;
   final bool empty;
   final bool celebration;
+  final Function updateParent;
 
   @override
   State<CardWidget> createState() => _CardWidgetState();
@@ -48,6 +51,13 @@ class _CardWidgetState extends State<CardWidget> {
   final double _cardWidth = 343;
   final double _cardHeight = 511.97;
   IconData star = Icons.star_border;
+  @override
+  void initState() {
+    if (widget.card != null)
+      star = (widget.card!.isFavourite) ? Icons.star : Icons.star_border;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -81,12 +91,15 @@ class _CardWidgetState extends State<CardWidget> {
                                   if (star == Icons.star_border) {
                                     setState(() {
                                       star = Icons.star;
+                                      widget.card!.toggleFavourite();
                                     });
                                   } else {
                                     setState(() {
                                       star = Icons.star_border;
+                                      widget.card!.toggleFavourite();
                                     });
                                   }
+                                  widget.updateParent();
                                 },
                                 child: Icon(star, size: 36)),
                             // child: Container(
@@ -105,7 +118,7 @@ class _CardWidgetState extends State<CardWidget> {
                       ),
                       Center(
                           child: Text(
-                        widget.term,
+                        widget.card!.getTerm,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontFamily: "PolySans_Median",
@@ -138,7 +151,7 @@ class _CardWidgetState extends State<CardWidget> {
                   ),
                   child: Center(
                       child: Text(
-                    widget.definition,
+                    widget.card!.getDefinitions,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontFamily: "PolySans_Median",

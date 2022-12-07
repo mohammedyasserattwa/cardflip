@@ -4,6 +4,8 @@ import "package:flutter/material.dart";
 import "../models/flashcardModel.dart";
 import '../widgets/navibar.dart';
 import "../widgets/card_widget.dart";
+import 'package:cardflip/data/card.dart' as CardHandler;
+import 'package:flutter_svg/flutter_svg.dart';
 
 class Flashcard extends StatefulWidget {
   Flashcard({key});
@@ -27,28 +29,41 @@ class _FlashcardState extends State<Flashcard>
 
   void _pop() async {
     setState(() {
-      _beginAnimation = MediaQuery.of(context).size.width / 2;
-      _endAnimation = MediaQuery.of(context).size.width * 2;
+      if (_currentCard > 0) {
+        _beginAnimation = MediaQuery.of(context).size.width / 2;
+        _endAnimation = MediaQuery.of(context).size.width * 2;
+        // _currentCard--;
+      }
     });
-    if (_currentCard > 0) {
-      _currentCard =
-          await Future.delayed(const Duration(milliseconds: 250), () {
-        return _currentCard - 1;
-      });
-    }
+    // if (_currentCard > 0) {
+    //   _currentCard =
+    //       await Future.delayed(const Duration(milliseconds: 250), () {
+    //     return _currentCard - 1;
+    //   });
+    // }
     if (_currentCard == 0) {
       print("5alas");
     }
   }
 
   void _push() {
-    if (_currentCard < model.queue) {
-      _currentCard++;
-    }
     setState(() {
-      _endAnimation = 0;
-      _beginAnimation = MediaQuery.of(context).size.width * 2;
+      if (_currentCard < model.queue) {
+        _endAnimation = 0;
+        _beginAnimation = MediaQuery.of(context).size.width * 2;
+        _currentCard++;
+      }
     });
+  }
+
+  String countFavourites() {
+    int counter = 0;
+    for (int i = 0; i < model.queue; i++) {
+      if (model.getCards[i].isFavourite) {
+        counter++;
+      }
+    }
+    return '$counter';
   }
 
   @override
@@ -88,26 +103,56 @@ class _FlashcardState extends State<Flashcard>
                       ),
                     ),
                     Container(
-                      child: Text(""),
+                      // child: Text(countFavourites()),
+                      child: PopupMenuButton(
+                        color: Color(0xffA0F2FA),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(8.0),
+                            bottomRight: Radius.circular(8.0),
+                            topLeft: Radius.circular(8.0),
+                            topRight: Radius.circular(8.0),
+                          ),
+                        ),
+                        icon:
+                            SvgPicture.asset("Images/icons/svg/more-fill.svg"),
+                        onSelected: (value) {
+                          String result = value.toString();
+                          String operation = result;
+                          String color = "";
+                          if (result.indexOf(" ") != -1) {
+                            operation = result.substring(result.indexOf(" "));
+                            color = result.substring(
+                                result.indexOf(" ") + 1, result.length);
+                          }
+                        },
+                        itemBuilder: (BuildContext context) => const [
+                          PopupMenuItem(child: Text("View Favourites Only"))
+                        ],
+                      ),
                       width: 50,
                       height: 50,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage("Images/icons/more-three.png")),
-                      ),
+                      // decoration: const BoxDecoration(
+                      //   image: DecorationImage(
+                      //       image: AssetImage("Images/icons/more-three.png")),
+                      // ),
                     )
                   ]),
             ),
             GestureDetector(
               child: Stack(
                 children: [
-                  CardWidget.emptyCard(image: model.getImages[0]),
+                  CardWidget.emptyCard(
+                    image: model.getImages[0],
+                    updateParent: () {},
+                  ),
                   Column(
                     children: [
                       const SizedBox(
                         height: 30,
                       ),
-                      CardWidget.emptyCard(image: model.getImages[1]),
+                      CardWidget.emptyCard(
+                          updateParent: () {}, image: model.getImages[1]),
                     ],
                   ),
                   Column(
@@ -115,7 +160,8 @@ class _FlashcardState extends State<Flashcard>
                       const SizedBox(
                         height: 60,
                       ),
-                      CardWidget.celebrationCard(image: model.getImages[2]),
+                      CardWidget.celebrationCard(
+                          updateParent: () {}, image: model.getImages[2]),
                     ],
                   ),
                   for (int i = 0; i < _currentCard; i++)
@@ -126,15 +172,25 @@ class _FlashcardState extends State<Flashcard>
                         ),
                         (i == _currentCard - 1)
                             ? CardWidget(
+                                updateParent: () {
+                                  setState(() {
+                                    _beginAnimation = 0;
+                                    _endAnimation = 0;
+                                  });
+                                },
                                 begin: _beginAnimation,
                                 end: _endAnimation,
-                                term: model.getTerms[i],
-                                definition: model.getDefinitions[i],
+                                card: model.getCards[i],
                                 image: model.getImages[2],
                               )
                             : CardWidget(
-                                term: model.getTerms[i],
-                                definition: model.getDefinitions[i],
+                                updateParent: () {
+                                  setState(() {
+                                    _beginAnimation = 0;
+                                    _endAnimation = 0;
+                                  });
+                                },
+                                card: model.getCards[i],
                                 image: model.getImages[2],
                               )
                       ],
@@ -159,8 +215,17 @@ class _FlashcardState extends State<Flashcard>
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         _pop();
+                        // if (_currentCard > 0) {
+                        //   _currentCard--;
+                        // }
+                        if (_currentCard > 0) {
+                          _currentCard = await Future.delayed(
+                              const Duration(milliseconds: 250), () {
+                            return _currentCard - 1;
+                          });
+                        }
                       },
                       child: const Icon(
                         Icons.arrow_forward_ios,

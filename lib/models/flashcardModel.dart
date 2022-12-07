@@ -1,6 +1,7 @@
 import 'dart:collection';
 
-import 'package:flutter/material.dart';
+import 'package:cardflip/data/card.dart';
+
 
 class FlashcardModel {
   final List<String> _terms = [
@@ -24,13 +25,21 @@ class FlashcardModel {
     "Images/cards/flashcards/1.png",
     "Images/cards/flashcards/0.png",
   ];
+  final List<Card> cards = [
+    Card(term: "Math", definition: "Math Definition"),
+    Card(term: "Physics", definition: "Physics Definition"),
+    Card(term: "Biology", definition: "Biology Definition"),
+    Card(term: "Chemistry", definition: "Chemistry Definition"),
+    Card(term: "Computer Science", definition: "Computer Science Definition"),
+    Card(term: "Machine Learning", definition: "Machine Learning Definition"),
+  ];
   int queue = 0;
   FlashcardModel() {
-    queue = 1;
+    queue = cards.length;
   }
 
   List<String> get getTerms => _terms;
   List<String> get getDefinitions => _definitions;
-
+  List<Card> get getCards => cards;
   List<String> get getImages => _cardBackgrounds;
 }
