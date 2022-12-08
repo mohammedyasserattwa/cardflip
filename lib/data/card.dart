@@ -7,6 +7,7 @@ class Card {
   toggleFavourite() {
     isFavourite = !isFavourite;
   }
+  
   get getTerm => term;
   get getDefinitions => definition;
 

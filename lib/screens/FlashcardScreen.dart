@@ -17,13 +17,19 @@ class Flashcard extends StatefulWidget {
 class _FlashcardState extends State<Flashcard>
     with SingleTickerProviderStateMixin {
   final model = FlashcardModel();
+
   // dynamic size = 0;
   int _currentCard = 0;
   double _beginAnimation = 0;
   double _endAnimation = 0;
+  bool _viewFav = false;
+  bool _viewNew = false;
+  int _progress = 0;
+  late List<CardHandler.Card> currentList;
 
   @override
   void initState() {
+    currentList = model.getCards;
     _currentCard = model.queue;
   }
 
@@ -41,14 +47,14 @@ class _FlashcardState extends State<Flashcard>
     //     return _currentCard - 1;
     //   });
     // }
-    if (_currentCard == 0) {
-      print("5alas");
-    }
+    // if (_currentCard == 0) {
+    //   print("5alas");
+    // }
   }
 
   void _push() {
     setState(() {
-      if (_currentCard < model.queue) {
+      if (_currentCard < currentList.length) {
         _endAnimation = 0;
         _beginAnimation = MediaQuery.of(context).size.width * 2;
         _currentCard++;
@@ -58,8 +64,8 @@ class _FlashcardState extends State<Flashcard>
 
   String countFavourites() {
     int counter = 0;
-    for (int i = 0; i < model.queue; i++) {
-      if (model.getCards[i].isFavourite) {
+    for (int i = 0; i < currentList.length; i++) {
+      if (currentList[i].isFavourite) {
         counter++;
       }
     }
@@ -78,69 +84,112 @@ class _FlashcardState extends State<Flashcard>
             fit: BoxFit.fill,
           ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 20.0, right: 20, top: 30, bottom: 10),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        child: Text(""),
-                        width: 50,
-                        height: 50,
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                              image:
-                                  AssetImage("Images/icons/close_button.png")),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      // child: Text(countFavourites()),
-                      child: PopupMenuButton(
-                        color: Color(0xffA0F2FA),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(8.0),
-                            bottomRight: Radius.circular(8.0),
-                            topLeft: Radius.circular(8.0),
-                            topRight: Radius.circular(8.0),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 25),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Container(
+                          child: Text(""),
+                          width: 50,
+                          height: 50,
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage(
+                                    "Images/icons/close_button.png")),
                           ),
                         ),
-                        icon:
-                            SvgPicture.asset("Images/icons/svg/more-fill.svg"),
-                        onSelected: (value) {
-                          String result = value.toString();
-                          String operation = result;
-                          String color = "";
-                          if (result.indexOf(" ") != -1) {
-                            operation = result.substring(result.indexOf(" "));
-                            color = result.substring(
-                                result.indexOf(" ") + 1, result.length);
-                          }
-                        },
-                        itemBuilder: (BuildContext context) => const [
-                          PopupMenuItem(child: Text("View Favourites Only"))
-                        ],
                       ),
-                      width: 50,
-                      height: 50,
-                      // decoration: const BoxDecoration(
-                      //   image: DecorationImage(
-                      //       image: AssetImage("Images/icons/more-three.png")),
-                      // ),
-                    )
-                  ]),
-            ),
-            GestureDetector(
-              child: Stack(
+                      Container(
+                        // child: Text(countFavourites()),
+                        child: PopupMenuButton(
+                          color: Color(0xffA0F2FA),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(8.0),
+                            ),
+                          ),
+                          icon: SvgPicture.asset(
+                              "Images/icons/svg/more-fill.svg"),
+                          onSelected: (value) {
+                            String result = value.toString();
+                            String operation = result;
+                            String color = "";
+                            if (result.indexOf(" ") != -1) {
+                              operation = result.substring(result.indexOf(" "));
+                              color = result.substring(
+                                  result.indexOf(" ") + 1, result.length);
+                            }
+                          },
+                          itemBuilder: (BuildContext context) => [
+                            PopupMenuItem(
+                                child: Text("View Favourites Only"),
+                                enabled: !_viewFav,
+                                onTap: () {
+                                  if (int.parse(countFavourites()) > 0) {
+                                    // print(model.favourites[0].isFavourite);
+                                    setState(() {
+                                      currentList = model.favourites;
+                                      _currentCard = currentList.length;
+                                      _viewFav = true;
+                                    });
+                                  }
+                                }),
+                            PopupMenuItem(
+                              child: Text("View Unseen Flashcards"),
+                              onTap: () {
+                                setState(() {
+                                  _currentCard = _currentCard - (_progress);
+                                });
+                              },
+                            ),
+                            PopupMenuItem(
+                                child: Text("View All Flashcards"),
+                                enabled: _viewFav,
+                                onTap: () {
+                                  setState(() {
+                                    currentList = model.getCards;
+                                    _currentCard = currentList.length;
+                                    _viewFav = false;
+                                  });
+                                }),
+                            PopupMenuItem(
+                              child: Text("Change Color"),
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        scrollable: true,
+                                        title: Text('Test'),
+                                        content: Container(
+                                          child: Text("Change Color"),
+                                        ),
+                                      );
+                                    });
+                              },
+                            )
+                          ],
+                        ),
+                        width: 50,
+                        height: 50,
+                        // decoration: const BoxDecoration(
+                        //   image: DecorationImage(
+                        //       image: AssetImage("Images/icons/more-three.png")),
+                        // ),
+                      )
+                    ]),
+              ),
+              Stack(
                 children: [
                   CardWidget.emptyCard(
                     image: model.getImages[0],
@@ -180,7 +229,10 @@ class _FlashcardState extends State<Flashcard>
                                 },
                                 begin: _beginAnimation,
                                 end: _endAnimation,
-                                card: model.getCards[i],
+                                star: (currentList[i].isFavourite
+                                    ? Icons.star
+                                    : Icons.star_border),
+                                card: currentList[i],
                                 image: model.getImages[2],
                               )
                             : CardWidget(
@@ -190,52 +242,56 @@ class _FlashcardState extends State<Flashcard>
                                     _endAnimation = 0;
                                   });
                                 },
-                                card: model.getCards[i],
+                                card: currentList[i],
+                                star: (currentList[i].isFavourite
+                                    ? Icons.star
+                                    : Icons.star_border),
                                 image: model.getImages[2],
                               )
                       ],
                     )
                 ],
               ),
-            ),
-            const SizedBox(height: 30),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 75.0),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        _push();
-                      },
-                      child: const Icon(
-                        Icons.arrow_back_ios_new,
-                        size: 50,
-                        color: Color(0xff1B4F55),
+              const SizedBox(height: 30),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 75.0),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          _push();
+                        },
+                        child: const Icon(
+                          Icons.arrow_back_ios_new,
+                          size: 50,
+                          color: Color(0xff1B4F55),
+                        ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        _pop();
-                        // if (_currentCard > 0) {
-                        //   _currentCard--;
-                        // }
-                        if (_currentCard > 0) {
-                          _currentCard = await Future.delayed(
-                              const Duration(milliseconds: 250), () {
-                            return _currentCard - 1;
-                          });
-                        }
-                      },
-                      child: const Icon(
-                        Icons.arrow_forward_ios,
-                        size: 50,
-                        color: Color(0xff1B4F55),
+                      GestureDetector(
+                        onTap: () async {
+                          _pop();
+                          // if (_currentCard > 0) {
+                          //   _currentCard--;
+                          // }
+                          if (_currentCard > 0) {
+                            _currentCard = await Future.delayed(
+                                const Duration(milliseconds: 250), () {
+                              _progress++;
+                              return _currentCard - 1;
+                            });
+                          }
+                        },
+                        child: const Icon(
+                          Icons.arrow_forward_ios,
+                          size: 50,
+                          color: Color(0xff1B4F55),
+                        ),
                       ),
-                    ),
-                  ]),
-            ),
-          ],
+                    ]),
+              ),
+            ],
+          ),
         ),
       ),
       // bottomNavigationBar: NavBar(),

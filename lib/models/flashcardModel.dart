@@ -2,7 +2,6 @@ import 'dart:collection';
 
 import 'package:cardflip/data/card.dart';
 
-
 class FlashcardModel {
   final List<String> _terms = [
     "Math",
@@ -37,6 +36,7 @@ class FlashcardModel {
   FlashcardModel() {
     queue = cards.length;
   }
+  List<Card> get favourites => cards.where((card) => card.isFavourite).toList();
 
   List<String> get getTerms => _terms;
   List<String> get getDefinitions => _definitions;

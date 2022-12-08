@@ -12,6 +12,7 @@ class CardWidget extends StatefulWidget {
     this.empty = false,
     this.celebration = false,
     required this.updateParent,
+    this.star = Icons.star_border,
   }) : super(key: key);
   CardWidget.emptyCard({
     super.key,
@@ -22,6 +23,7 @@ class CardWidget extends StatefulWidget {
     this.empty = true,
     this.celebration = false,
     required this.updateParent,
+    this.star = Icons.star_border,
   });
   CardWidget.celebrationCard({
     super.key,
@@ -32,6 +34,7 @@ class CardWidget extends StatefulWidget {
     this.empty = false,
     this.celebration = true,
     required this.updateParent,
+    this.star = Icons.star_border,
   });
   final String image;
   // final String term;
@@ -42,6 +45,7 @@ class CardWidget extends StatefulWidget {
   final bool empty;
   final bool celebration;
   final Function updateParent;
+  final IconData star;
 
   @override
   State<CardWidget> createState() => _CardWidgetState();
@@ -50,17 +54,30 @@ class CardWidget extends StatefulWidget {
 class _CardWidgetState extends State<CardWidget> {
   final double _cardWidth = 343;
   final double _cardHeight = 511.97;
-  IconData star = Icons.star_border;
+  late IconData star = widget.star;
   @override
   void initState() {
-    if (widget.card != null)
-      star = (widget.card!.isFavourite) ? Icons.star : Icons.star_border;
+    if (widget.card != null) {
+      star = widget.star;
+    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    // print(widget.card!.isFavourite);
     final size = MediaQuery.of(context).size;
+    if (widget.card != null) {
+      if (widget.card!.isFavourite && star == Icons.star_border) {
+        setState(() {
+          star = Icons.star;
+        });
+      } else if (!widget.card!.isFavourite && star == Icons.star) {
+        setState(() {
+          star = Icons.star_border;
+        });
+      }
+    }
     if (!widget.empty && !widget.celebration) {
       return TweenAnimationBuilder(
           tween: Tween<double>(begin: widget.begin, end: widget.end),
@@ -70,8 +87,14 @@ class _CardWidgetState extends State<CardWidget> {
               transform: Matrix4.identity()..translate(pos),
               child: FlipCard(
                 front: Container(
-                  width: _cardWidth,
-                  height: _cardHeight,
+                  width: (MediaQuery.of(context).size.height > 652)
+                      ? _cardWidth
+                      : _cardWidth - 50,
+                  height: (MediaQuery.of(context).size.height > 751)
+                      ? _cardHeight
+                      : (MediaQuery.of(context).size.height > 652)
+                          ? _cardHeight - 100
+                          : _cardHeight - 200,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage(widget.image), fit: BoxFit.fill),
@@ -83,6 +106,8 @@ class _CardWidgetState extends State<CardWidget> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
+                          // Text(widget.card!.isFavourite.toString()),
+                          // Text((star == Icons.star) ? "Star" : "Border"),
                           Padding(
                             padding:
                                 const EdgeInsets.only(right: 30.0, top: 60),
@@ -143,8 +168,14 @@ class _CardWidgetState extends State<CardWidget> {
                   ),
                 ),
                 back: Container(
-                  width: _cardWidth,
-                  height: _cardHeight,
+                  width: (MediaQuery.of(context).size.height > 652)
+                      ? _cardWidth
+                      : _cardWidth - 50,
+                  height: (MediaQuery.of(context).size.height > 751)
+                      ? _cardHeight
+                      : (MediaQuery.of(context).size.height > 652)
+                          ? _cardHeight - 100
+                          : _cardHeight - 200,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage(widget.image), fit: BoxFit.fill),
@@ -167,8 +198,14 @@ class _CardWidgetState extends State<CardWidget> {
     }
     if (widget.empty) {
       return Container(
-        width: _cardWidth,
-        height: _cardHeight,
+        width: (MediaQuery.of(context).size.height > 652)
+            ? _cardWidth
+            : _cardWidth - 50,
+        height: (MediaQuery.of(context).size.height > 751)
+            ? _cardHeight
+            : (MediaQuery.of(context).size.height > 652)
+                ? _cardHeight - 100
+                : _cardHeight - 200,
         decoration: BoxDecoration(
           image: DecorationImage(
               image: AssetImage(widget.image), fit: BoxFit.fill),
@@ -177,8 +214,14 @@ class _CardWidgetState extends State<CardWidget> {
       );
     }
     return Container(
-      width: _cardWidth,
-      height: _cardHeight,
+      width: (MediaQuery.of(context).size.height > 652)
+          ? _cardWidth
+          : _cardWidth - 50,
+      height: (MediaQuery.of(context).size.height > 751)
+          ? _cardHeight
+          : (MediaQuery.of(context).size.height > 652)
+              ? _cardHeight - 100
+              : _cardHeight - 200,
       decoration: BoxDecoration(
         image:
             DecorationImage(image: AssetImage(widget.image), fit: BoxFit.fill),
