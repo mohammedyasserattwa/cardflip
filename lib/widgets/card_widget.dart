@@ -178,7 +178,7 @@ class _CardWidgetState extends State<CardWidget> {
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontFamily: "PolySans_Median",
-                      fontSize: 48,
+                      fontSize: 25,
                       fontWeight: FontWeight.w600,
                       color: Color(0xff1B4F55),
                     ),

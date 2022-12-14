@@ -205,7 +205,7 @@ class _ProfileState extends State<Profile> {
                       scrollDirection: Axis.horizontal,
                       children: <Widget>[
                         Deck(
-                            cardgenerator: cardgenerator,
+                            // cardgenerator: cardgenerator,
                             width: 139,
                             height: 116.67,
                             min: 3,
@@ -216,7 +216,7 @@ class _ProfileState extends State<Profile> {
                                 "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
                         SizedBox(width: 13),
                         Deck(
-                            cardgenerator: cardgenerator,
+                            // cardgenerator: cardgenerator,
                             width: 139,
                             height: 116.67,
                             min: 3,
@@ -227,7 +227,7 @@ class _ProfileState extends State<Profile> {
                                 "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
                         SizedBox(width: 13),
                         Deck(
-                            cardgenerator: cardgenerator,
+                            // cardgenerator: cardgenerator,
                             min: 3,
                             onTap: () {
                               GoRouter.of(context).go('/Home/Profile/Deck');
@@ -258,7 +258,7 @@ class _ProfileState extends State<Profile> {
                       scrollDirection: Axis.horizontal,
                       children: <Widget>[
                         Deck(
-                            cardgenerator: cardgenerator,
+                            // cardgenerator: cardgenerator,
                             min: 3,
                             onTap: () {
                               GoRouter.of(context).go('/Home/Profile/Deck');
@@ -269,7 +269,7 @@ class _ProfileState extends State<Profile> {
                                 "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
                         SizedBox(width: 13),
                         Deck(
-                            cardgenerator: cardgenerator,
+                            // cardgenerator: cardgenerator,
                             min: 3,
                             onTap: () {
                               GoRouter.of(context).go('/Home/Profile/Deck');
@@ -280,7 +280,7 @@ class _ProfileState extends State<Profile> {
                                 "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
                         SizedBox(width: 13),
                         Deck(
-                            cardgenerator: cardgenerator,
+                            // cardgenerator: cardgenerator,
                             min: 3,
                             onTap: () {
                               GoRouter.of(context).go('/Home/Profile/Deck');
@@ -311,7 +311,7 @@ class _ProfileState extends State<Profile> {
                       scrollDirection: Axis.horizontal,
                       children: <Widget>[
                         Deck(
-                            cardgenerator: cardgenerator,
+                            // cardgenerator: cardgenerator,
                             min: 3,
                             onTap: () {
                               GoRouter.of(context).go('/Home/Profile/Deck');
@@ -322,7 +322,7 @@ class _ProfileState extends State<Profile> {
                                 "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
                         SizedBox(width: 13),
                         Deck(
-                            cardgenerator: cardgenerator,
+                            // cardgenecrator: cardgenerator,
                             min: 3,
                             onTap: () {
                               GoRouter.of(context).go('/Home/Profile/Deck');
@@ -333,7 +333,7 @@ class _ProfileState extends State<Profile> {
                                 "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
                         SizedBox(width: 13),
                         Deck(
-                            cardgenerator: cardgenerator,
+                            // cardgenerator: cardgenerator,
                             min: 3,
                             onTap: () {
                               GoRouter.of(context).go('/Home/Profile/Deck');

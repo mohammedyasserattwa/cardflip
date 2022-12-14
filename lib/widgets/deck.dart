@@ -1,27 +1,36 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 import "package:flutter/material.dart";
+import '../data/Repositories/user_decks.dart';
 import '../data/card_generator.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
-class Deck extends StatelessWidget {
-  const Deck({
+import '../models/deckModel.dart';
+import '../data/deck.dart' as DeckUI;
+
+class Deck extends ConsumerWidget {
+  Deck({
     Key? key,
-    required this.cardgenerator,
     required this.height,
     required this.width,
     required this.path,
     required this.min,
     required this.onTap,
+    this.id = "1",
   }) : super(key: key);
 
   final Function() onTap;
-  final CardGenerator cardgenerator;
+  // final CardGenerator cardgenerator;
   final double height;
   final double width;
   final String path;
   final int min;
+  final String id;
+  final DeckModel model = DeckModel();
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ratings = ref.watch(RatingProvider);
+    DeckUI.Deck deck = model.deckByID(id);
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -40,9 +49,10 @@ class Deck extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: AssetImage("Images/icons/star.png"),
+                              image: AssetImage(
+                                  "Images/icons/${ratings.contains(id) ? "star-fill" : "star-line"}.png"),
                               fit: BoxFit.cover),
                         ),
                         width: 15,
@@ -51,7 +61,7 @@ class Deck extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 5),
                         child: Text(
-                          "${cardgenerator.rating}",
+                          deck.deckRating,
                           style: const TextStyle(
                             fontFamily: "PolySans_Neutral.ttf",
                             fontSize: 14,
@@ -79,7 +89,7 @@ class Deck extends StatelessWidget {
               const SizedBox(height: 15),
               Flexible(
                 child: AutoSizeText(
-                  cardgenerator.deck,
+                  deck.deckName,
                   maxLines: min,
                   overflow: TextOverflow.ellipsis,
                   minFontSize: 12,

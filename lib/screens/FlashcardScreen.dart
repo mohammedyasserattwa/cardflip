@@ -10,7 +10,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import "package:flutter_riverpod/flutter_riverpod.dart";
 
 class Flashcard extends ConsumerStatefulWidget {
-  Flashcard({key});
+  String id;
+  Flashcard({key, this.id = "1"});
 
   @override
   ConsumerState<Flashcard> createState() => _FlashcardState();
@@ -18,18 +19,19 @@ class Flashcard extends ConsumerStatefulWidget {
 
 class _FlashcardState extends ConsumerState<Flashcard>
     with SingleTickerProviderStateMixin {
-  final model = FlashcardModel();
+  late FlashcardModel model;
   // dynamic size = 0;
   int _currentCard = 0;
   double _beginAnimation = 0;
   double _endAnimation = 0;
   bool _viewFav = false;
-  bool _viewNew = false;
   int _progress = 0;
   late List<CardHandler.Card> currentList;
 
   @override
   void initState() {
+    super.initState();
+    model = FlashcardModel(id: widget.id);
     // model.pushForward(0);
     // print(widget.id);
     currentList = model.getCards;
@@ -122,51 +124,54 @@ class _FlashcardState extends ConsumerState<Flashcard>
                           },
                           itemBuilder: (BuildContext context) => [
                             PopupMenuItem(
-                                child: Text("View Favourites Only"),
-                                enabled: !_viewFav,
-                                onTap: () {
-                                  if (int.parse(countFavourites()) > 0) {
-                                    // print(model.favourites[0].isFavourite);
-                                    setState(() {
-                                      currentList = model.favourites;
-                                      _currentCard = currentList.length;
-                                      _viewFav = true;
-                                    });
-                                  }
-                                }),
+                              enabled: !_viewFav,
+                              onTap: () {
+                                if (int.parse(countFavourites()) > 0) {
+                                  // print(model.favourites[0].isFavourite);
+                                  setState(() {
+                                    currentList = model.favourites;
+                                    _currentCard = currentList.length;
+                                    _viewFav = true;
+                                  });
+                                }
+                              },
+                              child: const Text("View Favourites Only"),
+                            ),
                             PopupMenuItem(
-                              child: Text("View Unseen Flashcards"),
                               onTap: () {
                                 setState(() {
                                   _currentCard = _currentCard - (_progress);
                                 });
                               },
+                              child: const Text("View Unseen Flashcards"),
                             ),
                             PopupMenuItem(
-                                child: Text("View All Flashcards"),
-                                enabled: _viewFav,
-                                onTap: () {
-                                  setState(() {
-                                    currentList = model.getCards;
-                                    _currentCard = currentList.length;
-                                    _viewFav = false;
-                                  });
-                                }),
+                              enabled: _viewFav,
+                              onTap: () {
+                                setState(() {
+                                  currentList = model.getCards;
+                                  _currentCard = currentList.length;
+                                  _viewFav = false;
+                                });
+                              },
+                              child: Text("View All Flashcards"),
+                            ),
                             PopupMenuItem(
-                              child: Text("Change Color"),
                               onTap: () {
                                 showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        scrollable: true,
-                                        title: Text('Test'),
-                                        content: Container(
-                                          child: Text("Change Color"),
-                                        ),
-                                      );
-                                    });
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      scrollable: true,
+                                      title: Text('Test'),
+                                      content: Container(
+                                        child: Text("Change Color"),
+                                      ),
+                                    );
+                                  },
+                                );
                               },
+                              child: const Text("Change Color"),
                             )
                           ],
                         ),

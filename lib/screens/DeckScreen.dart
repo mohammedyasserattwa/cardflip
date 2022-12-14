@@ -2,6 +2,7 @@
 
 import 'dart:math';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cardflip/data/Repositories/user_decks.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -15,14 +16,14 @@ import "../widgets/term_card.dart" as TermCard;
 import 'package:cardflip/data/card.dart' as dataCard;
 
 class DeckScreen extends ConsumerStatefulWidget {
-  const DeckScreen({Key? key}) : super(key: key);
-
+  DeckScreen({Key? key, this.id = "1"}) : super(key: key);
+  String id;
   @override
   ConsumerState<DeckScreen> createState() => _MyDeckScreenState();
 }
 
 class _MyDeckScreenState extends ConsumerState<DeckScreen> {
-  FlashcardModel model = FlashcardModel();
+  late FlashcardModel model;
   final heartState = ["heart_outline", "heart_filled"];
   final CardGenerator _cardGen = CardGenerator();
   // AssetImage _starStatus = const AssetImage("Images/icons/star-line.png");
@@ -33,6 +34,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
   late int _randomBanner;
   @override
   void initState() {
+    model = FlashcardModel(id: widget.id);
     _cards = cardList(model.getCards);
     _randomBanner = Random().nextInt(5);
     super.initState();
@@ -40,30 +42,33 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
 
   Widget cardList(List<dataCard.Card> cardList) {
     return Expanded(
-      child: ListView(
-        children: [
-          for (int index = 0; index < cardList.length; index += 2)
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
-              child: Row(
-                mainAxisAlignment: (index + 1 < cardList.length)
-                    ? MainAxisAlignment.spaceBetween
-                    : MainAxisAlignment.start,
-                children: [
-                  for (int i = 0;
-                      i <= (index + 1 < cardList.length ? 1 : 0);
-                      i++)
-                    TermCard.Card(
-                      index: cardList[index + i].id,
-                      cardName: cardList[index + i].term,
-                      path:
-                          "Images/cards/librarypage/${_cardGen.getcolor}/${_cardGen.getshape}.png",
-                    ),
-                ],
-              ),
-            )
-        ],
+      child: NoGlowScroll(
+        child: ListView(
+          children: [
+            for (int index = 0; index < cardList.length; index += 2)
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+                child: Row(
+                  mainAxisAlignment: (index + 1 < cardList.length)
+                      ? MainAxisAlignment.spaceBetween
+                      : MainAxisAlignment.start,
+                  children: [
+                    for (int i = 0;
+                        i <= (index + 1 < cardList.length ? 1 : 0);
+                        i++)
+                      TermCard.Card(
+                        id: widget.id,
+                        index: cardList[index + i].id,
+                        cardName: cardList[index + i].term,
+                        path:
+                            "Images/cards/librarypage/${_cardGen.getcolor}/${_cardGen.getshape}.png",
+                      ),
+                  ],
+                ),
+              )
+          ],
+        ),
       ),
     );
   }
@@ -91,8 +96,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
             height: 410,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image:
-                    AssetImage("Images/banners/deckpage/$_randomBanner.png"),
+                image: AssetImage("Images/banners/deckpage/$_randomBanner.png"),
                 fit: BoxFit.fill,
               ),
             ),
@@ -155,8 +159,12 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                       ],
                     ),
                     const SizedBox(height: 25),
-                    Text(
+                    AutoSizeText(
                       model.deck.deckName,
+                      maxLines: 1,
+                      minFontSize: 12,
+                      overflow: TextOverflow.ellipsis,
+                      stepGranularity: 1,
                       style: TextStyle(
                         fontFamily: "PolySans_Median",
                         fontWeight: FontWeight.w500,
@@ -199,10 +207,12 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                             GestureDetector(
                                 onTap: () {
                                   if (!favourites.contains(model.deck.id)) {
+                                    model.deck.incrementRating();
                                     ref
                                         .read(FavouritesProvider.notifier)
                                         .state = favourites + [model.deck.id];
                                   } else {
+                                    model.deck.decrementRating();
                                     List<String> temp = ref
                                         .read(FavouritesProvider.notifier)
                                         .state;
@@ -299,14 +309,16 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                           GestureDetector(
                               onTap: () {
                                 if (!ratings.contains(model.deck.id)) {
+                                  model.deck.incrementRating();
                                   ref.read(RatingProvider.notifier).state =
                                       ratings + [model.deck.id];
                                 } else {
+                                  model.deck.decrementRating();
                                   List<String> temp =
                                       ref.read(RatingProvider.notifier).state;
                                   temp.remove(model.deck.id);
                                   ref.read(RatingProvider.notifier).state =
-                                      temp;
+                                      <String>[] + temp;
                                   setState(() {});
                                 }
                               },
@@ -326,7 +338,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                     width: 10,
                                   ),
                                   Text(
-                                    model.rating,
+                                    model.deck.deckRating,
                                     style: const TextStyle(
                                       fontFamily: "PolySans_Slim",
                                       fontWeight: FontWeight.w500,
@@ -349,7 +361,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
             children: [
               GestureDetector(
                 onTap: () {
-                  context.go('/Home/Deck/Flashcards');
+                  context.go('/Home/Deck/${widget.id}/Flashcards');
                 },
                 child: Container(
                   decoration: const BoxDecoration(

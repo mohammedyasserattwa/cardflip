@@ -2,6 +2,7 @@
 
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 import "package:flutter/material.dart";
+import '../models/deckModel.dart';
 import '../models/homeModel.dart';
 import '../data/dummy_data.dart';
 import '../data/card_generator.dart';
@@ -18,6 +19,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   HomeModel model = new HomeModel(new DummyData());
+  DeckModel deckModel = new DeckModel();
   CardGenerator cardgenerator = new CardGenerator();
   CardGenerator cardgenerator2 = new CardGenerator();
   CardGenerator cardgenerator3 = new CardGenerator();
@@ -27,6 +29,28 @@ class _HomeState extends State<Home> {
     const Icon(Icons.library_books_outlined),
     const Icon(Icons.person_outline)
   };
+  late Widget _recentDecks;
+  @override
+  void initState() {
+    _recentDecks = NoGlowScroll(
+        child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            separatorBuilder: (BuildContext context, int index) =>
+                const SizedBox(width: 10),
+            itemCount: deckModel.recentDecks.length,
+            itemBuilder: (context, index) => Deck(
+                onTap: () {
+                  context.go('/Home/Deck/${index + 1}');
+                },
+                id: (index + 1).toString(),
+                width: 139,
+                height: 116.67,
+                path:
+                    "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                min: 3)));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,15 +70,13 @@ class _HomeState extends State<Home> {
                 padding: const EdgeInsets.fromLTRB(26, 19, 0, 0),
                 child: Stack(
                   children: [
-                    Container(
-                      child: Text(
-                        "Explore",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontFamily: "PolySans_Median",
-                          color: Color(0xff514F55),
-                          fontSize: 36,
-                        ),
+                    Text(
+                      "Explore",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontFamily: "PolySans_Median",
+                        color: Color(0xff514F55),
+                        fontSize: 36,
                       ),
                     ),
                     Padding(
@@ -104,25 +126,7 @@ class _HomeState extends State<Home> {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(15, 10, 2, 0),
-                child: SizedBox(
-                  height: 116.67,
-                  child: NoGlowScroll(
-                      child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          separatorBuilder: (BuildContext context, int index) =>
-                              const SizedBox(width: 10),
-                          itemCount: 3,
-                          itemBuilder: (context, index) => Deck(
-                              onTap: () {
-                                context.go('/Home/Deck');
-                              },
-                              cardgenerator: cardgenerator,
-                              width: 139,
-                              height: 116.67,
-                              path:
-                                  "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
-                              min: 3))),
-                ),
+                child: SizedBox(height: 116.67, child: _recentDecks),
               ),
               const Padding(
                 padding: EdgeInsets.fromLTRB(30, 25, 0, 0),
@@ -147,19 +151,21 @@ class _HomeState extends State<Home> {
                             children: [
                               Deck(
                                   onTap: () {
-                                    GoRouter.of(context).go('/Home/Deck');
+                                    GoRouter.of(context).go(
+                                        '/Home/Deck/${deckModel.userPreferences[0].id}');
                                   },
-                                  cardgenerator: cardgenerator2,
                                   width: 125.04,
                                   height: 103.8,
+                                  id: deckModel.userPreferences[0].id,
                                   path:
                                       "Images/cards/homepage/2/2_1/${cardgenerator2.getcolor}/${cardgenerator2.getshape}.png",
                                   min: 2),
                               Deck(
                                   onTap: () {
-                                    GoRouter.of(context).go('/Home/Deck');
+                                    GoRouter.of(context).go(
+                                        '/Home/Deck/${deckModel.userPreferences[1].id}');
                                   },
-                                  cardgenerator: cardgenerator2,
+                                  id: deckModel.userPreferences[1].id,
                                   width: 125.04,
                                   height: 125.1,
                                   path:
@@ -175,9 +181,10 @@ class _HomeState extends State<Home> {
                             children: [
                               Deck(
                                   onTap: () {
-                                    GoRouter.of(context).go('/Home/Deck');
+                                    GoRouter.of(context).go(
+                                        '/Home/Deck/${deckModel.userPreferences[2].id}');
                                   },
-                                  cardgenerator: cardgenerator2,
+                                  id: deckModel.userPreferences[2].id,
                                   width: 128.54,
                                   height: 140.18,
                                   path:
@@ -185,9 +192,10 @@ class _HomeState extends State<Home> {
                                   min: 3),
                               Deck(
                                   onTap: () {
-                                    GoRouter.of(context).go('/Home/Deck');
+                                    GoRouter.of(context).go(
+                                        '/Home/Deck/${deckModel.userPreferences[3].id}');
                                   },
-                                  cardgenerator: cardgenerator2,
+                                  id: deckModel.userPreferences[3].id,
                                   width: 128.54,
                                   height: 84.29,
                                   path:
@@ -201,9 +209,10 @@ class _HomeState extends State<Home> {
                           children: [
                             Deck(
                                 onTap: () {
-                                  GoRouter.of(context).go('/Home/Deck');
+                                  GoRouter.of(context).go(
+                                      '/Home/Deck/${deckModel.userPreferences[4].id}');
                                 },
-                                cardgenerator: cardgenerator2,
+                                id: deckModel.userPreferences[4].id,
                                 width: 125.04,
                                 height: 103.8,
                                 path:
@@ -211,9 +220,10 @@ class _HomeState extends State<Home> {
                                 min: 2),
                             Deck(
                                 onTap: () {
-                                  GoRouter.of(context).go('/Home/Deck');
+                                  GoRouter.of(context).go(
+                                      '/Home/Deck/${deckModel.userPreferences[5].id}');
                                 },
-                                cardgenerator: cardgenerator2,
+                                id: deckModel.userPreferences[5].id,
                                 width: 120.67,
                                 height: 125.1,
                                 path:
@@ -248,7 +258,7 @@ class _HomeState extends State<Home> {
                               onTap: () {
                                 GoRouter.of(context).go('/Home/Category');
                               },
-                              cardgenerator: cardgenerator3,
+                              // cardgenerator: cardgenerator3,
                               width: 139,
                               height: 116.67,
                               path:

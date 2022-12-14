@@ -13,11 +13,13 @@ class Card extends ConsumerWidget {
   String cardName;
   String path;
   int index;
+  String id;
   Card(
       {super.key,
       required this.cardName,
       required this.path,
-      required this.index});
+      required this.index,
+      required this.id});
   //Images/cards/homepage/1_3/0-15/0-15.png
   // final CardGenerator _cardGen;
 
@@ -28,7 +30,7 @@ class Card extends ConsumerWidget {
   );
   final width = 163.13;
   final height = 158.67;
-  FlashcardModel model = new FlashcardModel();
+
   _responsive(BuildContext context) {
     if (MediaQuery.of(context).size.width < 299) {
       return {"height": 113.67, "width": 118.67, "fontSize": 16};
@@ -49,10 +51,8 @@ class Card extends ConsumerWidget {
     );
     return GestureDetector(
         onTap: () {
-          // model.pushForward(index);
-          // print(model.cards[model.cards.length - 1].term);
           ref.read(FlashcardStateProvider.notifier).state = index;
-          context.go('/Home/Deck/Flashcards');
+          context.go('/Home/Deck/$id/Flashcards');
         },
         child: Container(
             decoration: image,
