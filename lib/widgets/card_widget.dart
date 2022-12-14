@@ -1,6 +1,7 @@
 import 'package:flip_card/flip_card.dart';
 import "package:flutter/material.dart";
 import 'package:cardflip/data/card.dart' as CardHandler;
+import 'package:go_router/go_router.dart';
 
 class CardWidget extends StatefulWidget {
   CardWidget({
@@ -35,17 +36,19 @@ class CardWidget extends StatefulWidget {
     this.celebration = true,
     required this.updateParent,
     this.star = Icons.star_border,
+    required this.startOver,
   });
   final String image;
   // final String term;
   // final String definition;
-  CardHandler.Card? card = CardHandler.Card(term: "", definition: "");
+  CardHandler.Card? card = CardHandler.Card(term: "", definition: "", id: 0);
   final double begin;
   final double end;
   final bool empty;
   final bool celebration;
   final Function updateParent;
   final IconData star;
+  Function? startOver;
 
   @override
   State<CardWidget> createState() => _CardWidgetState();
@@ -127,17 +130,6 @@ class _CardWidgetState extends State<CardWidget> {
                                   widget.updateParent();
                                 },
                                 child: Icon(star, size: 36)),
-                            // child: Container(
-                            //     width: 36,
-                            //     height: 36,
-                            //     decoration: const BoxDecoration(
-                            //       image: DecorationImage(
-                            //         image: AssetImage(
-                            //             "Images/icons/star-fill.png"),
-                            //         fit: BoxFit.fill,
-                            //       ),
-                            //     ),
-                            //     child: Text("")),
                           ),
                         ],
                       ),
@@ -232,16 +224,16 @@ class _CardWidgetState extends State<CardWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
+            const Text(
               "You Did It!",
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: "PolySans_Median",
                 fontSize: 48,
                 fontWeight: FontWeight.w600,
                 color: Color(0xff1B4F55),
               ),
             ),
-            Text(
+            const Text(
               "You are now ready for a test!",
               style: TextStyle(
                   fontFamily: "PolySans_Slim",
@@ -250,7 +242,9 @@ class _CardWidgetState extends State<CardWidget> {
                   fontSize: 20),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                widget.startOver!();
+              },
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8.0),
                 child: Container(
@@ -258,9 +252,9 @@ class _CardWidgetState extends State<CardWidget> {
                     borderRadius: BorderRadius.all(Radius.circular(15)),
                     color: Color(0xff1B4F55),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: const Text(
+                  child: const Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: Text(
                       "Start Over",
                       style: TextStyle(color: Colors.white),
                       textAlign: TextAlign.center,
@@ -272,7 +266,9 @@ class _CardWidgetState extends State<CardWidget> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  context.go('/Home/Deck/Test');
+                },
                 child: Container(
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(15)),

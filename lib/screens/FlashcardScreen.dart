@@ -1,23 +1,24 @@
 import 'dart:async';
 
+import 'package:cardflip/data/Repositories/flashcard_state.dart';
 import "package:flutter/material.dart";
 import "../models/flashcardModel.dart";
 import '../widgets/navibar.dart';
 import "../widgets/card_widget.dart";
 import 'package:cardflip/data/card.dart' as CardHandler;
 import 'package:flutter_svg/flutter_svg.dart';
+import "package:flutter_riverpod/flutter_riverpod.dart";
 
-class Flashcard extends StatefulWidget {
+class Flashcard extends ConsumerStatefulWidget {
   Flashcard({key});
 
   @override
-  State<Flashcard> createState() => _FlashcardState();
+  ConsumerState<Flashcard> createState() => _FlashcardState();
 }
 
-class _FlashcardState extends State<Flashcard>
+class _FlashcardState extends ConsumerState<Flashcard>
     with SingleTickerProviderStateMixin {
   final model = FlashcardModel();
-
   // dynamic size = 0;
   int _currentCard = 0;
   double _beginAnimation = 0;
@@ -29,6 +30,8 @@ class _FlashcardState extends State<Flashcard>
 
   @override
   void initState() {
+    // model.pushForward(0);
+    // print(widget.id);
     currentList = model.getCards;
     _currentCard = model.queue;
   }
@@ -38,18 +41,8 @@ class _FlashcardState extends State<Flashcard>
       if (_currentCard > 0) {
         _beginAnimation = MediaQuery.of(context).size.width / 2;
         _endAnimation = MediaQuery.of(context).size.width * 2;
-        // _currentCard--;
       }
     });
-    // if (_currentCard > 0) {
-    //   _currentCard =
-    //       await Future.delayed(const Duration(milliseconds: 250), () {
-    //     return _currentCard - 1;
-    //   });
-    // }
-    // if (_currentCard == 0) {
-    //   print("5alas");
-    // }
   }
 
   void _push() {
@@ -74,6 +67,8 @@ class _FlashcardState extends State<Flashcard>
 
   @override
   Widget build(BuildContext context) {
+    final flashcardState = ref.watch(FlashcardStateProvider);
+    model.pushForward(flashcardState);
     return Scaffold(
       body: Container(
         height: double.infinity,
@@ -109,11 +104,12 @@ class _FlashcardState extends State<Flashcard>
                           ),
                         ),
                       ),
-                      Container(
-                        // child: Text(countFavourites()),
+                      SizedBox(
+                        width: 50,
+                        height: 50,
                         child: PopupMenuButton(
-                          color: Color(0xffA0F2FA),
-                          shape: RoundedRectangleBorder(
+                          color: const Color(0xffA0F2FA),
+                          shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(
                               Radius.circular(8.0),
                             ),
@@ -122,13 +118,7 @@ class _FlashcardState extends State<Flashcard>
                               "Images/icons/svg/more-fill.svg"),
                           onSelected: (value) {
                             String result = value.toString();
-                            String operation = result;
-                            String color = "";
-                            if (result.indexOf(" ") != -1) {
-                              operation = result.substring(result.indexOf(" "));
-                              color = result.substring(
-                                  result.indexOf(" ") + 1, result.length);
-                            }
+                            if (result.contains(" ")) {}
                           },
                           itemBuilder: (BuildContext context) => [
                             PopupMenuItem(
@@ -180,12 +170,6 @@ class _FlashcardState extends State<Flashcard>
                             )
                           ],
                         ),
-                        width: 50,
-                        height: 50,
-                        // decoration: const BoxDecoration(
-                        //   image: DecorationImage(
-                        //       image: AssetImage("Images/icons/more-three.png")),
-                        // ),
                       )
                     ]),
               ),
@@ -210,7 +194,17 @@ class _FlashcardState extends State<Flashcard>
                         height: 60,
                       ),
                       CardWidget.celebrationCard(
-                          updateParent: () {}, image: model.getImages[2]),
+                          startOver: () {
+                            setState(() {
+                              currentList = model.getCards;
+                              _currentCard = model.getCards.length;
+                              _beginAnimation =
+                                  MediaQuery.of(context).size.width * 2;
+                              _endAnimation = 0;
+                            });
+                          },
+                          updateParent: () {},
+                          image: model.getImages[2]),
                     ],
                   ),
                   for (int i = 0; i < _currentCard; i++)

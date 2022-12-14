@@ -1,356 +1,407 @@
 // ignore_for_file: unnecessary_string_interpolations
 
+import 'dart:math';
+
+import 'package:cardflip/data/Repositories/user_decks.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
-
+import "package:flutter_riverpod/flutter_riverpod.dart";
 import '../data/card_generator.dart';
+import '../models/flashcardModel.dart';
 import '../widgets/navibar.dart';
-import '../widgets/deck.dart';
-import 'FlashcardScreen.dart';
-import '../models/homeModel.dart';
-import '../data/dummy_data.dart';
+import "../widgets/term_card.dart" as TermCard;
+import 'package:cardflip/data/card.dart' as dataCard;
 
-class DeckScreen extends StatelessWidget {
-  final CardGenerator cardgenerator = CardGenerator();
-  HomeModel model = HomeModel(DummyData());
+class DeckScreen extends ConsumerStatefulWidget {
+  const DeckScreen({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<DeckScreen> createState() => _MyDeckScreenState();
+}
+
+class _MyDeckScreenState extends ConsumerState<DeckScreen> {
+  FlashcardModel model = FlashcardModel();
+  final heartState = ["heart_outline", "heart_filled"];
+  final CardGenerator _cardGen = CardGenerator();
+  // AssetImage _starStatus = const AssetImage("Images/icons/star-line.png");
+  late Widget _cards;
+  bool _isFiltered = false;
+  int counter = 0;
+
+  late int _randomBanner;
+  @override
+  void initState() {
+    _cards = cardList(model.getCards);
+    _randomBanner = Random().nextInt(5);
+    super.initState();
+  }
+
+  Widget cardList(List<dataCard.Card> cardList) {
+    return Expanded(
+      child: ListView(
+        children: [
+          for (int index = 0; index < cardList.length; index += 2)
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+              child: Row(
+                mainAxisAlignment: (index + 1 < cardList.length)
+                    ? MainAxisAlignment.spaceBetween
+                    : MainAxisAlignment.start,
+                children: [
+                  for (int i = 0;
+                      i <= (index + 1 < cardList.length ? 1 : 0);
+                      i++)
+                    TermCard.Card(
+                      index: cardList[index + i].id,
+                      cardName: cardList[index + i].term,
+                      path:
+                          "Images/cards/librarypage/${_cardGen.getcolor}/${_cardGen.getshape}.png",
+                    ),
+                ],
+              ),
+            )
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    final favourites = ref.watch(FavouritesProvider);
+    final ratings = ref.watch(RatingProvider);
+    final reports = ref.watch(ReportProvider);
+    bool _isReported = (reports.contains(model.deck.id));
+    dynamic size = MediaQuery.of(context).size;
     return Scaffold(
       bottomNavigationBar: NavBar(),
       body: Container(
-        height: 1000,
-        width: double.infinity,
+        height: size.height,
+        width: size.width,
         decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage("Images/backgrounds/deckpage.png"),
               fit: BoxFit.cover),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("Images/banners/deckpage/0.png"),
-                  fit: BoxFit.fill,
-                ),
+        child:
+            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+          Container(
+            height: 410,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image:
+                    AssetImage("Images/banners/deckpage/$_randomBanner.png"),
+                fit: BoxFit.fill,
               ),
-              width: 400,
-              height: 410,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SafeArea(
-                    child: Row(
+            ),
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 20.0),
-                          child: Container(
-                            alignment: Alignment.centerRight,
-                            child: GestureDetector(
+                        GestureDetector(
+                            onTap: () {
+                              context.pop();
+                            },
+                            child: Container(
+                                decoration: const BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          "Images/icons/arrow-left-s-line.png"),
+                                      fit: BoxFit.cover),
+                                ),
+                                width: 40,
+                                height: 40,
+                                child: const Text(""))),
+                        SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: PopupMenuButton(
+                            color: Colors.white,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(8.0),
+                              ),
+                            ),
+                            icon: SvgPicture.asset(
+                                "Images/icons/svg/more-fill.svg"),
+                            itemBuilder: (BuildContext context) => [
+                              PopupMenuItem(
+                                enabled: !_isReported,
                                 onTap: () {
-                                  context.pop();
+                                  if (!reports.contains(model.deck.id)) {
+                                    ref.read(ReportProvider.notifier).state =
+                                        reports + [model.deck.id];
+                                    _isReported = true;
+                                  }
+                                },
+                                child: Wrap(
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  children: const [
+                                    Icon(Icons.flag),
+                                    Text("Report"),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 25),
+                    Text(
+                      model.deck.deckName,
+                      style: TextStyle(
+                        fontFamily: "PolySans_Median",
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                        fontSize:
+                            (MediaQuery.of(context).size.width > 320) ? 48 : 40,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: Text(
+                        model.deck.deckDescription,
+                        style: const TextStyle(
+                          fontFamily: "PolySans_Neutral",
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xff514F55),
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "${model.queue} Flashcards",
+                          style: TextStyle(
+                            fontFamily: "PolySans_Median",
+                            fontWeight: FontWeight.w500,
+                            color: const Color(0xff514F55),
+                            fontSize: (MediaQuery.of(context).size.width > 322)
+                                ? 30
+                                : 22,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            GestureDetector(
+                                onTap: () {
+                                  if (!favourites.contains(model.deck.id)) {
+                                    ref
+                                        .read(FavouritesProvider.notifier)
+                                        .state = favourites + [model.deck.id];
+                                  } else {
+                                    List<String> temp = ref
+                                        .read(FavouritesProvider.notifier)
+                                        .state;
+                                    temp.remove(model.deck.id);
+                                    ref
+                                        .read(FavouritesProvider.notifier)
+                                        .state = temp;
+                                    setState(() {});
+                                  }
                                 },
                                 child: Container(
-                                    decoration: const BoxDecoration(
-                                      image: DecorationImage(
-                                          image: AssetImage(
-                                              "Images/icons/arrow-left-s-line.png"),
-                                          fit: BoxFit.cover),
+                                  width: 45,
+                                  height: 45,
+                                  decoration: const BoxDecoration(
+                                    color: Color(0x0f1a0404),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(12)),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: SvgPicture.asset(
+                                      "../Images/icons/svg/${heartState[favourites.contains(model.deck.id) ? 1 : 0]}.svg",
                                     ),
-                                    width: 40,
-                                    height: 40,
-                                    child: const Text(""))),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 20.0),
-                          child: Container(
-                            alignment: Alignment.centerRight,
-                            child: GestureDetector(
-                                onTap: () {},
+                                  ),
+                                )),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    if (_isFiltered == false) {
+                                      model.filter();
+                                      _cards = cardList(model.getCards);
+                                      _isFiltered = true;
+                                    }
+                                  });
+                                },
                                 child: Container(
-                                    decoration: const BoxDecoration(
-                                      image: DecorationImage(
-                                          image: AssetImage(
-                                              "Images/icons/more-fill.png"),
-                                          fit: BoxFit.cover),
+                                  width: 45,
+                                  height: 45,
+                                  decoration: const BoxDecoration(
+                                    color: Color(0xf1A0404),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(12)),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: SvgPicture.asset(
+                                      "../Images/icons/svg/filter.svg",
                                     ),
-                                    width: 40,
-                                    height: 40,
-                                    child: const Text(""))),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 40.0, top: 40.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: const [
-                        Text(
-                          "Meteorology",
-                          textAlign: TextAlign.end,
-                          style: TextStyle(
-                            fontFamily: "PolySans_Median",
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                            fontSize: 48,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 55.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: const [
-                        Text(
-                          "Combined Meteorology\nVocabulary Lists",
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            fontFamily: "PolySans_Neutral",
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xff514F55),
-                            fontSize: 24,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 40, top: 20.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          "${model.flashcardnumber} Flashcards",
-                          textAlign: TextAlign.start,
-                          style: const TextStyle(
-                            fontFamily: "PolySans_Median",
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xff514F55),
-                            fontSize: 30,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        Container(
-                          alignment: Alignment.centerRight,
-                          child: GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                  decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            "Images/icons/favorite.png"),
-                                        fit: BoxFit.cover),
                                   ),
-                                  width: 48,
-                                  height: 48,
-                                  child: const Text(""))),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                          alignment: Alignment.centerRight,
-                          child: GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                  decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            "Images/icons/filter.png"),
-                                        fit: BoxFit.cover),
-                                  ),
-                                  width: 48,
-                                  height: 48,
-                                  child: const Text(""))),
+                                )),
+                          ],
                         ),
                       ],
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 40, top: 20.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          alignment: Alignment.centerRight,
-                          child: GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                  decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            "Images/icons/profile.png"),
-                                        fit: BoxFit.cover),
-                                  ),
-                                  width: 35,
-                                  height: 35,
-                                  child: const Text(""))),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "${model.fname}",
-                          textAlign: TextAlign.start,
-                          style: const TextStyle(
-                            fontFamily: "PolySans_Slim",
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xff514F55),
-                            fontSize: 22,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 60,
-                        ),
-                        Container(
-                          alignment: Alignment.centerRight,
-                          child: GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                  decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            "Images/icons/star-line.png"),
-                                        fit: BoxFit.cover),
-                                  ),
-                                  width: 23,
-                                  height: 23,
-                                  child: const Text(""))),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          "${model.rating}",
-                          textAlign: TextAlign.start,
-                          style: const TextStyle(
-                            fontFamily: "PolySans_Slim",
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xff514F55),
-                            fontSize: 23,
-                          ),
-                        ),
-                      ],
+                    const SizedBox(
+                      height: 20,
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(25, 5, 0, 7),
-                  child: Container(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                        onTap: () {
-                          // Navigator.pop(context, true);
-                          context.go('/Home/Deck/Flashcards');
-                        },
-                        child: Container(
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage("Images/icons/bar.png"),
-                                  fit: BoxFit.cover),
-                            ),
-                            width: 136.71,
-                            height: 55,
-                            child: const Center(
-                                child: Text(
-                              "Study",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 32,
-                                fontFamily: "PolySans_Median",
-                              ),
-                            )))),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 5, 25, 7),
-                  child: Container(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                        onTap: () {
-                          GoRouter.of(context).go('/Home/Deck/Test');
-                        },
-                        child: Container(
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage("Images/icons/bar.png"),
-                                  fit: BoxFit.cover),
-                            ),
-                            width: 136.71,
-                            height: 55,
-                            child: const Center(
-                                child: Text(
-                              "Test",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 32,
-                                fontFamily: "PolySans_Median",
-                              ),
-                            )))),
-                  ),
-                ),
-              ],
-            ),
-            Expanded(
-              child: NoGlowScroll(
-                child: ListView(
-                  children: List.generate(
-                      6,
-                      (index) => Padding(
-                            padding: const EdgeInsets.only(
-                                bottom: 21.0, right: 21, left: 21),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Deck(
-                                  cardgenerator: cardgenerator,
-                                  width: 163.13,
-                                  height: 158.67,
-                                  path:
-                                      "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
-                                  min: 3,
-                                  onTap: () {
-                                    GoRouter.of(context)
-                                        .go('/Home/Deck/Flashcards');
-                                  },
-                                ),
-                                Deck(
-                                  cardgenerator: cardgenerator,
-                                  width: 163.13,
-                                  height: 158.67,
-                                  path:
-                                      "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
-                                  min: 3,
-                                  onTap: () {
-                                    GoRouter.of(context)
-                                        .go('/Home/Deck/Flashcards');
-                                  },
-                                ),
-                              ],
-                            ),
-                          )),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                              onTap: () {},
+                              child: Row(
+                                children: [
+                                  Container(
+                                      decoration: const BoxDecoration(
+                                        image: DecorationImage(
+                                            image: AssetImage(
+                                                "Images/icons/profile.png"),
+                                            fit: BoxFit.cover),
+                                      ),
+                                      width: 35,
+                                      height: 35,
+                                      child: const Text("")),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    model.deck.deckAuthor,
+                                    style: const TextStyle(
+                                      fontFamily: "PolySans_Slim",
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xff514F55),
+                                      fontSize: 22,
+                                    ),
+                                  )
+                                ],
+                              )),
+                          GestureDetector(
+                              onTap: () {
+                                if (!ratings.contains(model.deck.id)) {
+                                  ref.read(RatingProvider.notifier).state =
+                                      ratings + [model.deck.id];
+                                } else {
+                                  List<String> temp =
+                                      ref.read(RatingProvider.notifier).state;
+                                  temp.remove(model.deck.id);
+                                  ref.read(RatingProvider.notifier).state =
+                                      temp;
+                                  setState(() {});
+                                }
+                              },
+                              child: Row(
+                                children: [
+                                  Container(
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            image: AssetImage(
+                                                "Images/icons/star-${(ratings.contains(model.deck.deckID)) ? "fill" : "line"}.png"),
+                                            fit: BoxFit.cover),
+                                      ),
+                                      width: 23,
+                                      height: 23,
+                                      child: const Text("")),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    model.rating,
+                                    style: const TextStyle(
+                                      fontFamily: "PolySans_Slim",
+                                      fontWeight: FontWeight.w500,
+                                      color: Color(0xff514F55),
+                                      fontSize: 23,
+                                    ),
+                                  ),
+                                ],
+                              )),
+                        ],
+                      ),
+                    )
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  context.go('/Home/Deck/Flashcards');
+                },
+                child: Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("Images/icons/bar.png"),
+                        fit: BoxFit.cover),
+                  ),
+                  width: 136.71,
+                  height: 55,
+                  child: const Center(
+                    child: Text(
+                      "Study",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontFamily: "PolySans_Median",
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  context.go('/Home/Deck/Test');
+                },
+                child: Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("Images/icons/bar.png"),
+                        fit: BoxFit.cover),
+                  ),
+                  width: 136.71,
+                  height: 55,
+                  child: const Center(
+                    child: Text(
+                      "Test",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontFamily: "PolySans_Median",
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          _cards
+        ]),
       ),
     );
   }

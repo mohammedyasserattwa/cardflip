@@ -9,9 +9,10 @@ import "screens/home.dart";
 import "screens/profile.dart";
 import "screens/login.dart";
 import "screens/category.dart";
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -33,8 +34,9 @@ class MyApp extends StatelessWidget {
                 routes: [
                   GoRoute(
                       path: "Flashcards",
-                      builder: (BuildContext context, GoRouterState state) =>
-                          Flashcard()),
+                      builder: (BuildContext context, GoRouterState state) {
+                        return Flashcard();
+                      }),
                   GoRoute(
                       path: "Test",
                       builder: (BuildContext context, GoRouterState state) =>
@@ -54,8 +56,9 @@ class MyApp extends StatelessWidget {
                         GoRoute(
                             path: "Flashcards",
                             builder:
-                                (BuildContext context, GoRouterState state) =>
-                                    Flashcard()),
+                                (BuildContext context, GoRouterState state) {
+                              return Flashcard();
+                            }),
                         GoRoute(
                             path: "Test",
                             builder:
@@ -77,8 +80,9 @@ class MyApp extends StatelessWidget {
                         GoRoute(
                             path: "Flashcards",
                             builder:
-                                (BuildContext context, GoRouterState state) =>
-                                    Flashcard()),
+                                (BuildContext context, GoRouterState state) {
+                              return Flashcard();
+                            }),
                         GoRoute(
                             path: "Test",
                             builder:
@@ -103,9 +107,9 @@ class MyApp extends StatelessWidget {
                     routes: [
                       GoRoute(
                           path: "Flashcards",
-                          builder:
-                              (BuildContext context, GoRouterState state) =>
-                                  Flashcard()),
+                          builder: (BuildContext context, GoRouterState state) {
+                            return Flashcard();
+                          }),
                       GoRoute(
                           path: "Test",
                           builder:
