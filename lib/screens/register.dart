@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, library_private_types_in_public_api, non_constant_identifier_names, unused_local_variable, body_might_complete_normally_nullable
 
+import 'package:cardflip/models/loginModel.dart';
 import 'package:flutter/material.dart';
 import 'package:cardflip/screens/Login.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import '../data/User.dart';
-import '../models/LoginModel.dart';
 import '../widgets/Input.dart';
 
 class Register extends StatefulWidget {
@@ -15,7 +15,7 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
-  loginModel Object = loginModel(User());
+  loginModel Object = loginModel(data: User());
 
   @override
   Widget build(BuildContext context) {

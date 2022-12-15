@@ -1,13 +1,13 @@
-// ignore_for_file: prefer_const_constructors, unused_import, non_constant_identifier_names, avoid_types_as_parameter_names, library_private_types_in_public_api, file_names, prefer_const_literals_to_create_immutables, body_might_complete_normally_nullable, unrelated_type_equality_checks
+// ignore_for_file: prefer_const_constructors, unused_import, non_constant_identifier_names, avoid_types_as_parameter_names, library_private_types_in_public_api, file_names, prefer_const_literals_to_create_immutables, body_might_complete_normally_nullable, unrelated_type_equality_checks, unnecessary_string_interpolations
 
+import 'package:cardflip/data/User.dart';
 import 'package:cardflip/main.dart';
+import 'package:cardflip/models/loginModel.dart';
 import 'package:cardflip/screens/home.dart';
 import 'package:cardflip/screens/register.dart';
+import 'package:cardflip/widgets/Input.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../data/User.dart';
-import '../models/LoginModel.dart';
-import '../widgets/Input.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -17,8 +17,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  loginModel Object = loginModel(User());
-  loginModel ObjectTwo = loginModel(User());
+  loginModel Object = loginModel(data: User());
 
   @override
   Widget build(BuildContext context) {
@@ -32,158 +31,162 @@ class _LoginState extends State<Login> {
         ),
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          body: Stack(
-            children: [
-              Container(
-                padding: EdgeInsets.only(left: 35, top: 130),
-                child: Text(
-                  'Welcome\nBack',
-                  style: TextStyle(
-                    color: Color(0xFF191C32),
-                    fontFamily: 'PolySans_Median',
-                    fontSize: 48,
-                  ),
-                ),
-              ),
-              ListView(
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.35),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.only(left: 25, right: 25),
-                          child: Column(
-                            children: [
-                              Input(
-                                  hintTextOne: "Email or Username",
-                                  icon: Icons.person_outline_outlined,
-                                  obscureText: false,
-                                  color: Color(0xFFF98800),
-                                  validator: (val) {
-                                    if (val == null || val.isEmpty) {
-                                      return "Please enter a valid email address or username.";
-                                    } else {
-                                      return null;
-                                    }
-                                    // return "${ObjectTwo.fname}";
-                                    // if (val == "${Object.fname}") {
-                                    //   return "${Object.fname}";
-                                    // }
-                                  },
-                                  Object: Object),
-                              SizedBox(
-                                height: 30,
-                              ),
-                              Input(
-                                  hintTextOne: "Password",
-                                  icon: Icons.lock_outline,
-                                  obscureText: true,
-                                  color: Color.fromARGB(255, 184, 145, 229),
-                                  validator: (val) {
-                                    if (val == null || val.isEmpty) {
-                                      return "Please enter a valid password.";
-                                    } else {
-                                      return null;
-                                    }
-                                  },
-                                  Object: Object),
-                              SizedBox(
-                                height: 40,
-                              ),
-                              SizedBox(
-                                width: 340,
-                                height: 58,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    if (Input.loginKey.currentState!
-                                        .validate()) {
-                                      GoRouter.of(context).go('/Home');
-                                    }
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Color(0xFF191C32),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(30.0)),
-                                  ),
-                                  child: Center(
-                                      child: const Text(
-                                    'Login',
-                                  )),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 30,
-                              ),
-                              TextButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    'Forgot Password?',
-                                    style: TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      color: Colors.black,
-                                      fontSize: 15,
-                                    ),
-                                  )),
-                              SizedBox(
-                                width: 240,
-                                height: 40,
-                                child: ElevatedButton(
-                                  onPressed: () {},
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Color(0xFF78E7F5),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(30.0)),
-                                  ),
-                                  child: Center(
-                                      child: Row(
-                                    children: [
-                                      Image.network(
-                                          'http://pngimg.com/uploads/google/google_PNG19635.png',
-                                          fit: BoxFit.cover),
-                                      const Text('  Continue with Google',
-                                          style:
-                                              TextStyle(color: Colors.black)),
-                                    ],
-                                  )),
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Register()));
-                                },
-                                child: RichText(
-                                  text: TextSpan(
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        decoration: TextDecoration.underline,
-                                      ),
-                                      children: <TextSpan>[
-                                        TextSpan(
-                                            text: "Don't have an account? "),
-                                        TextSpan(
-                                            text: "Sign up",
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold)),
-                                      ]),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
+          body: Padding(
+            padding: const EdgeInsets.only(top: 150),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 25),
+                  child: Text(
+                    'Welcome\nBack',
+                    style: TextStyle(
+                      color: Color(0xFF191C32),
+                      fontFamily: 'PolySans_Median',
+                      fontSize: 48,
                     ),
                   ),
-                ],
-              ),
-            ],
+                ),
+                Expanded(
+                  child: ListView(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(left: 25, right: 25),
+                            child: Column(
+                              children: [
+                                Input(
+                                    hintTextOne: "Email or Username",
+                                    icon: Icons.person_outline_outlined,
+                                    obscureText: false,
+                                    color: Color(0xFFF98800),
+                                    validator: (val) {
+                                      if (val == null || val.isEmpty) {
+                                        return "Please enter your email or username";
+                                      } else if (val != Object.fname &&
+                                          val != Object.email) {
+                                        return "Incorrect email or username";
+                                      } else if (val == "${Object.fname}" ||
+                                          val == "${Object.email}") {
+                                        return null;
+                                      }
+                                    },
+                                    Object: Object),
+                                SizedBox(
+                                  height: 30,
+                                ),
+                                Input(
+                                    hintTextOne: "Password",
+                                    icon: Icons.lock_outline,
+                                    obscureText: true,
+                                    color: Color.fromARGB(255, 184, 145, 229),
+                                    validator: (val) {
+                                      if (val == null || val.isEmpty) {
+                                        return "Please enter a valid password.";
+                                      } else if (val != "${Object.password}") {
+                                        return "please enter a valid password.";
+                                      } else {
+                                        return null;
+                                      }
+                                    },
+                                    Object: Object),
+                                SizedBox(
+                                  height: 40,
+                                ),
+                                SizedBox(
+                                  width: 340,
+                                  height: 58,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      if (Input.loginKey.currentState!
+                                          .validate()) {
+                                        GoRouter.of(context).go('/Home');
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Color(0xFF191C32),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30.0)),
+                                    ),
+                                    child: Center(
+                                        child: const Text(
+                                      'Login',
+                                    )),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 30,
+                                ),
+                                TextButton(
+                                    onPressed: () {},
+                                    child: Text(
+                                      'Forgot Password?',
+                                      style: TextStyle(
+                                        decoration: TextDecoration.underline,
+                                        color: Colors.black,
+                                        fontSize: 15,
+                                      ),
+                                    )),
+                                SizedBox(
+                                  width: 240,
+                                  height: 40,
+                                  child: ElevatedButton(
+                                    onPressed: () {},
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Color(0xFF78E7F5),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30.0)),
+                                    ),
+                                    child: Center(
+                                        child: Row(
+                                      children: [
+                                        Image.asset('Images/icons/google.png',
+                                            fit: BoxFit.cover),
+                                        const Text('  Continue with Google',
+                                            style:
+                                                TextStyle(color: Colors.black)),
+                                      ],
+                                    )),
+                                  ),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Register()));
+                                  },
+                                  child: RichText(
+                                    text: TextSpan(
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          decoration: TextDecoration.underline,
+                                        ),
+                                        children: <TextSpan>[
+                                          TextSpan(
+                                              text: "Don't have an account? "),
+                                          TextSpan(
+                                              text: "Sign up",
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold)),
+                                        ]),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

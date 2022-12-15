@@ -2,17 +2,17 @@
 
 class User {
   //PARAMETERS
-  String? firstname = "tester";
+  String firstname = "tester.com";
   String? lastname;
   int? age;
   String? gender;
-  String? email;
-  String? password;
+  String email = "tester@gmail.com";
+  String password = "tester123";
   List? _reminders;
   List? _badges;
 
   //SETTER & GETTERS
-  get fname => this.firstname;
+  get fname => firstname;
   set fname(value) => this.firstname = value;
 
   get lname => this.lastname;
@@ -24,10 +24,10 @@ class User {
   get getGender => this.gender;
   set setGender(gender) => this.gender = gender;
 
-  get getEmail => this.email;
+  get getEmail => email;
   set setEmail(email) => this.email = email;
 
-  get getPassword => this.password;
+  get getPassword => password;
   set setPassword(password) => this.password = password;
 
   get reminders => this._reminders;
@@ -35,13 +35,4 @@ class User {
 
   get badges => this._badges;
   set badges(value) => this._badges = value;
-
-  //CONSTRUCTOR
-  User(
-      {this.firstname,
-      this.lastname,
-      this.age,
-      this.gender,
-      this.email,
-      this.password});
 }

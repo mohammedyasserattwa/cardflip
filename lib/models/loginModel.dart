@@ -1,20 +1,21 @@
 // ignore_for_file: file_names, camel_case_types
 
-import "package:cardflip/data/User.dart";
+import 'package:cardflip/data/User.dart';
 
 class loginModel {
-  final User _data;
-  loginModel(User data) : _data = data;
+  final User data;
 
-  String? get fname {
-    return _data.fname;
+  loginModel({required this.data});
+
+  String get fname {
+    return data.fname;
   }
 
-  String? get password {
-    return _data.getPassword;
+  String get password {
+    return data.getPassword;
   }
 
-  String? get email {
-    return _data.getEmail;
+  String get email {
+    return data.getEmail;
   }
 }
