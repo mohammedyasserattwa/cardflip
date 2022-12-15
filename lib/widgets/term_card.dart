@@ -63,7 +63,7 @@ class Card extends ConsumerWidget {
                 cardName,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
-                minFontSize: resposiveSize["fontSize"],
+                minFontSize: double.parse(resposiveSize["fontSize"].toString()),
                 stepGranularity: 1,
                 style: textStyle,
                 textAlign: TextAlign.center,

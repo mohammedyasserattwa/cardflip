@@ -31,14 +31,23 @@ class _LibraryState extends State<Library> {
   late List<DeckData.Deck> userPersonalDecks;
   List<DeckData.Deck> _currentList = <DeckData.Deck>[];
   late Widget _consumerState;
+  late Widget _listBuilder;
+  late List<Map<String,bool>> _visibleContainers;
   Map<String, bool> status = {"all": true, "user": false, "others": false};
   @override
   void initState() {
+    // _visibleContainers = ;
     _consumerState = createConsumerState();
     super.initState();
   }
 
   int counter = -1;
+  bool _isFiltered = false;
+
+  setVisible({String state = "all"}){
+    
+  }
+
   createConsumerState({String state = "all"}) {
     return Consumer(builder: (context, ref, child) {
       final userID = ref.watch(UserIDProvider);
@@ -334,7 +343,20 @@ class _LibraryState extends State<Library> {
                   Container(
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          if (!_isFiltered) {
+                            setState(() {
+                              _currentList = deckModel.filter(_currentList);
+                              _consumerState = createConsumerState(
+                                  state: (status["all"]!)
+                                      ? "all"
+                                      : (status["others"]!)
+                                          ? "others"
+                                          : "user");
+                              _isFiltered = true;
+                            });
+                          }
+                        },
                         child: Container(
                             decoration: const BoxDecoration(
                               image: DecorationImage(

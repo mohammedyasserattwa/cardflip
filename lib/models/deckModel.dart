@@ -304,7 +304,7 @@ class DeckModel {
               definition: "Programs written in binary code"),
         ]),
   ];
-  
+
   Deck deckByIDRecent(String id) {
     return recentDecks.where((element) => element.id == id).toList()[0];
   }
@@ -330,4 +330,15 @@ class DeckModel {
     }
     return userPreferences.where((element) => element.userID == id).toList();
   }
+
+  List<Deck> filter(List<Deck> deckList) {
+    /// Sorting the cards by term.
+    deckList.sort(((a, b) => a.deckName
+        .toLowerCase()
+        .trim()
+        .compareTo(b.deckName.toLowerCase().trim())));
+    return deckList;
+  }
+
+  int get totalLength => userPreferences.length+recentDecks.length;
 }

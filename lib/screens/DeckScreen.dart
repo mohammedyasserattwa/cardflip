@@ -30,7 +30,6 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
   late Widget _cards;
   bool _isFiltered = false;
   int counter = 0;
-
   late int _randomBanner;
   @override
   void initState() {
@@ -78,7 +77,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
     final favourites = ref.watch(FavouritesProvider);
     final ratings = ref.watch(RatingProvider);
     final reports = ref.watch(ReportProvider);
-    bool _isReported = (reports.contains(model.deck.id));
+    bool isReported = (reports.contains(model.deck.id));
     dynamic size = MediaQuery.of(context).size;
     return Scaffold(
       bottomNavigationBar: NavBar(),
@@ -137,12 +136,12 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                 "Images/icons/svg/more-fill.svg"),
                             itemBuilder: (BuildContext context) => [
                               PopupMenuItem(
-                                enabled: !_isReported,
+                                enabled: !isReported,
                                 onTap: () {
                                   if (!reports.contains(model.deck.id)) {
                                     ref.read(ReportProvider.notifier).state =
                                         reports + [model.deck.id];
-                                    _isReported = true;
+                                    isReported = true;
                                   }
                                 },
                                 child: Wrap(
@@ -234,7 +233,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: SvgPicture.asset(
-                                      "../Images/icons/svg/${heartState[favourites.contains(model.deck.id) ? 1 : 0]}.svg",
+                                      "Images/icons/svg/${heartState[favourites.contains(model.deck.id) ? 1 : 0]}.svg",
                                     ),
                                   ),
                                 )),
@@ -262,7 +261,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: SvgPicture.asset(
-                                      "../Images/icons/svg/filter.svg",
+                                      "Images/icons/svg/filter.svg",
                                     ),
                                   ),
                                 )),

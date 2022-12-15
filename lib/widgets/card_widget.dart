@@ -68,8 +68,6 @@ class _CardWidgetState extends State<CardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // print(widget.card!.isFavourite);
-    final size = MediaQuery.of(context).size;
     if (widget.card != null) {
       if (widget.card!.isFavourite && star == Icons.star_border) {
         setState(() {
