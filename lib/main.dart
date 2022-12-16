@@ -1,15 +1,5 @@
 import 'package:cardflip/models/routerModel.dart';
-import 'package:cardflip/screens/DeckScreen.dart';
-import 'package:cardflip/screens/FlashcardScreen.dart';
-import 'package:cardflip/screens/adddeck.dart';
-import 'package:cardflip/screens/library.dart';
-import 'package:cardflip/screens/test.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import "screens/home.dart";
-import "screens/profile.dart";
-import "screens/login.dart";
-import "screens/category.dart";
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {

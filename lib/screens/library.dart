@@ -1,150 +1,104 @@
 // ignore_for_file: unnecessary_new
-
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cardflip/data/Repositories/user_decks.dart';
 import 'package:cardflip/widgets/deck.dart';
+import 'package:cardflip/widgets/library_list.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 import "package:flutter/material.dart";
 import '../data/Repositories/user_state.dart';
-import '../data/dummy_data.dart';
 import '../data/card_generator.dart';
 import '../models/deckModel.dart';
-// import '../models/libraryModel.dart';
 import '../widgets/navibar.dart';
-import '../widgets/deck.dart';
-import '../data/deck.dart' as DeckData;
+import '../data/deck.dart' as deck_data;
 
 class Library extends StatefulWidget {
-  const Library({key});
+  const Library({super.key});
 
   @override
   State<Library> createState() => _LibraryState();
 }
 
 class _LibraryState extends State<Library> {
-  CardGenerator cardgenerator = new CardGenerator();
-  DeckModel deckModel = DeckModel();
-  late List<DeckData.Deck> favourites;
-  late String userID;
-  late List<DeckData.Deck> userPersonalDecks;
-  List<DeckData.Deck> _currentList = <DeckData.Deck>[];
+  late CardGenerator cardgenerator;
+  late DeckModel deckModel;
+  List<deck_data.Deck> _currentList = <deck_data.Deck>[];
   late Widget _consumerState;
-  late Widget _listBuilder;
-  late List<Map<String,bool>> _visibleContainers;
+  late AssetImage _banner;
+  late Widget _header;
   Map<String, bool> status = {"all": true, "user": false, "others": false};
+  late List<Widget> _listBuilder;
   @override
   void initState() {
-    // _visibleContainers = ;
-    _consumerState = createConsumerState();
+    deckModel = DeckModel();
+    cardgenerator = new CardGenerator();
+    _banner = AssetImage(
+        "Images/banners/librarypage/${cardgenerator.librarycolor}.png");
+    _header = Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: _banner,
+          fit: BoxFit.cover,
+        ),
+      ),
+      width: 400,
+      height: 190,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SafeArea(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 20.0, top: 20),
+                  child: GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage("Images/icons/more-fill.png"),
+                                fit: BoxFit.cover),
+                          ),
+                          width: 40,
+                          height: 40,
+                          child: const Text(""))),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 40.0, top: 40.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: const [
+                Text(
+                  "Library",
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                    fontFamily: "PolySans_Median",
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                    fontSize: 48,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+    _listBuilder = [
+      LibraryList().build(),
+      LibraryList().build(state: "user"),
+      LibraryList().build(state: "others")
+    ];
+    // print(deckList);
+    _consumerState = _listBuilder[0];
     super.initState();
   }
 
-  int counter = -1;
   bool _isFiltered = false;
-
-  setVisible({String state = "all"}){
-    
-  }
-
-  createConsumerState({String state = "all"}) {
-    return Consumer(builder: (context, ref, child) {
-      final userID = ref.watch(UserIDProvider);
-      final favourites = ref.watch(FavouritesProvider);
-      final userPersonalDecks = deckModel.deckByUserID(userID);
-      for (int i = 0; i < favourites.length; i++) {
-        _currentList.add(deckModel.deckByID(favourites[i]));
-      }
-
-      if (state == "all") {
-        _currentList += userPersonalDecks;
-        for (int i = 0; i < favourites.length; i++) {
-          _currentList.add(deckModel.deckByID(favourites[i]));
-        }
-      } else if (state == "user") {
-        _currentList = userPersonalDecks;
-      }
-      EdgeInsets kpaddingCards =
-          const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15);
-      return Expanded(
-          child: (_currentList.isEmpty)
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(
-                      Icons.not_interested,
-                      color: Colors.grey,
-                      size: 40,
-                    ),
-                    Text(
-                      "Your library is empty, you can create a new deck or like a deck created by others!",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: "PolySans_Median",
-                        fontWeight: FontWeight.w500,
-                        color: Colors.grey,
-                        fontSize: 20,
-                      ),
-                    )
-                  ],
-                )
-              : NoGlowScroll(
-                  child: ListView.builder(
-                      itemCount: (_currentList.length > 1)
-                          ? _currentList.length ~/ 2
-                          : _currentList.length,
-                      itemBuilder: (context, i) {
-                        if (counter + 1 < _currentList.length) counter++;
-                        return Padding(
-                          padding: kpaddingCards,
-                          child: Row(
-                            mainAxisAlignment:
-                                (i + counter + 1 < _currentList.length)
-                                    ? MainAxisAlignment.spaceBetween
-                                    : MainAxisAlignment.start,
-                            children: [
-                              Deck(
-                                  id: _currentList[i + counter].id,
-                                  width: _responsive(context)["width"],
-                                  height: _responsive(context)["height"],
-                                  min: 3,
-                                  onTap: () {
-                                    GoRouter.of(context).go(
-                                        '/Home/Library/Deck/${_currentList[i + counter].id}');
-                                  },
-                                  path:
-                                      "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                              if (i + counter + 1 < _currentList.length)
-                                Deck(
-                                    id: _currentList[i + counter + 1].id,
-                                    width: _responsive(context)["width"],
-                                    height: _responsive(context)["height"],
-                                    min: 3,
-                                    onTap: () {
-                                      GoRouter.of(context).go(
-                                          '/Home/Library/Deck/${_currentList[i + counter + 1].id}');
-                                    },
-                                    path:
-                                        "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                            ],
-                          ),
-                        );
-                      })));
-    });
-  }
-
-  _responsive(BuildContext context) {
-    if (MediaQuery.of(context).size.width < 299) {
-      return {"height": 113.67, "width": 118.67, "fontSize": 16};
-    } else if (MediaQuery.of(context).size.width < 340) {
-      return {"height": 128.67, "width": 133.67, "fontSize": 20};
-    } else if (MediaQuery.of(context).size.width < 358) {
-      return {"height": 148.67, "width": 153.67, "fontSize": 20};
-    } else {
-      return {"height": 158.67, "width": 163.67, "fontSize": 20};
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -161,62 +115,7 @@ class _LibraryState extends State<Library> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(
-                      "Images/banners/librarypage/${cardgenerator.librarycolor}.png"),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              width: 400,
-              height: 190,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SafeArea(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 20.0, top: 20),
-                          child: GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                  decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            "Images/icons/more-fill.png"),
-                                        fit: BoxFit.cover),
-                                  ),
-                                  width: 40,
-                                  height: 40,
-                                  child: const Text(""))),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 40.0, top: 40.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: const [
-                        Text(
-                          "Library",
-                          textAlign: TextAlign.end,
-                          style: TextStyle(
-                            fontFamily: "PolySans_Median",
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                            fontSize: 48,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            _header,
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 20.0),
               child: Row(
@@ -229,20 +128,17 @@ class _LibraryState extends State<Library> {
                           status["all"] = true;
                           status["user"] = false;
                           status["others"] = false;
-                          setState(() {
-                            _currentList = <DeckData.Deck>[];
-                            _consumerState = createConsumerState();
-                            counter = 0;
-                          });
+                          _consumerState = _listBuilder[0];
+                          setState(() {});
                         }
                       },
                       child: Container(
                           decoration: BoxDecoration(
                               color: (status["all"]!)
-                                  ? Color.fromARGB(31, 10, 1, 1)
+                                  ? const Color.fromARGB(31, 10, 1, 1)
                                   : Colors.transparent,
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(12))),
+                                  const BorderRadius.all(Radius.circular(12))),
                           width: 48,
                           height: 48,
                           child: Center(
@@ -262,19 +158,19 @@ class _LibraryState extends State<Library> {
                         status["all"] = false;
                         status["user"] = true;
                         status["others"] = false;
+                        _consumerState = _listBuilder[1];
                         setState(() {
-                          _currentList = <DeckData.Deck>[];
-                          _consumerState = createConsumerState(state: "user");
-                          counter = 0;
+                          // _consumerState = _listBuilder["user"]!;
                         });
                       }
                     },
                     child: Container(
                       decoration: BoxDecoration(
                           color: (status["user"]!)
-                              ? Color.fromARGB(31, 10, 1, 1)
+                              ? const Color.fromARGB(31, 10, 1, 1)
                               : Colors.transparent,
-                          borderRadius: BorderRadius.all(Radius.circular(12))),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(12))),
                       width: 48,
                       height: 48,
                       child: Center(
@@ -296,19 +192,19 @@ class _LibraryState extends State<Library> {
                         status["all"] = false;
                         status["user"] = false;
                         status["others"] = true;
+                        _consumerState = _listBuilder[2];
                         setState(() {
-                          _currentList = <DeckData.Deck>[];
-                          _consumerState = createConsumerState(state: "others");
-                          counter = 0;
+                          // _consumerState = _listBuilder["others"]!;
                         });
                       }
                     },
                     child: Container(
                       decoration: BoxDecoration(
                           color: (status["others"]!)
-                              ? Color.fromARGB(31, 10, 1, 1)
+                              ? const Color.fromARGB(31, 10, 1, 1)
                               : Colors.transparent,
-                          borderRadius: BorderRadius.all(Radius.circular(12))),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(12))),
                       width: 55,
                       height: 48,
                       child: Center(
@@ -338,7 +234,7 @@ class _LibraryState extends State<Library> {
                             ),
                             width: 48,
                             height: 48,
-                            child: Text(""))),
+                            child: const Text(""))),
                   ),
                   Container(
                     alignment: Alignment.centerRight,
@@ -346,14 +242,15 @@ class _LibraryState extends State<Library> {
                         onTap: () {
                           if (!_isFiltered) {
                             setState(() {
-                              _currentList = deckModel.filter(_currentList);
-                              _consumerState = createConsumerState(
-                                  state: (status["all"]!)
-                                      ? "all"
-                                      : (status["others"]!)
-                                          ? "others"
-                                          : "user");
+                              _consumerState =
+                                  LibraryList(filter: true).build();
                               _isFiltered = true;
+                            });
+                          } else {
+                            setState(() {
+                              _consumerState =
+                                  LibraryList(filter: false).build();
+                              _isFiltered = false;
                             });
                           }
                         },
@@ -365,7 +262,7 @@ class _LibraryState extends State<Library> {
                             ),
                             width: 48,
                             height: 48,
-                            child: Text(""))),
+                            child: const Text(""))),
                   ),
                 ],
               ),

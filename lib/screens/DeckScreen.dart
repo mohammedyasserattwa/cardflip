@@ -26,7 +26,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
   late FlashcardModel model;
   final heartState = ["heart_outline", "heart_filled"];
   final CardGenerator _cardGen = CardGenerator();
-  // AssetImage _starStatus = const AssetImage("Images/icons/star-line.png");
+  
   late Widget _cards;
   bool _isFiltered = false;
   int counter = 0;
@@ -157,7 +157,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                         )
                       ],
                     ),
-                    const SizedBox(height: 25),
+                    // const SizedBox(height: 25),
                     AutoSizeText(
                       model.deck.deckName,
                       maxLines: 1,
