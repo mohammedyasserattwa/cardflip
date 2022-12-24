@@ -2,8 +2,11 @@
 // ignore_for_file: file_names, avoid_unnecessary_containers, prefer_const_constructors
 
 import 'dart:io';
+import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cardflip/models/deckModel.dart';
 import 'package:cardflip/widgets/deck.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 import "package:flutter/material.dart";
@@ -13,24 +16,34 @@ import '../data/card_generator.dart';
 import '../widgets/navibar.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
-class Profile extends StatefulWidget {
-  const Profile({key});
-
-  @override
-  State<Profile> createState() => _ProfileState();
-}
-
-class _ProfileState extends State<Profile> {
-  // ignore: unnecessary_new
-  ProfileModel model = new ProfileModel(new DummyData());
+class Profile extends StatelessWidget {
+  Profile({key});
+  // TODO: REMOVE the profile model with the UserModel
+  ProfileModel model = ProfileModel(DummyData());
+  // TODO: ADD the leaderboard model here
+  DeckModel deckModel = DeckModel();
   CardGenerator cardgenerator = CardGenerator();
+  late String profileBanner;
+
+  _responsive(BuildContext context) {
+    if (MediaQuery.of(context).size.width < 299) {
+      return {"height": 113.67, "width": 118.67, "fontSize": 16};
+    } else if (MediaQuery.of(context).size.width < 340) {
+      return {"height": 128.67, "width": 133.67, "fontSize": 20};
+    } else if (MediaQuery.of(context).size.width < 358) {
+      return {"height": 148.67, "width": 153.67, "fontSize": 20};
+    } else {
+      return {"height": 158.67, "width": 163.67, "fontSize": 20};
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final height = _responsive(context)["height"];
+    final width = _responsive(context)["width"];
     return Scaffold(
       bottomNavigationBar: NavBar(),
       body: Container(
-        height: 1000,
         width: double.infinity,
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -40,99 +53,112 @@ class _ProfileState extends State<Profile> {
         child: NoGlowScroll(
           child: ListView(
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: Stack(
-                  children: [
-                    Container(
-                        decoration: const BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage(
-                                  "Images/banners/profilepage/0.png"),
-                              fit: BoxFit.cover),
-                        ),
-                        width: 398,
-                        height: 190,
-                        child: Text("")),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15, right: 20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(38, 45, 10, 10),
-                          child: Container(
-                            alignment: Alignment.centerRight,
-                            child: Container(
-                                decoration: const BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage("Images/avatars/1.png"),
-                                      fit: BoxFit.cover),
-                                ),
-                                width: 85,
-                                height: 85,
-                                child: Text("")),
-                          ),
-                        ),
-                        const SizedBox(width: 5),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(30, 50, 45, 10),
-                          child: SizedBox(
-                            width: 150,
-                            child: AutoSizeText(
-                              " ${model.fname}",
-                              textAlign: TextAlign.left,
-                              overflow: TextOverflow.ellipsis,
-                              minFontSize: 12,
-                              stepGranularity: 1,
-                              maxLines: 2,
-                              style: TextStyle(
-                                fontFamily: "PolySans_Median",
-                                color: Colors.black,
-                                fontSize: 40,
-                              ),
-                            ),
-                          ),
+                        Container(),
+                        SvgPicture.asset(
+                          "Images/icons/svg/settings.svg",
+                          width: 25,
+                          height: 25,
+                          color: Color(0xff8C9595),
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(19, 180, 10, 0),
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        child: GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                                decoration: const BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          "Images/icons/editprofile.png"),
-                                      fit: BoxFit.cover),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 15.0, top: 15, bottom: 30, right: 10),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Container(
+                          alignment: Alignment.centerRight,
+                          child: Container(
+                              decoration: const BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage("Images/avatars/1.png"),
+                                    fit: BoxFit.cover),
+                              ),
+                              width: (MediaQuery.of(context).size.width > 274)
+                                  ? 85
+                                  : 55,
+                              height: (MediaQuery.of(context).size.width > 274)
+                                  ? 85
+                                  : 55,
+                              child: Text("")),
+                        ),
+                        const SizedBox(width: 5),
+                        Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${model.fname} ${model.lname}",
+                                style: TextStyle(
+                                  fontFamily: "PolySans_Slim",
+                                  color: Color(0xf0493C3F),
+                                  fontSize:
+                                      (MediaQuery.of(context).size.width > 300)
+                                          ? 32
+                                          : 25,
                                 ),
-                                width: 103,
-                                height: 34,
-                                child: Center(
-                                  child: Text(
-                                    "Edit Profile",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontFamily: "PolySans_Median"),
-                                  ),
-                                ))),
-                      ),
+                              ),
+                              Text(
+                                "@${model.username}",
+                                style: TextStyle(
+                                  fontFamily: "PolySans_Slim",
+                                  color: Color(0xf0493C3F),
+                                  fontSize:
+                                      (MediaQuery.of(context).size.width > 274)
+                                          ? 17
+                                          : 10,
+                                ),
+                              )
+                            ]),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15.0),
+                    child: GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                      "Images/icons/editprofile.png"),
+                                  fit: BoxFit.cover),
+                            ),
+                            width: 103,
+                            height: 34,
+                            child: Center(
+                              child: Text(
+                                "Edit Profile",
+                                style: TextStyle(
+                                    fontSize: 15, fontFamily: "Poppins-Medium"),
+                              ),
+                            ))),
+                  ),
+                ],
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(26, 0, 0, 0),
+                padding: const EdgeInsets.fromLTRB(26, 10, 0, 0),
                 child: Text(
                   "Badges",
                   style: TextStyle(
-                    fontFamily: "PolySans_Median",
-                    fontSize: 25,
+                    fontFamily: "Poppins-Medium",
+                    fontSize: 17,
                   ),
                 ),
               ),
-              Container(
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -143,8 +169,8 @@ class _ProfileState extends State<Profile> {
                             image: AssetImage("Images/icons/badges1.png"),
                             fit: BoxFit.cover),
                       ),
-                      height: 50,
-                      width: 50,
+                      height: 40,
+                      width: 40,
                     ),
                     Container(
                       decoration: const BoxDecoration(
@@ -152,8 +178,8 @@ class _ProfileState extends State<Profile> {
                             image: AssetImage("Images/icons/badges2.png"),
                             fit: BoxFit.cover),
                       ),
-                      height: 50,
-                      width: 50,
+                      height: 40,
+                      width: 40,
                     ),
                     Container(
                       decoration: const BoxDecoration(
@@ -161,8 +187,8 @@ class _ProfileState extends State<Profile> {
                             image: AssetImage("Images/icons/badges3.png"),
                             fit: BoxFit.cover),
                       ),
-                      height: 50,
-                      width: 50,
+                      height: 40,
+                      width: 40,
                     ),
                     Container(
                       decoration: const BoxDecoration(
@@ -170,13 +196,15 @@ class _ProfileState extends State<Profile> {
                             image: AssetImage("Images/icons/morebadges.png"),
                             fit: BoxFit.cover),
                       ),
-                      height: 50,
-                      width: 50,
+                      height: 40,
+                      width: 40,
                       child: Center(
                         child: Text(
                           "+32",
+                          textAlign: TextAlign.center,
                           style: TextStyle(
-                              fontSize: 25,
+                              fontFamily: "Poppins-SemiBold",
+                              fontSize: 15,
                               color: Colors.white,
                               fontWeight: FontWeight.bold),
                         ),
@@ -186,13 +214,13 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(32, 0, 0, 0),
+                padding: const EdgeInsets.fromLTRB(26, 10, 0, 0),
                 child: Text(
                   "Recent Decks",
                   style: TextStyle(
                     fontFamily: "Poppins-Medium",
-                    fontSize: 21,
-                    color: Color(0xff212523),
+                    fontSize: 17,
+                    // color: Color(0xff212523),
                   ),
                 ),
               ),
@@ -201,148 +229,98 @@ class _ProfileState extends State<Profile> {
                 child: SizedBox(
                   height: 116.67,
                   child: NoGlowScroll(
-                    child: ListView(
+                    child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      children: <Widget>[
-                        Deck(
-                            // cardgenerator: cardgenerator,
-                            width: 139,
-                            height: 116.67,
+                      itemCount: deckModel.recentDecks.length,
+                      itemBuilder: (context, index) => Row(
+                        children: [
+                          Deck(
+                            height: height,
+                            width: width,
+                            id: deckModel.recentDecks[index].id,
                             min: 3,
-                            onTap: () {
-                              GoRouter.of(context).go('/Home/Profile/Deck');
-                            },
+                            onTap: (() => GoRouter.of(context).go(
+                                '/Home/Profile/Deck/${deckModel.recentDecks[index].id}')),
                             path:
-                                "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                        SizedBox(width: 13),
-                        Deck(
-                            // cardgenerator: cardgenerator,
-                            width: 139,
-                            height: 116.67,
-                            min: 3,
-                            onTap: () {
-                              GoRouter.of(context).go('/Home/Profile/Deck');
-                            },
-                            path:
-                                "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                        SizedBox(width: 13),
-                        Deck(
-                            // cardgenerator: cardgenerator,
-                            min: 3,
-                            onTap: () {
-                              GoRouter.of(context).go('/Home/Profile/Deck');
-                            },
-                            width: 139,
-                            height: 116.67,
-                            path:
-                                "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                      ],
+                                "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                          ),
+                          SizedBox(
+                            width: 15,
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(30, 25, 0, 0),
+                padding: const EdgeInsets.fromLTRB(26, 15, 0, 0),
                 child: Text("Top Rated Decks",
                     style: TextStyle(
-                        fontFamily: "Poppins-Medium",
-                        fontSize: 21,
-                        color: Color(0xff212523))),
+                      fontFamily: "Poppins-Medium",
+                      fontSize: 17,
+                    )),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(15, 10, 2, 0),
                 child: SizedBox(
                   height: 116.67,
                   child: NoGlowScroll(
-                    child: ListView(
+                    child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      children: <Widget>[
-                        Deck(
-                            // cardgenerator: cardgenerator,
+                      itemCount: deckModel.topRatedDecks.length,
+                      itemBuilder: (context, index) => Row(
+                        children: [
+                          Deck(
+                            height: height,
+                            width: width,
+                            id: deckModel.topRatedDecks[index].id,
                             min: 3,
-                            onTap: () {
-                              GoRouter.of(context).go('/Home/Profile/Deck');
-                            },
-                            width: 139,
-                            height: 116.67,
+                            onTap: (() => GoRouter.of(context).go(
+                                '/Home/Profile/Deck/${deckModel.topRatedDecks[index].id}')),
                             path:
-                                "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                        SizedBox(width: 13),
-                        Deck(
-                            // cardgenerator: cardgenerator,
-                            min: 3,
-                            onTap: () {
-                              GoRouter.of(context).go('/Home/Profile/Deck');
-                            },
-                            width: 139,
-                            height: 116.67,
-                            path:
-                                "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                        SizedBox(width: 13),
-                        Deck(
-                            // cardgenerator: cardgenerator,
-                            min: 3,
-                            onTap: () {
-                              GoRouter.of(context).go('/Home/Profile/Deck');
-                            },
-                            width: 139,
-                            height: 116.67,
-                            path:
-                                "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                      ],
+                                "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                          ),
+                          SizedBox(
+                            width: 15,
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(30, 35, 0, 0),
+                padding: const EdgeInsets.fromLTRB(26, 15, 0, 0),
                 child: Text("Leaderboard",
-                    style: TextStyle(
-                        fontFamily: "Poppins-Medium",
-                        fontSize: 21,
-                        color: Color(0xff212523))),
+                    style:
+                        TextStyle(fontFamily: "Poppins-Medium", fontSize: 17)),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(15, 10, 2, 10),
                 child: SizedBox(
                   height: 116.67,
                   child: NoGlowScroll(
-                    child: ListView(
+                    child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      children: <Widget>[
-                        Deck(
-                            // cardgenerator: cardgenerator,
+                      itemCount: deckModel.recentDecks.length,
+                      itemBuilder: (context, index) => Row(
+                        children: [
+                          Deck(
+                            height: height,
+                            width: width,
+                            id: deckModel.recentDecks[index].id,
                             min: 3,
-                            onTap: () {
-                              GoRouter.of(context).go('/Home/Profile/Deck');
-                            },
-                            width: 139,
-                            height: 116.67,
+                            onTap: (() => GoRouter.of(context).go(
+                                '/Home/Profile/Deck/${deckModel.recentDecks[index].id}')),
                             path:
-                                "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                        SizedBox(width: 13),
-                        Deck(
-                            // cardgenecrator: cardgenerator,
-                            min: 3,
-                            onTap: () {
-                              GoRouter.of(context).go('/Home/Profile/Deck');
-                            },
-                            width: 139,
-                            height: 116.67,
-                            path:
-                                "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                        SizedBox(width: 13),
-                        Deck(
-                            // cardgenerator: cardgenerator,
-                            min: 3,
-                            onTap: () {
-                              GoRouter.of(context).go('/Home/Profile/Deck');
-                            },
-                            width: 139,
-                            height: 116.67,
-                            path:
-                                "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                      ],
+                                "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                          ),
+                          SizedBox(
+                            width: 15,
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),

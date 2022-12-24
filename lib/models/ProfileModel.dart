@@ -11,4 +11,7 @@ class ProfileModel {
   String get lname {
     return _data.lname;
   }
+  String get username{
+    return _data.username;
+  }
 }

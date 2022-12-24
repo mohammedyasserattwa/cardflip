@@ -1,23 +1,20 @@
 // ignore_for_file: unnecessary_new, prefer_const_constructors
 
-
+import 'package:cardflip/main.dart';
+import 'package:cardflip/models/userModel.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 import "package:flutter/material.dart";
 import '../models/categoryModel.dart';
 import '../data/card_generator.dart';
+import '../data/category.dart' as CategoryData;
 import '../widgets/deck.dart';
 import '../widgets/navibar.dart';
 import 'package:go_router/go_router.dart';
 
-class Category extends StatefulWidget {
-  const Category({key});
+class Category extends StatelessWidget {
+  String id;
+  Category({key, required this.id});
 
-  @override
-  State<Category> createState() => _CategoryState();
-}
-
-class _CategoryState extends State<Category> {
-  CategoryModel model = new CategoryModel();
   CardGenerator cardgenerator = new CardGenerator();
   CardGenerator cardgenerator2 = new CardGenerator();
   CardGenerator cardgenerator3 = new CardGenerator();
@@ -27,22 +24,36 @@ class _CategoryState extends State<Category> {
     const Icon(Icons.library_books_outlined),
     const Icon(Icons.person_outline)
   };
+  _responsive(BuildContext context) {
+    if (MediaQuery.of(context).size.width < 299) {
+      return {"height": 113.67, "width": 118.67, "fontSize": 16};
+    } else if (MediaQuery.of(context).size.width < 340) {
+      return {"height": 128.67, "width": 133.67, "fontSize": 20};
+    } else if (MediaQuery.of(context).size.width < 358) {
+      return {"height": 148.67, "width": 153.67, "fontSize": 20};
+    } else {
+      return {"height": 158.67, "width": 163.67, "fontSize": 20};
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    CategoryModel model = new CategoryModel(id: id);
+    final height = _responsive(context)["height"];
+    final width = _responsive(context)["width"];
     return Scaffold(
         bottomNavigationBar: NavBar(),
         body: Container(
-            height: 1000,
             width: double.infinity,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage("Images/backgrounds/Categorygeography.png"),
+                  image: AssetImage(model.category.background),
                   fit: BoxFit.cover),
             ),
             child: NoGlowScroll(
               child: ListView(children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 5.0, top: 10.0),
+                  padding: const EdgeInsets.only(left: 5.0, top: 0.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +83,7 @@ class _CategoryState extends State<Category> {
                         child: Container(
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage("Images/vectors/geography.png"),
+                              image: AssetImage(model.category.vector),
                               fit: BoxFit.cover,
                               scale: 0.5,
                             ),
@@ -84,137 +95,55 @@ class _CategoryState extends State<Category> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                        padding: const EdgeInsets.fromLTRB(20, 10, 0, 0),
                         child: Text(
-                          "Geography",
+                          model.category.name,
                           textAlign: TextAlign.left,
                           style: TextStyle(
-                            fontFamily: "Poppins-Bold",
-                            color: Color.fromARGB(255, 0, 0, 0),
+                            fontFamily: "PolySans_Median",
+                            color: Colors.black,
                             fontSize: 36,
                           ),
                         ),
                       ),
-                      Padding(
-                          padding: const EdgeInsets.only(left: 0.0, top: 10.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              for (int i = 0; i < 3; i++)
-                                Column(
-                                  children: [
-                                    if (i == 0)
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                              child: Deck(
-                                                  onTap: () {
-                                                    GoRouter.of(context).go(
-                                                        '/Home/Category/Deck');
-                                                  },
-                                                  // cardgenerator: cardgenerator,
-                                                  // width: 148,
-                                                  // height: 119,
-                                                  width: 170,
-                                                  height: 135,
-                                                  path:
-                                                      "Images/cards/categorypage/1/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
-                                                  min: 2)),
-                                          ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                              child: Deck(
-                                                  onTap: () {
-                                                    GoRouter.of(context).go(
-                                                        '/Home/Category/Deck');
-                                                  },
-                                                  // cardgenerator: cardgenerator,
-                                                  // width: 148,
-                                                  // height: 119,
-                                                  width: 170,
-                                                  height: 135,
-                                                  path:
-                                                      "Images/cards/categorypage/1/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
-                                                  min: 2)),
-                                        ],
-                                      ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(10),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                            child: Deck(
-                                                onTap: () {
-                                                  GoRouter.of(context).go(
-                                                      '/Home/Category/Deck');
-                                                },
-                                                // cardgenerator: cardgenerator2,
-                                                // width: 148,
-                                                // height: 119,
-                                                width: 360,
-                                                height: 137,
-                                                path:
-                                                    "Images/cards/categorypage/2/${cardgenerator2.getcolor}/${cardgenerator2.getshape}.png",
-                                                min: 2),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
-                                          children: [
-                                            ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(8.0),
-                                                child: Deck(
-                                                    onTap: () {},
-                                                    // cardgenerator:
-                                                        // cardgenerator3,
-                                                    // width: 148,
-                                                    // height: 119,
-                                                    width: 175,
-                                                    height: 119,
-                                                    path:
-                                                        "Images/cards/categorypage/3_1/${cardgenerator3.getcolor}/${cardgenerator3.getshape}.png",
-                                                    min: 2)),
-                                            ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(14.0),
-                                                child: Deck(
-                                                    onTap: () {},
-                                                    // cardgenerator:
-                                                    //     cardgenerator3,
-                                                    // width: 148,
-                                                    // height: 119,
-                                                    width: 165,
-                                                    height: 119,
-                                                    path:
-                                                        "Images/cards/categorypage/3_2/${cardgenerator3.getcolor}/${cardgenerator3.getshape}.png",
-                                                    min: 2)),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              SizedBox(height: 10)
-                            ],
-                          )),
                     ],
                   ),
+                ),
+                Column(
+                  children: [
+                    for (int i = 0; i < model.category.decks.length; i += 2)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 15),
+                        child: Row(
+                          mainAxisAlignment:
+                              (i + 1 < model.category.decks.length)
+                                  ? MainAxisAlignment.spaceBetween
+                                  : MainAxisAlignment.start,
+                          children: [
+                            Deck(
+                                height: height,
+                                id: model.category.decks[i].id,
+                                width: width,
+                                path:
+                                    "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                                min: 3,
+                                onTap: () => context.go(
+                                    "/Home/Category/${model.category.id}/Deck/${model.category.decks[i].id}")),
+                            if (i + 1 < model.category.decks.length)
+                              Deck(
+                                  height: height,
+                                  width: width,
+                                  id: model.category.decks[i + 1].id,
+                                  path:
+                                      "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                                  min: 3,
+                                  onTap: () => context.go(
+                                      "/Home/Category/Deck/${model.category.decks[i + 1].id}")),
+                          ],
+                        ),
+                      ),
+                  ],
                 ),
               ]),
             )));

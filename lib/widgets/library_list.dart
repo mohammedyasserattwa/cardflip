@@ -29,93 +29,6 @@ class LibraryList {
       return {"height": 158.67, "width": 163.67, "fontSize": 20};
     }
   }
-
-  // @override
-  // Widget build(BuildContext context, WidgetRef ref) {
-  //   print("hena");
-  //   final height = _responsive(context)["height"];
-  //   final width = _responsive(context)["width"];
-  //   final userID = ref.watch(UserIDProvider);
-  //   final favourites = ref.watch(FavouritesProvider);
-  //   final userPersonalDecks = deckModel.deckByUserID(userID);
-  //   deckList = userPersonalDecks;
-  //   if (state == "all") {
-  //     for (int i = 0; i < favourites.length; i++) {
-  //       deckList.add(deckModel.deckByID(favourites[i]));
-  //     }
-  //   }
-  //   if (state == "others") {
-  //     deckList = [];
-  //     for (int i = 0; i < favourites.length; i++) {
-  //       deckList.add(deckModel.deckByID(favourites[i]));
-  //     }
-  //   }
-
-  //   EdgeInsets kpaddingCards =
-  //       const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15);
-  //   return Expanded(
-  //       child: (deckList.isEmpty)
-  //           ? Column(
-  //               mainAxisAlignment: MainAxisAlignment.center,
-  //               children: const [
-  //                 Icon(
-  //                   Icons.not_interested,
-  //                   color: Colors.grey,
-  //                   size: 40,
-  //                 ),
-  //                 Text(
-  //                   "Your library is empty, you can create a new deck or like a deck created by others!",
-  //                   textAlign: TextAlign.center,
-  //                   style: TextStyle(
-  //                     fontFamily: "PolySans_Median",
-  //                     fontWeight: FontWeight.w500,
-  //                     color: Colors.grey,
-  //                     fontSize: 20,
-  //                   ),
-  //                 )
-  //               ],
-  //             )
-  //           : NoGlowScroll(
-  //               child: ListView(
-  //               children: [
-  //                 for (int i = 0; i < deckList.length; i += 2)
-  //                   Padding(
-  //                     padding: kpaddingCards,
-  //                     child: Row(
-  //                       mainAxisAlignment: (i + 1 < deckList.length)
-  //                           ? MainAxisAlignment.spaceBetween
-  //                           : MainAxisAlignment.start,
-  //                       children: [
-  //                         deck_widget.Deck(
-  //                             id: deckList[i].id,
-  //                             width: width,
-  //                             height: height,
-  //                             min: 3,
-  //                             onTap: () {
-  //                               GoRouter.of(context)
-  //                                   .go('/Home/Library/Deck/${deckList[i].id}');
-  //                             },
-  //                             path:
-  //                                 "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-  //                         if (i + 1 < deckList.length)
-  //                           deck_widget.Deck(
-  //                               id: deckList[i + 1].id,
-  //                               width: width,
-  //                               height: height,
-  //                               min: 3,
-  //                               onTap: () {
-  //                                 GoRouter.of(context).go(
-  //                                     '/Home/Library/Deck/${deckList[i + 1].id}');
-  //                               },
-  //                               path:
-  //                                   "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-  //                       ],
-  //                     ),
-  //                   ),
-  //               ],
-  //             )));
-  // }
-
   Widget build({String state = "all"}) {
     int counter = 0;
     List<Map<String, Widget>> renderList = [];
@@ -266,8 +179,9 @@ class LibraryList {
                           ),
                       ],
                     )));
-        } else
+        } else {
           return renderList[0][state]!;
+        }
       },
     );
   }

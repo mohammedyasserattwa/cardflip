@@ -43,14 +43,14 @@ class RouterModel {
                 ],
               ),
               GoRoute(
-                  path: "Category",
+                  path: "Category/:id",
                   builder: (BuildContext context, GoRouterState state) =>
-                      const Category(),
+                      Category(id: state.params["id"]!),
                   routes: [
                     GoRoute(
-                      path: "Deck",
+                      path: "Deck/:deckid",
                       builder: (BuildContext context, GoRouterState state) =>
-                          DeckScreen(),
+                          DeckScreen(id: state.params["deckid"]!),
                       routes: [
                         GoRoute(
                             path: "Flashcards",
@@ -74,9 +74,9 @@ class RouterModel {
                     GoRoute(
                       path: "Deck/:id",
                       builder: (BuildContext context, GoRouterState state) {
-                          String id = state.params["id"]!;
-                          return DeckScreen(id: id);
-                        },
+                        String id = state.params["id"]!;
+                        return DeckScreen(id: id);
+                      },
                       routes: [
                         GoRoute(
                             path: "Flashcards",
@@ -99,12 +99,14 @@ class RouterModel {
               GoRoute(
                 path: "Profile",
                 builder: (BuildContext context, GoRouterState state) =>
-                    const Profile(),
+                    Profile(),
                 routes: [
                   GoRoute(
-                    path: "Deck",
-                    builder: (BuildContext context, GoRouterState state) =>
-                        DeckScreen(),
+                    path: "Deck/:id",
+                    builder: (BuildContext context, GoRouterState state) {
+                      String id = state.params["id"]!;
+                      return DeckScreen(id: id);
+                    },
                     routes: [
                       GoRoute(
                           path: "Flashcards",

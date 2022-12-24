@@ -83,6 +83,8 @@ flutter:
     - Images/icons/svg/heart_filled.svg
     - Images/icons/svg/heart_outline.svg
     - Images/icons/svg/more-fill.svg
+    - Images/icons/svg/settings.svg
+    - Images/icons/svg/arrow-left-s-line.svg
     - Images/icons/
     - Images/backgrounds/
     - Images/cards/flashcards/

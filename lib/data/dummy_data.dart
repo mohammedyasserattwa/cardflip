@@ -3,6 +3,7 @@
 class DummyData {
   String FirstName = "Lara";
   String LastName = "Ghoniem";
+  String username = "laraghoniem";
   int flashcard = 49;
   double ratingnumber = 4.0;
 

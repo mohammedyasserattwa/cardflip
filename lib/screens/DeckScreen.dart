@@ -26,7 +26,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
   late FlashcardModel model;
   final heartState = ["heart_outline", "heart_filled"];
   final CardGenerator _cardGen = CardGenerator();
-  
+
   late Widget _cards;
   bool _isFiltered = false;
   int counter = 0;
@@ -223,8 +223,8 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                   }
                                 },
                                 child: Container(
-                                  width: 45,
-                                  height: 45,
+                                  width: 40,
+                                  height: 40,
                                   decoration: const BoxDecoration(
                                     color: Color(0x0f1a0404),
                                     borderRadius:
@@ -233,8 +233,9 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: SvgPicture.asset(
-                                      "Images/icons/svg/${heartState[favourites.contains(model.deck.id) ? 1 : 0]}.svg",
-                                    ),
+                                        "Images/icons/svg/${heartState[favourites.contains(model.deck.id) ? 1 : 0]}.svg",
+                                        width: 10,
+                                        height: 10),
                                   ),
                                 )),
                             const SizedBox(
@@ -251,8 +252,8 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                   });
                                 },
                                 child: Container(
-                                  width: 45,
-                                  height: 45,
+                                  width: 40,
+                                  height: 40,
                                   decoration: const BoxDecoration(
                                     color: Color(0xf1A0404),
                                     borderRadius:
@@ -261,8 +262,9 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: SvgPicture.asset(
-                                      "Images/icons/svg/filter.svg",
-                                    ),
+                                        "Images/icons/svg/filter.svg",
+                                        width: 10,
+                                        height: 10),
                                   ),
                                 )),
                           ],

@@ -1,5 +1,7 @@
 // ignore_for_file: unnecessary_new, prefer_const_constructors
 
+import 'package:cardflip/models/userModel.dart';
+import 'package:cardflip/widgets/category_card.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 import "package:flutter/material.dart";
 import '../models/deckModel.dart';
@@ -19,6 +21,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   HomeModel model = new HomeModel(new DummyData());
+  UserModel user = new UserModel();
   DeckModel deckModel = new DeckModel();
   CardGenerator cardgenerator = new CardGenerator();
   CardGenerator cardgenerator2 = new CardGenerator();
@@ -253,17 +256,10 @@ class _HomeState extends State<Home> {
                           scrollDirection: Axis.horizontal,
                           separatorBuilder: (BuildContext context, int index) =>
                               const SizedBox(width: 10),
-                          itemCount: 3,
-                          itemBuilder: (context, index) => Deck(
-                              onTap: () {
-                                GoRouter.of(context).go('/Home/Category');
-                              },
-                              // cardgenerator: cardgenerator3,
-                              width: 139,
-                              height: 116.67,
-                              path:
-                                  "Images/cards/homepage/1_3/${cardgenerator3.getcolor}/${cardgenerator3.getshape}.png",
-                              min: 3))),
+                          itemCount: user.categories.length,
+                          itemBuilder: (context, index) => CategoryCard(category: user.categories[index])
+                              )
+                              ),
                 ),
               ),
             ],
