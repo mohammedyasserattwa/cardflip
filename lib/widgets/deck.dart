@@ -20,7 +20,6 @@ class Deck extends ConsumerWidget {
   }) : super(key: key);
 
   final Function() onTap;
-  // final CardGenerator cardgenerator;
   final double height;
   final double width;
   final String path;

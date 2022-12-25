@@ -102,174 +102,169 @@ class _LibraryState extends State<Library> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: NavBar(),
-      body: Container(
-        height: 1000,
-        width: double.infinity,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("Images/backgrounds/librarypage.png"),
-              fit: BoxFit.cover),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            _header,
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  GestureDetector(
+    return Container(
+      height: 1000,
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage("Images/backgrounds/librarypage.png"),
+            fit: BoxFit.cover),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          _header,
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                GestureDetector(
+                    onTap: () {
+                      if (!status["all"]!) {
+                        status["all"] = true;
+                        status["user"] = false;
+                        status["others"] = false;
+                        _consumerState = _listBuilder[0];
+                        setState(() {});
+                      }
+                    },
+                    child: Container(
+                        decoration: BoxDecoration(
+                            color: (status["all"]!)
+                                ? const Color.fromARGB(31, 10, 1, 1)
+                                : Colors.transparent,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(12))),
+                        width: 48,
+                        height: 48,
+                        child: Center(
+                            child: Text(
+                          "All",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontFamily: "PolySans",
+                              fontWeight: (status["all"]! == true)
+                                  ? FontWeight.w600
+                                  : FontWeight.normal),
+                        )))),
+                GestureDetector(
+                  onTap: () {
+                    if (!status["user"]!) {
+                      status["all"] = false;
+                      status["user"] = true;
+                      status["others"] = false;
+                      _consumerState = _listBuilder[1];
+                      setState(() {
+                        // _consumerState = _listBuilder["user"]!;
+                      });
+                    }
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: (status["user"]!)
+                            ? const Color.fromARGB(31, 10, 1, 1)
+                            : Colors.transparent,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(12))),
+                    width: 48,
+                    height: 48,
+                    child: Center(
+                      child: Text(
+                        "Yours",
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontFamily: "PolySans_Neutral",
+                            fontWeight: (status["user"]!)
+                                ? FontWeight.w600
+                                : FontWeight.normal),
+                      ),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    if (!status["others"]!) {
+                      status["all"] = false;
+                      status["user"] = false;
+                      status["others"] = true;
+                      _consumerState = _listBuilder[2];
+                      setState(() {
+                        // _consumerState = _listBuilder["others"]!;
+                      });
+                    }
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: (status["others"]!)
+                            ? const Color.fromARGB(31, 10, 1, 1)
+                            : Colors.transparent,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(12))),
+                    width: 55,
+                    height: 48,
+                    child: Center(
+                      child: Text(
+                        "Others",
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontFamily: "PolySans_Neutral",
+                            fontWeight: (status["others"]!)
+                                ? FontWeight.w600
+                                : FontWeight.normal),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
                       onTap: () {
-                        if (!status["all"]!) {
-                          status["all"] = true;
-                          status["user"] = false;
-                          status["others"] = false;
-                          _consumerState = _listBuilder[0];
-                          setState(() {});
+                        GoRouter.of(context).go('/Home/Library/Adddeck');
+                      },
+                      child: Container(
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage("Images/icons/add.png"),
+                                fit: BoxFit.cover),
+                          ),
+                          width: 48,
+                          height: 48,
+                          child: const Text(""))),
+                ),
+                Container(
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                      onTap: () {
+                        if (!_isFiltered) {
+                          setState(() {
+                            _consumerState = LibraryList(filter: true).build();
+                            _isFiltered = true;
+                          });
+                        } else {
+                          setState(() {
+                            _consumerState = LibraryList(filter: false).build();
+                            _isFiltered = false;
+                          });
                         }
                       },
                       child: Container(
-                          decoration: BoxDecoration(
-                              color: (status["all"]!)
-                                  ? const Color.fromARGB(31, 10, 1, 1)
-                                  : Colors.transparent,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(12))),
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage("Images/icons/filter.png"),
+                                fit: BoxFit.cover),
+                          ),
                           width: 48,
                           height: 48,
-                          child: Center(
-                              child: Text(
-                            "All",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontFamily: "PolySans",
-                                fontWeight: (status["all"]! == true)
-                                    ? FontWeight.w600
-                                    : FontWeight.normal),
-                          )))),
-                  GestureDetector(
-                    onTap: () {
-                      if (!status["user"]!) {
-                        status["all"] = false;
-                        status["user"] = true;
-                        status["others"] = false;
-                        _consumerState = _listBuilder[1];
-                        setState(() {
-                          // _consumerState = _listBuilder["user"]!;
-                        });
-                      }
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: (status["user"]!)
-                              ? const Color.fromARGB(31, 10, 1, 1)
-                              : Colors.transparent,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(12))),
-                      width: 48,
-                      height: 48,
-                      child: Center(
-                        child: Text(
-                          "Yours",
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontFamily: "PolySans_Neutral",
-                              fontWeight: (status["user"]!)
-                                  ? FontWeight.w600
-                                  : FontWeight.normal),
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      if (!status["others"]!) {
-                        status["all"] = false;
-                        status["user"] = false;
-                        status["others"] = true;
-                        _consumerState = _listBuilder[2];
-                        setState(() {
-                          // _consumerState = _listBuilder["others"]!;
-                        });
-                      }
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: (status["others"]!)
-                              ? const Color.fromARGB(31, 10, 1, 1)
-                              : Colors.transparent,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(12))),
-                      width: 55,
-                      height: 48,
-                      child: Center(
-                        child: Text(
-                          "Others",
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontFamily: "PolySans_Neutral",
-                              fontWeight: (status["others"]!)
-                                  ? FontWeight.w600
-                                  : FontWeight.normal),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                        onTap: () {
-                          GoRouter.of(context).go('/Home/Library/Adddeck');
-                        },
-                        child: Container(
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage("Images/icons/add.png"),
-                                  fit: BoxFit.cover),
-                            ),
-                            width: 48,
-                            height: 48,
-                            child: const Text(""))),
-                  ),
-                  Container(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                        onTap: () {
-                          if (!_isFiltered) {
-                            setState(() {
-                              _consumerState =
-                                  LibraryList(filter: true).build();
-                              _isFiltered = true;
-                            });
-                          } else {
-                            setState(() {
-                              _consumerState =
-                                  LibraryList(filter: false).build();
-                              _isFiltered = false;
-                            });
-                          }
-                        },
-                        child: Container(
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage("Images/icons/filter.png"),
-                                  fit: BoxFit.cover),
-                            ),
-                            width: 48,
-                            height: 48,
-                            child: const Text(""))),
-                  ),
-                ],
-              ),
+                          child: const Text(""))),
+                ),
+              ],
             ),
-            _consumerState
-          ],
-        ),
+          ),
+          _consumerState
+        ],
       ),
     );
   }

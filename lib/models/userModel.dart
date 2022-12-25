@@ -1,7 +1,6 @@
 import '../data/card.dart';
 import '../data/category.dart';
 import '../data/deck.dart';
-import "categoryModel.dart";
 
 class UserModel {
   // TODO: Get the user document ID

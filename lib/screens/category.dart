@@ -13,7 +13,7 @@ import 'package:go_router/go_router.dart';
 
 class Category extends StatelessWidget {
   String id;
-  Category({key, required this.id});
+  Category({super.key, required this.id});
 
   CardGenerator cardgenerator = new CardGenerator();
   CardGenerator cardgenerator2 = new CardGenerator();
@@ -42,7 +42,6 @@ class Category extends StatelessWidget {
     final height = _responsive(context)["height"];
     final width = _responsive(context)["width"];
     return Scaffold(
-        bottomNavigationBar: NavBar(),
         body: Container(
             width: double.infinity,
             decoration: BoxDecoration(
@@ -122,24 +121,30 @@ class Category extends StatelessWidget {
                                   : MainAxisAlignment.start,
                           children: [
                             Deck(
+                              height: height,
+                              id: model.category.decks[i].id,
+                              width: width,
+                              path:
+                                  "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                              min: 3,
+                              onTap: () => Navigator.of(context)
+                                  .pushNamed("/deck", arguments: {
+                                "deckID": model.category.decks[i].id,
+                              }),
+                            ),
+                            if (i + 1 < model.category.decks.length)
+                              Deck(
                                 height: height,
-                                id: model.category.decks[i].id,
                                 width: width,
+                                id: model.category.decks[i + 1].id,
                                 path:
                                     "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
                                 min: 3,
-                                onTap: () => context.go(
-                                    "/Home/Category/${model.category.id}/Deck/${model.category.decks[i].id}")),
-                            if (i + 1 < model.category.decks.length)
-                              Deck(
-                                  height: height,
-                                  width: width,
-                                  id: model.category.decks[i + 1].id,
-                                  path:
-                                      "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
-                                  min: 3,
-                                  onTap: () => context.go(
-                                      "/Home/Category/Deck/${model.category.decks[i + 1].id}")),
+                                onTap: () => Navigator.of(context)
+                                    .pushNamed("/deck", arguments: {
+                                  "deckID": model.category.decks[i + 1].id,
+                                }),
+                              ),
                           ],
                         ),
                       ),

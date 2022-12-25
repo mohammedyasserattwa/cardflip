@@ -103,7 +103,8 @@ class _LoginState extends State<Login> {
                                     onPressed: () {
                                       if (Input.loginKey.currentState!
                                           .validate()) {
-                                        GoRouter.of(context).go('/Home');
+                                        Navigator.of(context)
+                                            .pushReplacementNamed('/home');
                                       }
                                     },
                                     style: ElevatedButton.styleFrom(
@@ -156,10 +157,7 @@ class _LoginState extends State<Login> {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Register()));
+                                    Navigator.pushNamed(context, "/register");
                                   },
                                   child: RichText(
                                     text: TextSpan(

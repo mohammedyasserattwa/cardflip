@@ -21,7 +21,6 @@ class _AdddeckState extends State<Adddeck> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: NavBar(),
       body: Container(
         height: 1000,
         width: double.infinity,

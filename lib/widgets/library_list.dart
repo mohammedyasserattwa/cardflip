@@ -3,7 +3,7 @@ import 'package:cardflip/data/Repositories/user_state.dart';
 import 'package:cardflip/data/card_generator.dart';
 import 'package:cardflip/models/deckModel.dart';
 import "package:flutter/material.dart";
-import "package:go_router/go_router.dart";
+// import "package:go_router/go_router.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 
@@ -29,6 +29,7 @@ class LibraryList {
       return {"height": 158.67, "width": 163.67, "fontSize": 20};
     }
   }
+
   Widget build({String state = "all"}) {
     int counter = 0;
     List<Map<String, Widget>> renderList = [];
@@ -95,8 +96,10 @@ class LibraryList {
                                       height: height,
                                       min: 3,
                                       onTap: () {
-                                        GoRouter.of(context).go(
-                                            '/Home/Library/Deck/${deckList[i].id}');
+                                        Navigator.pushNamed(context, "/deck",
+                                            arguments: {
+                                              "deckID": deckList[i].id,
+                                            });
                                       },
                                       path:
                                           "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
@@ -107,8 +110,10 @@ class LibraryList {
                                         height: height,
                                         min: 3,
                                         onTap: () {
-                                          GoRouter.of(context).go(
-                                              '/Home/Library/Deck/${deckList[i + 1].id}');
+                                          Navigator.pushNamed(context, "/deck",
+                                              arguments: {
+                                                "deckID": deckList[i + 1].id,
+                                              });
                                         },
                                         path:
                                             "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
@@ -157,8 +162,10 @@ class LibraryList {
                                     height: height,
                                     min: 3,
                                     onTap: () {
-                                      GoRouter.of(context).go(
-                                          '/Home/Library/Deck/${deckList[i].id}');
+                                      Navigator.pushNamed(context, "/deck",
+                                          arguments: {
+                                            "deckID": deckList[i].id,
+                                          });
                                     },
                                     path:
                                         "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
@@ -169,8 +176,10 @@ class LibraryList {
                                       height: height,
                                       min: 3,
                                       onTap: () {
-                                        GoRouter.of(context).go(
-                                            '/Home/Library/Deck/${deckList[i + 1].id}');
+                                        Navigator.pushNamed(context, "/deck",
+                                            arguments: {
+                                              "deckID": deckList[i + 1].id,
+                                            });
                                       },
                                       path:
                                           "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),

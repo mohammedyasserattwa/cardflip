@@ -4,20 +4,21 @@ import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cardflip/data/Repositories/user_decks.dart';
+import 'package:cardflip/data/Repositories/user_state.dart';
+import 'package:cardflip/models/deckModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import '../data/card_generator.dart';
 import '../models/flashcardModel.dart';
-import '../widgets/navibar.dart';
 import "../widgets/term_card.dart" as TermCard;
 import 'package:cardflip/data/card.dart' as dataCard;
 
 class DeckScreen extends ConsumerStatefulWidget {
-  DeckScreen({Key? key, this.id = "1"}) : super(key: key);
   String id;
+  DeckScreen({Key? key, this.id = "1"}) : super(key: key);
+
   @override
   ConsumerState<DeckScreen> createState() => _MyDeckScreenState();
 }
@@ -31,12 +32,15 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
   bool _isFiltered = false;
   int counter = 0;
   late int _randomBanner;
+
   @override
   void initState() {
+    super.initState();
+
     model = FlashcardModel(id: widget.id);
     _cards = cardList(model.getCards);
     _randomBanner = Random().nextInt(5);
-    super.initState();
+    //////
   }
 
   Widget cardList(List<dataCard.Card> cardList) {
@@ -72,15 +76,39 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
     );
   }
 
+  Widget filter() => GestureDetector(
+      onTap: () {
+        setState(() {
+          if (_isFiltered == false) {
+            model.filter();
+            _cards = cardList(model.getCards);
+            _isFiltered = true;
+          }
+        });
+      },
+      child: Container(
+        width: 45,
+        height: 45,
+        decoration: const BoxDecoration(
+          color: Color(0xf1A0404),
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SvgPicture.asset("Images/icons/svg/filter.svg",
+              width: 45, height: 45),
+        ),
+      ));
   @override
   Widget build(BuildContext context) {
+    final deckModel = DeckModel();
     final favourites = ref.watch(FavouritesProvider);
     final ratings = ref.watch(RatingProvider);
     final reports = ref.watch(ReportProvider);
+    final userID = ref.watch(UserIDProvider);
     bool isReported = (reports.contains(model.deck.id));
     dynamic size = MediaQuery.of(context).size;
     return Scaffold(
-      bottomNavigationBar: NavBar(),
       body: Container(
         height: size.height,
         width: size.width,
@@ -110,7 +138,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                       children: [
                         GestureDetector(
                             onTap: () {
-                              context.pop();
+                              Navigator.pop(context);
                             },
                             child: Container(
                                 decoration: const BoxDecoration(
@@ -187,170 +215,208 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                     const SizedBox(
                       height: 30,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                    Column(
                       children: [
-                        Text(
-                          "${model.queue} Flashcards",
-                          style: TextStyle(
-                            fontFamily: "PolySans_Median",
-                            fontWeight: FontWeight.w500,
-                            color: const Color(0xff514F55),
-                            fontSize: (MediaQuery.of(context).size.width > 322)
-                                ? 30
-                                : 22,
-                          ),
-                        ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            GestureDetector(
-                                onTap: () {
-                                  if (!favourites.contains(model.deck.id)) {
-                                    model.deck.incrementRating();
-                                    ref
-                                        .read(FavouritesProvider.notifier)
-                                        .state = favourites + [model.deck.id];
-                                  } else {
-                                    model.deck.decrementRating();
-                                    List<String> temp = ref
-                                        .read(FavouritesProvider.notifier)
-                                        .state;
-                                    temp.remove(model.deck.id);
-                                    ref
-                                        .read(FavouritesProvider.notifier)
-                                        .state = temp;
-                                    setState(() {});
-                                  }
-                                },
-                                child: Container(
-                                  width: 40,
-                                  height: 40,
-                                  decoration: const BoxDecoration(
-                                    color: Color(0x0f1a0404),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(12)),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: SvgPicture.asset(
-                                        "Images/icons/svg/${heartState[favourites.contains(model.deck.id) ? 1 : 0]}.svg",
-                                        width: 10,
-                                        height: 10),
-                                  ),
-                                )),
-                            const SizedBox(
-                              width: 10,
+                            Text(
+                              "${model.queue} Flashcards",
+                              style: TextStyle(
+                                fontFamily: "PolySans_Median",
+                                fontWeight: FontWeight.w500,
+                                color: const Color(0xff514F55),
+                                fontSize:
+                                    (MediaQuery.of(context).size.width > 322)
+                                        ? 30
+                                        : 22,
+                              ),
                             ),
-                            GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    if (_isFiltered == false) {
-                                      model.filter();
-                                      _cards = cardList(model.getCards);
-                                      _isFiltered = true;
-                                    }
-                                  });
-                                },
-                                child: Container(
-                                  width: 40,
-                                  height: 40,
-                                  decoration: const BoxDecoration(
-                                    color: Color(0xf1A0404),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(12)),
+                            if (widget.id !=
+                                deckModel.deckByUserID(userID)[0].deckID)
+                              Row(
+                                children: [
+                                  GestureDetector(
+                                      onTap: () {
+                                        if (!favourites
+                                            .contains(model.deck.id)) {
+                                          model.deck.incrementRating();
+                                          ref
+                                              .read(FavouritesProvider.notifier)
+                                              .state = favourites + [model.deck.id];
+                                        } else {
+                                          model.deck.decrementRating();
+                                          List<String> temp = ref
+                                              .read(FavouritesProvider.notifier)
+                                              .state;
+                                          temp.remove(model.deck.id);
+                                          ref
+                                              .read(FavouritesProvider.notifier)
+                                              .state = temp;
+                                          setState(() {});
+                                        }
+                                      },
+                                      child: Container(
+                                        width: 45,
+                                        height: 45,
+                                        decoration: const BoxDecoration(
+                                          color: Color(0x0f1a0404),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(12)),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: SvgPicture.asset(
+                                              "Images/icons/svg/${heartState[favourites.contains(model.deck.id) ? 1 : 0]}.svg",
+                                              width: 45,
+                                              height: 45),
+                                        ),
+                                      )),
+                                  const SizedBox(
+                                    width: 10,
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: SvgPicture.asset(
-                                        "Images/icons/svg/filter.svg",
-                                        width: 10,
-                                        height: 10),
-                                  ),
-                                )),
+                                  filter()
+                                ],
+                              ),
                           ],
                         ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GestureDetector(
-                              onTap: () {},
-                              child: Row(
-                                children: [
-                                  Container(
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              if (widget.id !=
+                                  deckModel.deckByUserID(userID)[0].deckID)
+                                GestureDetector(
+                                    onTap: () {},
+                                    child: Row(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Container(
+                                                decoration: const BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: AssetImage(
+                                                          "Images/icons/profile.png"),
+                                                      fit: BoxFit.cover),
+                                                ),
+                                                width: 35,
+                                                height: 35,
+                                                child: const Text("")),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              model.deck.deckAuthor,
+                                              style: const TextStyle(
+                                                fontFamily: "PolySans_Slim",
+                                                fontWeight: FontWeight.w500,
+                                                color: Color(0xff514F55),
+                                                fontSize: 22,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    )),
+                              GestureDetector(
+                                  onTap: () {
+                                    if (!ratings.contains(model.deck.id)) {
+                                      model.deck.incrementRating();
+                                      ref.read(RatingProvider.notifier).state =
+                                          ratings + [model.deck.id];
+                                    } else {
+                                      model.deck.decrementRating();
+                                      List<String> temp = ref
+                                          .read(RatingProvider.notifier)
+                                          .state;
+                                      temp.remove(model.deck.id);
+                                      ref.read(RatingProvider.notifier).state =
+                                          <String>[] + temp;
+                                      setState(() {});
+                                    }
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: AssetImage(
+                                                    "Images/icons/star-${(ratings.contains(model.deck.deckID)) ? "fill" : "line"}.png"),
+                                                fit: BoxFit.cover),
+                                          ),
+                                          width: 23,
+                                          height: 23,
+                                          child: const Text("")),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        model.deck.deckRating,
+                                        style: const TextStyle(
+                                          fontFamily: "PolySans_Slim",
+                                          fontWeight: FontWeight.w500,
+                                          color: Color(0xff514F55),
+                                          fontSize: 23,
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                              if (widget.id ==
+                                  deckModel.deckByUserID(userID)[0].deckID)
+                                Row(
+                                  children: [
+                                    GestureDetector(
+                                        child: Container(
+                                      width: 45,
+                                      height: 45,
                                       decoration: const BoxDecoration(
-                                        image: DecorationImage(
-                                            image: AssetImage(
-                                                "Images/icons/profile.png"),
-                                            fit: BoxFit.cover),
+                                        color: Color(0xf1A0404),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(12)),
                                       ),
-                                      width: 35,
-                                      height: 35,
-                                      child: const Text("")),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    model.deck.deckAuthor,
-                                    style: const TextStyle(
-                                      fontFamily: "PolySans_Slim",
-                                      fontWeight: FontWeight.w500,
-                                      color: Color(0xff514F55),
-                                      fontSize: 22,
-                                    ),
-                                  )
-                                ],
-                              )),
-                          GestureDetector(
-                              onTap: () {
-                                if (!ratings.contains(model.deck.id)) {
-                                  model.deck.incrementRating();
-                                  ref.read(RatingProvider.notifier).state =
-                                      ratings + [model.deck.id];
-                                } else {
-                                  model.deck.decrementRating();
-                                  List<String> temp =
-                                      ref.read(RatingProvider.notifier).state;
-                                  temp.remove(model.deck.id);
-                                  ref.read(RatingProvider.notifier).state =
-                                      <String>[] + temp;
-                                  setState(() {});
-                                }
-                              },
-                              child: Row(
-                                children: [
-                                  Container(
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                            image: AssetImage(
-                                                "Images/icons/star-${(ratings.contains(model.deck.deckID)) ? "fill" : "line"}.png"),
-                                            fit: BoxFit.cover),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: SvgPicture.asset(
+                                            "Images/icons/svg/edit.svg",
+                                            width: 28,
+                                            height: 28),
                                       ),
-                                      width: 23,
-                                      height: 23,
-                                      child: const Text("")),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    model.deck.deckRating,
-                                    style: const TextStyle(
-                                      fontFamily: "PolySans_Slim",
-                                      fontWeight: FontWeight.w500,
-                                      color: Color(0xff514F55),
-                                      fontSize: 23,
+                                    )),
+                                    const SizedBox(
+                                      width: 10,
                                     ),
-                                  ),
-                                ],
-                              )),
-                        ],
-                      ),
+                                    GestureDetector(
+                                        child: Container(
+                                      width: 45,
+                                      height: 45,
+                                      decoration: const BoxDecoration(
+                                        color: Color(0xf1A0404),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(12)),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: SvgPicture.asset(
+                                            "Images/icons/svg/add.svg",
+                                            width: 25,
+                                            height: 25),
+                                      ),
+                                    )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    filter()
+                                  ],
+                                )
+                            ],
+                          ),
+                        )
+                      ],
                     )
                   ],
                 ),
@@ -362,7 +428,8 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
             children: [
               GestureDetector(
                 onTap: () {
-                  context.go('/Home/Deck/${widget.id}/Flashcards');
+                  Navigator.pushNamed(context, '/flashcards',
+                      arguments: {"deckID": widget.id});
                 },
                 child: Container(
                   decoration: const BoxDecoration(
@@ -386,7 +453,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                  context.go('/Home/Deck/Test');
+                  Navigator.pushNamed(context, '/test');
                 },
                 child: Container(
                   decoration: const BoxDecoration(

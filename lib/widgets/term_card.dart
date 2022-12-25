@@ -52,7 +52,8 @@ class Card extends ConsumerWidget {
     return GestureDetector(
         onTap: () {
           ref.read(FlashcardStateProvider.notifier).state = index;
-          context.go('/Home/Deck/$id/Flashcards');
+          Navigator.pushNamed(context, '/flashcards',
+              arguments: {"deckID": id});
         },
         child: Container(
             decoration: image,

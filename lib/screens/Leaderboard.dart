@@ -13,7 +13,6 @@ class Leaderboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: NavBar(),
       body: Container(
         height: 1000,
         width: double.infinity,
