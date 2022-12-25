@@ -3,8 +3,17 @@ import '../data/category.dart';
 import '../data/deck.dart';
 
 class UserModel {
+  final List<String> _cardBackgrounds = [
+    "Images/cards/flashcards/2.png",
+    "Images/cards/flashcards/1.png",
+    "Images/cards/flashcards/0.png",
+  ];
+  List<String> get getImages => _cardBackgrounds;
+  // ignore: todo
   // TODO: Get the user document ID
+  // ignore: todo
   // TODO: Get the user personal Information
+  // ignore: todo
   // TODO: Get the user favourite decks
   // Get the user chosen Categories
   List<List<Deck>> categoryDecks = [
