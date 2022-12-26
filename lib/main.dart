@@ -4,14 +4,23 @@ import 'package:cardflip/screens/Profile.dart';
 import 'package:cardflip/screens/category.dart';
 import 'package:cardflip/screens/library.dart';
 import 'package:cardflip/screens/register.dart';
+import 'package:cardflip/screens/search.dart';
 import 'package:cardflip/screens/test.dart';
 import 'package:cardflip/widgets/navibar.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'screens/Login.dart';
 import 'screens/home.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-main() => runApp(const ProviderScope(child: Main()));
+main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(const ProviderScope(child: Main()));
+}
 
 class Main extends StatefulWidget {
   const Main({super.key});
@@ -56,6 +65,7 @@ class _MainState extends State<Main> {
           '/category': (context) => Category(id: data!["categoryID"]),
           '/flashcards': (context) => Flashcard(id: data!["deckID"]),
           '/test': (context) => const Test(),
+          '/search':(context) => const Search(),
         };
         WidgetBuilder builder = routes[settings.name]!;
         return MaterialPageRoute(builder: (context) => builder(context));

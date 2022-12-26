@@ -18,7 +18,11 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   UserModel model = UserModel();
-  loginModel Object = loginModel(data: User());
+  final _fnamecontroller = TextEditingController();
+  final _lnamecontroller = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _usernameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -85,33 +89,35 @@ class _RegisterState extends State<Register> {
                               padding: const EdgeInsets.only(
                                   top: 30, left: 30, right: 30),
                               child: Input(
-                                  hintTextOne: "First Name",
-                                  icon: Icons.person_sharp,
-                                  obscureText: false,
-                                  color: Color(0xFFF98800),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Please enter your first name';
-                                    }
-                                    return null;
-                                  },
-                                  Object: Object),
+                                hintTextOne: "First Name",
+                                icon: Icons.person_sharp,
+                                obscureText: false,
+                                color: Color(0xFFF98800),
+                                controller: _fnamecontroller,
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Please enter your first name';
+                                  }
+                                  return null;
+                                },
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(
                                   top: 15, left: 30, right: 30),
                               child: Input(
-                                  hintTextOne: "Last Name",
-                                  icon: Icons.person_sharp,
-                                  obscureText: false,
-                                  color: Color(0xFFF98800),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'Please enter your last name';
-                                    }
-                                    return null;
-                                  },
-                                  Object: Object),
+                                controller: _lnamecontroller,
+                                hintTextOne: "Last Name",
+                                icon: Icons.person_sharp,
+                                obscureText: false,
+                                color: Color(0xFFF98800),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Please enter your last name';
+                                  }
+                                  return null;
+                                },
+                              ),
                             ),
                           ],
                         ),
@@ -144,70 +150,72 @@ class _RegisterState extends State<Register> {
                                         padding: const EdgeInsets.only(
                                             top: 30, left: 30, right: 30),
                                         child: Input(
-                                            hintTextOne: "Username",
-                                            icon: Icons.person_outline_outlined,
-                                            obscureText: false,
-                                            color: Color(0xFFF98800),
-                                            validator: (value) {
-                                              if (value!.isEmpty) {
-                                                return 'Please enter a username';
-                                              }
-                                              if (value.length < 5 ||
-                                                  value.length > 15) {
-                                                return 'Username must be between 5-15 characters';
-                                              }
-                                              if (RegExp(r'\s')
-                                                  .hasMatch(value)) {
-                                                return 'Cannot contain spaces';
-                                              }
-                                              if (!RegExp(r'^[a-zA-Z0-9]+$')
-                                                  .hasMatch(value)) {
-                                                return 'Cannot contain special characters';
-                                              }
-                                              return null;
-                                            },
-                                            Object: Object),
+                                          controller: _usernameController,
+                                          hintTextOne: "Username",
+                                          icon: Icons.person_outline_outlined,
+                                          obscureText: false,
+                                          color: Color(0xFFF98800),
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return 'Please enter a username';
+                                            }
+                                            if (value.length < 5 ||
+                                                value.length > 15) {
+                                              return 'Username must be between 5-15 characters';
+                                            }
+                                            if (RegExp(r'\s').hasMatch(value)) {
+                                              return 'Cannot contain spaces';
+                                            }
+                                            if (!RegExp(r'^[a-zA-Z0-9]+$')
+                                                .hasMatch(value)) {
+                                              return 'Cannot contain special characters';
+                                            }
+                                            return null;
+                                          },
+                                        ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(
                                             top: 15, left: 30, right: 30),
                                         child: Input(
-                                            hintTextOne: "Email",
-                                            icon: Icons.email_rounded,
-                                            obscureText: false,
-                                            color: Color(0xFF5FC88F),
-                                            validator: (value) {
-                                              if (value!.isEmpty) {
-                                                return 'Please enter an email';
-                                              }
-                                              if (!RegExp(
-                                                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+.[a-zA-Z]+")
-                                                  .hasMatch(value)) {
-                                                return 'Please enter a valid email';
-                                              }
-                                              return null;
-                                            },
-                                            Object: Object),
+                                          controller: _emailController,
+                                          hintTextOne: "Email",
+                                          icon: Icons.email_rounded,
+                                          obscureText: false,
+                                          color: Color(0xFF5FC88F),
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return 'Please enter an email';
+                                            }
+                                            if (!RegExp(
+                                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+.[a-zA-Z]+")
+                                                .hasMatch(value)) {
+                                              return 'Please enter a valid email';
+                                            }
+                                            return null;
+                                          },
+                                        ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(
                                             top: 15, left: 30, right: 30),
                                         child: Input(
-                                            hintTextOne: "Password",
-                                            icon: Icons.lock_outline,
-                                            obscureText: true,
-                                            color: Color.fromARGB(
-                                                255, 184, 145, 229),
-                                            validator: (value) {
-                                              if (value!.isEmpty) {
-                                                return 'Please enter a password';
-                                              }
-                                              if (value.length < 8) {
-                                                return 'Your password must be at least 8 characters';
-                                              }
-                                              return null;
-                                            },
-                                            Object: Object),
+                                          controller: _passwordController,
+                                          hintTextOne: "Password",
+                                          icon: Icons.lock_outline,
+                                          obscureText: true,
+                                          color: Color.fromARGB(
+                                              255, 184, 145, 229),
+                                          validator: (value) {
+                                            if (value!.isEmpty) {
+                                              return 'Please enter a password';
+                                            }
+                                            if (value.length < 8) {
+                                              return 'Your password must be at least 8 characters';
+                                            }
+                                            return null;
+                                          },
+                                        ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(

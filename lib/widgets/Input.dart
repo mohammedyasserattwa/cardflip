@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class Input extends StatelessWidget {
   Input({
     Key? key,
-    required this.Object,
+    required this.controller,
     required this.validator,
     required this.hintTextOne,
     required this.icon,
@@ -14,7 +14,7 @@ class Input extends StatelessWidget {
     required this.color,
   }) : super(key: key);
 
-  final loginModel Object;
+  final controller;
   final bool obscureText;
   final String? Function(String?) validator;
   final String hintTextOne;
@@ -26,6 +26,7 @@ class Input extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       obscureText: obscureText,
       validator: validator,
       onSaved: (val) {},

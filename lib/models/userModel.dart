@@ -1,8 +1,36 @@
 import '../data/card.dart';
 import '../data/category.dart';
 import '../data/deck.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
+  static final FirebaseFirestore _database = FirebaseFirestore.instance;
+  static save(User user) async {
+    Map<String, dynamic> data = {"fname": "Mohammed", "lname": "Yasser"};
+    final userRef = _database.collection("user").doc(user.uid);
+    if (!(await userRef.get()).exists) {
+      await userRef.set(data);
+    }
+  }
+
+  final _auth = FirebaseAuth.instance;
+  final _userCollection = FirebaseFirestore.instance.collection("user");
+
+  String get id {
+    final user = _auth.currentUser!;
+    return user.uid;
+  }
+
+  Future<DocumentSnapshot> get userData {
+    final user = _auth.currentUser!;
+    String id = user.uid;
+    // String name;
+    return _userCollection.doc(id).get();
+    // name = userDoc.get("fname");
+    // return name;
+  }
+
   final List<String> _cardBackgrounds = [
     "Images/cards/flashcards/2.png",
     "Images/cards/flashcards/1.png",

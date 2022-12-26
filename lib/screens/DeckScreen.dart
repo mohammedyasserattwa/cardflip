@@ -233,8 +233,9 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                         : 22,
                               ),
                             ),
-                            if (widget.id !=
-                                deckModel.deckByUserID(userID)[0].deckID)
+                            if (deckModel.deckByUserID(userID).isEmpty ||
+                                widget.id !=
+                                    deckModel.deckByUserID(userID)[0].deckID)
                               Row(
                                 children: [
                                   GestureDetector(
@@ -289,8 +290,9 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              if (widget.id !=
-                                  deckModel.deckByUserID(userID)[0].deckID)
+                              if (deckModel.deckByUserID(userID).isEmpty ||
+                                  widget.id !=
+                                      deckModel.deckByUserID(userID)[0].deckID)
                                 GestureDetector(
                                     onTap: () {},
                                     child: Row(
@@ -366,8 +368,9 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                       ),
                                     ],
                                   )),
-                              if (widget.id ==
-                                  deckModel.deckByUserID(userID)[0].deckID)
+                              if (deckModel.deckByUserID(userID).isNotEmpty &&
+                                  widget.id ==
+                                      deckModel.deckByUserID(userID)[0].deckID)
                                 Row(
                                   children: [
                                     GestureDetector(

@@ -1,23 +1,77 @@
 // ignore_for_file: prefer_const_constructors, unused_import, non_constant_identifier_names, avoid_types_as_parameter_names, library_private_types_in_public_api, file_names, prefer_const_literals_to_create_immutables, body_might_complete_normally_nullable, unrelated_type_equality_checks, unnecessary_string_interpolations
 
-import 'package:cardflip/data/User.dart';
+import 'package:cardflip/data/Repositories/user_state.dart';
+import 'package:cardflip/data/User.dart' as user_data;
 import 'package:cardflip/main.dart';
 import 'package:cardflip/models/loginModel.dart';
+import 'package:cardflip/models/userModel.dart';
 import 'package:cardflip/screens/home.dart';
+import 'package:cardflip/screens/loading_screen.dart';
 import 'package:cardflip/screens/register.dart';
 import 'package:cardflip/widgets/Input.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class Login extends StatefulWidget {
+class Login extends ConsumerStatefulWidget {
   const Login({super.key});
 
   @override
-  _LoginState createState() => _LoginState();
+  ConsumerState<Login> createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
-  loginModel Object = loginModel(data: User());
+class _LoginState extends ConsumerState<Login> {
+  late final _firebaseAuth;
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  UserModel userModel = UserModel();
+  @override
+  void initState() {
+    _firebaseAuth = FirebaseAuth.instance;
+    super.initState();
+  }
+
+  Future signIn() async {
+    bool result = true;
+    if (result) {
+      try {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return LoadingWidget();
+            });
+        final credentials = await _firebaseAuth.signInWithEmailAndPassword(
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim(),
+        );
+        userModel.userData.then((value) {
+          ref.read(UserDataProvider.notifier).state =
+              user_data.User.fromSnapshot(
+                  value, _emailController.text, _passwordController.text);
+          Navigator.pushReplacementNamed(context, '/home');
+        });
+      } on FirebaseAuthException catch (e) {
+        if (e.code == "user-not-found") {
+          print("User not found");
+          Navigator.pop(context);
+        } else if (e.code == "wrong-password") {
+          print("Password is wrong");
+          Navigator.pop(context);
+        } else {
+          print("no Internet");
+          Navigator.pop(context);
+        }
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,40 +113,34 @@ class _LoginState extends State<Login> {
                             child: Column(
                               children: [
                                 Input(
-                                    hintTextOne: "Email or Username",
-                                    icon: Icons.person_outline_outlined,
-                                    obscureText: false,
-                                    color: Color(0xFFF98800),
-                                    validator: (val) {
-                                      if (val == null || val.isEmpty) {
-                                        return "Please enter your email or username";
-                                      } else if (val != Object.fname &&
-                                          val != Object.email) {
-                                        return "Incorrect email or username";
-                                      } else if (val == "${Object.fname}" ||
-                                          val == "${Object.email}") {
-                                        return null;
-                                      }
-                                    },
-                                    Object: Object),
+                                  hintTextOne: "Email or Username",
+                                  icon: Icons.person_outline_outlined,
+                                  obscureText: false,
+                                  controller: _emailController,
+                                  color: Color(0xFFF98800),
+                                  validator: (val) {
+                                    if (val == null || val.isEmpty) {
+                                      return "Please enter your email or username";
+                                    }
+                                    return null;
+                                  },
+                                ),
                                 SizedBox(
                                   height: 30,
                                 ),
                                 Input(
-                                    hintTextOne: "Password",
-                                    icon: Icons.lock_outline,
-                                    obscureText: true,
-                                    color: Color.fromARGB(255, 184, 145, 229),
-                                    validator: (val) {
-                                      if (val == null || val.isEmpty) {
-                                        return "Please enter a valid password.";
-                                      } else if (val != "${Object.password}") {
-                                        return "please enter a valid password.";
-                                      } else {
-                                        return null;
-                                      }
-                                    },
-                                    Object: Object),
+                                  hintTextOne: "Password",
+                                  icon: Icons.lock_outline,
+                                  obscureText: true,
+                                  color: Color.fromARGB(255, 184, 145, 229),
+                                  controller: _passwordController,
+                                  validator: (val) {
+                                    if (val == null || val.isEmpty) {
+                                      return "Please enter a valid password.";
+                                    }
+                                    return null;
+                                  },
+                                ),
                                 SizedBox(
                                   height: 40,
                                 ),
@@ -103,8 +151,9 @@ class _LoginState extends State<Login> {
                                     onPressed: () {
                                       if (Input.loginKey.currentState!
                                           .validate()) {
-                                        Navigator.of(context)
-                                            .pushReplacementNamed('/home');
+                                        signIn();
+                                        // Navigator.of(context)
+                                        //     .pushReplacementNamed('/home');
                                       }
                                     },
                                     style: ElevatedButton.styleFrom(

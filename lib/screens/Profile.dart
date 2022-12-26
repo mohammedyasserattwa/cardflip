@@ -4,8 +4,10 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cardflip/data/Repositories/user_state.dart';
 import 'package:cardflip/models/deckModel.dart';
 import 'package:cardflip/widgets/deck.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
@@ -16,7 +18,7 @@ import '../data/card_generator.dart';
 import '../widgets/navibar.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends ConsumerWidget {
   Profile({key});
   // TODO: REMOVE the profile model with the UserModel
   ProfileModel model = ProfileModel(DummyData());
@@ -38,7 +40,8 @@ class Profile extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userData = ref.watch(UserDataProvider);
     final height = _responsive(context)["height"];
     final width = _responsive(context)["width"];
     return Container(
@@ -79,9 +82,10 @@ class Profile extends StatelessWidget {
                       Container(
                         alignment: Alignment.centerRight,
                         child: Container(
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               image: DecorationImage(
-                                  image: AssetImage("Images/avatars/1.png"),
+                                  image: AssetImage(
+                                      "Images/avatars/${userData.profileIcon}.png"),
                                   fit: BoxFit.cover),
                             ),
                             width: (MediaQuery.of(context).size.width > 274)
@@ -97,7 +101,7 @@ class Profile extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "${model.fname} ${model.lname}",
+                              "${userData.fname} ${userData.lname}",
                               style: TextStyle(
                                 fontFamily: "PolySans_Slim",
                                 color: Color(0xf0493C3F),
@@ -108,7 +112,7 @@ class Profile extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              "@${model.username}",
+                              "@${userData.username}",
                               style: TextStyle(
                                 fontFamily: "PolySans_Slim",
                                 color: Color(0xf0493C3F),
@@ -167,8 +171,8 @@ class Profile extends StatelessWidget {
                           image: AssetImage("Images/icons/badges1.png"),
                           fit: BoxFit.cover),
                     ),
-                    height: 40,
-                    width: 40,
+                    height: 55,
+                    width: 55,
                   ),
                   Container(
                     decoration: const BoxDecoration(
@@ -176,8 +180,8 @@ class Profile extends StatelessWidget {
                           image: AssetImage("Images/icons/badges2.png"),
                           fit: BoxFit.cover),
                     ),
-                    height: 40,
-                    width: 40,
+                    height: 55,
+                    width: 55,
                   ),
                   Container(
                     decoration: const BoxDecoration(
@@ -185,8 +189,8 @@ class Profile extends StatelessWidget {
                           image: AssetImage("Images/icons/badges3.png"),
                           fit: BoxFit.cover),
                     ),
-                    height: 40,
-                    width: 40,
+                    height: 55,
+                    width: 55,
                   ),
                   Container(
                     decoration: const BoxDecoration(
@@ -194,8 +198,8 @@ class Profile extends StatelessWidget {
                           image: AssetImage("Images/icons/morebadges.png"),
                           fit: BoxFit.cover),
                     ),
-                    height: 40,
-                    width: 40,
+                    height: 55,
+                    width: 55,
                     child: Center(
                       child: Text(
                         "+32",
