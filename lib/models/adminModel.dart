@@ -1,3 +1,5 @@
+import '../data/dummy_data.dart';
+
 class AdminModel{
   String username="admin";
   String password="cardFlip12345";
@@ -5,6 +7,13 @@ class AdminModel{
   List<String> reports=[];
   List<String> decks=[];
   List<String> users=[];
+
+  final DummyData _data;
+  AdminModel(DummyData data) : _data = data;
+
+  String get fname{
+    return _data.username;
+  }
 
   void banDeck(String name){
     decks.remove(name);
