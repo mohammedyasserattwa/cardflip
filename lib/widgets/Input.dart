@@ -9,7 +9,7 @@ class Input extends StatelessWidget {
     required this.controller,
     required this.validator,
     required this.hintTextOne,
-    required this.icon,
+    this.icon,
     required this.obscureText,
     required this.color,
   }) : super(key: key);
@@ -18,7 +18,7 @@ class Input extends StatelessWidget {
   final bool obscureText;
   final String? Function(String?) validator;
   final String hintTextOne;
-  final IconData icon;
+  final IconData? icon;
   final Color? color;
   static final registerKey = GlobalKey<FormState>();
   static final loginKey = GlobalKey<FormState>();
@@ -38,10 +38,12 @@ class Input extends StatelessWidget {
         decorationThickness: 0,
       ),
       decoration: InputDecoration(
+        contentPadding: EdgeInsets.only(left: 30.0),
         filled: true,
-        fillColor: Colors.white.withOpacity(0.6),
+        fillColor: Colors.white.withOpacity(0.8),
         hintText: hintTextOne,
         hintStyle: TextStyle(
+          fontFamily: "Poppins-Regular",
           color: Color(0xFF9395A4),
           decoration: TextDecoration.none,
         ),
@@ -69,11 +71,13 @@ class Input extends StatelessWidget {
             color: Colors.transparent,
           ),
         ),
-        prefixIcon: Icon(
-          icon,
-          color: color,
-          size: 20,
-        ),
+        prefixIcon: (icon != null)
+            ? Icon(
+                icon,
+                color: color,
+                size: 20,
+              )
+            : null,
       ),
     );
   }

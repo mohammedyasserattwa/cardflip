@@ -40,6 +40,7 @@ class _LoginState extends ConsumerState<Login> {
             context: context,
             builder: (context) {
               return LoadingWidget();
+              // return CircularProgressIndicator();
             });
         final credentials = await _firebaseAuth.signInWithEmailAndPassword(
           email: _emailController.text.trim(),
@@ -48,7 +49,7 @@ class _LoginState extends ConsumerState<Login> {
         userModel.userData.then((value) {
           ref.read(UserDataProvider.notifier).state =
               user_data.User.fromSnapshot(
-                  value, _emailController.text, _passwordController.text);
+                  value, _emailController.text, _passwordController.text,userModel.id);
           Navigator.pushReplacementNamed(context, '/home');
         });
       } on FirebaseAuthException catch (e) {
@@ -75,8 +76,9 @@ class _LoginState extends ConsumerState<Login> {
 
   @override
   Widget build(BuildContext context) {
+    final _key = GlobalKey<FormState>();
     return Form(
-      key: Input.loginKey,
+      key: _key,
       child: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -149,8 +151,7 @@ class _LoginState extends ConsumerState<Login> {
                                   height: 58,
                                   child: ElevatedButton(
                                     onPressed: () {
-                                      if (Input.loginKey.currentState!
-                                          .validate()) {
+                                      if (_key.currentState!.validate()) {
                                         signIn();
                                         // Navigator.of(context)
                                         //     .pushReplacementNamed('/home');

@@ -84,7 +84,7 @@ class Home extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(26, 14, 0, 0),
                   child: Text(
-                    "Welcome back, ${userData.firstname}",
+                    "Welcome back, ${userData!.firstname}",
                     style: TextStyle(
                       fontFamily: "PolySans_Median",
                       fontSize: 25,

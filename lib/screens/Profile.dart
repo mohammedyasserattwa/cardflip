@@ -60,14 +60,18 @@ class Profile extends ConsumerWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 15, right: 20.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Container(),
-                      SvgPicture.asset(
-                        "Images/icons/svg/settings.svg",
-                        width: 25,
-                        height: 25,
-                        color: Color(0xff8C9595),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, "/settings");
+                        },
+                        child: SvgPicture.asset(
+                          "Images/icons/svg/settings.svg",
+                          width: 25,
+                          height: 25,
+                          color: Color(0xff8C9595),
+                        ),
                       ),
                     ],
                   ),
@@ -85,7 +89,7 @@ class Profile extends ConsumerWidget {
                             decoration: BoxDecoration(
                               image: DecorationImage(
                                   image: AssetImage(
-                                      "Images/avatars/${userData.profileIcon}.png"),
+                                      "Images/avatars/${userData!.profileIcon}.png"),
                                   fit: BoxFit.cover),
                             ),
                             width: (MediaQuery.of(context).size.width > 274)

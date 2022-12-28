@@ -6,6 +6,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
   static final FirebaseFirestore _database = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
+  final _userCollection = FirebaseFirestore.instance.collection("user");
   static save(User user) async {
     Map<String, dynamic> data = {"fname": "Mohammed", "lname": "Yasser"};
     final userRef = _database.collection("user").doc(user.uid);
@@ -14,8 +16,9 @@ class UserModel {
     }
   }
 
-  final _auth = FirebaseAuth.instance;
-  final _userCollection = FirebaseFirestore.instance.collection("user");
+  signOut() async {
+    await _auth.signOut();
+  }
 
   String get id {
     final user = _auth.currentUser!;

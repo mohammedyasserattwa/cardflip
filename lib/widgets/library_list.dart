@@ -2,6 +2,7 @@ import 'package:cardflip/data/Repositories/user_decks.dart';
 import 'package:cardflip/data/Repositories/user_state.dart';
 import 'package:cardflip/data/card_generator.dart';
 import 'package:cardflip/models/deckModel.dart';
+import 'package:cardflip/models/userModel.dart';
 import "package:flutter/material.dart";
 // import "package:go_router/go_router.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
@@ -37,7 +38,8 @@ class LibraryList {
       builder: (context, ref, child) {
         final height = _responsive(context)["height"];
         final width = _responsive(context)["width"];
-        final userID = ref.watch(UserIDProvider);
+        final userModel = UserModel();
+        final userID = userModel.id;
         final favourites = ref.watch(FavouritesProvider);
         final userPersonalDecks = deckModel.deckByUserID(userID);
         deckList = userPersonalDecks;

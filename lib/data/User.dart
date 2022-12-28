@@ -12,23 +12,31 @@ class User {
     required this.password,
     required this.username,
     required this.profileIcon,
+    required this.id,
     this.role = "learner",
     this.favourites = const [],
     this.badges = const [],
   });
-  factory User.fromSnapshot(DocumentSnapshot snapshot, String email, String password) {
+  factory User.fromSnapshot(
+      DocumentSnapshot snapshot, String email, String password, String id) {
     String firstname = snapshot.get("fname");
     String lastname = snapshot.get("lname");
     String username = snapshot.get("username");
     String profileIcon = snapshot.get("profileIcon");
-    return User(firstname: firstname, lastname: lastname, username: username,
-    profileIcon: profileIcon, email: email, password: password
-    );
+    return User(
+        firstname: firstname,
+        lastname: lastname,
+        username: username,
+        profileIcon: profileIcon,
+        id: id,
+        email: email,
+        password: password);
 
     // this.
   }
   //PARAMETERS
   String firstname;
+  String id;
   String lastname;
   String email;
   String username;

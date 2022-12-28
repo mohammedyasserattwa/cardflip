@@ -1,26 +1,26 @@
+import 'package:cardflip/data/Repositories/search_provider.dart';
 import "package:flutter/material.dart";
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class SearchInputField extends StatefulWidget {
+class SearchInputField extends ConsumerStatefulWidget {
   final String hint;
   final TextEditingController controller;
   final TextInputType type;
-  final Function(String) validator;
-  final Function(String) onChanged;
   const SearchInputField(
       {super.key,
       required this.hint,
       required this.controller,
-      this.type = TextInputType.text,
-      required this.validator,
-      required this.onChanged});
+      this.type = TextInputType.text});
 
   @override
-  State<SearchInputField> createState() => _SearchInputFieldState();
+  ConsumerState<SearchInputField> createState() => _SearchInputFieldState();
 }
 
-class _SearchInputFieldState extends State<SearchInputField> {
+class _SearchInputFieldState extends ConsumerState<SearchInputField> {
   late Color _currentColor;
+  bool resetButton = false;
   @override
   void initState() {
     _currentColor = Colors.transparent;
@@ -32,7 +32,7 @@ class _SearchInputFieldState extends State<SearchInputField> {
     // final backgroundColor = .opacity(0.5);
     return Card(
       elevation: 0.0,
-      color: Color(0x3f1A0404),
+      color: Color(0x1f1A0404),
       shape: RoundedRectangleBorder(
         side: BorderSide(
           color: _currentColor,
@@ -51,38 +51,60 @@ class _SearchInputFieldState extends State<SearchInputField> {
             Flexible(
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
-                child: TextFormField(
-                  cursorColor: Colors.grey[600],
-                  cursorHeight: 30,
-                  onChanged: (value) {
-                    widget.onChanged(value);
-                    setState(() {
-                      if (!widget.validator(value) || value.isEmpty) {
-                        _currentColor = Colors.red;
-                      } else {
-                        _currentColor = Colors.transparent;
-                      }
-                    });
+                child: RawKeyboardListener(
+                  focusNode: FocusNode(),
+                  onKey: (event) {
+                    if (event.isKeyPressed(LogicalKeyboardKey.enter)) {
+                      // TODO: Shared Preference Algorithm
+                    }
                   },
-                  controller: widget.controller,
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontFamily: "bold",
-                    fontSize: 20,
-                  ),
-                  decoration: InputDecoration.collapsed(
-                    // border:,
-
-                    hintText: widget.hint,
-                    hintStyle: TextStyle(
+                  child: TextField(
+                    cursorColor: Colors.grey[600],
+                    cursorHeight: 30,
+                    onChanged: (value) {
+                      setState(() {
+                        ref.read(SearchProvider.notifier).state =
+                            widget.controller.text;
+                        if (value.isNotEmpty) {
+                          resetButton = true;
+                          _currentColor = Colors.transparent;
+                        } else {
+                          resetButton = false;
+                          _currentColor = Colors.red;
+                        }
+                      });
+                    },
+                    controller: widget.controller,
+                    style: TextStyle(
                       color: Colors.grey[600],
-                      fontFamily: "bold",
+                      fontFamily: "PolySans_Neutral",
                       fontSize: 20,
+                    ),
+                    decoration: InputDecoration.collapsed(
+                      // border:,
+                
+                      hintText: widget.hint,
+                      hintStyle: TextStyle(
+                        color: Colors.grey[600],
+                        fontFamily: "PolySans_Neutral",
+                        fontSize: 20,
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
+            Visibility(
+              visible: resetButton,
+              child: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      widget.controller.clear();
+                      resetButton = false;
+                    });
+                  },
+                  icon: Icon(Icons.close)),
+            )
           ],
         ),
       ),

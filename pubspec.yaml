@@ -280,6 +280,24 @@ flutter:
     - Images/banners/librarypage/
     - Images/banners/adddeck/
     - Images/avatars/
+    - Images/avatars/0.svg
+    - Images/avatars/1.svg
+    - Images/avatars/2.svg
+    - Images/avatars/3.svg
+    - Images/avatars/4.svg
+    - Images/avatars/6.svg
+    - Images/avatars/7.svg
+    - Images/avatars/8.svg
+    - Images/avatars/9.svg
+    - Images/avatars/10.svg
+    - Images/avatars/11.svg
+    - Images/avatars/12.svg
+    - Images/avatars/13.svg
+    - Images/avatars/14.svg
+    - Images/avatars/15.svg
+    - Images/avatars/17.svg
+    - Images/avatars/5.svg
+    - Images/avatars/16.svg
     - Images/avatars/logo/
     - Images/vectors/
     - Images/banners/leaderboardpage/
