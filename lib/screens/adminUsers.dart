@@ -124,14 +124,23 @@ class AdminUsers extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children:[
-                GestureDetector(
-                  onTap:(){},
-                  child: Text(
-                    "All",
-                    style:TextStyle(
-                      fontFamily:"PolySans_Slim",
-                      color:Colors.black,
-                      fontSize: 22,
+                Container(
+                  width:63,
+                  height:31,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: Color.fromARGB(100,124,120,120),
+                      ),
+                  child: GestureDetector(
+                    onTap:(){},
+                    child: Text(
+                      "All",
+                      style:TextStyle(
+                        fontFamily:"PolySans_Slim",
+                        color:Colors.black,
+                        fontSize: 22,
+                      ),
                     ),
                   ),
                 ),
@@ -187,7 +196,7 @@ class AdminUsers extends StatelessWidget {
                               decoration: BoxDecoration(
                                 image: DecorationImage(
                                     image: AssetImage(
-                                        "Images/avatars/15.png"),
+                                        "Images/avatars/14.png"),
                                     fit: BoxFit.cover),
                               ),
                               width: 60,
@@ -258,181 +267,3 @@ class AdminUsers extends StatelessWidget {
   }
 }
 
-// body: Container(
-//         height:1000,
-//         decoration: const BoxDecoration(
-//           image: DecorationImage(
-//               image: AssetImage("Images/backgrounds/profilepage.png"),
-//               fit: BoxFit.cover
-//               ),
-//               ),
-//         child: Column(
-//           children: [
-//             Padding(
-//               padding: const EdgeInsets.fromLTRB(50.0,50,0,30),
-//               child: Row(
-//                 // crossAxisAlignment: CrossAxisAlignment.start,
-//                 mainAxisAlignment: MainAxisAlignment.start,
-//                 children: [
-//                             Container(
-//                                 decoration: const BoxDecoration(
-//                                   image: DecorationImage(
-//                                       image: AssetImage("Images/avatars/logo/playstore (1) 1.png"),
-//                                       fit: BoxFit.cover),
-//                                 ),
-//                                 width: 85,
-//                                 height: 85,
-//                                 child: Text("")),
-//                            const SizedBox(width: 5),
-//                         Padding(
-//                           padding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
-//                           child: Text(
-//                             "Dashboard ",
-//                             style: TextStyle(
-//                               fontFamily: "PolySans_Slim",
-//                               color: Color(0xf0493C3F),
-//                               fontSize: 32,
-//                             ),
-//                           ),
-//                         ), 
-//                 ],
-//               ),
-//             ),
-//             Padding(
-//               padding: const EdgeInsets.fromLTRB(30,20,20,30),
-//               child: Row(
-//                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                 children:[
-//                   GestureDetector(
-//                     onTap:(){},
-//                     child: Text(
-//                       "Decks",
-//                       style: TextStyle(
-//                         fontFamily:"PolySans_Slim",
-//                         color: Colors.black,
-//                         fontSize: 20,
-//                         decoration: TextDecoration.underline,
-//                       ),
-                      
-//                     ),
-//                   ),
-//                   GestureDetector(
-//                     onTap:(){},
-//                     child: Text(
-//                       "Users",
-//                       style: TextStyle(
-//                         fontFamily:"PolySans_Slim",
-//                         color: Color.fromARGB(99, 98, 102, 100),
-//                         fontSize: 20,
-//                       ),
-//                     ),
-//                   ),
-//                   GestureDetector(
-//                     onTap:(){},
-//                     child: Text(
-//                       "Reports",
-//                       style: TextStyle(
-//                         fontFamily:"PolySans_Slim",
-//                         color: Color.fromARGB(99, 98, 102, 100),
-//                         fontSize: 20,
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//             Padding(
-//               padding: const EdgeInsets.fromLTRB(0,0,0,0),
-//               child: Row(
-//                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-//                 children:[
-//                   GestureDetector(
-//                     onTap:(){},
-//                     child: Text(
-//                       "ALL",
-//                       style:TextStyle(
-//                         fontFamily:"PolySans_Slim",
-//                         color:Colors.black,
-//                         fontSize: 20,
-//                       ),
-//                     ),
-//                   ),
-//                   GestureDetector(
-//                     onTap:(){},
-//                     child: Text(
-//                       "Banned",
-//                       style:TextStyle(
-//                         fontFamily:"PolySans_Slim",
-//                         color:Colors.black,
-//                         fontSize: 20,
-//                       ),
-//                     ),
-//                   ),
-//                   GestureDetector(
-//                     onTap:(){},
-//                     child: Text(
-//                       "Normal",
-//                       style:TextStyle(
-//                         fontFamily:"PolySans_Slim",
-//                         color:Colors.black,
-//                         fontSize: 20,
-//                       ),
-//                     ),
-//                   ),
-//                    GestureDetector(
-//                       onTap: () {},
-//                       child: Container(
-//                           decoration: const BoxDecoration(
-//                             image: DecorationImage(
-//                                 image: AssetImage("Images/icons/search.png"),
-//                                 fit: BoxFit.cover),
-//                           ),
-//                           width: 40,
-//                           height: 40,
-//                           child: const Text(""))),
-//                 ],
-//               ),
-//             ),
-//             Expanded(
-//               child:NoGlowScroll(
-//                 child: ListView(
-//                   children:[
-//                     for(var i = 0;i<6;i++)
-//                       Padding(
-//                         padding: EdgeInsets.symmetric(vertical: 8.0),
-//                         child:Row(
-//                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                           children:[
-//                             AdminDeck(
-//                               width: 139,
-//                               height: 116.67,
-//                               path:
-//                                   "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
-                              
-//                               min: 2,
-//                               onTap: (){},
-//                                 ),
-//                                 AdminDeck(
-//                               width: 139,
-//                               height: 116.67,
-//                               path:
-//                                   "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
-                              
-//                               min: 2,
-//                               onTap: (){},
-//                                 ),
-//                           ],
-//                       // SizedBox(
-//                       //   width: 15,
-//                       // )
-//                         ),
-//                       ),
-                    
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-        
-//       ),

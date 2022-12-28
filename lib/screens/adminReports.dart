@@ -19,15 +19,13 @@ import '../widgets/admin_deck.dart';
 import '../widgets/navibar.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
-main() => runApp(MaterialApp(home: Admin()));
 
-class Admin extends StatelessWidget {
-  Admin({key});
-  // TODO: REMOVE the profile model with the UserModel
+
+class AdminReports extends StatelessWidget {
+  AdminReports({key});
 
   AdminModel model = AdminModel(DummyData());
 
-  // TODO: ADD the leaderboard model here
   DeckModel deckModel = DeckModel();
   CardGenerator cardgenerator = CardGenerator();
   late String profileBanner;
@@ -53,37 +51,23 @@ class Admin extends StatelessWidget {
         height: 1000,
         decoration: const BoxDecoration(
           image: DecorationImage(
-              image: AssetImage("Images/backgrounds/profilepage.png"),
+              image: AssetImage("Images/backgrounds/dashboardpage.png"),
               fit: BoxFit.cover),
         ),
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(50.0, 50, 0, 30),
+              padding: const EdgeInsets.fromLTRB(0, 50, 0, 30),
               child: Row(
-                // crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage(
-                                "Images/avatars/logo/playstore (1) 1.png"),
-                            fit: BoxFit.cover),
-                      ),
-                      width: 85,
-                      height: 85,
-                      child: Text("")),
-                  const SizedBox(width: 5),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
-                    child: Text(
-                      "Dashboard ",
-                      style: TextStyle(
-                        fontFamily: "PolySans_Slim",
-                        color: Color(0xf0493C3F),
-                        fontSize: 32,
-                      ),
+                  Text(
+                    "Dashboard ",
+                    style: TextStyle(
+                      fontFamily: "PolySans_Slim",
+                      color: Color(0xf0493C3F),
+                      fontSize: 32,
                     ),
                   ),
                 ],
@@ -100,7 +84,7 @@ class Admin extends StatelessWidget {
                       "Decks",
                       style: TextStyle(
                         fontFamily: "PolySans_Slim",
-                        color: Colors.black,
+                        color: Color.fromARGB(99, 98, 102, 100),
                         fontSize: 20,
                       ),
                     ),
@@ -122,7 +106,7 @@ class Admin extends StatelessWidget {
                       "Reports",
                       style: TextStyle(
                         fontFamily: "PolySans_Slim",
-                        color: Color.fromARGB(99, 98, 102, 100),
+                        color: Colors.black,
                         fontSize: 20,
                       ),
                     ),
@@ -131,52 +115,10 @@ class Admin extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+              padding: const EdgeInsets.fromLTRB(0,0,20,0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Container(
-                    width: 63,
-                    height: 31,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: Color.fromARGB(100, 124, 120, 120),
-                    ),
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: Text(
-                        "ALL",
-                        style: TextStyle(
-                          fontFamily: "PolySans_Slim",
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Text(
-                      "Banned",
-                      style: TextStyle(
-                        fontFamily: "PolySans_Slim",
-                        color: Colors.black,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Text(
-                      "Normal",
-                      style: TextStyle(
-                        fontFamily: "PolySans_Slim",
-                        color: Colors.black,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
                   GestureDetector(
                       onTap: () {},
                       child: Container(
@@ -195,32 +137,81 @@ class Admin extends StatelessWidget {
               child: NoGlowScroll(
                 child: ListView(
                   children: [
-                    for (var i = 0; i < 6; i++)
+                    for (var i = 0; i < 10; i++)
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
+                        padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            AdminDeck(
-                              width: 139,
-                              height: 116.67,
-                              path:
-                                  "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
-                              min: 2,
-                              onTap: () {},
+                            Container(
+                              alignment: Alignment.centerRight,
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image:
+                                            AssetImage("Images/avatars/14.png"),
+                                        fit: BoxFit.cover),
+                                  ),
+                                  width: 60,
+                                  height: 60,
+                                  child: Text("")),
                             ),
-                            AdminDeck(
-                              width: 139,
-                              height: 116.67,
-                              path:
-                                  "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
-                              min: 2,
+                            const SizedBox(width: 5),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Shehab ElDin Mohsen",
+                                  style: TextStyle(
+                                    fontFamily: "PolySans_Slim",
+                                    color: Color(0xf0493C3F),
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "@shehabemohsen",
+                                      style: TextStyle(
+                                        fontFamily: "PolySans_Slim",
+                                        color: Color(0xf0493C3F),
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(60,0,0,0),
+                                      child: Container(
+                                        alignment: Alignment.centerRight,
+                                        child: Container(
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: AssetImage(
+                                                      "Images/avatars/8.png"),
+                                                  fit: BoxFit.cover),
+                                            ),
+                                            width: 30,
+                                            height: 30,
+                                            child: Text("")),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                            GestureDetector(
                               onTap: () {},
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                            "Images/icons/arrow-right-s-line.png"),
+                                        fit: BoxFit.cover),
+                                  ),
+                                  width: 35,
+                                  height: 35,
+                                  child: Text("")),
                             ),
                           ],
-                          // SizedBox(
-                          //   width: 15,
-                          // )
                         ),
                       ),
                   ],
@@ -232,4 +223,5 @@ class Admin extends StatelessWidget {
       ),
     );
   }
+  
 }
