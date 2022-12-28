@@ -7,19 +7,19 @@ class BadgesModel {
   final List<Badges> badges = [
     Badges(
         name: "cardfliper",
-        //image:fromdatabasewhenitisdone
+        image: "Images/icons/badges1.png",
         description: "for completing your first quiz on cardFlip"),
     Badges(
         name: "champion",
-        //image:fromdatabasewhenitisdone
+        image: "Images/icons/badges2.png",
         description: "for scoring 100 points"),
     Badges(
         name: "striver",
-        //image:fromdatabasewhenitisdone
+        image: "Images/icons/badges1.png",
         description: "for scoring 100 points in less than a minute"),
     Badges(
         name: "genius",
-        //image:fromdatabasewhenitisdone
+        image: "Images/icons/morebadges.png",
         description: "for scoring 200 points in less than a minute"),
     Badges(
         name: "the og cardfliper",

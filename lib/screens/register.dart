@@ -23,6 +23,8 @@ class _RegisterState extends State<Register> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _usernameController = TextEditingController();
+  final _tagController = TextEditingController();
+  final _CategoryController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -57,23 +59,17 @@ class _RegisterState extends State<Register> {
                         updateParent: () {}, image: model.getImages[1]),
                   ],
                 ),
-                RegistrationCard(
-                  cardWidth: _cardWidth,
-                  cardHeight: _cardHeight,
-                  model: model,
-                  child: const Text("last registration"),
-                ),
-                RegistrationCard(
-                  cardWidth: _cardWidth,
-                  cardHeight: _cardHeight,
-                  model: model,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                Visibility(
+                  visible: false,
+                  child: RegistrationCard(
+                    cardWidth: _cardWidth,
+                    cardHeight: _cardHeight,
+                    model: model,
+                    child: Column(children: [
                       Container(
                         padding: EdgeInsets.only(left: 30, top: 40),
                         child: Text(
-                          'Personal Information',
+                          'Tags and Categories',
                           style: TextStyle(
                             color: Color(0xFF191C32),
                             fontFamily: 'Poppins',
@@ -89,14 +85,14 @@ class _RegisterState extends State<Register> {
                               padding: const EdgeInsets.only(
                                   top: 30, left: 30, right: 30),
                               child: Input(
-                                hintTextOne: "First Name",
-                                icon: Icons.person_sharp,
+                                controller: _tagController,
+                                hintTextOne: "Tags",
+                                icon: Icons.tag_sharp,
                                 obscureText: false,
                                 color: Color(0xFFF98800),
-                                controller: _fnamecontroller,
                                 validator: (value) {
                                   if (value!.isEmpty) {
-                                    return 'Please enter your first name';
+                                    return 'Please enter a Tag';
                                   }
                                   return null;
                                 },
@@ -104,159 +100,351 @@ class _RegisterState extends State<Register> {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(
-                                  top: 15, left: 30, right: 30),
+                                  top: 30, left: 30, right: 30),
                               child: Input(
-                                controller: _lnamecontroller,
-                                hintTextOne: "Last Name",
-                                icon: Icons.person_sharp,
+                                controller: _CategoryController,
+                                hintTextOne: "Category",
+                                icon: Icons.category_sharp,
                                 obscureText: false,
-                                color: Color(0xFFF98800),
+                                color: Color(0xFF5FC88F),
                                 validator: (value) {
                                   if (value!.isEmpty) {
-                                    return 'Please enter your last name';
+                                    return 'Please enter a category';
                                   }
                                   return null;
                                 },
                               ),
                             ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 85, left: 30, right: 30),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if (Input.registerKey.currentState!
+                                      .validate()) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Login()));
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color(0xFF191C32),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(30.0)),
+                                ),
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 20),
+                                  child: Center(
+                                      child: const Text(
+                                    'Submit',
+                                  )),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
-                      ),
-                      Visibility(
-                        visible: false,
-                        child: RegistrationCard(
-                          cardWidth: _cardWidth,
-                          cardHeight: _cardHeight,
-                          model: model,
+                      )
+                    ]),
+                  ),
+                ),
+                Visibility(
+                  visible: false,
+                  child: RegistrationCard(
+                    cardWidth: _cardWidth,
+                    cardHeight: _cardHeight,
+                    model: model,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(left: 30, top: 40),
+                          child: Text(
+                            'Personal Information',
+                            style: TextStyle(
+                              color: Color(0xFF191C32),
+                              fontFamily: 'Poppins',
+                              fontSize: 40,
+                            ),
+                          ),
+                        ),
+                        Form(
+                          key: Input.registerKey,
                           child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 30, left: 30, right: 30),
+                                child: Input(
+                                  hintTextOne: "First Name",
+                                  icon: Icons.person_sharp,
+                                  obscureText: false,
+                                  color: Color(0xFFF98800),
+                                  controller: _fnamecontroller,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please enter your first name';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 15, left: 30, right: 30),
+                                child: Input(
+                                  controller: _lnamecontroller,
+                                  hintTextOne: "Last Name",
+                                  icon: Icons.person_sharp,
+                                  obscureText: false,
+                                  color: Color(0xFFF98800),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please enter your last name';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Visibility(
+                    visible: true,
+                    child: RegistrationCard(
+                      cardHeight: _cardHeight,
+                      cardWidth: _cardWidth,
+                      model: model,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Center(
+                            child: Container(
+                                padding: EdgeInsets.only(top: 30),
+                                child: RichText(
+                                  textAlign: TextAlign.center,
+                                  text: TextSpan(
+                                      style: TextStyle(
+                                          color: Color(0xFF191C32),
+                                          fontFamily: 'Poppins',
+                                          fontSize: 40,
+                                          fontWeight: FontWeight.bold),
+                                      children: <TextSpan>[
+                                        TextSpan(text: "Verify Your\n"),
+                                        TextSpan(text: "Email Address")
+                                      ]),
+                                )),
+                          ),
+                          Center(
+                            child: Container(
+                                padding: EdgeInsets.only(
+                                    top: 15, left: 15, right: 15),
+                                child: RichText(
+                                  textAlign: TextAlign.center,
+                                  text: TextSpan(
+                                      style: TextStyle(
+                                          color: Color(0xFF191C32),
+                                          fontFamily: 'Poppins',
+                                          fontSize: 19,
+                                          fontWeight: FontWeight.w500),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text:
+                                                "Account activation link has been\n"),
+                                        TextSpan(
+                                            text:
+                                                "sent to the email address you\n"),
+                                        TextSpan(text: "provided. \n"),
+                                      ]),
+                                )),
+                          ),
+                          Center(
+                            child: Container(
+                                padding: EdgeInsets.only(
+                                    top: 120, left: 15, right: 15),
+                                child: RichText(
+                                  textAlign: TextAlign.center,
+                                  text: TextSpan(
+                                      style: TextStyle(
+                                          color: Color(0xFF191C32),
+                                          fontFamily: 'Poppins',
+                                          fontSize: 19,
+                                          fontWeight: FontWeight.w500),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text:
+                                                "Please check the spam folder if\n"),
+                                        TextSpan(
+                                            text: "the email was not sent.\n"),
+                                      ]),
+                                )),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 15, left: 30, right: 30),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                if (Input.registerKey.currentState!
+                                    .validate()) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Login()));
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color(0xFF191C32),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30.0)),
+                              ),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 20),
+                                child: Center(
+                                    child: const Text(
+                                  'Verify',
+                                )),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )),
+                Visibility(
+                  visible: false,
+                  child: RegistrationCard(
+                    cardWidth: _cardWidth,
+                    cardHeight: _cardHeight,
+                    model: model,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.only(left: 30, top: 40),
+                            child: Text(
+                              'Create\nAccount',
+                              style: TextStyle(
+                                color: Color(0xFF191C32),
+                                fontFamily: 'Poppins',
+                                fontSize: 40,
+                              ),
+                            ),
+                          ),
+                          Form(
+                            key: Input.registerKey,
+                            child: Column(
                               children: [
-                                Container(
-                                  padding: EdgeInsets.only(left: 30, top: 40),
-                                  child: Text(
-                                    'Create\nAccount',
-                                    style: TextStyle(
-                                      color: Color(0xFF191C32),
-                                      fontFamily: 'Poppins',
-                                      fontSize: 40,
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 30, left: 30, right: 30),
+                                  child: Input(
+                                    controller: _usernameController,
+                                    hintTextOne: "Username",
+                                    icon: Icons.person_outline_outlined,
+                                    obscureText: false,
+                                    color: Color(0xFFF98800),
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return 'Please enter a username';
+                                      }
+                                      if (value.length < 5 ||
+                                          value.length > 15) {
+                                        return 'Username must be between 5-15 characters';
+                                      }
+                                      if (RegExp(r'\s').hasMatch(value)) {
+                                        return 'Cannot contain spaces';
+                                      }
+                                      if (!RegExp(r'^[a-zA-Z0-9]+$')
+                                          .hasMatch(value)) {
+                                        return 'Cannot contain special characters';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 15, left: 30, right: 30),
+                                  child: Input(
+                                    controller: _emailController,
+                                    hintTextOne: "Email",
+                                    icon: Icons.email_rounded,
+                                    obscureText: false,
+                                    color: Color(0xFF5FC88F),
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return 'Please enter an email';
+                                      }
+                                      if (!RegExp(
+                                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+.[a-zA-Z]+")
+                                          .hasMatch(value)) {
+                                        return 'Please enter a valid email';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 15, left: 30, right: 30),
+                                  child: Input(
+                                    controller: _passwordController,
+                                    hintTextOne: "Password",
+                                    icon: Icons.lock_outline,
+                                    obscureText: true,
+                                    color: Color.fromARGB(255, 184, 145, 229),
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return 'Please enter a password';
+                                      }
+                                      if (value.length < 8) {
+                                        return 'Your password must be at least 8 characters';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 15, left: 30, right: 30),
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      if (Input.registerKey.currentState!
+                                          .validate()) {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => Login()));
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Color(0xFF191C32),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30.0)),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 20),
+                                      child: Center(
+                                          child: const Text(
+                                        'Next',
+                                      )),
                                     ),
                                   ),
                                 ),
-                                Form(
-                                  key: Input.registerKey,
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 30, left: 30, right: 30),
-                                        child: Input(
-                                          controller: _usernameController,
-                                          hintTextOne: "Username",
-                                          icon: Icons.person_outline_outlined,
-                                          obscureText: false,
-                                          color: Color(0xFFF98800),
-                                          validator: (value) {
-                                            if (value!.isEmpty) {
-                                              return 'Please enter a username';
-                                            }
-                                            if (value.length < 5 ||
-                                                value.length > 15) {
-                                              return 'Username must be between 5-15 characters';
-                                            }
-                                            if (RegExp(r'\s').hasMatch(value)) {
-                                              return 'Cannot contain spaces';
-                                            }
-                                            if (!RegExp(r'^[a-zA-Z0-9]+$')
-                                                .hasMatch(value)) {
-                                              return 'Cannot contain special characters';
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 15, left: 30, right: 30),
-                                        child: Input(
-                                          controller: _emailController,
-                                          hintTextOne: "Email",
-                                          icon: Icons.email_rounded,
-                                          obscureText: false,
-                                          color: Color(0xFF5FC88F),
-                                          validator: (value) {
-                                            if (value!.isEmpty) {
-                                              return 'Please enter an email';
-                                            }
-                                            if (!RegExp(
-                                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+.[a-zA-Z]+")
-                                                .hasMatch(value)) {
-                                              return 'Please enter a valid email';
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 15, left: 30, right: 30),
-                                        child: Input(
-                                          controller: _passwordController,
-                                          hintTextOne: "Password",
-                                          icon: Icons.lock_outline,
-                                          obscureText: true,
-                                          color: Color.fromARGB(
-                                              255, 184, 145, 229),
-                                          validator: (value) {
-                                            if (value!.isEmpty) {
-                                              return 'Please enter a password';
-                                            }
-                                            if (value.length < 8) {
-                                              return 'Your password must be at least 8 characters';
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 15, left: 30, right: 30),
-                                        child: ElevatedButton(
-                                          onPressed: () {
-                                            if (Input.registerKey.currentState!
-                                                .validate()) {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          Login()));
-                                            }
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Color(0xFF191C32),
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        30.0)),
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 20),
-                                            child: Center(
-                                                child: const Text(
-                                              'Next',
-                                            )),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ]),
-                        ),
-                      )
-                    ],
+                              ],
+                            ),
+                          )
+                        ]),
                   ),
-                ),
+                )
               ],
             )),
           ]),
