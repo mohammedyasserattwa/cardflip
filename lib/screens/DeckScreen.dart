@@ -470,9 +470,8 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                 ),
               ),
               GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/test');
-                },
+                onTap: () => Future(() => Navigator.pushNamed(context, '/test',
+                    arguments: {"deckID": widget.id})),
                 child: Container(
                   decoration: const BoxDecoration(
                     image: DecorationImage(

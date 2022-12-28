@@ -19,8 +19,6 @@ import '../widgets/admin_deck.dart';
 import '../widgets/navibar.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
-
-
 class AdminReports extends StatelessWidget {
   AdminReports({key});
 
@@ -115,7 +113,7 @@ class AdminReports extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(0,0,20,0),
+              padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -179,7 +177,8 @@ class AdminReports extends StatelessWidget {
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.fromLTRB(60,0,0,0),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          60, 0, 0, 0),
                                       child: Container(
                                         alignment: Alignment.centerRight,
                                         child: Container(
@@ -223,5 +222,4 @@ class AdminReports extends StatelessWidget {
       ),
     );
   }
-  
 }
