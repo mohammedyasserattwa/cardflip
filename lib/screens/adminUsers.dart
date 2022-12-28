@@ -20,7 +20,7 @@ import '../widgets/navibar.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 
-main() => runApp(MaterialApp(home:AdminUsers()));
+
 
 
 class AdminUsers extends StatelessWidget {
