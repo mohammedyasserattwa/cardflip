@@ -6,6 +6,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cardflip/data/Repositories/user_decks.dart';
 import 'package:cardflip/data/Repositories/user_state.dart';
 import 'package:cardflip/models/deckModel.dart';
+import 'package:cardflip/models/userModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
@@ -40,7 +41,6 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
     model = FlashcardModel(id: widget.id);
     _cards = cardList(model.getCards);
     _randomBanner = Random().nextInt(5);
-    //////
   }
 
   Widget cardList(List<dataCard.Card> cardList) {
@@ -102,10 +102,11 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
   @override
   Widget build(BuildContext context) {
     final deckModel = DeckModel();
+    final userModel = UserModel();
     final favourites = ref.watch(FavouritesProvider);
     final ratings = ref.watch(RatingProvider);
     final reports = ref.watch(ReportProvider);
-    final userID = ref.watch(UserIDProvider);
+    final userID = userModel.id;
     bool isReported = (reports.contains(model.deck.id));
     dynamic size = MediaQuery.of(context).size;
     return Scaffold(
@@ -176,7 +177,21 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                   crossAxisAlignment: WrapCrossAlignment.center,
                                   children: const [
                                     Icon(Icons.flag),
+                                    SizedBox(width: 10),
                                     Text("Report"),
+                                  ],
+                                ),
+                              ),
+                              PopupMenuItem(
+                                onTap: () => Future(() => Navigator.pushNamed(
+                                    context, '/leaderboard',
+                                    arguments: {"deckID": widget.id})),
+                                child: Wrap(
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  children: const [
+                                    Icon(Icons.leaderboard_outlined),
+                                    SizedBox(width: 10),
+                                    Text("Leaderboard"),
                                   ],
                                 ),
                               ),

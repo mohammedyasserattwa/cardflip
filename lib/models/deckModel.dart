@@ -1,5 +1,6 @@
 import '../data/deck.dart';
 import 'package:cardflip/data/card.dart';
+import '../data/user.dart';
 
 class DeckModel {
   final List<Deck> recentDecks = [

@@ -1,10 +1,12 @@
 import 'package:cardflip/screens/DeckScreen.dart';
 import 'package:cardflip/screens/FlashcardScreen.dart';
+import 'package:cardflip/screens/Leaderboard.dart';
 import 'package:cardflip/screens/Profile.dart';
 import 'package:cardflip/screens/category.dart';
 import 'package:cardflip/screens/library.dart';
 import 'package:cardflip/screens/register.dart';
 import 'package:cardflip/screens/search.dart';
+import 'package:cardflip/screens/settings.dart';
 import 'package:cardflip/screens/test.dart';
 import 'package:cardflip/widgets/navibar.dart';
 import "package:flutter/material.dart";
@@ -64,8 +66,10 @@ class _MainState extends State<Main> {
           '/deck': (context) => DeckScreen(id: data!["deckID"]),
           '/category': (context) => Category(id: data!["categoryID"]),
           '/flashcards': (context) => Flashcard(id: data!["deckID"]),
+          '/leaderboard': (context) => Leaderboard(id: data!["deckID"]),
           '/test': (context) => const Test(),
-          '/search':(context) => const Search(),
+          '/search': (context) => const Search(),
+          '/settings': (context) => const Settings(),
         };
         WidgetBuilder builder = routes[settings.name]!;
         return MaterialPageRoute(builder: (context) => builder(context));

@@ -1,4 +1,6 @@
+import 'package:cardflip/data/Leaderboard.dart';
 import 'package:cardflip/data/card.dart';
+import 'package:cardflip/data/User.dart';
 
 class Deck {
   String name;
@@ -7,6 +9,7 @@ class Deck {
   double rating;
   String id;
   List<Card> cards;
+  late Leaderboard leaderboard;
   String userID;
   Deck(
       {required this.name,
@@ -15,8 +18,10 @@ class Deck {
       required this.rating,
       required this.id,
       this.cards = const <Card>[],
-      this.userID = "01f4bll7"
-      });
+      this.userID = "01f4bll7"}) {
+    leaderboard = Leaderboard(deckID: id);
+  }
+
   String get deckName => name;
   String get deckDescription => description;
   String get deckAuthor => author;
@@ -26,6 +31,8 @@ class Deck {
   }
 
   List<Card> get deckCards => cards;
+
+  Leaderboard get deckLeaderboard => leaderboard;
 
   void incrementRating() {
     rating++;
