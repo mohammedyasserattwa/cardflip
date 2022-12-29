@@ -19,17 +19,11 @@ import '../widgets/admin_deck.dart';
 import '../widgets/navibar.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
-
-
-
-
 class AdminUsers extends StatelessWidget {
   AdminUsers({key});
-  
 
   AdminModel model = AdminModel(DummyData());
 
-  
   DeckModel deckModel = DeckModel();
   CardGenerator cardgenerator = CardGenerator();
   late String profileBanner;
@@ -52,67 +46,64 @@ class AdminUsers extends StatelessWidget {
     final width = 133.67;
     return Scaffold(
       body: Container(
-        height:1000,
+        height: 1000,
         decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage("Images/backgrounds/dashboardpage.png"),
-              fit: BoxFit.cover
-              ),
-              ),
+              fit: BoxFit.cover),
+        ),
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(0,50,0,30),
+              padding: const EdgeInsets.fromLTRB(0, 50, 0, 30),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                        Text(
-                          "Dashboard ",
-                          style: TextStyle(
-                            fontFamily: "PolySans_Slim",
-                            color: Color(0xf0493C3F),
-                            fontSize: 32,
-                          ),
-                        ), 
+                  Text(
+                    "Dashboard ",
+                    style: TextStyle(
+                      fontFamily: "PolySans_Slim",
+                      color: Color(0xf0493C3F),
+                      fontSize: 32,
+                    ),
+                  ),
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(30,20,20,30),
+              padding: const EdgeInsets.fromLTRB(30, 20, 20, 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children:[
+                children: [
                   GestureDetector(
-                    onTap:(){},
+                    onTap: () {},
                     child: Text(
                       "Decks",
                       style: TextStyle(
-                        fontFamily:"PolySans_Slim",
+                        fontFamily: "PolySans_Slim",
                         color: Color.fromARGB(99, 98, 102, 100),
                         fontSize: 20,
-                        
                       ),
-                      
                     ),
                   ),
                   GestureDetector(
-                    onTap:(){},
+                    onTap: () {},
                     child: Text(
                       "Users",
                       style: TextStyle(
-                        fontFamily:"PolySans_Slim",
+                        fontFamily: "PolySans_Slim",
                         color: Colors.black,
                         fontSize: 20,
                       ),
                     ),
                   ),
                   GestureDetector(
-                    onTap:(){},
+                    onTap: () {},
                     child: Text(
                       "Reports",
                       style: TextStyle(
-                        fontFamily:"PolySans_Slim",
+                        fontFamily: "PolySans_Slim",
                         color: Color.fromARGB(99, 98, 102, 100),
                         fontSize: 20,
                       ),
@@ -123,50 +114,50 @@ class AdminUsers extends StatelessWidget {
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children:[
+              children: [
                 Container(
-                  width:63,
-                  height:31,
+                  width: 63,
+                  height: 31,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        color: Color.fromARGB(100,124,120,120),
-                      ),
+                    borderRadius: BorderRadius.circular(16),
+                    color: Color.fromARGB(100, 124, 120, 120),
+                  ),
                   child: GestureDetector(
-                    onTap:(){},
+                    onTap: () {},
                     child: Text(
                       "All",
-                      style:TextStyle(
-                        fontFamily:"PolySans_Slim",
-                        color:Colors.black,
+                      style: TextStyle(
+                        fontFamily: "PolySans_Slim",
+                        color: Colors.black,
                         fontSize: 22,
                       ),
                     ),
                   ),
                 ),
                 GestureDetector(
-                  onTap:(){},
+                  onTap: () {},
                   child: Text(
                     "Banned",
-                    style:TextStyle(
-                      fontFamily:"PolySans_Slim",
-                      color:Colors.black,
+                    style: TextStyle(
+                      fontFamily: "PolySans_Slim",
+                      color: Colors.black,
                       fontSize: 22,
                     ),
                   ),
                 ),
                 GestureDetector(
-                  onTap:(){},
+                  onTap: () {},
                   child: Text(
                     "Normal",
-                    style:TextStyle(
-                      fontFamily:"PolySans_Slim",
-                      color:Colors.black,
+                    style: TextStyle(
+                      fontFamily: "PolySans_Slim",
+                      color: Colors.black,
                       fontSize: 22,
                     ),
                   ),
                 ),
-                 GestureDetector(
+                GestureDetector(
                     onTap: () {},
                     child: Container(
                         decoration: const BoxDecoration(
@@ -182,88 +173,84 @@ class AdminUsers extends StatelessWidget {
             Expanded(
               child: NoGlowScroll(
                 child: ListView(
-                  children:[
-            for (var i =0;i<10;i++)
-              Padding(
-              padding: const EdgeInsets.fromLTRB(20,20,0,0),
-              child: Row(
-                
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          alignment: Alignment.centerRight,
-                          child: Container(
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        "Images/avatars/14.png"),
-                                    fit: BoxFit.cover),
-                              ),
-                              width: 60,
-                              height: 60,
-                              child: Text("")),
+                  children: [
+                    for (var i = 0; i < 10; i++)
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Container(
+                              alignment: Alignment.centerRight,
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image:
+                                            AssetImage("Images/avatars/15.png"),
+                                        fit: BoxFit.cover),
+                                  ),
+                                  width: 60,
+                                  height: 60,
+                                  child: Text("")),
+                            ),
+                            const SizedBox(width: 5),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Shehab ElDin Mohsen",
+                                  style: TextStyle(
+                                    fontFamily: "PolySans_Slim",
+                                    color: Color(0xf0493C3F),
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                Text(
+                                  "@shehabemohsen",
+                                  style: TextStyle(
+                                    fontFamily: "PolySans_Slim",
+                                    color: Color(0xf0493C3F),
+                                    fontSize: 13,
+                                  ),
+                                )
+                              ],
+                            ),
+                            GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image:
+                                            AssetImage("Images/icons/ban.png"),
+                                        fit: BoxFit.cover),
+                                  ),
+                                  width: 35,
+                                  height: 35,
+                                  child: Text("")),
+                            ),
+                            GestureDetector(
+                              onTap: () {},
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                            "Images/icons/arrow-right-s-line.png"),
+                                        fit: BoxFit.cover),
+                                  ),
+                                  width: 35,
+                                  height: 35,
+                                  child: Text("")),
+                            ),
+                          ],
                         ),
-                        const SizedBox(width: 5),
-                        Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Shehab ElDin Mohsen",
-                                style: TextStyle(
-                                  fontFamily: "PolySans_Slim",
-                                  color: Color(0xf0493C3F),
-                                  fontSize:20,
-                                ),
-                              ),
-                              Text(
-                                "@shehabemohsen",
-                                style: TextStyle(
-                                  fontFamily: "PolySans_Slim",
-                                  color: Color(0xf0493C3F),
-                                  fontSize:13,
-                                ),
-                              )
-                            ],
-                            ),
-                            GestureDetector(
-                              onTap:(){},
-                              child:Container(
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        "Images/icons/ban.png"),
-                                    fit: BoxFit.cover),
-                              ),
-                              width: 35,
-                              height: 35,
-                              child: Text("")),
-                            ),
-                            GestureDetector(
-                              onTap:(){},
-                              child:Container(
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        "Images/icons/arrow-right-s-line.png"),
-                                    fit: BoxFit.cover),
-                              ),
-                              width: 35,
-                              height: 35,
-                              child: Text("")),
-                            ),
-                      ],
+                      ),
+                  ],
+                ),
               ),
-            ),
-            ],
-            ),
-            ),
             ),
           ],
         ),
-        
       ),
-
     );
   }
 }
-

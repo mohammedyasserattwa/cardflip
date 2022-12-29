@@ -102,7 +102,7 @@ class Leaderboard extends StatelessWidget {
                               image:
                                   AssetImage("Images/cards/leaderboard/0.png")),
                         ),
-                        child: Expanded(
+                        child: SizedBox(
                           child: Padding(
                             padding: const EdgeInsets.all(5.0),
                             child: NoGlowScroll(
@@ -111,9 +111,11 @@ class Leaderboard extends StatelessWidget {
                                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     // TODO
+                                    // if ()
                                     // deck to function in leaderboard model that returns list
                                     for (int i = 0;
-                                        i < model.leaderboardList.length;
+                                        i < model.leaderboardList.length &&
+                                            i < 250;
                                         i++)
                                       Padding(
                                         padding: const EdgeInsets.symmetric(
@@ -139,22 +141,99 @@ class Leaderboard extends StatelessWidget {
                                                     Container(
                                                       width: 50,
                                                       height: 50,
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        image: DecorationImage(
-                                                            image: AssetImage(
-                                                                "Images/avatars/3.png")),
-                                                      ),
+                                                      child: SvgPicture.asset(
+                                                          model
+                                                              .leaderboardList[
+                                                                  i]
+                                                              .profileIcon),
                                                     ),
                                                     Container(
                                                       width: 26,
                                                       height: 24,
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        image: DecorationImage(
-                                                            image: AssetImage(
-                                                                "Images/icons/1strank.png")),
-                                                      ),
+                                                      decoration: (i < 5)
+                                                          ? BoxDecoration(
+                                                              image: DecorationImage(
+                                                                  image: AssetImage(((i == 0)
+                                                                      ? "Images/icons/1strank.png"
+                                                                      : (i == 1)
+                                                                          ? "Images/icons/2ndrank.png"
+                                                                          : (i == 2)
+                                                                              ? "Images/icons/3rdrank.png"
+                                                                              : "Images/icons/rank.png")),
+                                                                  fit: BoxFit.contain),
+                                                            )
+                                                          : BoxDecoration(),
+                                                      // child: Stack(
+                                                      //   children: [
+                                                      // Image.network(
+                                                      //   ((i == 0)
+                                                      //       ? "Images/icons/1strank.png"
+                                                      //       : (i == 1)
+                                                      //           ? "Images/icons/2ndrank.png"
+                                                      //           : (i == 2)
+                                                      //               ? "Images/icons/3rdrank.png"
+                                                      //               : (i == 3 ||
+                                                      //                       i == 4)
+                                                      //                   ? "Images/icons/rank.png"
+                                                      //                   : ""),
+                                                      //   errorBuilder:
+                                                      //       (BuildContext
+                                                      //               context,
+                                                      //           Object
+                                                      //               exception,
+                                                      //           StackTrace?
+                                                      //               stackTrace) {
+                                                      //     return Text(
+                                                      //         'Your error widget...');
+                                                      //   },
+                                                      // ),
+                                                      child: (i >= 3)
+                                                          ? Stack(
+                                                              alignment:
+                                                                  AlignmentDirectional
+                                                                      .center,
+                                                              children: [
+                                                                AutoSizeText(
+                                                                  (i + 1)
+                                                                      .toString(),
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontFamily:
+                                                                        "PolySans_Median",
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    foreground:
+                                                                        Paint()
+                                                                          ..style =
+                                                                              PaintingStyle.stroke
+                                                                          ..strokeWidth =
+                                                                              3
+                                                                          ..color =
+                                                                              Color(0xFFE89B05),
+                                                                    fontSize: 8,
+                                                                  ),
+                                                                ),
+                                                                AutoSizeText(
+                                                                  (i + 1)
+                                                                      .toString(),
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontFamily:
+                                                                        "PolySans_Median",
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: Color(
+                                                                        0xFFFFDD28),
+                                                                    fontSize: 8,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            )
+                                                          : Text(""),
+                                                      //   ],
+                                                      // ),
                                                     ),
                                                   ],
                                                 ),
@@ -162,15 +241,19 @@ class Leaderboard extends StatelessWidget {
                                               Padding(
                                                 padding: const EdgeInsets.only(
                                                     left: 20.0, top: 3.0),
-                                                child: Text(
-                                                  "Lara Ghoniem",
+                                                child: AutoSizeText(
+                                                  model.leaderboardList[i]
+                                                          .firstname +
+                                                      ' ' +
+                                                      model.leaderboardList[i]
+                                                          .lastname,
                                                   style: TextStyle(
                                                     fontFamily:
                                                         "PolySans_Median",
                                                     fontWeight: FontWeight.w500,
                                                     color: Color.fromARGB(
                                                         215, 28, 28, 28),
-                                                    fontSize: 24,
+                                                    fontSize: 23,
                                                   ),
                                                 ),
                                               ),

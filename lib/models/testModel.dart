@@ -1,22 +1,16 @@
-import "package:cardflip/data/testdata.dart";
+import "package:cardflip/data/Test.dart";
+import 'package:cardflip/data/deck.dart';
+import 'package:cardflip/models/deckModel.dart';
 
-class testModel {
-  final test _data;
-  testModel(test data) : _data = data;
-
-  String get q {
-    return _data.q;
-  }
-
-  String get c1 {
-    return _data.c1;
-  }
-
-  String get c2 {
-    return _data.c2;
-  }
-
-  String get c3 {
-    return _data.c3;
+class TestModel {
+  String id;
+  late Deck deck;
+  late Test test;
+  DeckModel deckModel = DeckModel();
+  // function to add in list of lists in leaderboard.dart
+  // clear list each time opened
+  TestModel({required this.id}) {
+    deck = deckModel.deckByID(id);
+    test = Test(deckID: id);
   }
 }

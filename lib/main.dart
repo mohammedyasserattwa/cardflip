@@ -7,7 +7,7 @@ import 'package:cardflip/screens/library.dart';
 import 'package:cardflip/screens/register.dart';
 import 'package:cardflip/screens/search.dart';
 import 'package:cardflip/screens/settings.dart';
-import 'package:cardflip/screens/test.dart';
+import 'package:cardflip/screens/Test.dart';
 import 'package:cardflip/widgets/navibar.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,7 +15,6 @@ import 'screens/Login.dart';
 import 'screens/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-
 
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,7 +67,7 @@ class _MainState extends State<Main> {
           '/category': (context) => Category(id: data!["categoryID"]),
           '/flashcards': (context) => Flashcard(id: data!["deckID"]),
           '/leaderboard': (context) => Leaderboard(id: data!["deckID"]),
-          '/test': (context) => const Test(),
+          '/test': (context) => Test(id: data!["deckID"]),
           '/search': (context) => const Search(),
           '/settings': (context) => const Settings(),
         };
