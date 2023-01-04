@@ -27,6 +27,10 @@ class _TestState extends State<Test> {
   String min = "0";
   String sec = "00";
   late BoxDecoration status;
+  late TestModel model;
+  late Map testCards;
+  late List definitions;
+  late List terms;
 
   Stream<int> stopWatch() {
     StreamController<int>? controller;
@@ -63,7 +67,6 @@ class _TestState extends State<Test> {
       timer = Timer.periodic(duration, tick);
     }
 
-
     controller = StreamController<int>(
       onListen: startTimer,
       onCancel: stopTimer,
@@ -75,6 +78,11 @@ class _TestState extends State<Test> {
 
   @override
   void initState() {
+    model = TestModel(id: id);
+    testCards = model.getTestCards;
+    definitions = testCards.keys.toList();
+    terms = testCards.values.toList();
+
     stopwatch = stopWatch();
 
     stopwatchsubscrip = stopwatch!.listen((int tick) {
@@ -101,9 +109,6 @@ class _TestState extends State<Test> {
   _TestState({key, required this.id});
   @override
   Widget build(BuildContext context) {
-
-    TestModel model = new TestModel(id: id);
-
     return Scaffold(
         body: Container(
       height: 1000,
@@ -259,46 +264,120 @@ class _TestState extends State<Test> {
                               fit: BoxFit.fill),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 40.0),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 35.0, horizontal: 20.0),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const AutoSizeText(
-                                "Question One",
-                                maxLines: 3,
+                              AutoSizeText(
+                                // 150 chars max
+                                // definitions[0].toString()[0].toUpperCase()+definitions[0].toString().substring(1),
+                                definitions[0].toString(),
+                                maxLines: 6,
                                 overflow: TextOverflow.ellipsis,
-                                minFontSize: 24,
+                                minFontSize: 17,
                                 stepGranularity: 1,
                                 style: TextStyle(
-                                  fontFamily: "Poppins-SemiBold",
+                                  fontFamily: "PolySans_Median",
                                   color: Color(0xff551B1B),
-                                  fontSize: 30,
+                                  fontSize: 23,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 textAlign: TextAlign.center,
                               ),
                               Column(
                                 children: [
-                                  ShakeWidget(
-                                    shakeConstant: ShakeRotateConstant2(),
-                                    autoPlay: false,
-                                    enableWebMouseHover: true,
-                                    child: GestureDetector(
-                                      child: Opacity(
-                                        opacity: 0.3,
-                                        child: Container(
+                                  GestureDetector(
+                                    onTap: () {
+                                      // check if correct change autoplay value
+                                    },
+                                    child: ShakeWidget(
+                                      shakeConstant: ShakeRotateConstant2(),
+                                      autoPlay: false,
+                                      enableWebMouseHover: true,
+                                      child: Container(
                                           width: 305,
                                           height: 71,
                                           decoration: BoxDecoration(
                                             border: Border.all(
-                                              color: Color(0xff000000),
+                                              color:
+                                                  Color.fromARGB(71, 36, 0, 0),
                                               width: 2,
                                             ),
                                             borderRadius:
                                                 BorderRadius.circular(16),
-                                            color: Color(0xfffff4f4),
+                                            color: Color(0x40fff4f4),
                                           ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8.0),
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: AutoSizeText(
+                                                terms[0][0].toString(),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                minFontSize: 16,
+                                                // 37 around 35 chars max
+                                                stepGranularity: 1,
+                                                style: TextStyle(
+                                                  fontFamily:
+                                                      "PolySans_Neutral",
+                                                  color: Color(0xff551B1B),
+                                                  fontSize: 26,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          )),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      //
+                                    },
+                                    child: ShakeWidget(
+                                      shakeConstant: ShakeRotateConstant2(),
+                                      autoPlay: false,
+                                      enableWebMouseHover: true,
+                                      child: Container(
+                                        width: 305,
+                                        height: 71,
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: Color.fromARGB(71, 36, 0, 0),
+                                            width: 2,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                          color: Color(0x40fff4f4),
                                         ),
+                                        child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 8.0),
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: AutoSizeText(
+                                                terms[0][1].toString(),
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                minFontSize: 16,
+                                                // 37 around 35 chars max
+                                                stepGranularity: 1,
+                                                style: TextStyle(
+                                                  fontFamily:
+                                                      "PolySans_Neutral",
+                                                  color: Color(0xff551B1B),
+                                                  fontSize: 26,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            )),
                                       ),
                                     ),
                                   ),
@@ -309,30 +388,49 @@ class _TestState extends State<Test> {
                                     onTap: () {
                                       //
                                     },
-                                    child: Container(
-                                      width: 305,
-                                      height: 71,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(16),
-                                        color:
-                                            Color.fromARGB(55, 242, 242, 242),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      //
-                                    },
-                                    child: Container(
-                                      width: 305,
-                                      height: 71,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(16),
-                                        color:
-                                            Color.fromARGB(55, 242, 242, 242),
+                                    child: ShakeWidget(
+                                      shakeConstant: ShakeRotateConstant2(),
+                                      autoPlay: false,
+                                      enableWebMouseHover: true,
+                                      child: GestureDetector(
+                                        child: Container(
+                                            width: 305,
+                                            height: 71,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: Color.fromARGB(
+                                                    71, 36, 0, 0),
+                                                width: 2,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
+                                              color: Color(0x40fff4f4),
+                                            ),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8.0),
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: AutoSizeText(
+                                                  terms[0][2].toString(),
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  minFontSize: 16,
+                                                  // 37 around 35 chars max
+                                                  stepGranularity: 1,
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                        "PolySans_Neutral",
+                                                    color: Color(0xff551B1B),
+                                                    fontSize: 26,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                            )),
                                       ),
                                     ),
                                   ),

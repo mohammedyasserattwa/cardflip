@@ -16,9 +16,9 @@ class TestModel {
     late final random = Random();
     late final int length = deckModel.deckByID(id).cards.length;
     late List terms = deckModel.deckTerms(id);
-    var firstRandomTerm = terms[random.nextInt(length - 1)];
+    final firstRandomTerm = terms[random.nextInt(length - 1)];
     terms.remove(firstRandomTerm);
-    var secondRandomTerm = terms[random.nextInt(length - 1)];
+    final secondRandomTerm = terms[random.nextInt(length - 1)];
     terms.remove(secondRandomTerm);
     testCards = Map.fromIterable(deck.cards,
         key: (v) => v.definition,
