@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 // }
 
 class LoadingWidget extends StatefulWidget {
+  Color color;
+  LoadingWidget({this.color = Colors.black});
   @override
   _LoadingWidgetState createState() => _LoadingWidgetState();
 }
@@ -48,7 +50,7 @@ class _LoadingWidgetState extends State<LoadingWidget>
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black.withOpacity(0.3),
+      color: widget.color.withOpacity(0.3),
       child: Center(
           child: Stack(
         children: [

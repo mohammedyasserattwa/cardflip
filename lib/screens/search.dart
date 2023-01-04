@@ -1,12 +1,23 @@
 import 'package:cardflip/data/Repositories/search_provider.dart';
+import 'package:cardflip/data/Repositories/user_state.dart';
+import 'package:cardflip/data/history.dart';
 import 'package:cardflip/main.dart';
 import 'package:cardflip/widgets/search_input_field.dart';
+import 'package:cardflip/widgets/search_results.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Search extends StatelessWidget {
+class Search extends ConsumerStatefulWidget {
   const Search({super.key});
+
+  @override
+  ConsumerState<Search> createState() => _SearchState();
+}
+
+class _SearchState extends ConsumerState<Search> {
   String? validator(String value) {
     if (value.isEmpty) {
       return "Please Enter a value to search";
@@ -14,9 +25,12 @@ class Search extends StatelessWidget {
     return null;
   }
 
+  final _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final _searchController = TextEditingController();
+    final searchHistory = ref.watch(HistoryProvider);
+    final searchResult = ref.watch(SearchProvider);
+    final submitted = ref.watch(SearchSubmitProvider);
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -33,7 +47,10 @@ class Search extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   GestureDetector(
-                    onTap: () => Navigator.pop(context),
+                    onTap: () {
+                      ref.read(SearchSubmitProvider.notifier).state = false;
+                      Navigator.pop(context);
+                    },
                     child: Container(
                       decoration: const BoxDecoration(
                         image: DecorationImage(
@@ -54,46 +71,91 @@ class Search extends StatelessWidget {
                   )
                 ],
               ),
-              Consumer(builder: (context, ref, child) {
-                final searchResult = ref.watch(SearchProvider);
-                if (searchResult.isNotEmpty)
-                  return Expanded(
-                    child: NoGlowScroll(
-                        child: ListView(
-                      children: [Text(searchResult)],
-                    )),
-                  );
-                return Expanded(
-                    child: NoGlowScroll(
-                  child: ListView(
+              if (submitted && searchResult.isNotEmpty)
+                SearchResult(query: searchResult)
+              else
+                Padding(
+                  padding:
+                      const EdgeInsets.only(left: 20.0, right: 20, top: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              "Recent Searches",
-                              style: TextStyle(
-                                  fontFamily: "PolySans_Median", fontSize: 24),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                //TODO: Shared Preference Algorithm
-                              },
-                              child: const Text("Clear",
-                                  style: TextStyle(
-                                    fontFamily: "Poppins-Regular",
-                                    fontSize: 16,
-                                  )),
-                            )
-                          ],
-                        ),
+                      const Text(
+                        "Recent Searches",
+                        style: TextStyle(
+                            fontFamily: "PolySans_Median", fontSize: 24),
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          //TODO: Shared Preference Algorithm to delete history
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          prefs.remove("historyData3");
+                          ref.read(HistoryProvider.notifier).state =
+                              Future.value("{}");
+                        },
+                        child: const Text("Clear",
+                            style: TextStyle(
+                              fontFamily: "Poppins-Regular",
+                              fontSize: 16,
+                            )),
                       )
                     ],
                   ),
-                ));
-              }),
+                ),
+              if (!submitted)
+                FutureBuilder(
+                    future: searchHistory,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        String json = snapshot.data.toString();
+                        if (json != "{}") {
+                          dynamic data = History.fromJson(json);
+                          data = data
+                              .where((element) =>
+                                  element.uid ==
+                                  ref.watch(UserDataProvider)!.id)
+                              .toList();
+                          return Expanded(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              child: NoGlowScroll(
+                                child: ListView.builder(
+                                    itemCount: data.length,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              data[index].query,
+                                              style: const TextStyle(
+                                                fontFamily: "Poppins-Medium",
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                            SvgPicture.asset(
+                                                "Images/icons/svg/arrow-up-left.svg")
+                                          ],
+                                        ),
+                                      );
+                                    }),
+                              ),
+                            ),
+                          );
+                        }
+                        return Container();
+                      }
+                      if (snapshot.hasError) {
+                        return Center(
+                            child: Text(snapshot.stackTrace.toString()));
+                      }
+                      return const Center(child: CircularProgressIndicator());
+                    })
             ],
           ),
         ),

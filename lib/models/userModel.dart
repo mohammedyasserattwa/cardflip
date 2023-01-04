@@ -8,12 +8,23 @@ class UserModel {
   static final FirebaseFirestore _database = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   final _userCollection = FirebaseFirestore.instance.collection("user");
-  static save(User user) async {
-    Map<String, dynamic> data = {"fname": "Mohammed", "lname": "Yasser"};
+
+  save(User user, Map<String,dynamic> data) async {
     final userRef = _database.collection("user").doc(user.uid);
     if (!(await userRef.get()).exists) {
       await userRef.set(data);
     }
+  }
+
+  Future<List> usernameList() async {
+    QuerySnapshot querySnapshot = await _userCollection.get();
+    final data = querySnapshot.docs.map((doc) => doc.get("username")).toList();
+    return data;
+  }
+  Future<List> emailList() async {
+    QuerySnapshot querySnapshot = await _userCollection.get();
+    final data = querySnapshot.docs.map((doc) => doc.get("email")).toList();
+    return data;
   }
 
   signOut() async {
