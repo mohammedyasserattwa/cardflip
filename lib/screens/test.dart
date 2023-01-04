@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_shake_animated/flutter_shake_animated.dart';
@@ -19,9 +20,72 @@ class Test extends StatefulWidget {
 
 class _TestState extends State<Test> {
   String id;
+  // int counter = 0;
+  bool continuetimer = true;
+  Stream<int>? stopwatch;
+  StreamSubscription<int>? stopwatchsubscrip;
+  String min = "0";
+  String sec = "00";
   late BoxDecoration status;
+
+  Stream<int> stopWatch() {
+    StreamController<int>? controller;
+    Timer? timer;
+    Duration duration = Duration(seconds: 1);
+    int counter = 0;
+
+    void stopTimer() {
+      if (timer != null) {
+        timer!.cancel();
+        timer = null;
+        counter = 0;
+        controller!.close();
+      }
+    }
+
+    // void startTimer() {
+    //   timer = Timer.periodic(duration, (_) {
+    //     controller!.add(++counter);
+    //     if (!continuetimer) {
+    //       stopTimer();
+    //     }
+    //   });
+    // }
+    void tick(_) {
+      counter++;
+      controller!.add(counter);
+      if (!continuetimer) {
+        stopTimer();
+      }
+    }
+
+    void startTimer() {
+      timer = Timer.periodic(duration, tick);
+    }
+
+
+    controller = StreamController<int>(
+      onListen: startTimer,
+      onCancel: stopTimer,
+      onResume: startTimer,
+      onPause: stopTimer,
+    );
+    return controller.stream;
+  }
+
   @override
   void initState() {
+    stopwatch = stopWatch();
+
+    stopwatchsubscrip = stopwatch!.listen((int tick) {
+      setState(() {
+        // print(tick);
+        min = ((tick / 60) % 60).floor().toString();
+        sec = (tick % 60).floor().toString().padLeft(2, '0');
+      });
+    });
+
+    // stream = Stream<int>.periodic(const Duration(seconds: 1), (_) => counter++);
     status = BoxDecoration(
       border: Border.all(
         color: Colors.black,
@@ -33,9 +97,11 @@ class _TestState extends State<Test> {
     );
     super.initState();
   }
+
   _TestState({key, required this.id});
   @override
   Widget build(BuildContext context) {
+
     TestModel model = new TestModel(id: id);
 
     return Scaffold(
@@ -48,11 +114,11 @@ class _TestState extends State<Test> {
           fit: BoxFit.cover,
         ),
       ),
-      child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(mainAxisAlignment: MainAxisAlignment.start,
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -75,8 +141,33 @@ class _TestState extends State<Test> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: 205,
+                // SizedBox(
+                //   width: 205,
+                // ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 38.0),
+                  child: Column(
+                    children: [
+                      Container(
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                              image: const DecorationImage(
+                            image: AssetImage("Images/icons/stopwatch.png"),
+                            fit: BoxFit.cover,
+                          ))),
+                      Text(
+                        "$min:$sec",
+                        style: const TextStyle(
+                          fontFamily: "PolySans_Median",
+                          color: Color(0xff551B1B),
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
                 ),
                 Padding(
                   padding:
