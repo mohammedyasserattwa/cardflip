@@ -12,6 +12,8 @@ class CardWidget extends StatefulWidget {
     this.end = 0.0,
     this.empty = false,
     this.celebration = false,
+    this.width = 343,
+    this.height = 511.97,
     required this.updateParent,
     this.star = Icons.star_border,
   }) : super(key: key);
@@ -23,6 +25,8 @@ class CardWidget extends StatefulWidget {
     this.end = 0.0,
     this.empty = true,
     this.celebration = false,
+    this.width = 343,
+    this.height = 511.97,
     required this.updateParent,
     this.star = Icons.star_border,
   });
@@ -34,6 +38,8 @@ class CardWidget extends StatefulWidget {
     this.end = 0.0,
     this.empty = false,
     this.celebration = true,
+    this.width = 343,
+    this.height = 511.97,
     required this.updateParent,
     this.star = Icons.star_border,
     required this.startOver,
@@ -46,6 +52,8 @@ class CardWidget extends StatefulWidget {
   final double end;
   final bool empty;
   final bool celebration;
+  final double width;
+  final double height;
   final Function updateParent;
   final IconData star;
   Function? startOver;
@@ -55,8 +63,6 @@ class CardWidget extends StatefulWidget {
 }
 
 class _CardWidgetState extends State<CardWidget> {
-  final double _cardWidth = 343;
-  final double _cardHeight = 511.97;
   late IconData star = widget.star;
   @override
   void initState() {
@@ -68,6 +74,8 @@ class _CardWidgetState extends State<CardWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final double _cardWidth = widget.width;
+    final double _cardHeight = widget.height;
     if (widget.card != null) {
       if (widget.card!.isFavourite && star == Icons.star_border) {
         setState(() {
@@ -223,7 +231,7 @@ class _CardWidgetState extends State<CardWidget> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Text(
-              "You Did It!",
+              "You did it!",
               style: TextStyle(
                 fontFamily: "PolySans_Median",
                 fontSize: 48,
@@ -231,13 +239,18 @@ class _CardWidgetState extends State<CardWidget> {
                 color: Color(0xff1B4F55),
               ),
             ),
-            const Text(
-              "You are now ready for a test!",
-              style: TextStyle(
-                  fontFamily: "PolySans_Slim",
-                  fontWeight: FontWeight.w300,
-                  color: Color(0xff484848),
-                  fontSize: 20),
+            Center(
+              child: const Text(
+                "You are now ready for a test!",
+                style: TextStyle(
+                    fontFamily: "PolySans_Slim",
+                    fontWeight: FontWeight.w300,
+                    color: Color(0xff484848),
+                    fontSize: 20),
+              ),
+            ),
+            SizedBox(
+              height: 80,
             ),
             GestureDetector(
               onTap: () {
@@ -253,7 +266,7 @@ class _CardWidgetState extends State<CardWidget> {
                   child: const Padding(
                     padding: EdgeInsets.all(20.0),
                     child: Text(
-                      "Start Over",
+                      "Start over",
                       style: TextStyle(color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
@@ -270,12 +283,12 @@ class _CardWidgetState extends State<CardWidget> {
                 child: Container(
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
-                    color: Colors.red,
+                    color: Color(0xffCF2D2B),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: const Text(
-                      "Test!",
+                      "Take the test",
                       style: TextStyle(color: Colors.white),
                       textAlign: TextAlign.center,
                     ),

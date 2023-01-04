@@ -48,3 +48,7 @@ app.*.map.json
 #android deployment files
 key.properties
 android/app/upload-keystore.jks
+
+#database
+/lib/firebase_options.dart
+pubspec.lock

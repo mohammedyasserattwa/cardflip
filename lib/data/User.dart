@@ -17,6 +17,16 @@ class User {
     this.favourites = const [],
     this.badges = const [],
   });
+  User.New() {
+    firstname = "";
+    lastname = "";
+    email = "";
+    password = "";
+    username = "";
+    profileIcon = "0";
+    id = "";
+    role = "learner";
+  }
   factory User.fromSnapshot(
       DocumentSnapshot snapshot, String email, String password, String id) {
     String firstname = snapshot.get("fname");
@@ -34,32 +44,62 @@ class User {
 
     // this.
   }
+  Map<String, dynamic> toJSON() {
+    return {
+      "email" : email,
+      "fname" : firstname,
+      "lname" : lastname,
+      "username" : username,
+      "profileIcon" : profileIcon,
+      "role" : role,
+      "badges" : badges,
+      "favourites" : favourites,
+    };
+  }
+
   //PARAMETERS
-  String firstname;
-  String id;
-  String lastname;
-  String email;
-  String username;
-  String password;
-  String profileIcon;
+  late String firstname;
+  late String id;
+  late String lastname;
+  late String email;
+  late String username;
+  late String password;
+  late String profileIcon;
+  late String role;
   List favourites = [];
-  String role;
+
   // List _reminders;
   List badges = [];
+  List tags = [];
 
   //SETTER & GETTERS
-  get fname => firstname;
-  set fname(value) => this.firstname = value;
+  get userID => id;
+  setuserID(id) => this.id = id;
+
+  get icon => profileIcon;
+  seticon(icon) => profileIcon = icon;
+
+  get user => username;
+  setuser(username) => this.username = username;
+
+  get fname => this.firstname;
+  setfname(value) => this.firstname = value;
 
   get lname => this.lastname;
-  set lname(value) => this.lastname = value;
+  setlname(value) => this.lastname = value;
 
   get getEmail => email;
-  set setEmail(email) => this.email = email;
+  setEmail(email) => this.email = email;
+
+  get userTags => tags;
+  setUserTags(tags) => this.tags = tags;
 
   get getPassword => password;
-  set setPassword(password) => this.password = password;
+  setPassword(password) => this.password = password;
+
+  get getUserName => this.username;
+  setUsername(username) => this.username = username;
 
   get Badges => this.badges;
-  set Badges(value) => this.badges = value;
+  setBadges(value) => this.badges = value;
 }

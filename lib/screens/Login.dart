@@ -9,8 +9,10 @@ import 'package:cardflip/screens/home.dart';
 import 'package:cardflip/screens/loading_screen.dart';
 import 'package:cardflip/screens/register.dart';
 import 'package:cardflip/widgets/Input.dart';
+import 'package:cardflip/widgets/custom_check_box.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -25,6 +27,7 @@ class _LoginState extends ConsumerState<Login> {
   late final _firebaseAuth;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _isChecked = false;
   UserModel userModel = UserModel();
   @override
   void initState() {
@@ -40,16 +43,16 @@ class _LoginState extends ConsumerState<Login> {
             context: context,
             builder: (context) {
               return LoadingWidget();
-              // return CircularProgressIndicator();
             });
+
         final credentials = await _firebaseAuth.signInWithEmailAndPassword(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
         userModel.userData.then((value) {
           ref.read(UserDataProvider.notifier).state =
-              user_data.User.fromSnapshot(
-                  value, _emailController.text, _passwordController.text,userModel.id);
+              user_data.User.fromSnapshot(value, _emailController.text,
+                  _passwordController.text, userModel.id);
           Navigator.pushReplacementNamed(context, '/home');
         });
       } on FirebaseAuthException catch (e) {
@@ -144,7 +147,33 @@ class _LoginState extends ConsumerState<Login> {
                                   },
                                 ),
                                 SizedBox(
-                                  height: 40,
+                                  height: 10,
+                                ),
+                                Row(
+                                  children: [
+                                    CustomCheckbox(
+                                      isChecked: _isChecked,
+                                      onChange: (isChecked) {
+                                        print(isChecked);
+                                      },
+                                      size: 25,
+                                      selectedColor: Colors.white,
+                                      selectedIconColor: Color(0xFF191C32),
+                                      iconSize: 19,
+                                      borderColor: Color(0xFF191C32),
+                                      checkIcon: Icon(Icons.check),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text("Remember me",
+                                        style: TextStyle(
+                                            color: Color(0xFF191C32),
+                                            fontFamily: "PolySans_Median")),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 30,
                                 ),
                                 SizedBox(
                                   width: 340,

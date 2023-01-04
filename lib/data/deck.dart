@@ -13,8 +13,8 @@ class Deck {
   String userID;
   Deck(
       {required this.name,
-      required this.description,
-      required this.author,
+      this.description = "",
+      this.author = "",
       required this.rating,
       required this.id,
       this.cards = const <Card>[],

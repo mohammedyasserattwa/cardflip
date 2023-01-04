@@ -40,7 +40,9 @@ dependencies:
   flare_flutter: any
   firebase_core: ^2.2.0
   firebase_auth: ^4.1.3
+  flutter_shake_animated: ^0.0.5
   cloud_firestore:
+  shared_preferences: ^2.0.15
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -95,6 +97,7 @@ flutter:
     - Images/icons/svg/Home.svg
     - Images/icons/svg/library.svg
     - Images/icons/svg/profile.svg
+    - Images/icons/svg/arrow-up-left.svg
     - Images/icons/
     - Images/backgrounds/
     - Images/cards/flashcards/
@@ -276,6 +279,7 @@ flutter:
     - Images/cards/librarypage/14/
     - Images/cards/librarypage/15/
     - Images/cards/leaderboard/
+    - Images/cards/testpage/
     - Images/banners/profilepage/
     - Images/banners/deckpage/
     - Images/banners/librarypage/

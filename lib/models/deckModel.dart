@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../data/deck.dart';
 import 'package:cardflip/data/card.dart';
 import '../data/user.dart';
@@ -406,6 +408,14 @@ class DeckModel {
               definition: "Programs written in binary code"),
         ]),
   ];
+  final _tagCollection = FirebaseFirestore.instance.collection("tag");
+  final _deckCollection = FirebaseFirestore.instance.collection("deck");
+
+  Future<List<dynamic>> getData() async {
+    QuerySnapshot querySnapshot = await _tagCollection.get();
+    final data = querySnapshot.docs.map((doc) => doc.get("name")).toList();
+    return data;
+  }
 
   Deck deckByIDRecent(String id) {
     return recentDecks.where((element) => element.id == id).toList()[0];
@@ -422,6 +432,15 @@ class DeckModel {
       return decks[0];
     }
     return userPreferences.where((element) => element.id == id).toList()[0];
+  }
+
+  Future<List<Map>> decksByQuery(String query) async {
+    QuerySnapshot querySnapshot = await _deckCollection
+        .where("name", isGreaterThanOrEqualTo: query)
+        .get();
+    final data = (querySnapshot.docs
+        .map((doc) => {"id": doc.id, "name": doc.get("name")})).toList();
+    return data;
   }
 
   List<Deck> deckByUserID(String id) {
