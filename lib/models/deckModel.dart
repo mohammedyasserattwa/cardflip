@@ -461,5 +461,13 @@ class DeckModel {
     return deckList;
   }
 
+  List deckTerms(String id) {
+    List<String> terms = [];
+    for (Card card in deckByID(id).cards) {
+      terms.add(card.term);
+    }
+    return terms;
+  }
+
   int get totalLength => userPreferences.length + recentDecks.length;
 }
