@@ -124,6 +124,12 @@ class _TestState extends State<Test> {
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: GestureDetector(
                     onTap: () {
+                      stopwatchsubscrip!.cancel();
+                      stopwatch = null;
+                      setState(() {
+                        min = '0';
+                        sec = '00';
+                      });
                       Navigator.pop(context);
                     },
                     child: Padding(
