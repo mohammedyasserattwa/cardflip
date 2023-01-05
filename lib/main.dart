@@ -2,6 +2,7 @@ import 'package:cardflip/screens/DeckScreen.dart';
 import 'package:cardflip/screens/FlashcardScreen.dart';
 import 'package:cardflip/screens/Leaderboard.dart';
 import 'package:cardflip/screens/Profile.dart';
+import 'package:cardflip/screens/add_flashcards.dart';
 import 'package:cardflip/screens/category.dart';
 import 'package:cardflip/screens/library.dart';
 import 'package:cardflip/screens/register.dart';
@@ -70,6 +71,7 @@ class _MainState extends State<Main> {
           '/test': (context) => Test(id: data!["deckID"]),
           '/search': (context) => const Search(),
           '/settings': (context) => const Settings(),
+          '/addFlashcards': (context) => const AddFlashcards(),
         };
         WidgetBuilder builder = routes[settings.name]!;
         return MaterialPageRoute(builder: (context) => builder(context));
