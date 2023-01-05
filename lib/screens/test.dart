@@ -396,7 +396,18 @@ class _TestState extends State<Test> {
                                                     // await Future.delayed(
                                                     //     Duration(
                                                     //         milliseconds: 500));
-                                                    end = 1000;
+                                                    Timer(
+                                                        Duration(
+                                                            milliseconds: 75),
+                                                        () {
+                                                      jiggle = false;
+                                                    });
+                                                    Timer(
+                                                        Duration(
+                                                            milliseconds: 1000),
+                                                        () {
+                                                      end = 1000;
+                                                    });
                                                     i++;
                                                     if (i <
                                                         definitions.length) {
@@ -411,7 +422,7 @@ class _TestState extends State<Test> {
                                                       ShakeRotateConstant2(),
                                                   autoPlay: jiggle,
                                                   duration: const Duration(
-                                                      seconds: 1),
+                                                      milliseconds: 30),
                                                   enableWebMouseHover: true,
                                                   child: Container(
                                                       width: 305,
