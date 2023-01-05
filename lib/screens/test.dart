@@ -26,12 +26,15 @@ class _TestState extends State<Test> {
   StreamSubscription<int>? stopwatchsubscrip;
   String min = "0";
   String sec = "00";
-  late BoxDecoration status;
+  late BoxDecoration status1;
+  late BoxDecoration status2;
+  late BoxDecoration status3;
   late TestModel model;
   late Map testCards;
   late List definitions;
   late List terms;
-
+  late bool? isCorrect;
+  late bool jiggle;
   Stream<int> stopWatch() {
     StreamController<int>? controller;
     Timer? timer;
@@ -84,7 +87,7 @@ class _TestState extends State<Test> {
     terms = testCards.values.toList();
 
     stopwatch = stopWatch();
-
+    jiggle = false;
     stopwatchsubscrip = stopwatch!.listen((int tick) {
       setState(() {
         // print(tick);
@@ -92,18 +95,64 @@ class _TestState extends State<Test> {
         sec = (tick % 60).floor().toString().padLeft(2, '0');
       });
     });
+    status1 = BoxDecoration(
+      border: Border.all(
+        color: Color.fromARGB(71, 36, 0, 0),
+        width: 2,
+      ),
+      borderRadius: BorderRadius.circular(16),
+      color: Color(0x40fff4f4),
+    );
+    status2 = BoxDecoration(
+      border: Border.all(
+        color: Color.fromARGB(71, 36, 0, 0),
+        width: 2,
+      ),
+      borderRadius: BorderRadius.circular(16),
+      color: Color(0x40fff4f4),
+    );
+    status3 = BoxDecoration(
+      border: Border.all(
+        color: Color.fromARGB(71, 36, 0, 0),
+        width: 2,
+      ),
+      borderRadius: BorderRadius.circular(16),
+      color: Color(0x40fff4f4),
+    );
 
     // stream = Stream<int>.periodic(const Duration(seconds: 1), (_) => counter++);
-    status = BoxDecoration(
-      border: Border.all(
-        color: Colors.black,
-        width: 1,
-      ),
-      borderRadius: BorderRadius.all(
-          Radius.circular(5.0) //                 <--- border radius here
-          ),
-    );
+
     super.initState();
+  }
+
+  BoxDecoration checkBox(bool? isCorrect) {
+    BoxDecoration status;
+    (isCorrect == true)
+        ? status = BoxDecoration(
+            border: Border.all(
+              color: Color(0xB393FF97),
+              width: 3,
+            ),
+            borderRadius: BorderRadius.circular(16),
+            color: Color.fromARGB(175, 217, 255, 218),
+          )
+        : (isCorrect == false)
+            ? status = BoxDecoration(
+                border: Border.all(
+                  color: Color.fromARGB(130, 217, 0, 0),
+                  width: 3,
+                ),
+                borderRadius: BorderRadius.circular(16),
+                color: Color.fromARGB(123, 255, 255, 255))
+            : status = BoxDecoration(
+                border: Border.all(
+                  color: Color.fromARGB(71, 36, 0, 0),
+                  width: 2,
+                ),
+                borderRadius: BorderRadius.circular(16),
+                color: Color(0x40fff4f4),
+              );
+    return status;
   }
 
   _TestState({key, required this.id});
@@ -121,6 +170,7 @@ class _TestState extends State<Test> {
       ),
       child: Column(mainAxisAlignment: MainAxisAlignment.start,
           // crossAxisAlignment: CrossAxisAlignment.start,
+
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -289,25 +339,21 @@ class _TestState extends State<Test> {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      // check if correct change autoplay value
+                                      setState(() {
+                                        isCorrect = false;
+                                        status1 = checkBox(false);
+                                        jiggle = true;
+                                      });
                                     },
                                     child: ShakeWidget(
                                       shakeConstant: ShakeRotateConstant2(),
-                                      autoPlay: false,
+                                      autoPlay: jiggle,
+                                      duration: const Duration(seconds: 1),
                                       enableWebMouseHover: true,
                                       child: Container(
                                           width: 305,
                                           height: 71,
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color:
-                                                  Color.fromARGB(71, 36, 0, 0),
-                                              width: 2,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(16),
-                                            color: Color(0x40fff4f4),
-                                          ),
+                                          decoration: status1,
                                           child: Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 8.0),
@@ -323,7 +369,8 @@ class _TestState extends State<Test> {
                                                 style: TextStyle(
                                                   fontFamily:
                                                       "PolySans_Neutral",
-                                                  color: Color(0xff551B1B),
+                                                  color: Color.fromARGB(
+                                                      255, 56, 18, 18),
                                                   fontSize: 26,
                                                   fontWeight: FontWeight.bold,
                                                 ),
@@ -338,7 +385,10 @@ class _TestState extends State<Test> {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      //
+                                      setState(() {
+                                        // isCorrect = true;
+                                        status2 = checkBox(true);
+                                      });
                                     },
                                     child: ShakeWidget(
                                       shakeConstant: ShakeRotateConstant2(),
@@ -347,15 +397,7 @@ class _TestState extends State<Test> {
                                       child: Container(
                                         width: 305,
                                         height: 71,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Color.fromARGB(71, 36, 0, 0),
-                                            width: 2,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(16),
-                                          color: Color(0x40fff4f4),
-                                        ),
+                                        decoration: status2,
                                         child: Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 8.0),
@@ -371,7 +413,8 @@ class _TestState extends State<Test> {
                                                 style: TextStyle(
                                                   fontFamily:
                                                       "PolySans_Neutral",
-                                                  color: Color(0xff551B1B),
+                                                  color: Color.fromARGB(
+                                                      255, 56, 18, 18),
                                                   fontSize: 26,
                                                   fontWeight: FontWeight.bold,
                                                 ),
@@ -386,7 +429,10 @@ class _TestState extends State<Test> {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      //
+                                      setState(() {
+                                        // isCorrect = null;
+                                        status3 = checkBox(null);
+                                      });
                                     },
                                     child: ShakeWidget(
                                       shakeConstant: ShakeRotateConstant2(),
@@ -396,16 +442,7 @@ class _TestState extends State<Test> {
                                         child: Container(
                                             width: 305,
                                             height: 71,
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                color: Color.fromARGB(
-                                                    71, 36, 0, 0),
-                                                width: 2,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(16),
-                                              color: Color(0x40fff4f4),
-                                            ),
+                                            decoration: status3,
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.symmetric(
@@ -423,7 +460,8 @@ class _TestState extends State<Test> {
                                                   style: TextStyle(
                                                     fontFamily:
                                                         "PolySans_Neutral",
-                                                    color: Color(0xff551B1B),
+                                                    color: Color.fromARGB(
+                                                        255, 56, 18, 18),
                                                     fontSize: 26,
                                                     fontWeight: FontWeight.bold,
                                                   ),
