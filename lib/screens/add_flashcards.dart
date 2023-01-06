@@ -13,6 +13,8 @@ class AddFlashcards extends StatefulWidget {
 class _AddFlashcardsState extends State<AddFlashcards> {
   List ControllerDefinitionData = [TextEditingController()];
   List ControllerTermData = [TextEditingController()];
+  List termkeys = [GlobalKey<FormState>()];
+  List definitionkeys = [GlobalKey<FormState>()];
 
   List resultedData = [Column()];
   @override
@@ -131,7 +133,7 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                                             top: 10, left: 12.0, right: 12),
                                         child: TextFormField(
                                           controller: ControllerTermData[index],
-                                          key: GlobalKey<FormState>(),
+                                          key: termkeys[index],
                                           decoration: InputDecoration(
                                             filled: true,
                                             fillColor:
@@ -177,7 +179,7 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                                           child: TextField(
                                             controller:
                                                 ControllerDefinitionData[index],
-                                            key: GlobalKey<FormState>(),
+                                            key: definitionkeys[index],
                                             decoration: InputDecoration(
                                               border: OutlineInputBorder(
                                                 borderRadius:
@@ -219,6 +221,8 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                                 ControllerDefinitionData.add(
                                     TextEditingController());
                                 ControllerTermData.add(TextEditingController());
+                                termkeys.add(GlobalKey<FormState>());
+                                definitionkeys.add(GlobalKey<FormState>());
                               });
                             },
                             child: Container(
@@ -238,7 +242,17 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                         padding: EdgeInsets.only(right: 20),
                         alignment: Alignment.centerRight,
                         child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              for (int index = 0;
+                                  index < ControllerDefinitionData.length;
+                                  index++) {
+                                if (ControllerDefinitionData[index]
+                                        .text
+                                        .isEmpty ||
+                                    ControllerTermData[index].text.isEmpty)
+                                  print('Please enter a text into the fields');
+                              }
+                            },
                             child: Container(
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
