@@ -128,7 +128,9 @@ class Profile extends ConsumerWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 15.0),
                   child: GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushNamed(context, "/editprofile");
+                      },
                       child: Container(
                           decoration: const BoxDecoration(
                             image: DecorationImage(

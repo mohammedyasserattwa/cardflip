@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names
 
 import "package:flutter/material.dart";
 import 'package:no_glow_scroll/no_glow_scroll.dart';
@@ -131,7 +131,7 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                                       Padding(
                                         padding: const EdgeInsets.only(
                                             top: 10, left: 12.0, right: 12),
-                                        child: TextFormField(
+                                        child: TextField(
                                           controller: ControllerTermData[index],
                                           key: termkeys[index],
                                           decoration: InputDecoration(
