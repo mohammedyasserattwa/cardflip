@@ -43,6 +43,7 @@ dependencies:
   flutter_shake_animated: ^0.0.5
   cloud_firestore:
   shared_preferences: ^2.0.15
+  recase: ^4.1.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2

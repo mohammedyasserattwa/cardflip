@@ -124,23 +124,36 @@ class _SearchState extends ConsumerState<Search> {
                                 child: ListView.builder(
                                     itemCount: data.length,
                                     itemBuilder: (context, index) {
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 10.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              data[index].query,
-                                              style: const TextStyle(
-                                                fontFamily: "Poppins-Medium",
-                                                fontSize: 20,
+                                      return GestureDetector(
+                                        onTap: () {
+                                          ref
+                                              .read(
+                                                  SearchSubmitProvider.notifier)
+                                              .state = true;
+                                          _searchController.text =
+                                              data[index].query;
+                                          ref
+                                              .read(SearchProvider.notifier)
+                                              .state = data[index].query;
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 10.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                data[index].query,
+                                                style: const TextStyle(
+                                                  fontFamily: "Poppins-Medium",
+                                                  fontSize: 20,
+                                                ),
                                               ),
-                                            ),
-                                            SvgPicture.asset(
-                                                "Images/icons/svg/arrow-up-left.svg")
-                                          ],
+                                              SvgPicture.asset(
+                                                  "Images/icons/svg/arrow-up-left.svg")
+                                            ],
+                                          ),
                                         ),
                                       );
                                     }),

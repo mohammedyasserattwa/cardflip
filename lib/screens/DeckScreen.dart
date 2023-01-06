@@ -106,7 +106,8 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
     final favourites = ref.watch(FavouritesProvider);
     final ratings = ref.watch(RatingProvider);
     final reports = ref.watch(ReportProvider);
-    final userID = userModel.id;
+    // final userID = userModel.id;
+    final userID = "01f4bll7";
     bool isReported = (reports.contains(model.deck.id));
     dynamic size = MediaQuery.of(context).size;
     return Scaffold(
@@ -409,22 +410,26 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                       width: 10,
                                     ),
                                     GestureDetector(
+                                        onTap: () {
+                                          Navigator.pushNamed(
+                                              context, "/addFlashcards");
+                                        },
                                         child: Container(
-                                      width: 45,
-                                      height: 45,
-                                      decoration: const BoxDecoration(
-                                        color: Color(0xf1A0404),
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(12)),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: SvgPicture.asset(
-                                            "Images/icons/svg/add.svg",
-                                            width: 25,
-                                            height: 25),
-                                      ),
-                                    )),
+                                          width: 45,
+                                          height: 45,
+                                          decoration: const BoxDecoration(
+                                            color: Color(0xf1A0404),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(12)),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: SvgPicture.asset(
+                                                "Images/icons/svg/add.svg",
+                                                width: 25,
+                                                height: 25),
+                                          ),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
