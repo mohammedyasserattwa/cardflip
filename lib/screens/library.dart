@@ -68,7 +68,7 @@ class _LibraryState extends State<Library> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 40.0, top: 40.0),
+            padding: const EdgeInsets.only(left: 40.0, top: 25.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: const [
@@ -144,8 +144,9 @@ class _LibraryState extends State<Library> {
                           "All",
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                              fontSize: 15,
-                              fontFamily: "PolySans",
+                              color: Color(0xff484848),
+                              fontSize: 20,
+                              fontFamily: "PolySans_Neutral",
                               fontWeight: (status["all"]! == true)
                                   ? FontWeight.w600
                                   : FontWeight.normal),
