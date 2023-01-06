@@ -1,28 +1,52 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_multi_select_items/flutter_multi_select_items.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 import "package:flutter/material.dart";
+import '../classes.dart';
+import '../classes.dart';
+import '../data/deck.dart';
 import '../data/dummy_data.dart';
 import '../data/card_generator.dart';
-// import '../models/libraryModel.dart';
+import '../firebase_options.dart';
+import '../models/DeckModel.dart';
+import '../models/flashcardModel.dart';
 import '../widgets/navibar.dart';
 import '../widgets/deck.dart';
 
-// main() => runApp(MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       home: Editdeck(),
-//     ));
+main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: Editdeck(),
+  ));
+}
 
 class Editdeck extends StatefulWidget {
-  const Editdeck({key});
+  String id;
+  Editdeck({Key? key, this.id = "1"}) : super(key: key);
 
   @override
   State<Editdeck> createState() => _EditdeckState();
 }
 
 class _EditdeckState extends State<Editdeck> {
+  late FlashcardModel model;
+
+  @override
+  void initState() {
+    super.initState();
+
+    model = FlashcardModel(id: widget.id);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final deckModel = DeckModel();
+    late FlashcardModel model;
     Size size = MediaQuery.of(context).size;
 
     return SafeArea(
@@ -88,7 +112,7 @@ class _EditdeckState extends State<Editdeck> {
                     ),
                     filled: true,
                     fillColor: Colors.black.withOpacity(0.1),
-                    hintText: 'Enter the deck title',
+                    label: Text(deckModel.deckByID(widget.id).deckName),
                   ),
                 ),
                 Text(
@@ -111,7 +135,7 @@ class _EditdeckState extends State<Editdeck> {
                     ),
                     filled: true,
                     fillColor: Colors.black.withOpacity(0.1),
-                    hintText: 'Enter the deck description',
+                    label: Text(deckModel.deckByID(widget.id).deckDescription),
                   ),
                 ),
                 Text(

@@ -12,9 +12,10 @@ import '../data/card_generator.dart';
 import '../widgets/navibar.dart';
 import '../widgets/deck.dart';
 
-// main() => runApp(MaterialApp(
-//       home: Adddeck(),
-//     ));
+main() => runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Adddeck(),
+    ));
 
 class Adddeck extends StatefulWidget {
   const Adddeck({key});
