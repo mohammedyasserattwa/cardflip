@@ -15,8 +15,7 @@ class _AddFlashcardsState extends State<AddFlashcards> {
     "Defination": GlobalKey<FormState>(),
   };
 
-  List resultedData = [];
-
+  List resultedData = [Column()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,116 +64,142 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                     Padding(
                       padding: const EdgeInsets.only(left: 15, right: 15),
                       child: Container(
-                        height: 350,
+                        height: 360,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),
                             color: Colors.grey.withOpacity(0.25)),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 15, top: 20),
-                                    child: Text(
-                                      'Term',
-                                      style: TextStyle(
-                                          fontFamily: 'Poppins',
-                                          fontSize: 26,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 230, right: 15, top: 10),
-                                    child: Container(
-                                      height: 40,
-                                      width: 40,
-                                      padding: const EdgeInsets.only(
-                                          left: 15, top: 20),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(16),
-                                        image: DecorationImage(
-                                          image: AssetImage(
-                                              "Images/icons/trash.png"),
-                                          fit: BoxFit.cover,
+                        child: Expanded(
+                          child: ListView.builder(
+                              itemCount: resultedData.length,
+                              itemBuilder: ((context, index) {
+                                return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 15, top: 20),
+                                            child: Text(
+                                              'Term',
+                                              style: TextStyle(
+                                                  fontFamily: 'Poppins',
+                                                  fontSize: 26,
+                                                  fontWeight: FontWeight.w400),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 230, right: 15, top: 10),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  resultedData.remove(
+                                                      resultedData[index]);
+                                                });
+                                              },
+                                              child: Container(
+                                                height: 40,
+                                                width: 40,
+                                                padding: const EdgeInsets.only(
+                                                    left: 15, top: 20),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(16),
+                                                  image: DecorationImage(
+                                                    image: AssetImage(
+                                                        "Images/icons/trash.png"),
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 10, left: 12.0, right: 12),
+                                        child: TextFormField(
+                                          key: GlobalKey<FormState>(),
+                                          decoration: InputDecoration(
+                                            filled: true,
+                                            fillColor:
+                                                Colors.grey.withOpacity(0.5),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
+                                              borderSide: BorderSide(
+                                                color: Colors.transparent,
+                                              ),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
+                                              borderSide: BorderSide(
+                                                color: Colors.transparent,
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 10, left: 12.0, right: 12),
-                                child: TextFormField(
-                                  key: _keyParams['Term'],
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.grey.withOpacity(0.5),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(16),
-                                      borderSide: BorderSide(
-                                        color: Colors.transparent,
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(16),
-                                      borderSide: BorderSide(
-                                        color: Colors.transparent,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 15, top: 20),
-                                child: Text(
-                                  'Definition',
-                                  style: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      fontSize: 26,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 12, right: 12, top: 10),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey.withOpacity(0.5),
-                                    borderRadius: BorderRadius.circular(16),
-                                  ),
-                                  height: 130,
-                                  child: TextFormField(
-                                    maxLines: null,
-                                    key: _keyParams['Defination'],
-                                    decoration: InputDecoration(
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                        borderSide: BorderSide(
-                                            color: Colors.transparent,
-                                            width: 2),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                        borderSide: BorderSide(
-                                          color: Colors.transparent,
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 15, top: 20),
+                                        child: Text(
+                                          'Definition',
+                                          style: TextStyle(
+                                              fontFamily: 'Poppins',
+                                              fontSize: 26,
+                                              fontWeight: FontWeight.w400),
                                         ),
                                       ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                        borderSide: BorderSide(
-                                          color: Colors.transparent,
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 12, right: 12, top: 10),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            borderRadius:
+                                                BorderRadius.circular(16),
+                                          ),
+                                          height: 130,
+                                          child: TextFormField(
+                                            maxLines: null,
+                                            key: GlobalKey<FormState>(),
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(16),
+                                                borderSide: BorderSide(
+                                                    color: Colors.transparent,
+                                                    width: 2),
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(16),
+                                                borderSide: BorderSide(
+                                                  color: Colors.transparent,
+                                                ),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(16),
+                                                borderSide: BorderSide(
+                                                  color: Colors.transparent,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ]),
+                                      SizedBox(
+                                        height: 30,
+                                      )
+                                    ]);
+                              })),
+                        ),
                       ),
                     ),
                   ],
@@ -186,7 +211,11 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                   padding: EdgeInsets.only(right: 20),
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        setState(() {
+                          resultedData.add(Column());
+                        });
+                      },
                       child: Container(
                           decoration: const BoxDecoration(
                             image: DecorationImage(
