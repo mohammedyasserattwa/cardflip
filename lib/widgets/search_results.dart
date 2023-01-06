@@ -327,7 +327,7 @@ class _TagScreenState extends State<TagScreen> {
   final BoxDecoration _activeTagDecoration = BoxDecoration(
     border: Border.all(color: const Color(0xffA000A4), width: 1),
     borderRadius: BorderRadius.circular(16),
-    color: const Color(0xB3FF6ADE),
+    color: const Color(0xffF4B1EB),
   );
   @override
   void initState() {

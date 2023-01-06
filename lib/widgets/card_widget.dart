@@ -277,13 +277,16 @@ class _CardWidgetState extends State<CardWidget> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: GestureDetector(
+                // todo: change to right test page
                 onTap: () {
-                  context.go('/Home/Deck/Test');
+                  Navigator.pop(context);
+                  Future(() => Navigator.pushNamed(context, '/test',
+                      arguments: {"deckID": "1"}));
                 },
                 child: Container(
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
-                    color: Color(0xffCF2D2B),
+                    color: Color.fromARGB(255, 216, 77, 77),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),

@@ -139,8 +139,8 @@ class _ProfileIconCardState extends State<ProfileIconCard> {
                                             backgroundColor: Colors.white60,
                                             radius: 35,
                                             child: SvgPicture.asset(
-                                              "Images/avatars/$i.svg",
-                                            ),
+                                                    "Images/avatars/$i.svg",
+                                                  ),
                                           ),
                                         ),
                                         GestureDetector(
@@ -152,9 +152,9 @@ class _ProfileIconCardState extends State<ProfileIconCard> {
                                           child: CircleAvatar(
                                             backgroundColor: Colors.white60,
                                             radius: 35,
-                                            child: SvgPicture.asset(
-                                              "Images/avatars/${i + 1}.svg",
-                                            ),
+                                            child: (SvgPicture.asset(
+                                                    "Images/avatars/${i + 1}.svg",
+                                                  )),
                                           ),
                                         ),
                                         GestureDetector(
@@ -167,8 +167,8 @@ class _ProfileIconCardState extends State<ProfileIconCard> {
                                             backgroundColor: Colors.white60,
                                             radius: 35,
                                             child: SvgPicture.asset(
-                                              "Images/avatars/${i + 2}.svg",
-                                            ),
+                                                    "Images/avatars/${i + 2}.svg",
+                                                  ),
                                           ),
                                         ),
                                       ],
