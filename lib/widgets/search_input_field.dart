@@ -112,9 +112,9 @@ class _SearchInputFieldState extends ConsumerState<SearchInputField> {
                           },
                           controller: widget.controller,
                           style: TextStyle(
-                            color: Colors.grey[600],
+                            color: Color(0xff3F3F3F),
                             fontFamily: "PolySans_Neutral",
-                            fontSize: 20,
+                            fontSize: 22,
                           ),
                           decoration: InputDecoration.collapsed(
                             // border:,
