@@ -4,6 +4,7 @@ import 'package:cardflip/screens/Leaderboard.dart';
 import 'package:cardflip/screens/Profile.dart';
 import 'package:cardflip/screens/add_flashcards.dart';
 import 'package:cardflip/screens/category.dart';
+import 'package:cardflip/screens/editprofile.dart';
 import 'package:cardflip/screens/library.dart';
 import 'package:cardflip/screens/register.dart';
 import 'package:cardflip/screens/search.dart';
@@ -72,6 +73,7 @@ class _MainState extends State<Main> {
           '/search': (context) => const Search(),
           '/settings': (context) => const Settings(),
           '/addFlashcards': (context) => const AddFlashcards(),
+          '/editprofile': (context) => const EditProfile(),
         };
         WidgetBuilder builder = routes[settings.name]!;
         return MaterialPageRoute(builder: (context) => builder(context));
