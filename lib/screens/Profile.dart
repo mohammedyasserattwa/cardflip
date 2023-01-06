@@ -86,19 +86,14 @@ class Profile extends ConsumerWidget {
                       Container(
                         alignment: Alignment.centerRight,
                         child: Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage(
-                                      "Images/avatars/${userData!.profileIcon}.png"),
-                                  fit: BoxFit.cover),
-                            ),
                             width: (MediaQuery.of(context).size.width > 274)
                                 ? 85
                                 : 55,
                             height: (MediaQuery.of(context).size.width > 274)
                                 ? 85
                                 : 55,
-                            child: Text("")),
+                            child: SvgPicture.asset(
+                                "Images/avatars/${userData!.profileIcon}.svg")),
                       ),
                       const SizedBox(width: 5),
                       Column(

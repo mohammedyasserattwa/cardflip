@@ -101,10 +101,13 @@ class _MainState extends State<Main> {
                     profile = false;
                   });
                 },
-                child: NavItem(
-                  path: "Images/icons/svg/Home.svg",
-                  name: "Home",
-                  isActive: home,
+                child: Container(
+                  color: Colors.transparent,
+                  child: NavItem(
+                    path: "Images/icons/svg/Home.svg",
+                    name: "Home",
+                    isActive: home,
+                  ),
                 )),
             GestureDetector(
                 onTap: () {
@@ -114,10 +117,13 @@ class _MainState extends State<Main> {
                     profile = false;
                   });
                 },
-                child: NavItem(
-                  path: "Images/icons/svg/library.svg",
-                  name: "Library",
-                  isActive: library,
+                child: Container(
+                  color: Colors.transparent,
+                  child: NavItem(
+                    path: "Images/icons/svg/library.svg",
+                    name: "Library",
+                    isActive: library,
+                  ),
                 )),
             GestureDetector(
                 onTap: () {
@@ -127,10 +133,13 @@ class _MainState extends State<Main> {
                     profile = true;
                   });
                 },
-                child: NavItem(
-                  path: "Images/icons/svg/profile.svg",
-                  name: "Profile",
-                  isActive: profile,
+                child: Container(
+                  color: Colors.transparent,
+                  child: NavItem(
+                    path: "Images/icons/svg/profile.svg",
+                    name: "Profile",
+                    isActive: profile,
+                  ),
                 )),
           ],
         ),

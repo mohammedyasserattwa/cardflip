@@ -228,6 +228,7 @@ class _SearchResultState extends State<SearchResult> {
                 setState(() {
                   _resetPages();
                   _currentPage[2] = true;
+                  _currentState = TagScreen(tags: tags);
                 });
               }),
               child: const Text(
