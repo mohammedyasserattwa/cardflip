@@ -22,7 +22,7 @@ class BadgesModel {
         image: "Images/icons/morebadges.png",
         description: "for scoring 200 points in less than a minute"),
     Badges(
-        name: "the og cardfliper",
+        name: "the OG cardfliper",
         //image:fromdatabasewhenitisdone
         description: "for scoring 1000 points")
   ];

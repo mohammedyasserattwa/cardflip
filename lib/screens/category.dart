@@ -99,8 +99,9 @@ class Category extends StatelessWidget {
                           model.category.name,
                           textAlign: TextAlign.left,
                           style: TextStyle(
-                            fontFamily: "PolySans_Median",
-                            color: Colors.black,
+                            // fontFamily: "PolySans_Median",
+                            fontFamily: "Poppins-SemiBold",
+                            color: Color.fromARGB(255, 17, 17, 17),
                             fontSize: 36,
                           ),
                         ),

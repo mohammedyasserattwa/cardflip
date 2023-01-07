@@ -75,11 +75,10 @@ class _AdddeckState extends State<Adddeck> {
                   "Create Deck",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontFamily: "PolySans_Median",
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
-                    fontSize: 48,
-                  ),
+                          color: Color(0xBF000000),
+                          fontFamily: 'PolySans_Median',
+                          fontSize: 48,
+                          fontWeight: FontWeight.w500)
                 ),
               ),
               Expanded(

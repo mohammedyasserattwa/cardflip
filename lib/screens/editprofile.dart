@@ -48,7 +48,7 @@ class _EditProfileState extends State<EditProfile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: EdgeInsets.only(top: 25),
+                  padding: EdgeInsets.only(top: 25, left: 15),
                   alignment: Alignment.centerLeft,
                   child: GestureDetector(
                       onTap: () {
@@ -61,127 +61,137 @@ class _EditProfileState extends State<EditProfile> {
                                     "Images/icons/arrow-left-s-line.png"),
                                 fit: BoxFit.cover),
                           ),
-                          width: 40,
-                          height: 40,
+                          width: 45,
+                          height: 45,
                           child: const Text(""))),
                 ),
                 Center(
                   child: Text('Edit Profile',
                       style: TextStyle(
-                          color: Color(0xFF191C32),
-                          fontFamily: 'Poppins',
-                          fontSize: 40,
+                          color: Color(0xBF000000),
+                          fontFamily: 'PolySans_Median',
+                          fontSize: 42,
                           fontWeight: FontWeight.w500)),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 25,
                 ),
-                Column(children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.white60,
-                    radius: 75,
-                    child: Stack(
-                      alignment: AlignmentDirectional.bottomEnd,
-                      children: [
-                        SvgPicture.asset(
-                          "Images/avatars/$currentIcon.svg",
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: const Color(0xFF191C32),
-                                  borderRadius: BorderRadius.circular(50)),
-                              child: const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Icon(Icons.upload, color: Colors.white),
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 210,
-                    child: NoGlowScroll(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Scrollbar(
-                          child: ListView(
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Column(children: [
+                    CircleAvatar(
+                      backgroundColor: Colors.white60,
+                      radius: 65,
+                      child: Stack(
+                        alignment: AlignmentDirectional.bottomEnd,
+                        children: [
+                          SvgPicture.asset(
+                            "Images/avatars/$currentIcon.svg",
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              for (int i = 0; i < 18; i += 3)
-                                Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              currentIcon = i.toString();
-                                            });
-                                          },
-                                          child: CircleAvatar(
-                                            backgroundColor: Colors.white60,
-                                            radius: 35,
-                                            child: SvgPicture.asset(
-                                              "Images/avatars/$i.svg",
-                                            ),
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              currentIcon = (i + 1).toString();
-                                            });
-                                          },
-                                          child: CircleAvatar(
-                                            backgroundColor: Colors.white60,
-                                            radius: 35,
-                                            child: SvgPicture.asset(
-                                              "Images/avatars/${i + 1}.svg",
-                                            ),
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              currentIcon = (i + 2).toString();
-                                            });
-                                          },
-                                          child: CircleAvatar(
-                                            backgroundColor: Colors.white60,
-                                            radius: 35,
-                                            child: SvgPicture.asset(
-                                              "Images/avatars/${i + 2}.svg",
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 20,
-                                    )
-                                  ],
+                              Container(
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFF191C32),
+                                    borderRadius: BorderRadius.circular(50)),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child:
+                                      Icon(Icons.upload, color: Colors.white),
                                 ),
+                              )
                             ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    SizedBox(
+                      height: 210,
+                      child: NoGlowScroll(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Scrollbar(
+                            child: ListView(
+                              children: [
+                                for (int i = 0; i < 18; i += 3)
+                                  Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                currentIcon = i.toString();
+                                              });
+                                            },
+                                            child: CircleAvatar(
+                                              backgroundColor: Colors.white60,
+                                              radius: 35,
+                                              child: SvgPicture.asset(
+                                                "Images/avatars/$i.svg",
+                                              ),
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                currentIcon =
+                                                    (i + 1).toString();
+                                              });
+                                            },
+                                            child: CircleAvatar(
+                                              backgroundColor: Colors.white60,
+                                              radius: 35,
+                                              child: SvgPicture.asset(
+                                                "Images/avatars/${i + 1}.svg",
+                                              ),
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                currentIcon =
+                                                    (i + 2).toString();
+                                              });
+                                            },
+                                            child: CircleAvatar(
+                                              backgroundColor: Colors.white60,
+                                              radius: 35,
+                                              child: SvgPicture.asset(
+                                                "Images/avatars/${i + 2}.svg",
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      )
+                                    ],
+                                  ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ]),
+                  ]),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(left: 30, top: 20),
                   child: Text(
-                    'First Name:',
+                    'First Name',
                     style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 26,
-                        fontWeight: FontWeight.w400),
+                      fontFamily: 'PolySans_Neutral',
+                      fontSize: 24,
+                      color: Color.fromARGB(255, 49, 49, 49),
+                    ),
                   ),
                 ),
                 Padding(
@@ -192,7 +202,7 @@ class _EditProfileState extends State<EditProfile> {
                     key: firstNameKey,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.grey.withOpacity(0.5),
+                      fillColor: Color.fromARGB(93, 167, 167, 167),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
                         borderSide: BorderSide(
@@ -214,11 +224,12 @@ class _EditProfileState extends State<EditProfile> {
                 Padding(
                   padding: const EdgeInsets.only(left: 30, top: 20),
                   child: Text(
-                    'Last Name:',
+                    'Last Name',
                     style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 26,
-                        fontWeight: FontWeight.w400),
+                      fontFamily: 'PolySans_Neutral',
+                      fontSize: 24,
+                      color: Color.fromARGB(255, 49, 49, 49),
+                    ),
                   ),
                 ),
                 Padding(
@@ -229,7 +240,7 @@ class _EditProfileState extends State<EditProfile> {
                     controller: ControllerLastNameData,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.grey.withOpacity(0.5),
+                      fillColor: Color.fromARGB(93, 167, 167, 167),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
                         borderSide: BorderSide(
@@ -251,11 +262,12 @@ class _EditProfileState extends State<EditProfile> {
                 Padding(
                   padding: const EdgeInsets.only(left: 30, top: 20),
                   child: Text(
-                    'Username:',
+                    'Username',
                     style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 26,
-                        fontWeight: FontWeight.w400),
+                      fontFamily: 'PolySans_Neutral',
+                      fontSize: 24,
+                      color: Color.fromARGB(255, 49, 49, 49),
+                    ),
                   ),
                 ),
                 Padding(
@@ -266,7 +278,7 @@ class _EditProfileState extends State<EditProfile> {
                     controller: ControllerUsernameData,
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.grey.withOpacity(0.5),
+                      fillColor: Color.fromARGB(93, 167, 167, 167),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
                         borderSide: BorderSide(
@@ -286,6 +298,7 @@ class _EditProfileState extends State<EditProfile> {
                   height: 30,
                 ),
                 Container(
+                  padding: EdgeInsets.only(bottom: 20, top: 15),
                   alignment: Alignment.center,
                   child: GestureDetector(
                       onTap: () {
@@ -299,7 +312,7 @@ class _EditProfileState extends State<EditProfile> {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
                               color: Colors.grey.withOpacity(0.30)),
-                          width: 100,
+                          width: 85,
                           height: 45,
                           child: const Text("Done",
                               style: TextStyle(
@@ -307,9 +320,6 @@ class _EditProfileState extends State<EditProfile> {
                                   fontFamily: 'Poppins',
                                   fontSize: 20,
                                   fontWeight: FontWeight.w500)))),
-                ),
-                SizedBox(
-                  height: 40,
                 ),
               ],
             ),
