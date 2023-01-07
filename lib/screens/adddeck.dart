@@ -71,34 +71,31 @@ class _AdddeckState extends State<Adddeck> {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 10, left: 20),
-                child: Text(
-                  "Create Deck",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                          color: Color(0xBF000000),
-                          fontFamily: 'PolySans_Median',
-                          fontSize: 48,
-                          fontWeight: FontWeight.w500)
-                ),
+                child: Text("Create Deck",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Color(0xBF000000),
+                        fontFamily: 'PolySans_Median',
+                        fontSize: 48,
+                        fontWeight: FontWeight.w500)),
               ),
               Expanded(
                 child: ListView(children: [
-                  for (int index = 0; index < resultedData.length; index++)
-                    Text(
-                      "Title",
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontFamily: "PolySans_Median",
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
-                        fontSize: 24,
-                      ),
+                  Text(
+                    "Title",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontFamily: "PolySans_Median",
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                      fontSize: 24,
                     ),
+                  ),
                   for (int index = 0; index < resultedData.length; index++)
                     Padding(
                       padding: const EdgeInsets.only(top: 10.0),
                       child: TextField(
-                        controller: Controllerdescription[index],
+                        controller: Controllertitle[index],
                         key: namekeys[index],
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.all(20),
