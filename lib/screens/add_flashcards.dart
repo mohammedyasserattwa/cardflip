@@ -259,7 +259,7 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                                     borderRadius: BorderRadius.circular(15),
                                     color: Colors.grey.withOpacity(0.30)),
                                 width: 85,
-                                height: 35,
+                                height: 40,
                                 child: const Text("Done",
                                     style: TextStyle(
                                         color: Color(0xFF191C32),

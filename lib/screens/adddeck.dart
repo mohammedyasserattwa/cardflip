@@ -12,11 +12,6 @@ import '../data/card_generator.dart';
 import '../widgets/navibar.dart';
 import '../widgets/deck.dart';
 
-main() => runApp(MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Adddeck(),
-    ));
-
 class Adddeck extends StatefulWidget {
   const Adddeck({key});
 
@@ -27,10 +22,7 @@ class Adddeck extends StatefulWidget {
 class _AdddeckState extends State<Adddeck> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
@@ -40,156 +32,181 @@ class _AdddeckState extends State<Adddeck> {
             fit: BoxFit.cover,
           ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              alignment: Alignment.centerLeft,
-              child: GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage(
-                                "Images/icons/arrow-left-s-line.png"),
-                            fit: BoxFit.cover),
-                      ),
-                      width: 40,
-                      height: 40,
-                      child: const Text(""))),
-            ),
-            Text(
-              "Create Deck",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: "PolySans_Median",
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-                fontSize: 48,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                alignment: Alignment.centerLeft,
+                child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 40.0),
+                      child: Container(
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage(
+                                    "Images/icons/arrow-left-s-line.png"),
+                                fit: BoxFit.cover),
+                          ),
+                          width: 40,
+                          height: 40,
+                          child: const Text("")),
+                    )),
               ),
-            ),
-            Expanded(
-              child: ListView(children: [
-                Text(
-                  "Title",
-                  textAlign: TextAlign.left,
+              Padding(
+                padding: const EdgeInsets.only(top: 10, left: 20),
+                child: Text(
+                  "Create Deck",
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: "PolySans_Median",
                     fontWeight: FontWeight.w500,
                     color: Colors.black,
-                    fontSize: 24,
-                  ),
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.all(40),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none, //<-- SEE HERE
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    filled: true,
-                    fillColor: Colors.black.withOpacity(0.1),
-                    hintText: 'Enter the deck title',
-                  ),
-                ),
-                Text(
-                  "Description",
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontFamily: "PolySans_Median",
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
-                    fontSize: 24,
-                  ),
-                ),
-                TextField(
-                  maxLines: 5,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      //<-- SEE HERE
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    filled: true,
-                    fillColor: Colors.black.withOpacity(0.1),
-                    hintText: 'Enter the deck description',
-                  ),
-                ),
-                Text(
-                  "Tags",
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontFamily: "PolySans_Median",
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
-                    fontSize: 24,
-                  ),
-                ),
-                MultiSelectContainer(
-                    itemsDecoration: MultiSelectDecorations(
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(colors: [
-                            Colors.black.withOpacity(0.1),
-                            Colors.black.withOpacity(0.1),
-                          ]),
-                          border:
-                              Border.all(color: Colors.black.withOpacity(0.1)),
-                          borderRadius: BorderRadius.circular(20)),
-                      selectedDecoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                              colors: [Colors.black, Colors.grey]),
-                          border: Border.all(color: Colors.blueGrey[700]!),
-                          borderRadius: BorderRadius.circular(5)),
-                      disabledDecoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.1),
-                          border:
-                              Border.all(color: Colors.black.withOpacity(0.1)),
-                          borderRadius: BorderRadius.circular(10)),
-                    ),
-                    items: [
-                      MultiSelectCard(value: 'Dart', label: 'Dart'),
-                      MultiSelectCard(value: 'Python', label: 'Python'),
-                      MultiSelectCard(
-                        value: 'JavaScript',
-                        label: 'JavaScript',
-                      ),
-                      MultiSelectCard(value: 'Java', label: 'Java'),
-                      MultiSelectCard(value: 'C#', label: 'C#'),
-                      MultiSelectCard(value: 'C++', label: 'C++'),
-                    ],
-                    onChange: (allSelectedItems, selectedItem) {}),
-              ]),
-            ),
-            Container(
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 20, right: 20),
-                  child: SizedBox(
-                    height: 40,
-                    width: 100,
-                    child: ElevatedButton(
-                      onPressed: () => "done",
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black.withOpacity(0.1),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                      ),
-                      child: Text(
-                        "Done",
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
+                    fontSize: 48,
                   ),
                 ),
               ),
-            ),
-          ],
+              Expanded(
+                child: ListView(children: [
+                  Text(
+                    "Title",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontFamily: "PolySans_Median",
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                      fontSize: 24,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(20),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        filled: true,
+                        fillColor: Colors.black.withOpacity(0.1),
+                        hintText: 'Enter the deck title',
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    "Description",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontFamily: "PolySans_Median",
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                      fontSize: 24,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: TextField(
+                      maxLines: 5,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          //<-- SEE HERE
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        filled: true,
+                        fillColor: Colors.black.withOpacity(0.1),
+                        hintText: 'Enter the deck description',
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    "Tags",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontFamily: "PolySans_Median",
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                      fontSize: 24,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: MultiSelectContainer(
+                        textStyles: MultiSelectTextStyles(
+                            textStyle: TextStyle(
+                                fontFamily: "PolySans_Neutral",
+                                fontSize: 15,
+                                color: Color(0xff212523)),
+                            selectedTextStyle: TextStyle(
+                                fontFamily: "PolySans_Neutral",
+                                fontSize: 15,
+                                color: Color(0xff212523))),
+                        itemsDecoration: MultiSelectDecorations(
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(colors: [
+                                  Colors.black.withOpacity(0.1),
+                                  Colors.black.withOpacity(0.1),
+                                ]),
+                                border: Border.all(
+                                    color: Colors.black.withOpacity(0.1)),
+                                borderRadius: BorderRadius.circular(20)),
+                            selectedDecoration: BoxDecoration(
+                              border: Border.all(
+                                  color: const Color(0xffA000A4), width: 1),
+                              borderRadius: BorderRadius.circular(16),
+                              color: const Color(0xffF4B1EB),
+                            )),
+                        items: [
+                          MultiSelectCard(value: 'Dart', label: 'Dart'),
+                          MultiSelectCard(value: 'Python', label: 'Python'),
+                          MultiSelectCard(
+                            value: 'JavaScript',
+                            label: 'JavaScript',
+                          ),
+                          MultiSelectCard(value: 'Java', label: 'Java'),
+                          MultiSelectCard(value: 'C#', label: 'C#'),
+                          MultiSelectCard(value: 'C++', label: 'C++'),
+                        ],
+                        onChange: (allSelectedItems, selectedItem) {}),
+                  ),
+                ]),
+              ),
+              Container(
+                padding: EdgeInsets.only(right: 20, bottom: 35),
+                alignment: Alignment.centerRight,
+                child: GestureDetector(
+                    onTap: () {
+                      // check if fields are empty
+                    },
+                    child: Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.grey.withOpacity(0.30)),
+                        width: 85,
+                        height: 40,
+                        child: const Text("Done",
+                            style: TextStyle(
+                                color: Color(0xFF191C32),
+                                fontFamily: 'Poppins',
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500)))),
+              ),
+            ],
+          ),
         ),
       ),
-    ));
+    );
   }
 }

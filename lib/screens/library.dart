@@ -223,7 +223,7 @@ class _LibraryState extends State<Library> {
                   alignment: Alignment.centerRight,
                   child: GestureDetector(
                       onTap: () {
-                        GoRouter.of(context).go('/Home/Library/Adddeck');
+                        Navigator.pushNamed(context, '/adddeck');
                       },
                       child: Container(
                           decoration: const BoxDecoration(

@@ -3,6 +3,7 @@ import 'package:cardflip/screens/FlashcardScreen.dart';
 import 'package:cardflip/screens/Leaderboard.dart';
 import 'package:cardflip/screens/Profile.dart';
 import 'package:cardflip/screens/add_flashcards.dart';
+import 'package:cardflip/screens/adddeck.dart';
 import 'package:cardflip/screens/category.dart';
 import 'package:cardflip/screens/editprofile.dart';
 import 'package:cardflip/screens/library.dart';
@@ -74,6 +75,7 @@ class _MainState extends State<Main> {
           '/settings': (context) => const Settings(),
           '/addFlashcards': (context) => const AddFlashcards(),
           '/editprofile': (context) => const EditProfile(),
+                    '/adddeck': (context) => const Adddeck(),
         };
         WidgetBuilder builder = routes[settings.name]!;
         return MaterialPageRoute(builder: (context) => builder(context));
