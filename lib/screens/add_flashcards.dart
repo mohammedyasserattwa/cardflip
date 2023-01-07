@@ -50,7 +50,7 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                 ),
                 Container(
                   padding: EdgeInsets.only(top: 4),
-                  child: Text('Add Flashcard',
+                  child: Text('Add Flashcards',
                       style: TextStyle(
                           color: Color(0xBF000000),
                           fontFamily: 'PolySans_Median',
