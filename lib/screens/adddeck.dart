@@ -25,10 +25,10 @@ class Adddeck extends StatefulWidget {
 }
 
 class _AdddeckState extends State<Adddeck> {
-  List ControllerDefinitionData = [TextEditingController()];
-  List ControllerTermData = [TextEditingController()];
-  List termkeys = [GlobalKey<FormState>()];
-  List definitionkeys = [GlobalKey<FormState>()];
+  List Controllerdescription = [TextEditingController()];
+  List Controllertitle = [TextEditingController()];
+  List namekeys = [GlobalKey<FormState>()];
+  List descriptionkeys = [GlobalKey<FormState>()];
 
   List resultedData = [Column()];
   @override
@@ -99,8 +99,8 @@ class _AdddeckState extends State<Adddeck> {
                     Padding(
                       padding: const EdgeInsets.only(top: 10.0),
                       child: TextField(
-                        controller: ControllerDefinitionData[index],
-                        key: definitionkeys[index],
+                        controller: Controllerdescription[index],
+                        key: namekeys[index],
                         decoration: InputDecoration(
                           contentPadding: EdgeInsets.all(20),
                           border: OutlineInputBorder(
@@ -130,8 +130,8 @@ class _AdddeckState extends State<Adddeck> {
                     Padding(
                       padding: const EdgeInsets.only(top: 10.0),
                       child: TextField(
-                        controller: ControllerDefinitionData[index],
-                        key: definitionkeys[index],
+                        controller: Controllerdescription[index],
+                        key: descriptionkeys[index],
                         maxLines: 5,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
@@ -206,17 +206,16 @@ class _AdddeckState extends State<Adddeck> {
                 child: GestureDetector(
                     onTap: () {
                       setState(() {
-                        resultedData.add(Column());
-                        ControllerDefinitionData.add(TextEditingController());
-                        ControllerTermData.add(TextEditingController());
-                        termkeys.add(GlobalKey<FormState>());
-                        definitionkeys.add(GlobalKey<FormState>());
+                        Controllerdescription.add(TextEditingController());
+                        Controllertitle.add(TextEditingController());
+                        namekeys.add(GlobalKey<FormState>());
+                        descriptionkeys.add(GlobalKey<FormState>());
                       });
                       for (int index = 0;
-                          index < ControllerDefinitionData.length;
+                          index < Controllerdescription.length;
                           index++) {
-                        if (ControllerDefinitionData[index].text.isEmpty ||
-                            ControllerTermData[index].text.isEmpty)
+                        if (Controllerdescription[index].text.isEmpty ||
+                            Controllertitle[index].text.isEmpty)
                           print('Please enter a text into the fields');
                       }
                     },
