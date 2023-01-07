@@ -12,6 +12,11 @@ import '../data/card_generator.dart';
 import '../widgets/navibar.dart';
 import '../widgets/deck.dart';
 
+main() => runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Adddeck(),
+    ));
+
 class Adddeck extends StatefulWidget {
   const Adddeck({key});
 
@@ -20,6 +25,12 @@ class Adddeck extends StatefulWidget {
 }
 
 class _AdddeckState extends State<Adddeck> {
+  List ControllerDefinitionData = [TextEditingController()];
+  List ControllerTermData = [TextEditingController()];
+  List termkeys = [GlobalKey<FormState>()];
+  List definitionkeys = [GlobalKey<FormState>()];
+
+  List resultedData = [Column()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,31 +84,35 @@ class _AdddeckState extends State<Adddeck> {
               ),
               Expanded(
                 child: ListView(children: [
-                  Text(
-                    "Title",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontFamily: "PolySans_Median",
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
-                      fontSize: 24,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(20),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        filled: true,
-                        fillColor: Colors.black.withOpacity(0.1),
-                        hintText: 'Enter the deck title',
+                  for (int index = 0; index < resultedData.length; index++)
+                    Text(
+                      "Title",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        fontFamily: "PolySans_Median",
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                        fontSize: 24,
                       ),
                     ),
-                  ),
+                  for (int index = 0; index < resultedData.length; index++)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: TextField(
+                        controller: ControllerDefinitionData[index],
+                        key: definitionkeys[index],
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(20),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          filled: true,
+                          fillColor: Colors.black.withOpacity(0.1),
+                          hintText: 'Enter the deck title',
+                        ),
+                      ),
+                    ),
                   SizedBox(
                     height: 20,
                   ),
@@ -111,22 +126,25 @@ class _AdddeckState extends State<Adddeck> {
                       fontSize: 24,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: TextField(
-                      maxLines: 5,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          //<-- SEE HERE
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(20.0),
+                  for (int index = 0; index < resultedData.length; index++)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: TextField(
+                        controller: ControllerDefinitionData[index],
+                        key: definitionkeys[index],
+                        maxLines: 5,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            //<-- SEE HERE
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          filled: true,
+                          fillColor: Colors.black.withOpacity(0.1),
+                          hintText: 'Enter the deck description',
                         ),
-                        filled: true,
-                        fillColor: Colors.black.withOpacity(0.1),
-                        hintText: 'Enter the deck description',
                       ),
                     ),
-                  ),
                   SizedBox(
                     height: 20,
                   ),
@@ -187,7 +205,20 @@ class _AdddeckState extends State<Adddeck> {
                 alignment: Alignment.centerRight,
                 child: GestureDetector(
                     onTap: () {
-                      // check if fields are empty
+                      setState(() {
+                        resultedData.add(Column());
+                        ControllerDefinitionData.add(TextEditingController());
+                        ControllerTermData.add(TextEditingController());
+                        termkeys.add(GlobalKey<FormState>());
+                        definitionkeys.add(GlobalKey<FormState>());
+                      });
+                      for (int index = 0;
+                          index < ControllerDefinitionData.length;
+                          index++) {
+                        if (ControllerDefinitionData[index].text.isEmpty ||
+                            ControllerTermData[index].text.isEmpty)
+                          print('Please enter a text into the fields');
+                      }
                     },
                     child: Container(
                         alignment: Alignment.center,
