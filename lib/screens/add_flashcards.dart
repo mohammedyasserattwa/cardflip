@@ -31,7 +31,7 @@ class _AddFlashcardsState extends State<AddFlashcards> {
             child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.only(top: 50),
+                  padding: EdgeInsets.only(top: 50, left: 15),
                   alignment: Alignment.centerLeft,
                   child: GestureDetector(
                       onTap: () {
@@ -44,21 +44,18 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                                     "Images/icons/arrow-left-s-line.png"),
                                 fit: BoxFit.cover),
                           ),
-                          width: 40,
-                          height: 40,
+                          width: 45,
+                          height: 45,
                           child: const Text(""))),
                 ),
                 Container(
-                  padding: EdgeInsets.only(top: 10),
+                  padding: EdgeInsets.only(top: 4),
                   child: Text('Add Flashcard',
                       style: TextStyle(
-                          color: Color(0xFF191C32),
-                          fontFamily: 'Poppins',
-                          fontSize: 45,
+                          color: Color(0xBF000000),
+                          fontFamily: 'PolySans_Median',
+                          fontSize: 42,
                           fontWeight: FontWeight.w500)),
-                ),
-                SizedBox(
-                  height: 15,
                 ),
                 Expanded(
                     child: NoGlowScroll(
@@ -71,12 +68,12 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                               index++)
                             Padding(
                               padding: const EdgeInsets.only(
-                                  left: 15, right: 15, bottom: 25),
+                                  left: 25, right: 25, bottom: 25),
                               child: Container(
-                                height: 360,
+                                height: 350,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15),
-                                    color: Colors.grey.withOpacity(0.25)),
+                                    color: Color.fromARGB(42, 167, 167, 167)),
                                 child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -85,18 +82,20 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                                         children: [
                                           Padding(
                                             padding: const EdgeInsets.only(
-                                                left: 15, top: 20),
+                                                left: 25, top: 20),
                                             child: Text(
                                               'Term',
                                               style: TextStyle(
-                                                  fontFamily: 'Poppins',
-                                                  fontSize: 26,
-                                                  fontWeight: FontWeight.w400),
+                                                fontFamily: 'PolySans_Median',
+                                                fontSize: 24,
+                                                color: Color(0xCC000000),
+                                                // fontWeight: FontWeight.w400
+                                              ),
                                             ),
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.only(
-                                                left: 230, right: 15, top: 10),
+                                                left: 207, right: 15, top: 10),
                                             child: GestureDetector(
                                               onTap: () {
                                                 setState(() {
@@ -106,21 +105,27 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                                               },
                                               child: index == 0
                                                   ? Container()
-                                                  : Container(
-                                                      height: 40,
-                                                      width: 40,
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                              left: 15,
-                                                              top: 20),
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(16),
-                                                        image: DecorationImage(
-                                                          image: AssetImage(
-                                                              "Images/icons/trash.png"),
-                                                          fit: BoxFit.cover,
+                                                  : Opacity(
+                                                      opacity: 0.85,
+                                                      child: Container(
+                                                        height: 40,
+                                                        width: 40,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                left: 15,
+                                                                top: 20),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(16),
+                                                          image:
+                                                              DecorationImage(
+                                                            image: AssetImage(
+                                                                "Images/icons/trash.png"),
+                                                            fit: BoxFit.cover,
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
@@ -130,14 +135,24 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            top: 10, left: 12.0, right: 12),
+                                            top: 10, left: 17.0, right: 17),
                                         child: TextField(
+                                          style: TextStyle(
+                                            fontFamily: 'PolySans_Neutral',
+                                            fontSize: 24,
+                                            color:
+                                                Color.fromARGB(255, 49, 49, 49),
+                                          ),
                                           controller: ControllerTermData[index],
                                           key: termkeys[index],
                                           decoration: InputDecoration(
+                                            contentPadding:
+                                                const EdgeInsets.fromLTRB(
+                                                    20.0, 17.0, 10.0, 17.0),
+                                            isDense: true,
                                             filled: true,
-                                            fillColor:
-                                                Colors.grey.withOpacity(0.5),
+                                            fillColor: Color.fromARGB(
+                                                93, 167, 167, 167),
                                             enabledBorder: OutlineInputBorder(
                                               borderRadius:
                                                   BorderRadius.circular(16),
@@ -155,28 +170,41 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                                           ),
                                         ),
                                       ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            left: 15, top: 20),
+                                            left: 25, top: 20),
                                         child: Text(
                                           'Definition',
                                           style: TextStyle(
-                                              fontFamily: 'Poppins',
-                                              fontSize: 26,
-                                              fontWeight: FontWeight.w400),
+                                            fontFamily: 'PolySans_Median',
+                                            fontSize: 24,
+                                            color: Color(0xCC000000),
+                                            // fontWeight: FontWeight.w400
+                                          ),
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            left: 12, right: 12, top: 10),
+                                            left: 17, right: 17, top: 10),
                                         child: Container(
                                           decoration: BoxDecoration(
-                                            color: Colors.grey.withOpacity(0.5),
+                                            color: Color.fromARGB(
+                                                93, 167, 167, 167),
                                             borderRadius:
                                                 BorderRadius.circular(16),
                                           ),
                                           height: 130,
                                           child: TextField(
+                                            maxLines: 5,
+                                            style: TextStyle(
+                                              fontFamily: 'PolySans_Neutral',
+                                              fontSize: 20,
+                                              color: Color.fromARGB(
+                                                  255, 49, 49, 49),
+                                            ),
                                             controller:
                                                 ControllerDefinitionData[index],
                                             key: definitionkeys[index],
@@ -212,7 +240,7 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                         ],
                       ),
                       Container(
-                        padding: EdgeInsets.only(right: 20),
+                        padding: EdgeInsets.only(right: 25),
                         alignment: Alignment.centerRight,
                         child: GestureDetector(
                             onTap: () {
@@ -239,7 +267,8 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                         height: 60,
                       ),
                       Container(
-                        padding: EdgeInsets.only(right: 20),
+                        padding:
+                            EdgeInsets.only(right: 20, bottom: 35, top: 65),
                         alignment: Alignment.centerRight,
                         child: GestureDetector(
                             onTap: () {

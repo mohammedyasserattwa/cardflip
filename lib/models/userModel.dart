@@ -707,7 +707,7 @@ class UserModel {
         background: "Images/backgrounds/Categorylaw.png",
       ),
       Category(
-        name: "Math",
+        name: "Mathematics",
         vector: "Images/vectors/math.png",
         decks: categoryDecks[3],
         background: "Images/backgrounds/Categorymath.png",

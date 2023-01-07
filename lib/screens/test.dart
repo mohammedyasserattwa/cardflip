@@ -424,7 +424,6 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                                                                 //         milliseconds: 500));
                                                                 // swipecontroller.forward(
                                                                 //     from: 0.0);
-
                                                                 Timer(
                                                                     Duration(
                                                                         milliseconds:

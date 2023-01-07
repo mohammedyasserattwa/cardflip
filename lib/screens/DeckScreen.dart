@@ -40,7 +40,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
 
     model = FlashcardModel(id: widget.id);
     _cards = cardList(model.getCards);
-    _randomBanner = Random().nextInt(5);
+    _randomBanner = Random().nextInt(6);
   }
 
   Widget cardList(List<dataCard.Card> cardList) {
