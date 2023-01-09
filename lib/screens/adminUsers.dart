@@ -266,7 +266,10 @@ class AdminUsers extends StatelessWidget {
                                               CrossAxisAlignment.end,
                                           children: [
                                             GestureDetector(
-                                              onTap: () {},
+                                              onTap: () {
+                                                model.banUser(
+                                                    snapshot.data![i]["id"]);
+                                              },
                                               child: Container(
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(

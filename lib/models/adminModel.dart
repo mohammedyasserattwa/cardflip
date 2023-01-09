@@ -25,14 +25,16 @@ class AdminModel {
               "lname": doc.get("lname"),
               "profileIcon": doc.get("profileIcon"),
               "username": doc.get("username"),
-              "banned": doc.get("banned")
+              "banned": doc.get("banned"),
+              "id": doc.id,
             })
         .toList();
     return data;
   }
 
-  void banUser() {
-    // _userCollection.doc.set("true");
+  void banUser(String id) {
+    _userCollection.doc(id).update({"banned": "true"});
+    //TODO: Show message "User banned"
   }
 
   void banDeck(String name) {
