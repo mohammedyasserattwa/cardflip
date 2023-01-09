@@ -91,15 +91,15 @@ class _LoginState extends ConsumerState<Login> {
         child: Scaffold(
           backgroundColor: Colors.transparent,
           body: Padding(
-            padding: const EdgeInsets.only(top: 150),
+            padding: const EdgeInsets.only(top: 185),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 25),
+                  padding: const EdgeInsets.only(left: 30, bottom: 20),
                   child: Text(
-                    'Welcome\nBack',
+                    'Log In',
                     style: TextStyle(
                       color: Color(0xFF191C32),
                       fontFamily: 'PolySans_Median',
@@ -114,7 +114,8 @@ class _LoginState extends ConsumerState<Login> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Container(
-                            margin: EdgeInsets.only(left: 25, right: 25),
+                            margin: EdgeInsets.only(
+                                left: 25, right: 25, bottom: 15),
                             child: Column(
                               children: [
                                 Input(
@@ -147,33 +148,36 @@ class _LoginState extends ConsumerState<Login> {
                                   },
                                 ),
                                 SizedBox(
-                                  height: 10,
+                                  height: 20,
                                 ),
-                                Row(
-                                  children: [
-                                    CustomCheckbox(
-                                      isChecked: _isChecked,
-                                      onChange: (isChecked) {
-                                        print(isChecked);
-                                      },
-                                      size: 25,
-                                      selectedColor: Colors.white,
-                                      selectedIconColor: Color(0xFF191C32),
-                                      iconSize: 19,
-                                      borderColor: Color(0xFF191C32),
-                                      checkIcon: Icon(Icons.check),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text("Remember me",
-                                        style: TextStyle(
-                                            color: Color(0xFF191C32),
-                                            fontFamily: "PolySans_Median")),
-                                  ],
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 10.0),
+                                  child: Row(
+                                    children: [
+                                      CustomCheckbox(
+                                        isChecked: _isChecked,
+                                        onChange: (isChecked) {
+                                          print(isChecked);
+                                        },
+                                        size: 25,
+                                        selectedColor: Colors.white,
+                                        selectedIconColor: Color(0xFF191C32),
+                                        iconSize: 19,
+                                        borderColor: Color(0xFF191C32),
+                                        checkIcon: Icon(Icons.check),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text("Remember me",
+                                          style: TextStyle(
+                                              color: Color(0xFF191C32),
+                                              fontFamily: "PolySans_Median")),
+                                    ],
+                                  ),
                                 ),
                                 SizedBox(
-                                  height: 30,
+                                  height: 40,
                                 ),
                                 SizedBox(
                                   width: 340,
@@ -199,7 +203,7 @@ class _LoginState extends ConsumerState<Login> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: 30,
+                                  height: 40,
                                 ),
                                 TextButton(
                                     onPressed: () {},
