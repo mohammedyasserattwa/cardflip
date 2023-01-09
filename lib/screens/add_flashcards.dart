@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names
 
+import 'package:cardflip/widgets/addflashcards_input.dart';
 import "package:flutter/material.dart";
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 
@@ -11,12 +12,14 @@ class AddFlashcards extends StatefulWidget {
 }
 
 class _AddFlashcardsState extends State<AddFlashcards> {
-  List ControllerDefinitionData = [TextEditingController()];
-  List ControllerTermData = [TextEditingController()];
+  List<TextEditingController> ControllerDefinitionData = [
+    TextEditingController()
+  ];
+  List<TextEditingController> ControllerTermData = [TextEditingController()];
   List termkeys = [GlobalKey<FormState>()];
   List definitionkeys = [GlobalKey<FormState>()];
-
   List resultedData = [Column()];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,40 +138,12 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            top: 10, left: 17.0, right: 17),
-                                        child: TextField(
-                                          style: TextStyle(
-                                            fontFamily: 'PolySans_Neutral',
-                                            fontSize: 24,
-                                            color:
-                                                Color.fromARGB(255, 49, 49, 49),
-                                          ),
-                                          controller: ControllerTermData[index],
-                                          key: termkeys[index],
-                                          decoration: InputDecoration(
-                                            contentPadding:
-                                                const EdgeInsets.fromLTRB(
-                                                    20.0, 17.0, 10.0, 17.0),
-                                            isDense: true,
-                                            filled: true,
-                                            fillColor: Color.fromARGB(
-                                                93, 167, 167, 167),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(16),
-                                              borderSide: BorderSide(
-                                                color: Colors.transparent,
-                                              ),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(16),
-                                              borderSide: BorderSide(
-                                                color: Colors.transparent,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+                                            top: 10, left: 12.0, right: 12),
+                                        child: addflashcard_input(
+                                            color: true,
+                                            ControllerData:
+                                                ControllerTermData[index],
+                                            keys: termkeys[index]),
                                       ),
                                       SizedBox(
                                         height: 10,
@@ -197,40 +172,11 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                                                 BorderRadius.circular(16),
                                           ),
                                           height: 130,
-                                          child: TextField(
-                                            maxLines: 5,
-                                            style: TextStyle(
-                                              fontFamily: 'PolySans_Neutral',
-                                              fontSize: 20,
-                                              color: Color.fromARGB(
-                                                  255, 49, 49, 49),
-                                            ),
-                                            controller:
+                                          child: addflashcard_input(
+                                            color: false,
+                                            ControllerData:
                                                 ControllerDefinitionData[index],
-                                            key: definitionkeys[index],
-                                            decoration: InputDecoration(
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(16),
-                                                borderSide: BorderSide(
-                                                    color: Colors.transparent,
-                                                    width: 2),
-                                              ),
-                                              enabledBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(16),
-                                                borderSide: BorderSide(
-                                                  color: Colors.transparent,
-                                                ),
-                                              ),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(16),
-                                                borderSide: BorderSide(
-                                                  color: Colors.transparent,
-                                                ),
-                                              ),
-                                            ),
+                                            keys: definitionkeys[index],
                                           ),
                                         ),
                                       ),
