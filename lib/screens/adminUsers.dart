@@ -22,7 +22,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 class AdminUsers extends StatelessWidget {
   AdminUsers({key});
 
-  AdminModel model = AdminModel(DummyData());
+  AdminModel model = AdminModel();
 
   DeckModel deckModel = DeckModel();
   CardGenerator cardgenerator = CardGenerator();
@@ -42,6 +42,7 @@ class AdminUsers extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userData = model.userDataList();
     final height = 128.67;
     final width = 133.67;
     return Scaffold(
@@ -55,17 +56,49 @@ class AdminUsers extends StatelessWidget {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 50, 0, 30),
+              padding: const EdgeInsets.only(top: 15, right: 20.0),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, "/settings");
+                    },
+                    child: SvgPicture.asset(
+                      "Images/icons/svg/settings.svg",
+                      width: 25,
+                      height: 25,
+                      color: Color(0xff8C9595),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+              child: Row(
+                // crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    "Dashboard ",
-                    style: TextStyle(
-                      fontFamily: "PolySans_Slim",
-                      color: Color(0xf0493C3F),
-                      fontSize: 32,
+                  Container(
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage(
+                                "Images/avatars/logo/playstore (1) 1.png"),
+                            fit: BoxFit.cover),
+                      ),
+                      width: 85,
+                      height: 85,
+                      child: Text("")),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
+                    child: Text(
+                      "Dashboard ",
+                      style: TextStyle(
+                        fontFamily: "PolySans_Slim",
+                        color: Color(0xf0493C3F),
+                        fontSize: 32,
+                      ),
                     ),
                   ),
                 ],
@@ -77,7 +110,9 @@ class AdminUsers extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, "/admin");
+                    },
                     child: Text(
                       "Decks",
                       style: TextStyle(
@@ -99,7 +134,9 @@ class AdminUsers extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, "/adminReports");
+                    },
                     child: Text(
                       "Reports",
                       style: TextStyle(
@@ -170,84 +207,105 @@ class AdminUsers extends StatelessWidget {
                         child: const Text(""))),
               ],
             ),
-            Expanded(
-              child: NoGlowScroll(
-                child: ListView(
-                  children: [
-                    for (var i = 0; i < 10; i++)
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            FutureBuilder(
+                future: userData,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Expanded(
+                      child: NoGlowScroll(
+                        child: ListView(
                           children: [
-                            Container(
-                              alignment: Alignment.centerRight,
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image:
-                                            AssetImage("Images/avatars/15.png"),
-                                        fit: BoxFit.cover),
-                                  ),
-                                  width: 60,
-                                  height: 60,
-                                  child: Text("")),
-                            ),
-                            const SizedBox(width: 5),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Shehab ElDin Mohsen",
-                                  style: TextStyle(
-                                    fontFamily: "PolySans_Slim",
-                                    color: Color(0xf0493C3F),
-                                    fontSize: 20,
-                                  ),
+                            for (var i = 0; i < snapshot.data!.length; i++)
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 20, 0, 0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        SvgPicture.asset(
+                                            "Images/avatars/${snapshot.data![i]["profileIcon"]}.svg",
+                                            width: 50,
+                                            height: 50),
+                                        const SizedBox(width: 20),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "${snapshot.data![i]["fname"]} ${snapshot.data![i]["lname"]}",
+                                              style: TextStyle(
+                                                fontFamily: "PolySans_Slim",
+                                                color: Color(0xf0493C3F),
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                            Text(
+                                              "@${snapshot.data![i]["username"]}",
+                                              style: TextStyle(
+                                                fontFamily: "PolySans_Slim",
+                                                color: Color(0xf0493C3F),
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {},
+                                              child: Container(
+                                                  decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                        image: AssetImage(
+                                                            "Images/icons/ban.png"),
+                                                        fit: BoxFit.cover),
+                                                  ),
+                                                  width: 35,
+                                                  height: 35,
+                                                  child: Text("")),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {},
+                                              child: Container(
+                                                  decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                        image: AssetImage(
+                                                            "Images/icons/arrow-right-s-line.png"),
+                                                        fit: BoxFit.cover),
+                                                  ),
+                                                  width: 35,
+                                                  height: 35,
+                                                  child: Text("")),
+                                            ),
+                                            const SizedBox(width: 10),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  "@shehabemohsen",
-                                  style: TextStyle(
-                                    fontFamily: "PolySans_Slim",
-                                    color: Color(0xf0493C3F),
-                                    fontSize: 13,
-                                  ),
-                                )
-                              ],
-                            ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image:
-                                            AssetImage("Images/icons/ban.png"),
-                                        fit: BoxFit.cover),
-                                  ),
-                                  width: 35,
-                                  height: 35,
-                                  child: Text("")),
-                            ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            "Images/icons/arrow-right-s-line.png"),
-                                        fit: BoxFit.cover),
-                                  ),
-                                  width: 35,
-                                  height: 35,
-                                  child: Text("")),
-                            ),
+                              ),
                           ],
                         ),
                       ),
-                  ],
-                ),
-              ),
-            ),
+                    );
+                  }
+                  return Center(child: CircularProgressIndicator());
+                }),
           ],
         ),
       ),

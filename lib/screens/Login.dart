@@ -53,7 +53,12 @@ class _LoginState extends ConsumerState<Login> {
           ref.read(UserDataProvider.notifier).state =
               user_data.User.fromSnapshot(value, _emailController.text,
                   _passwordController.text, userModel.id);
-          Navigator.pushReplacementNamed(context, '/home');
+          value.get("role");
+          if (value.get("role") == 'learner') {
+            Navigator.pushReplacementNamed(context, '/home');
+          } else if (value.get("role") == 'admin') {
+            Navigator.pushReplacementNamed(context, '/admin');
+          }
         });
       } on FirebaseAuthException catch (e) {
         if (e.code == "user-not-found") {

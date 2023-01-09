@@ -1,37 +1,59 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../data/dummy_data.dart';
 
-class AdminModel{
-  String username="admin";
-  String password="cardFlip12345";
-  String name="Admin";
-  List<String> reports=[];
-  List<String> decks=[];
-  List<String> users=[];
+class AdminModel {
+  String username = "admin";
+  String password = "cardFlip12345";
+  String name = "Admin";
+  List<String> reports = [];
+  List<String> decks = [];
+  List<String> users = [];
 
-  final DummyData _data;
-  AdminModel(DummyData data) : _data = data;
+  final _userCollection = FirebaseFirestore.instance.collection("user");
 
-  String get fname{
-    return _data.username;
+  Future<List> userDataList() async {
+    QuerySnapshot querySnapshot = await _userCollection
+        .where(
+          "role",
+          isEqualTo: "learner",
+        )
+        .get();
+    final data = querySnapshot.docs
+        .map((doc) => {
+              "fname": doc.get("fname"),
+              "lname": doc.get("lname"),
+              "profileIcon": doc.get("profileIcon"),
+              "username": doc.get("username"),
+              "banned": doc.get("banned")
+            })
+        .toList();
+    return data;
   }
 
-  void banDeck(String name){
+  void banUser() {
+    // _userCollection.doc.set("true");
+  }
+
+  void banDeck(String name) {
     decks.remove(name);
   }
-  void viewReports(){
-    for (var i =0;i<reports.length;i++){
-      print (reports[i]+'\n');
+
+  void viewReports() {
+    for (var i = 0; i < reports.length; i++) {
+      print(reports[i] + '\n');
     }
   }
-  void viewDecks(){
-    for (var i =0;i<decks.length;i++){
-      print (decks[i]+'\n');
+
+  void viewDecks() {
+    for (var i = 0; i < decks.length; i++) {
+      print(decks[i] + '\n');
     }
   }
-  void viewUsers(){
-    for (var i =0;i<users.length;i++){
-      print (users[i]+'\n');
+
+  void viewUsers() {
+    for (var i = 0; i < users.length; i++) {
+      print(users[i] + '\n');
     }
   }
-  
 }

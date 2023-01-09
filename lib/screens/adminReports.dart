@@ -22,7 +22,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 class AdminReports extends StatelessWidget {
   AdminReports({key});
 
-  AdminModel model = AdminModel(DummyData());
+  AdminModel model = AdminModel();
 
   DeckModel deckModel = DeckModel();
   CardGenerator cardgenerator = CardGenerator();
@@ -55,17 +55,49 @@ class AdminReports extends StatelessWidget {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 50, 0, 30),
+              padding: const EdgeInsets.only(top: 15, right: 20.0),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, "/settings");
+                    },
+                    child: SvgPicture.asset(
+                      "Images/icons/svg/settings.svg",
+                      width: 25,
+                      height: 25,
+                      color: Color(0xff8C9595),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+              child: Row(
+                // crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    "Dashboard ",
-                    style: TextStyle(
-                      fontFamily: "PolySans_Slim",
-                      color: Color(0xf0493C3F),
-                      fontSize: 32,
+                  Container(
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage(
+                                "Images/avatars/logo/playstore (1) 1.png"),
+                            fit: BoxFit.cover),
+                      ),
+                      width: 85,
+                      height: 85,
+                      child: Text("")),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
+                    child: Text(
+                      "Dashboard ",
+                      style: TextStyle(
+                        fontFamily: "PolySans_Slim",
+                        color: Color(0xf0493C3F),
+                        fontSize: 32,
+                      ),
                     ),
                   ),
                 ],
@@ -77,7 +109,9 @@ class AdminReports extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, "/admin");
+                    },
                     child: Text(
                       "Decks",
                       style: TextStyle(
@@ -88,7 +122,9 @@ class AdminReports extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, "/adminUsers");
+                    },
                     child: Text(
                       "Users",
                       style: TextStyle(
