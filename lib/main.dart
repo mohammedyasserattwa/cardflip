@@ -71,7 +71,7 @@ class _MainState extends State<Main> {
           '/flashcards': (context) => Flashcard(id: data!["deckID"]),
           '/leaderboard': (context) => Leaderboard(id: data!["deckID"]),
           '/test': (context) => Test(id: data!["deckID"]),
-          '/search': (context) => const Search(),
+          '/search': (context) => Search(),
           '/settings': (context) => const Settings(),
           '/addFlashcards': (context) => const AddFlashcards(),
           '/editprofile': (context) => const EditProfile(),
@@ -99,11 +99,13 @@ class _MainState extends State<Main> {
           children: [
             GestureDetector(
                 onTap: () {
-                  setState(() {
-                    home = true;
-                    library = false;
-                    profile = false;
-                  });
+                  if (!home) {
+                    setState(() {
+                      home = true;
+                      library = false;
+                      profile = false;
+                    });
+                  }
                 },
                 child: Container(
                   color: Colors.transparent,
@@ -115,11 +117,13 @@ class _MainState extends State<Main> {
                 )),
             GestureDetector(
                 onTap: () {
-                  setState(() {
-                    home = false;
-                    library = true;
-                    profile = false;
-                  });
+                  if (!library) {
+                    setState(() {
+                      home = false;
+                      library = true;
+                      profile = false;
+                    });
+                  }
                 },
                 child: Container(
                   color: Colors.transparent,
@@ -131,11 +135,13 @@ class _MainState extends State<Main> {
                 )),
             GestureDetector(
                 onTap: () {
-                  setState(() {
-                    home = false;
-                    library = false;
-                    profile = true;
-                  });
+                  if (!profile) {
+                    setState(() {
+                      home = false;
+                      library = false;
+                      profile = true;
+                    });
+                  }
                 },
                 child: Container(
                   color: Colors.transparent,

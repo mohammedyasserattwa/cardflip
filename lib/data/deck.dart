@@ -1,6 +1,7 @@
 import 'package:cardflip/data/Leaderboard.dart';
 import 'package:cardflip/data/card.dart';
 import 'package:cardflip/data/User.dart';
+import 'package:cardflip/data/tag.dart';
 
 class Deck {
   String name;
@@ -10,6 +11,7 @@ class Deck {
   String id;
   List<Card> cards;
   late Leaderboard leaderboard;
+  List<Tag> tags = [];
   String userID;
   Deck(
       {required this.name,
@@ -17,6 +19,7 @@ class Deck {
       this.author = "",
       required this.rating,
       required this.id,
+      this.tags = const <Tag>[],
       this.cards = const <Card>[],
       this.userID = "01f4bll7"}) {
     leaderboard = Leaderboard(deckID: id);

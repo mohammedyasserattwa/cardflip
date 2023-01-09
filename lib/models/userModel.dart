@@ -3,17 +3,61 @@ import '../data/category.dart';
 import '../data/deck.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import "dart:developer" as developer;
 
 class UserModel {
   static final FirebaseFirestore _database = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   final _userCollection = FirebaseFirestore.instance.collection("user");
 
-  save(User user, Map<String,dynamic> data) async {
+  save(User user, Map<String, dynamic> data) async {
     final userRef = _database.collection("user").doc(user.uid);
     if (!(await userRef.get()).exists) {
       await userRef.set(data);
     }
+  }
+
+  Future<List<dynamic>> userByQuery(String query) async {
+    QuerySnapshot querySnapshot = await _userCollection.get();
+    final usersData = querySnapshot.docs
+        .map((doc) => {
+              "fname": doc.get("fname"),
+              "lname": doc.get("lname"),
+              "profileIcon": doc.get("profileIcon"),
+              "username": doc.get("username")
+            })
+        .toList();
+    // developer.log(data.toString());
+    for (int i = 0; i < usersData.length; i++) {
+      // developer.log(usersData[i]["fname"]);
+      // developer.log(
+      //     "${usersData[i]["fname"]} != $query || ${usersData[i]["fname"].trim().toLowerCase().contains(query.trim().toLowerCase())}");
+      if (usersData[i]["fname"]
+          .trim()
+          .toLowerCase()
+          .contains(query.trim().toLowerCase())) {
+        developer.log(usersData[i]["fname"]);
+      }
+
+      // if (
+      //     //   data[i]["username"].compareTo(query) != 0
+      //     // &&
+      //     usersData[i]["fname"]
+      //             .trim()
+      //             .toLowerCase()
+      //             .contains(query.trim().toLowerCase()) ==
+      //         true
+      //     // &&
+      //     // data[i]["lname"].compareTo(query) != 0
+      //     ) {
+      //   developer.log(
+      //       "${usersData[i]["fname"]} != $query || ${usersData[i]["fname"].trim().toLowerCase().contains(query.trim().toLowerCase())}");
+      //   continue;
+      // }
+      // usersData.remove(usersData[i]);
+    }
+    // print(data);
+    return usersData;
   }
 
   Future<List> usernameList() async {
@@ -21,6 +65,7 @@ class UserModel {
     final data = querySnapshot.docs.map((doc) => doc.get("username")).toList();
     return data;
   }
+
   Future<List> emailList() async {
     QuerySnapshot querySnapshot = await _userCollection.get();
     final data = querySnapshot.docs.map((doc) => doc.get("email")).toList();

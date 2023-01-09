@@ -103,8 +103,8 @@ class _SearchInputFieldState extends ConsumerState<SearchInputField> {
                           onChanged: (value) {
                             if (value.isNotEmpty) {
                               resetButton = true;
-                              ref.read(SearchSubmitProvider.notifier).state =
-                                  false;
+                              // ref.read(SearchSubmitProvider.notifier).state =
+                              //     false;
                             } else {
                               resetButton = false;
                             }

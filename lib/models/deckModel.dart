@@ -1,3 +1,4 @@
+import 'package:cardflip/data/tag.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../data/deck.dart';
@@ -13,6 +14,9 @@ class DeckModel {
         author: "Lara",
         id: "1",
         rating: 4099,
+        tags: [
+          Tag(name: "math", tagID: "1"),
+        ],
         cards: [
           Card(
               id: 0,
@@ -47,6 +51,9 @@ class DeckModel {
         author: "Yasser",
         id: "2",
         rating: 2949,
+        tags: [
+          Tag(name: "math", tagID: "1"),
+        ],
         cards: [
           Card(
               id: 0,
@@ -76,6 +83,9 @@ class DeckModel {
         name: "Computer Science",
         description:
             "Some vocabulary terms and definitions related to Computer Science",
+        tags: [
+          Tag(name: "math", tagID: "1"),
+        ],
         author: "Omar",
         id: "3",
         userID: "01f4bll5",
@@ -415,6 +425,12 @@ class DeckModel {
     QuerySnapshot querySnapshot = await _tagCollection.get();
     final data = querySnapshot.docs.map((doc) => doc.get("name")).toList();
     return data;
+  }
+
+  List<Deck> deckByTagID(String id) {
+    return recentDecks
+        .where((element) => element.tags.where((e) => e.tagID == id).isNotEmpty)
+        .toList();
   }
 
   Deck deckByIDRecent(String id) {

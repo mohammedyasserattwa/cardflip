@@ -10,14 +10,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Search extends ConsumerStatefulWidget {
-  const Search({super.key});
-
-  @override
-  ConsumerState<Search> createState() => _SearchState();
-}
-
-class _SearchState extends ConsumerState<Search> {
+class Search extends ConsumerWidget {
   String? validator(String value) {
     if (value.isEmpty) {
       return "Please Enter a value to search";
@@ -27,7 +20,7 @@ class _SearchState extends ConsumerState<Search> {
 
   final _searchController = TextEditingController();
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final searchHistory = ref.watch(HistoryProvider);
     final searchResult = ref.watch(SearchProvider);
     final submitted = ref.watch(SearchSubmitProvider);
@@ -71,39 +64,9 @@ class _SearchState extends ConsumerState<Search> {
                   )
                 ],
               ),
-              if (submitted && searchResult.isNotEmpty)
-                SearchResult(query: searchResult)
-              else
-                Padding(
-                  padding:
-                      const EdgeInsets.only(left: 20.0, right: 20, top: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Recent Searches",
-                        style: TextStyle(
-                            fontFamily: "PolySans_Median", fontSize: 24),
-                      ),
-                      GestureDetector(
-                        onTap: () async {
-                          //TODO: Shared Preference Algorithm to delete history
-                          SharedPreferences prefs =
-                              await SharedPreferences.getInstance();
-                          prefs.remove("historyData3");
-                          ref.read(HistoryProvider.notifier).state =
-                              Future.value("{}");
-                        },
-                        child: const Text("Clear",
-                            style: TextStyle(
-                              fontFamily: "Poppins-Regular",
-                              fontSize: 16,
-                            )),
-                      )
-                    ],
-                  ),
-                ),
-              if (!submitted)
+              if (submitted)
+                Expanded(child: SearchResult(query: searchResult))
+              else if (_searchController.text.isEmpty)
                 FutureBuilder(
                     future: searchHistory,
                     builder: (context, snapshot) {
@@ -117,47 +80,92 @@ class _SearchState extends ConsumerState<Search> {
                                   ref.watch(UserDataProvider)!.id)
                               .toList();
                           return Expanded(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: NoGlowScroll(
-                                child: ListView.builder(
-                                    itemCount: data.length,
-                                    itemBuilder: (context, index) {
-                                      return GestureDetector(
-                                        onTap: () {
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 20.0, right: 20, top: 20),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        "Recent Searches",
+                                        style: TextStyle(
+                                            fontFamily: "PolySans_Median",
+                                            fontSize: 24),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () async {
+                                          SharedPreferences prefs =
+                                              await SharedPreferences
+                                                  .getInstance();
+                                          prefs.remove("historyData3");
                                           ref
-                                              .read(
-                                                  SearchSubmitProvider.notifier)
-                                              .state = true;
-                                          _searchController.text =
-                                              data[index].query;
-                                          ref
-                                              .read(SearchProvider.notifier)
-                                              .state = data[index].query;
+                                              .read(HistoryProvider.notifier)
+                                              .state = Future.value("{}");
                                         },
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 10.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                data[index].query,
-                                                style: const TextStyle(
-                                                  fontFamily: "Poppins-Medium",
-                                                  fontSize: 20,
+                                        child: const Text("Clear",
+                                            style: TextStyle(
+                                              fontFamily: "Poppins-Regular",
+                                              fontSize: 16,
+                                            )),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20.0),
+                                    child: NoGlowScroll(
+                                      child: ListView.builder(
+                                          itemCount: data.length,
+                                          itemBuilder: (context, index) {
+                                            return GestureDetector(
+                                              onTap: () {
+                                                ref
+                                                    .read(SearchSubmitProvider
+                                                        .notifier)
+                                                    .state = true;
+                                                _searchController.text =
+                                                    data[index].query;
+                                                ref
+                                                    .read(
+                                                        SearchProvider.notifier)
+                                                    .state = data[index].query;
+                                              },
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 10.0),
+                                                child: Container(
+                                                  color: Colors.transparent,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        data[index].query,
+                                                        style: const TextStyle(
+                                                          fontFamily:
+                                                              "Poppins-Medium",
+                                                          fontSize: 20,
+                                                        ),
+                                                      ),
+                                                      SvgPicture.asset(
+                                                          "Images/icons/svg/arrow-up-left.svg")
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                              SvgPicture.asset(
-                                                  "Images/icons/svg/arrow-up-left.svg")
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    }),
-                              ),
+                                            );
+                                          }),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           );
                         }
