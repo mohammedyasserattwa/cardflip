@@ -33,7 +33,7 @@ class AdminModel {
   }
 
   void banUser(String id) {
-    _userCollection.doc(id).update({"banned": "true"});
+    _userCollection.doc(id).update({"banned": true});
     //TODO: Show message "User banned"
   }
 
