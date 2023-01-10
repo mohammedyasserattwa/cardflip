@@ -51,6 +51,7 @@ dependencies:
   flutter_launcher_icons: ^0.9.2
   flutter_riverpod: ^2.1.1
   flutter_multi_select_items: ^0.4.2
+  shimmer_animation: ^2.1.0
 
 flutter_icons:
   android: "launcher_icon"
@@ -99,6 +100,7 @@ flutter:
     - Images/icons/svg/library.svg
     - Images/icons/svg/profile.svg
     - Images/icons/svg/arrow-up-left.svg
+    - Images/icons/svg/stars.svg
     - Images/icons/
     - Images/backgrounds/
     - Images/cards/flashcards/
@@ -309,6 +311,7 @@ flutter:
     - Images/avatars/logo/
     - Images/vectors/
     - Images/banners/leaderboardpage/
+    
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

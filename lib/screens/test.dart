@@ -1,17 +1,14 @@
 import 'dart:async';
-// import 'dart:html';
-// import 'dart:io';
+import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cardflip/models/testModel.dart';
 import 'package:flutter_shake_animated/flutter_shake_animated.dart';
-import 'package:no_glow_scroll/no_glow_scroll.dart';
+// import 'package:no_glow_scroll/no_glow_scroll.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_svg/flutter_svg.dart';
-import '../data/Test.dart';
-import '../data/card_generator.dart';
 import '../widgets/card_widget.dart';
 import 'dart:developer' as developer;
-import 'dart:math';
+import 'package:shimmer_animation/shimmer_animation.dart';
 
 class Test extends StatefulWidget {
   String id;
@@ -23,7 +20,6 @@ class Test extends StatefulWidget {
 
 class _TestState extends State<Test> with SingleTickerProviderStateMixin {
   String id;
-  // int counter = 0;
   bool continuetimer = true;
   Stream<int>? stopwatch;
   StreamSubscription<int>? stopwatchsubscrip;
@@ -32,18 +28,19 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
   late BoxDecoration status;
   late TestModel model;
   late Map testCards;
-  late List definitions;
-  late List terms;
+  late List definitions = [];
+  late List terms = [];
+  late List correctAnswers = [];
   late bool? isCorrect;
   late List<List<bool?>> jiggle = [];
   final animduration = const Duration(milliseconds: 450);
   List<double> start = [];
   List<double> end = [];
   int i = 0;
-  late List shuffled;
-  // late AnimationController swipecontroller;
-  // late Animation swipeanimation;
+  var random = [0, 1, 2];
+  var testCardsList = [];
 
+// sh then set then use then remove
   Stream<int> stopWatch() {
     StreamController<int>? controller;
     Timer? timer;
@@ -59,14 +56,6 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
       }
     }
 
-    // void startTimer() {
-    //   timer = Timer.periodic(duration, (_) {
-    //     controller!.add(++counter);
-    //     if (!continuetimer) {
-    //       stopTimer();
-    //     }
-    //   });
-    // }
     void tick(_) {
       counter++;
       controller!.add(counter);
@@ -92,10 +81,42 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
   void initState() {
     model = TestModel(id: id);
     testCards = model.getTestCards;
-    definitions = testCards.keys.toList();
-    terms = testCards.values.toList();
-    shuffled = testCards.values.toList();
-    shuffled.shuffle();
+    // testCards..toList();
+    testCards.forEach((d, t) => testCardsList.add([d, t[0], t[1], t[2]]));
+// print(list);
+    testCardsList.shuffle();
+
+    testCardsList.forEach((element) {
+      definitions.add(element[0]);
+    });
+
+    // terms = testCards.values.toList();
+    testCardsList.forEach((element) {
+      terms.add([element[1], element[2], element[3]]);
+    });
+
+    random.shuffle();
+    // k
+    // definitions.length
+    // Random().nextInt(terms[j].length
+    // for (int i = 0; i < testCards.length; i++) {
+    //   shuffled[i] = List.generate(3, (i) => Random().nextInt(3) + 1);
+    //   // shuffled.shuffle();
+    //   // terms = testCards.values.map((element) => element).toList();
+    //   // // shuffled = testCards.values.toList();
+    //   // shuffled = testCards.values.map((element) => element).toList();
+    //   // developer.log('bt' + terms.toString());
+    //   developer.log(shuffled.toString());
+
+    //   // for (int i = 0; i < shuffled.length; i++) {
+    //   //   shuffled[i].shuffle();
+    //   // }
+    // }
+
+    // developer.log('at' + terms.toString());
+    // developer.log('as' + shuffled.toString());
+    // developer.log(testCards.values.toString());
+
     start = List.filled(definitions.length, 0.0);
     end = List.filled(definitions.length, 0.0);
     stopwatch = stopWatch();
@@ -106,30 +127,7 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
         sec = (tick % 60).floor().toString().padLeft(2, '0');
       });
     });
-    // status1 = BoxDecoration(
-    //   border: Border.all(
-    //     color: Color.fromARGB(71, 36, 0, 0),
-    //     width: 2,
-    //   ),
-    //   borderRadius: BorderRadius.circular(16),
-    //   color: Color(0x40fff4f4),
-    // );
-    // status2 = BoxDecoration(
-    //   border: Border.all(
-    //     color: Color.fromARGB(71, 36, 0, 0),
-    //     width: 2,
-    //   ),
-    //   borderRadius: BorderRadius.circular(16),
-    //   color: Color(0x40fff4f4),
-    // );
-    // status3 = BoxDecoration(
-    //   border: Border.all(
-    //     color: Color.fromARGB(71, 36, 0, 0),
-    //     width: 2,
-    //   ),
-    //   borderRadius: BorderRadius.circular(16),
-    //   color: Color(0x40fff4f4),
-    // );
+
     status = BoxDecoration(
       border: Border.all(
         color: Color.fromARGB(71, 36, 0, 0),
@@ -138,12 +136,6 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
       borderRadius: BorderRadius.circular(16),
       color: Color(0x40fff4f4),
     );
-    // swipecontroller = AnimationController(
-    //     vsync: this, duration: Duration(milliseconds: 1500));
-    // swipeanimation =
-    //     Tween<double>(begin: start, end: end).animate(swipecontroller);
-
-    // swipecontroller.forward();
     super.initState();
   }
 
@@ -176,13 +168,6 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
               );
     return status;
   }
-
-  // String getDefinition() {
-  //   if (i < definitions.length) {
-  //     return definitions[i].toString();
-  //   }
-  //   return " ";
-  // }
 
   _TestState({key, required this.id});
   @override
@@ -262,7 +247,7 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                 width: 55,
                 height: 55,
                 child: PopupMenuButton(
-                  color: Colors.white,
+                  color: Color.fromARGB(255, 244, 198, 198),
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(
                       Radius.circular(8.0),
@@ -271,22 +256,26 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                   icon: SvgPicture.asset("Images/icons/svg/more-fill.svg"),
                   itemBuilder: (BuildContext context) => [
                     PopupMenuItem(
-                      child: Text(""),
-                      // child: GestureDetector(
-                      //   onTap: () {
-                      //     Navigator.pushNamed(context, "/settings");
-                      //   },
-                      //   child: Row(
-                      //     children: [
-                      //       SvgPicture.asset(
-                      //           "Images/icons/svg/gear-fill.svg"),
-                      //       const SizedBox(
-                      //         width: 10,
-                      //       ),
-                      //       const Text("Settings"),
-                      //     ],
-                      //   ),
-                      // ),
+                      onTap: () {},
+                      child: Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: const [
+                          Icon(Icons.exit_to_app_rounded),
+                          SizedBox(width: 10),
+                          Text("Quit & Submit Test"),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem(
+                      onTap: () {},
+                      child: Wrap(
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: const [
+                          Icon(Icons.dark_mode_outlined),
+                          SizedBox(width: 10),
+                          Text("Dark Page Theme"), //provider
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -297,53 +286,51 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
         SizedBox(
           height: 25,
         ),
-        (i < definitions.length)
-            ? Center(
-                child: Stack(
-                  children: [
-                    Column(
-                      children: [
-                        SizedBox(
-                          height: 50,
-                        ),
-                        CardWidget.emptyCard(
-                          width: 350,
-                          height: 512,
-                          image: "Images/cards/testpage/1.png",
-                          updateParent: () {},
-                        ),
-                      ],
-                    ),
-                    CardWidget.emptyCard(
-                      width: 350,
-                      height: 512,
-                      image: "Images/cards/testpage/2.png",
-                      updateParent: () {},
-                    ),
-                    Column(
-                      children: [
-                        SizedBox(
-                          height: 100,
-                        ),
-                        Stack(
-                          children: [
-                            for (int j = definitions.length - 1; j >= 0; j--)
-                              TweenAnimationBuilder(
-                                  // AnimatedBuilder(
-                                  tween: Tween<double>(
-                                      begin: start[j], end: end[j]),
-                                  // animation: swipecontroller,
-                                  duration: animduration,
-                                  builder: (context, pos, __) => Transform(
-                                        transform: Matrix4.identity()
-                                          ..translate(pos),
-                                        child: Container(
+        Stack(
+          alignment: Alignment.topCenter,
+          children: [
+            Column(
+              children: [
+                SizedBox(
+                  height: 50,
+                ),
+                CardWidget.emptyCard(
+                  width: 350,
+                  height: 512,
+                  image: "Images/cards/testpage/1.png",
+                  updateParent: () {},
+                )
+              ],
+            ),
+            CardWidget.emptyCard(
+              width: 350,
+              height: 512,
+              image: "Images/cards/testpage/2.png",
+              updateParent: () {},
+            ),
+            Column(
+              children: [
+                SizedBox(
+                  height: 100,
+                ),
+                (i < definitions.length)
+                    ? Stack(
+                        children: [
+                          for (int j = definitions.length - 1; j >= 0; j--)
+                            TweenAnimationBuilder(
+                                tween:
+                                    Tween<double>(begin: start[j], end: end[j]),
+                                duration: animduration,
+                                builder: (context, pos, __) => Transform(
+                                      transform: Matrix4.identity()
+                                        ..translate(pos),
+                                      child: Container(
                                           width: (MediaQuery.of(context)
                                                       .size
                                                       .height >
                                                   652)
                                               ? 350
-                                              : 350 - 50,
+                                              : 300,
                                           height: (MediaQuery.of(context)
                                                       .size
                                                       .height >
@@ -354,7 +341,7 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                                                           .height >
                                                       652)
                                                   ? 512
-                                                  : 512 - 200,
+                                                  : 312,
                                           decoration: const BoxDecoration(
                                             image: DecorationImage(
                                                 image: AssetImage(
@@ -373,9 +360,7 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                                                 AutoSizeText(
                                                   // 150 chars max
                                                   // definitions[0].toString()[0].toUpperCase()+definitions[0].toString().substring(1),
-                                                  // (getData())[0].toString(),
                                                   definitions[j].toString(),
-                                                  // definitions[i].toString(),
                                                   maxLines: 6,
                                                   overflow:
                                                       TextOverflow.ellipsis,
@@ -398,56 +383,62 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                                                           GestureDetector(
                                                             onTap: () {
                                                               setState(() {
-                                                                isCorrect =
-                                                                    false;
+                                                                // developer.log('displayed ' +
+                                                                //     terms[j][random[
+                                                                //             k]]
+                                                                //         .toString() +
+                                                                //     '\ntest card list' +
+                                                                //     testCardsList[
+                                                                //             j][1]);
                                                                 jiggle = List.filled(
                                                                     definitions
                                                                         .length,
                                                                     List.filled(
                                                                         3,
                                                                         null));
-                                                                jiggle[j] = [
-                                                                  for (int f =
-                                                                          0;
-                                                                      f < 3;
-                                                                      f++)
-                                                                    if (f == k)
-                                                                      true
-                                                                    else
-                                                                      null
-                                                                ];
-                                                                // status = checkBox(
-                                                                //     !jiggle[j]
-                                                                //         [k]!);
-                                                                // await Future.delayed(
-                                                                //     Duration(
-                                                                //         milliseconds: 500));
-                                                                // swipecontroller.forward(
-                                                                //     from: 0.0);
+                                                                if (terms[j][
+                                                                        random[
+                                                                            k]] ==
+                                                                    testCardsList[
+                                                                        j][1]) {
+                                                                  jiggle[j] = [
+                                                                    for (int f =
+                                                                            0;
+                                                                        f < 3;
+                                                                        f++)
+                                                                      if (f ==
+                                                                          k)
+                                                                        false
+                                                                      else
+                                                                        null
+                                                                  ];
+                                                                } else {
+                                                                  jiggle[j] = [
+                                                                    for (int f =
+                                                                            0;
+                                                                        f < 3;
+                                                                        f++)
+                                                                      if (f ==
+                                                                          k)
+                                                                        true
+                                                                      else
+                                                                        null
+                                                                  ];
+                                                                }
                                                                 Timer(
                                                                     Duration(
                                                                         milliseconds:
                                                                             85),
                                                                     () {
-                                                                  end[j] = 500;
+                                                                  if (i <
+                                                                      definitions
+                                                                          .length)
+                                                                    end[j] =
+                                                                        500;
                                                                   i++;
+                                                                  random
+                                                                      .shuffle();
                                                                 });
-                                                                // swipeanimation = Tween<
-                                                                //             double>(
-                                                                //         begin: 0, end: 500)
-                                                                //     .animate(
-                                                                //         swipecontroller);
-                                                                // int z = 0;
-                                                                // jiggle = jiggle
-                                                                //   ..map((row) => (z++ !=
-                                                                //           j)
-                                                                //       ? row.map(
-                                                                //           (_) =>
-                                                                //               null)
-                                                                //       : jiggle[
-                                                                //               j]
-                                                                //           [
-                                                                //           k]).toList();
                                                               });
                                                             },
                                                             child: ShakeWidget(
@@ -457,8 +448,9 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                                                                   jiggle[j]
                                                                           [k] ??
                                                                       false,
-                                                              // duration: const Duration(
-                                                              //     milliseconds: 30),
+                                                              duration: Duration(
+                                                                  milliseconds:
+                                                                      200),
                                                               enableWebMouseHover:
                                                                   true,
                                                               child: Container(
@@ -484,13 +476,8 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                                                                               .center,
                                                                       child:
                                                                           AutoSizeText(
-                                                                        terms[j][k]
+                                                                        terms[j][random[k]]
                                                                             .toString(),
-                                                                        // j.toString() +
-                                                                        //     ' ' +
-                                                                        //     k.toString() +
-                                                                        //     ' ' +
-                                                                        //     jiggle[j][k].toString(),
                                                                         maxLines:
                                                                             1,
                                                                         overflow:
@@ -531,17 +518,324 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                                                 ),
                                               ],
                                             ),
-                                          ),
+                                          )),
+                                    )),
+                        ],
+                      )
+                    : Center(
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Container(
+                              width: (MediaQuery.of(context).size.height > 652)
+                                  ? 350
+                                  : 300,
+                              height: (MediaQuery.of(context).size.height > 751)
+                                  ? 512
+                                  : (MediaQuery.of(context).size.height > 652)
+                                      ? 512
+                                      : 312,
+                              decoration: const BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                        "Images/cards/testpage/0.png"),
+                                    fit: BoxFit.fill),
+                              ),
+                            ),
+                            Column(
+                              // mainAxisAlignment:
+                              //     MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                SizedBox(
+                                  height: 50,
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 55,
+                                    ),
+                                    const Text(
+                                      "Way to go!",
+                                      style: TextStyle(
+                                        fontFamily: "PolySans_Median",
+                                        fontSize: 48,
+                                        fontWeight: FontWeight.w600,
+                                        color: Color(0xff39131C),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 5.0),
+                                  child: Row(
+                                    children: [
+                                      SizedBox(width: 85),
+                                      const Text(
+                                        "You’re done with your test!",
+                                        style: TextStyle(
+                                            fontFamily: "PolySans_Slim",
+                                            fontWeight: FontWeight.w300,
+                                            color: Color(0xff1B1B1B),
+                                            fontSize: 20),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 30,
+                                ),
+                                Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 35.0, horizontal: 20.0),
+                                    child: Column(
+                                      children: [
+                                        Stack(
+                                          alignment: Alignment.bottomRight,
+                                          children: [
+                                            PhysicalShape(
+                                              clipBehavior: Clip.hardEdge,
+                                              color: Colors.transparent,
+                                              clipper: ShapeBorderClipper(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              16),
+                                                      side: BorderSide(
+                                                          width: 2))),
+                                              child: Shimmer(
+                                                color: Color.fromARGB(
+                                                    255, 253, 255, 226),
+                                                colorOpacity: 0.5,
+                                                interval: Duration(seconds: 5),
+                                                direction:
+                                                    ShimmerDirection.fromRTLB(),
+                                                child: RawMaterialButton(
+                                                    enableFeedback: false,
+                                                    splashColor:
+                                                        Colors.transparent,
+                                                    highlightColor:
+                                                        Colors.transparent,
+                                                    elevation: 0,
+                                                    focusElevation: 0,
+                                                    highlightElevation: 0,
+                                                    disabledElevation: 0,
+                                                    padding: EdgeInsets.all(0),
+                                                    materialTapTargetSize:
+                                                        MaterialTapTargetSize
+                                                            .shrinkWrap,
+                                                    fillColor: Color.fromARGB(
+                                                        230, 200, 255, 209),
+                                                    constraints: BoxConstraints(
+                                                        maxWidth: 305.0,
+                                                        maxHeight: 61.0),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        16.0),
+                                                            side: BorderSide(
+                                                              width: 2,
+                                                              color: Color(
+                                                                  0xCC6BFFA6),
+                                                            )),
+                                                    onPressed: () => {},
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 8.0),
+                                                      child: Align(
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: AutoSizeText(
+                                                          "View Leaderboard",
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          minFontSize: 16,
+                                                          stepGranularity: 1,
+                                                          style: TextStyle(
+                                                            fontFamily:
+                                                                "PolySans_Neutral",
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    36,
+                                                                    36,
+                                                                    36),
+                                                            fontSize: 22,
+                                                          ),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                      ),
+                                                    )),
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                Future((() =>
+                                                    Navigator.pushNamed(
+                                                        context, '/leaderboard',
+                                                        arguments: {
+                                                          "deckID": widget.id,
+                                                        })));
+                                              },
+                                              child: Container(
+                                                  width: 305,
+                                                  height: 70,
+                                                  decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                        image: AssetImage(
+                                                            "Images/icons/stars.png")),
+                                                  )),
+                                            )
+                                          ],
                                         ),
-                                      )),
+                                        SizedBox(
+                                          height: 30,
+                                        ),
+                                        RawMaterialButton(
+                                            enableFeedback: false,
+                                            splashColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
+                                            elevation: 0,
+                                            focusElevation: 0,
+                                            highlightElevation: 0,
+                                            disabledElevation: 0,
+                                            padding: EdgeInsets.all(0),
+                                            materialTapTargetSize:
+                                                MaterialTapTargetSize
+                                                    .shrinkWrap,
+                                            fillColor: Colors.white54,
+                                            constraints: BoxConstraints(
+                                                maxWidth: 305.0,
+                                                maxHeight: 61.0),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(16.0),
+                                            ),
+                                            onPressed: () => {
+                                                  // todo test results page
+                                                  Future((() =>
+                                                      Navigator.pushNamed(
+                                                          context,
+                                                          '/leaderboard',
+                                                          arguments: {
+                                                            "deckID": widget.id,
+                                                          })))
+                                                },
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8.0),
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: AutoSizeText(
+                                                  "View Test Results",
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  minFontSize: 16,
+                                                  stepGranularity: 1,
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                        "PolySans_Neutral",
+                                                    color: Color.fromARGB(
+                                                        255, 36, 36, 36),
+                                                    fontSize: 22,
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                            )),
+                                        SizedBox(
+                                          height: 30,
+                                        ),
+                                        RawMaterialButton(
+                                            enableFeedback: false,
+                                            splashColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
+                                            elevation: 0,
+                                            focusElevation: 0,
+                                            highlightElevation: 0,
+                                            disabledElevation: 0,
+                                            padding: EdgeInsets.all(0),
+                                            materialTapTargetSize:
+                                                MaterialTapTargetSize
+                                                    .shrinkWrap,
+                                            fillColor: Colors.white30,
+                                            constraints: BoxConstraints(
+                                                maxWidth: 305.0,
+                                                maxHeight: 61.0),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(16.0),
+                                            ),
+                                            onPressed: () => {
+                                                  setState(() {
+                                                    stopwatchsubscrip!.cancel();
+                                                    stopwatch = null;
+                                                    setState(() {
+                                                      min = '0';
+                                                      sec = '00';
+                                                    });
+                                                    jiggle = List.filled(
+                                                        definitions.length,
+                                                        List.filled(3, null));
+
+                                                    // Navigator
+                                                    //     .pushReplacementNamed(
+                                                    //         context, '/test',
+                                                    //         arguments: {
+                                                    //       "deckID": widget.id,
+                                                    //     });
+                                                    Navigator.popAndPushNamed(
+                                                        context, '/test',
+                                                        arguments: {
+                                                          "deckID": widget.id,
+                                                        });
+                                                  })
+                                                },
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 8.0),
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: AutoSizeText(
+                                                  "Try Again",
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  minFontSize: 16,
+                                                  stepGranularity: 1,
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                        "PolySans_Neutral",
+                                                    color: Color.fromARGB(
+                                                        255, 36, 36, 36),
+                                                    fontSize: 22,
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
-                      ],
-                    ),
-                  ],
-                ),
-              )
-            : Text("Done..."),
+                      ),
+              ],
+            )
+          ],
+        )
       ]),
     ));
   }

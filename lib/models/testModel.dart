@@ -10,15 +10,16 @@ class TestModel {
   late Test test;
   DeckModel deckModel = DeckModel();
   late var testCards = {};
-  late List answers = [];
+  late List terms = [];
 
   TestModel({required this.id}) {
     deck = deckModel.deckByID(id);
     late final random = Random();
     late final int length = deckModel.deckByID(id).cards.length;
-    late List terms = deckModel.deckTerms(id);
+    terms = deckModel.deckTerms(id);
     var firstRandomTerm = terms[random.nextInt(length - 1)];
     var secondRandomTerm = terms[random.nextInt(length - 1)];
+
     for (int i = 0; i < deck.cards.length; i++) {
       firstRandomTerm = terms[random.nextInt(length - 1)];
       secondRandomTerm = terms[random.nextInt(length - 1)];
@@ -39,6 +40,7 @@ class TestModel {
     }
     test = Test(deckID: id);
   }
-  get getAnswers => answers;
+
+  get getTerms => terms;
   get getTestCards => testCards;
 }
