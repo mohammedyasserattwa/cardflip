@@ -4,6 +4,8 @@ import 'package:cardflip/screens/Leaderboard.dart';
 import 'package:cardflip/screens/Profile.dart';
 import 'package:cardflip/screens/add_flashcards.dart';
 import 'package:cardflip/screens/adddeck.dart';
+import 'package:cardflip/screens/adminReports.dart';
+import 'package:cardflip/screens/adminUsers.dart';
 import 'package:cardflip/screens/category.dart';
 import 'package:cardflip/screens/editprofile.dart';
 import 'package:cardflip/screens/library.dart';
@@ -11,6 +13,7 @@ import 'package:cardflip/screens/register.dart';
 import 'package:cardflip/screens/search.dart';
 import 'package:cardflip/screens/settings.dart';
 import 'package:cardflip/screens/Test.dart';
+import 'package:cardflip/screens/adminDeck.dart';
 import 'package:cardflip/widgets/navibar.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -66,6 +69,9 @@ class _MainState extends State<Main> {
           '/': (context) => const Login(),
           '/register': (context) => const Register(),
           '/home': (context) => Navigator(),
+          '/admin': (context) => Admin(),
+          '/adminUsers': (context) => AdminUsers(),
+          '/adminReports': (context) => AdminReports(),
           '/deck': (context) => DeckScreen(id: data!["deckID"]),
           '/category': (context) => Category(id: data!["categoryID"]),
           '/flashcards': (context) => Flashcard(id: data!["deckID"]),
@@ -75,7 +81,7 @@ class _MainState extends State<Main> {
           '/settings': (context) => const Settings(),
           '/addFlashcards': (context) => const AddFlashcards(),
           '/editprofile': (context) => const EditProfile(),
-                    '/adddeck': (context) => const Adddeck(),
+          '/adddeck': (context) => const Adddeck(),
         };
         WidgetBuilder builder = routes[settings.name]!;
         return MaterialPageRoute(builder: (context) => builder(context));

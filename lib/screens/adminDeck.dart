@@ -25,7 +25,7 @@ class Admin extends StatelessWidget {
   Admin({key});
   // TODO: REMOVE the profile model with the UserModel
 
-  AdminModel model = AdminModel(DummyData());
+  AdminModel model = AdminModel();
 
   // TODO: ADD the leaderboard model here
   DeckModel deckModel = DeckModel();
@@ -53,13 +53,32 @@ class Admin extends StatelessWidget {
         height: 1000,
         decoration: const BoxDecoration(
           image: DecorationImage(
-              image: AssetImage("Images/backgrounds/profilepage.png"),
+              image: AssetImage("Images/backgrounds/dashboardpage.png"),
               fit: BoxFit.cover),
         ),
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(50.0, 50, 0, 30),
+              padding: const EdgeInsets.only(top: 15, right: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, "/settings");
+                    },
+                    child: SvgPicture.asset(
+                      "Images/icons/svg/settings.svg",
+                      width: 25,
+                      height: 25,
+                      color: Color(0xff8C9595),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(50.0, 0, 0, 30),
               child: Row(
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -106,7 +125,9 @@ class Admin extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, "/adminUsers");
+                    },
                     child: Text(
                       "Users",
                       style: TextStyle(
@@ -117,7 +138,9 @@ class Admin extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, "/adminReports");
+                    },
                     child: Text(
                       "Reports",
                       style: TextStyle(

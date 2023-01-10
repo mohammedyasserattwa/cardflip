@@ -18,30 +18,28 @@ import '../models/adminModel.dart';
 import '../widgets/admin_deck.dart';
 import '../widgets/navibar.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
-class AdminUsers extends StatelessWidget {
+class AdminUsers extends StatefulWidget {
   AdminUsers({key});
 
-  AdminModel model = AdminModel(DummyData());
+  @override
+  State<AdminUsers> createState() => _AdminUsersState();
+}
+
+class _AdminUsersState extends State<AdminUsers> {
+  AdminModel model = AdminModel();
 
   DeckModel deckModel = DeckModel();
+
   CardGenerator cardgenerator = CardGenerator();
+
   late String profileBanner;
 
   // _responsive(BuildContext context) {
-  //   if (MediaQuery.of(context).size.width < 299) {
-  //     return {"height": 113.67, "width": 118.67, "fontSize": 16};
-  //   } else if (MediaQuery.of(context).size.width < 340) {
-  //     return {"height": 128.67, "width": 133.67, "fontSize": 20};
-  //   } else if (MediaQuery.of(context).size.width < 358) {
-  //     return {"height": 148.67, "width": 153.67, "fontSize": 20};
-  //   } else {
-  //     return {"height": 158.67, "width": 163.67, "fontSize": 20};
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
+    final userData = model.userDataList();
     final height = 128.67;
     final width = 133.67;
     return Scaffold(
@@ -55,17 +53,49 @@ class AdminUsers extends StatelessWidget {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 50, 0, 30),
+              padding: const EdgeInsets.only(top: 15, right: 20.0),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, "/settings");
+                    },
+                    child: SvgPicture.asset(
+                      "Images/icons/svg/settings.svg",
+                      width: 25,
+                      height: 25,
+                      color: Color(0xff8C9595),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
+              child: Row(
+                // crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    "Dashboard ",
-                    style: TextStyle(
-                      fontFamily: "PolySans_Slim",
-                      color: Color(0xf0493C3F),
-                      fontSize: 32,
+                  Container(
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage(
+                                "Images/avatars/logo/playstore (1) 1.png"),
+                            fit: BoxFit.cover),
+                      ),
+                      width: 85,
+                      height: 85,
+                      child: Text("")),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
+                    child: Text(
+                      "Dashboard ",
+                      style: TextStyle(
+                        fontFamily: "PolySans_Slim",
+                        color: Color(0xf0493C3F),
+                        fontSize: 32,
+                      ),
                     ),
                   ),
                 ],
@@ -77,7 +107,9 @@ class AdminUsers extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, "/admin");
+                    },
                     child: Text(
                       "Decks",
                       style: TextStyle(
@@ -99,7 +131,9 @@ class AdminUsers extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pushNamed(context, "/adminReports");
+                    },
                     child: Text(
                       "Reports",
                       style: TextStyle(
@@ -170,84 +204,369 @@ class AdminUsers extends StatelessWidget {
                         child: const Text(""))),
               ],
             ),
-            Expanded(
-              child: NoGlowScroll(
-                child: ListView(
-                  children: [
-                    for (var i = 0; i < 10; i++)
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            FutureBuilder(
+                future: userData,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Expanded(
+                      child: NoGlowScroll(
+                        child: ListView(
                           children: [
-                            Container(
-                              alignment: Alignment.centerRight,
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image:
-                                            AssetImage("Images/avatars/15.png"),
-                                        fit: BoxFit.cover),
-                                  ),
-                                  width: 60,
-                                  height: 60,
-                                  child: Text("")),
-                            ),
-                            const SizedBox(width: 5),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Shehab ElDin Mohsen",
-                                  style: TextStyle(
-                                    fontFamily: "PolySans_Slim",
-                                    color: Color(0xf0493C3F),
-                                    fontSize: 20,
-                                  ),
+                            for (var i = 0; i < snapshot.data!.length; i++)
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 20, 0, 0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        SvgPicture.asset(
+                                            "Images/avatars/${snapshot.data![i]["profileIcon"]}.svg",
+                                            width: 50,
+                                            height: 50),
+                                        const SizedBox(width: 20),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "${snapshot.data![i]["fname"]} ${snapshot.data![i]["lname"]}",
+                                              style: TextStyle(
+                                                fontFamily: "PolySans_Slim",
+                                                color: Color(0xf0493C3F),
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                            Text(
+                                              "@${snapshot.data![i]["username"]}",
+                                              style: TextStyle(
+                                                fontFamily: "PolySans_Slim",
+                                                color: Color(0xf0493C3F),
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () async {
+                                                model.banUser(
+                                                    snapshot.data![i]["id"]);
+                                                if (await InternetConnectionChecker()
+                                                    .hasConnection) {
+                                                  if (snapshot.data![i]
+                                                          ["banned"] ==
+                                                      true) {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return Center(
+                                                          child: Container(
+                                                            width: 300,
+                                                            height: 200,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                              image: DecorationImage(
+                                                                  image: AssetImage(
+                                                                      "Images/backgrounds/homepage.png"),
+                                                                  fit: BoxFit
+                                                                      .cover),
+                                                            ),
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceAround,
+                                                              children: [
+                                                                SizedBox(
+                                                                    height: 10),
+                                                                Text(
+                                                                  "Action Blocked!",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontFamily:
+                                                                        "PolySans_Median",
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            239,
+                                                                            105,
+                                                                            0,
+                                                                            0),
+                                                                    fontSize:
+                                                                        20,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  "User Already Banned",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontFamily:
+                                                                        "PolySans_Slim",
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            239,
+                                                                            105,
+                                                                            0,
+                                                                            0),
+                                                                    fontSize:
+                                                                        20,
+                                                                  ),
+                                                                ),
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .end,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .end,
+                                                                  children: [
+                                                                    TextButton(
+                                                                      child: Text(
+                                                                          "Close"),
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                      },
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                    );
+                                                  } else {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return Center(
+                                                          child: Container(
+                                                            width: 300,
+                                                            height: 200,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                              image: DecorationImage(
+                                                                  image: AssetImage(
+                                                                      "Images/backgrounds/homepage.png"),
+                                                                  fit: BoxFit
+                                                                      .cover),
+                                                            ),
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceAround,
+                                                              children: [
+                                                                SizedBox(
+                                                                    height: 10),
+                                                                Text(
+                                                                  "Banned!",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontFamily:
+                                                                        "PolySans_Median",
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            239,
+                                                                            105,
+                                                                            0,
+                                                                            0),
+                                                                    fontSize:
+                                                                        20,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  "User Banned Successfully",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontFamily:
+                                                                        "PolySans_Slim",
+                                                                    color: Color
+                                                                        .fromARGB(
+                                                                            239,
+                                                                            105,
+                                                                            0,
+                                                                            0),
+                                                                    fontSize:
+                                                                        20,
+                                                                  ),
+                                                                ),
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .end,
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .end,
+                                                                  children: [
+                                                                    TextButton(
+                                                                      child: Text(
+                                                                          "Close"),
+                                                                      onPressed:
+                                                                          () {
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                      },
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                    );
+                                                  }
+                                                } else {
+                                                  showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return Center(
+                                                        child: Container(
+                                                          width: 300,
+                                                          height: 200,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                            image: DecorationImage(
+                                                                image: AssetImage(
+                                                                    "Images/backgrounds/homepage.png"),
+                                                                fit: BoxFit
+                                                                    .cover),
+                                                          ),
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceAround,
+                                                            children: [
+                                                              SizedBox(
+                                                                  height: 10),
+                                                              Text(
+                                                                "Error!",
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontFamily:
+                                                                      "PolySans_Median",
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          239,
+                                                                          105,
+                                                                          0,
+                                                                          0),
+                                                                  fontSize: 20,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                "Connection Error. Please check your internet connection.",
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontFamily:
+                                                                      "PolySans_Slim",
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          239,
+                                                                          105,
+                                                                          0,
+                                                                          0),
+                                                                  fontSize: 20,
+                                                                ),
+                                                              ),
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .end,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .end,
+                                                                children: [
+                                                                  TextButton(
+                                                                    child: Text(
+                                                                        "Close"),
+                                                                    onPressed:
+                                                                        () {
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                    },
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                }
+                                                setState(() {});
+                                              },
+                                              child: Container(
+                                                  decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                        image: AssetImage(
+                                                            "Images/icons/ban.png"),
+                                                        fit: BoxFit.cover),
+                                                  ),
+                                                  width: 35,
+                                                  height: 35,
+                                                  child: Text("")),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {},
+                                              child: Container(
+                                                  decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                        image: AssetImage(
+                                                            "Images/icons/arrow-right-s-line.png"),
+                                                        fit: BoxFit.cover),
+                                                  ),
+                                                  width: 35,
+                                                  height: 35,
+                                                  child: Text("")),
+                                            ),
+                                            const SizedBox(width: 10),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  "@shehabemohsen",
-                                  style: TextStyle(
-                                    fontFamily: "PolySans_Slim",
-                                    color: Color(0xf0493C3F),
-                                    fontSize: 13,
-                                  ),
-                                )
-                              ],
-                            ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image:
-                                            AssetImage("Images/icons/ban.png"),
-                                        fit: BoxFit.cover),
-                                  ),
-                                  width: 35,
-                                  height: 35,
-                                  child: Text("")),
-                            ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            "Images/icons/arrow-right-s-line.png"),
-                                        fit: BoxFit.cover),
-                                  ),
-                                  width: 35,
-                                  height: 35,
-                                  child: Text("")),
-                            ),
+                              ),
                           ],
                         ),
                       ),
-                  ],
-                ),
-              ),
-            ),
+                    );
+                  }
+                  return Center(child: CircularProgressIndicator());
+                }),
           ],
         ),
       ),
