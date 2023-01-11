@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, curly_braces_in_flow_control_structures, avoid_print
 
 import 'dart:math';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cardflip/models/userModel.dart';
+import "dart:developer" as developer;
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -23,6 +26,7 @@ class _EditProfileState extends State<EditProfile> {
     super.initState();
   }
 
+  UserModel model = UserModel();
   TextEditingController ControllerFirstNameData = TextEditingController();
   TextEditingController ControllerLastNameData = TextEditingController();
   TextEditingController ControllerUsernameData = TextEditingController();
@@ -30,6 +34,9 @@ class _EditProfileState extends State<EditProfile> {
   final firstNameKey = GlobalKey<FormState>();
   final lastNameKey = GlobalKey<FormState>();
   final usernameKey = GlobalKey<FormState>();
+  static final FirebaseFirestore _database = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
+  final _userCollection = FirebaseFirestore.instance.collection("user");
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -301,11 +308,15 @@ class _EditProfileState extends State<EditProfile> {
                   padding: EdgeInsets.only(bottom: 20, top: 15),
                   alignment: Alignment.center,
                   child: GestureDetector(
-                      onTap: () {
-                        if (ControllerFirstNameData.text.isEmpty ||
-                            ControllerLastNameData.text.isEmpty ||
-                            ControllerUsernameData.text.isEmpty)
-                          print('Please enter a text into the fields');
+                      onTap: () async {
+                        await _userCollection
+                            .doc(FirebaseAuth.instance.currentUser!.uid)
+                            .update({
+                          "fname": ControllerFirstNameData.text,
+                          "lname": ControllerLastNameData.text,
+                          "username": ControllerUsernameData.text,
+                        });
+                        Navigator.pushNamed(context, "/home");
                       },
                       child: Container(
                           alignment: Alignment.center,
