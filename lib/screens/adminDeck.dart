@@ -46,6 +46,7 @@ class Admin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deckData = model.deckDataList();
     final height = 128.67;
     final width = 133.67;
     return Scaffold(
@@ -214,42 +215,56 @@ class Admin extends StatelessWidget {
                 ],
               ),
             ),
-            Expanded(
-              child: NoGlowScroll(
-                child: ListView(
-                  children: [
-                    for (var i = 0; i < 6; i++)
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            FutureBuilder(
+                future: deckData,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Expanded(
+                      child: NoGlowScroll(
+                        child: ListView(
                           children: [
-                            AdminDeck(
-                              width: 139,
-                              height: 116.67,
-                              path:
-                                  "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
-                              min: 2,
-                              onTap: () {},
-                            ),
-                            AdminDeck(
-                              width: 139,
-                              height: 116.67,
-                              path:
-                                  "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
-                              min: 2,
-                              onTap: () {},
-                            ),
+                            for (var i = 0; i < snapshot.data!.length; i += 2)
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 8.0, horizontal: 30),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      (i + 1 < snapshot.data!.length)
+                                          ? MainAxisAlignment.spaceBetween
+                                          : MainAxisAlignment.start,
+                                  children: [
+                                    AdminDeck(
+                                      width: 139,
+                                      height: 116.67,
+                                      deckName: snapshot.data![i]["name"],
+                                      path:
+                                          "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                                      min: 2,
+                                      onTap: () {},
+                                    ),
+                                    if (i + 1 < snapshot.data!.length)
+                                      AdminDeck(
+                                        width: 139,
+                                        height: 116.67,
+                                        deckName: snapshot.data![i + 1]["name"],
+                                        path:
+                                            "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                                        min: 2,
+                                        onTap: () {},
+                                      ),
+                                  ],
+                                  // SizedBox(
+                                  //   width: 15,
+                                  // )
+                                ),
+                              ),
                           ],
-                          // SizedBox(
-                          //   width: 15,
-                          // )
                         ),
                       ),
-                  ],
-                ),
-              ),
-            ),
+                    );
+                  }
+                  return Center(child: CircularProgressIndicator());
+                }),
           ],
         ),
       ),

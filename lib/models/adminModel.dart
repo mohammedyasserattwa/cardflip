@@ -11,6 +11,7 @@ class AdminModel {
   List<String> users = [];
 
   final _userCollection = FirebaseFirestore.instance.collection("user");
+  final _deckCollection = FirebaseFirestore.instance.collection("deck");
 
   Future<List> userDataList() async {
     QuerySnapshot querySnapshot = await _userCollection
@@ -32,13 +33,27 @@ class AdminModel {
     return data;
   }
 
+  Future<List> deckDataList() async {
+    QuerySnapshot querySnapshot = await _deckCollection.get();
+    final data = querySnapshot.docs
+        .map((doc) => {
+              "name": doc.get("name"),
+              "rating": doc.get("rating"),
+              "userID": doc.get("userID"),
+              "description": doc.get("description"),
+              "id": doc.id,
+            })
+        .toList();
+    return data;
+  }
+
   void banUser(String id) {
     _userCollection.doc(id).update({"banned": true});
     //TODO: Show message "User banned"
   }
 
-  void banDeck(String name) {
-    decks.remove(name);
+  void deleteDeck(String id) {
+    _deckCollection.doc(id).delete();
   }
 
   void viewReports() {
