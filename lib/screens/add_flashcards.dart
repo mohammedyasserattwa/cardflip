@@ -1,6 +1,7 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, unused_local_variable
 
 import 'package:cardflip/widgets/addflashcards_input.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 
@@ -11,6 +12,20 @@ class AddFlashcards extends StatefulWidget {
   State<AddFlashcards> createState() => _AddFlashcardsState();
 }
 
+class flashCards {
+  String id;
+  final String Term;
+  final String Definition;
+
+  flashCards({
+    this.id = '',
+    required this.Term,
+    required this.Definition,
+  });
+  Map<String, dynamic> toJson() =>
+      {'id': id, 'Term': Term, 'Definition': Definition};
+}
+
 class _AddFlashcardsState extends State<AddFlashcards> {
   List<TextEditingController> ControllerDefinitionData = [
     TextEditingController()
@@ -19,6 +34,23 @@ class _AddFlashcardsState extends State<AddFlashcards> {
   List termkeys = [GlobalKey<FormState>()];
   List definitionkeys = [GlobalKey<FormState>()];
   List resultedData = [Column()];
+
+  Future createUser(
+      {required TextEditingController Term,
+      required TextEditingController Definition}) async {
+    final docDeck = FirebaseFirestore.instance.collection("deck").doc();
+    // final json = {
+    //   'dataTerm': ControllerTermData,
+    //   'dataDefinition': ControllerDefinitionData,
+    // };
+    final flash = flashCards(
+      id: docDeck.id,
+      Term: Term.text,
+      Definition: Definition.text,
+    );
+    final json = flash.toJson();
+    await docDeck.set(json);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -223,9 +255,15 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                                   index++) {
                                 if (ControllerDefinitionData[index]
                                         .text
-                                        .isEmpty ||
-                                    ControllerTermData[index].text.isEmpty)
+                                        .isNotEmpty ||
+                                    ControllerTermData[index].text.isNotEmpty) {
+                                  createUser(
+                                      Definition:
+                                          ControllerDefinitionData[index],
+                                      Term: ControllerTermData[index]);
+                                } else {
                                   print('Please enter a text into the fields');
+                                }
                               }
                             },
                             child: Container(
