@@ -44,7 +44,6 @@ dependencies:
   cloud_firestore:
   shared_preferences: ^2.0.15
   recase: ^4.1.0
-  internet_connection_checker: ^1.0.0+1
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -53,6 +52,8 @@ dependencies:
   flutter_riverpod: ^2.1.1
   flutter_multi_select_items: ^0.4.2
   shimmer_animation: ^2.1.0
+  internet_connection_checker: ^1.0.0+1
+  sticky_headers: ^0.3.0+2
 
 flutter_icons:
   android: "launcher_icon"
@@ -101,7 +102,6 @@ flutter:
     - Images/icons/svg/library.svg
     - Images/icons/svg/profile.svg
     - Images/icons/svg/arrow-up-left.svg
-    - Images/icons/svg/stars.svg
     - Images/icons/
     - Images/backgrounds/
     - Images/cards/flashcards/

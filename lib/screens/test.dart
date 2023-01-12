@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cardflip/models/testModel.dart';
 import 'package:flutter_shake_animated/flutter_shake_animated.dart';
-// import 'package:no_glow_scroll/no_glow_scroll.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_svg/flutter_svg.dart';
 import '../widgets/card_widget.dart';
@@ -39,6 +38,9 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
   int i = 0;
   var random = [0, 1, 2];
   var testCardsList = [];
+  String background = "Images/backgrounds/testpage.png";
+  // String background = "Images/backgrounds/finaltest.png";
+  // ugly all red or all pink
 
 // sh then set then use then remove
   Stream<int> stopWatch() {
@@ -96,26 +98,6 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
     });
 
     random.shuffle();
-    // k
-    // definitions.length
-    // Random().nextInt(terms[j].length
-    // for (int i = 0; i < testCards.length; i++) {
-    //   shuffled[i] = List.generate(3, (i) => Random().nextInt(3) + 1);
-    //   // shuffled.shuffle();
-    //   // terms = testCards.values.map((element) => element).toList();
-    //   // // shuffled = testCards.values.toList();
-    //   // shuffled = testCards.values.map((element) => element).toList();
-    //   // developer.log('bt' + terms.toString());
-    //   developer.log(shuffled.toString());
-
-    //   // for (int i = 0; i < shuffled.length; i++) {
-    //   //   shuffled[i].shuffle();
-    //   // }
-    // }
-
-    // developer.log('at' + terms.toString());
-    // developer.log('as' + shuffled.toString());
-    // developer.log(testCards.values.toString());
 
     start = List.filled(definitions.length, 0.0);
     end = List.filled(definitions.length, 0.0);
@@ -171,14 +153,21 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
 
   _TestState({key, required this.id});
   @override
+  Future<void> setState(VoidCallback fn) async {
+    if (i >= definitions.length)
+      background = 'Images/backgrounds/finaltest.png';
+    super.setState(fn);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
       height: 1000,
       width: double.infinity,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("Images/backgrounds/testpage.png"),
+          image: AssetImage(background),
           fit: BoxFit.cover,
         ),
       ),
@@ -262,7 +251,7 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                         children: const [
                           Icon(Icons.exit_to_app_rounded),
                           SizedBox(width: 10),
-                          Text("Quit & Submit Test"),
+                          Text("Quit & Submit Test"), //todo
                         ],
                       ),
                     ),
@@ -273,7 +262,7 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                         children: const [
                           Icon(Icons.dark_mode_outlined),
                           SizedBox(width: 10),
-                          Text("Dark Page Theme"), //provider
+                          Text("Dark Page Theme"), //todo provider
                         ],
                       ),
                     ),
@@ -718,13 +707,12 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                                                   BorderRadius.circular(16.0),
                                             ),
                                             onPressed: () => {
-                                                  // todo test results page
                                                   Future((() =>
                                                       Navigator.pushNamed(
                                                           context,
-                                                          '/leaderboard',
+                                                          '/testresults',
                                                           arguments: {
-                                                            "deckID": widget.id,
+                                                            "model": model,
                                                           })))
                                                 },
                                             child: Padding(

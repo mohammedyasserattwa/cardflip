@@ -13,6 +13,7 @@ import 'package:cardflip/screens/register.dart';
 import 'package:cardflip/screens/search.dart';
 import 'package:cardflip/screens/settings.dart';
 import 'package:cardflip/screens/Test.dart';
+import 'package:cardflip/screens/testresults.dart';
 import 'package:cardflip/screens/adminDeck.dart';
 import 'package:cardflip/widgets/navibar.dart';
 import "package:flutter/material.dart";
@@ -77,6 +78,7 @@ class _MainState extends State<Main> {
           '/flashcards': (context) => Flashcard(id: data!["deckID"]),
           '/leaderboard': (context) => Leaderboard(id: data!["deckID"]),
           '/test': (context) => Test(id: data!["deckID"]),
+          '/testresults': (context) => TestResults(model: data!["model"]),
           '/search': (context) => Search(),
           '/settings': (context) => const Settings(),
           '/addFlashcards': (context) => const AddFlashcards(),
