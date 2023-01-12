@@ -60,6 +60,24 @@ class UserModel {
     return usersData;
   }
 
+  Future userByID(String ID) async {
+    var querySnapshot = await _userCollection.doc(ID).get();
+    Map<String, dynamic> usersData =
+        querySnapshot.data() as Map<String, dynamic>;
+    return usersData;
+  }
+
+  Future userNameandPic(String ID) async {
+    var querySnapshot = await _userCollection.doc(ID).get();
+    Map usersData = {
+      "profileIcon": querySnapshot.get("profileIcon"),
+      "fname": querySnapshot.get("fname"),
+      "lname": querySnapshot.get("lname"),
+      "ID": ID,
+    };
+    return usersData;
+  }
+
   Future<List> usernameList() async {
     QuerySnapshot querySnapshot = await _userCollection.get();
     final data = querySnapshot.docs.map((doc) => doc.get("username")).toList();

@@ -37,7 +37,9 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
   List<double> end = [];
   int i = 0;
   var random = [0, 1, 2];
+  List<List<int>> randomlist = [];
   var testCardsList = [];
+  late List<bool> isActive = [];
   String background = "Images/backgrounds/testpage.png";
   // String background = "Images/backgrounds/finaltest.png";
   // ugly all red or all pink
@@ -98,9 +100,11 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
     });
 
     random.shuffle();
-
+    randomlist = randomize(definitions.length);
     start = List.filled(definitions.length, 0.0);
     end = List.filled(definitions.length, 0.0);
+    isActive = List.filled(definitions.length, false);
+    isActive[0] = true;
     stopwatch = stopWatch();
     jiggle = List.filled(definitions.length, List.filled(3, null));
     stopwatchsubscrip = stopwatch!.listen((int tick) {
@@ -119,6 +123,15 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
       color: Color(0x40fff4f4),
     );
     super.initState();
+  }
+
+  List<List<int>> randomize(int size) {
+    List<List<int>> randomlist = [];
+    for (int i = 0; i < size; i++) {
+      random.shuffle();
+      randomlist.add(random);
+    }
+    return randomlist;
   }
 
   BoxDecoration checkBox(bool? isCorrect) {
@@ -310,68 +323,74 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                                 tween:
                                     Tween<double>(begin: start[j], end: end[j]),
                                 duration: animduration,
-                                builder: (context, pos, __) => Transform(
-                                      transform: Matrix4.identity()
-                                        ..translate(pos),
-                                      child: Container(
-                                          width: (MediaQuery.of(context)
-                                                      .size
-                                                      .height >
-                                                  652)
-                                              ? 350
-                                              : 300,
-                                          height: (MediaQuery.of(context)
-                                                      .size
-                                                      .height >
-                                                  751)
-                                              ? 512
-                                              : (MediaQuery.of(context)
-                                                          .size
-                                                          .height >
-                                                      652)
-                                                  ? 512
-                                                  : 312,
-                                          decoration: const BoxDecoration(
-                                            image: DecorationImage(
-                                                image: AssetImage(
-                                                    "Images/cards/testpage/0.png"),
-                                                fit: BoxFit.fill),
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 35.0,
-                                                horizontal: 20.0),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                AutoSizeText(
-                                                  // 150 chars max
-                                                  // definitions[0].toString()[0].toUpperCase()+definitions[0].toString().substring(1),
-                                                  definitions[j].toString(),
-                                                  maxLines: 6,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  minFontSize: 17,
-                                                  stepGranularity: 1,
-                                                  style: TextStyle(
-                                                    fontFamily:
-                                                        "PolySans_Median",
-                                                    color: Color(0xff551B1B),
-                                                    fontSize: 23,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                  textAlign: TextAlign.center,
+                                builder: (context, pos, __) {
+                                  // random.shuffle();
+                                  return Transform(
+                                    transform: Matrix4.identity()
+                                      ..translate(pos),
+                                    child: Container(
+                                        width: (MediaQuery.of(context)
+                                                    .size
+                                                    .height >
+                                                652)
+                                            ? 350
+                                            : 300,
+                                        height: (MediaQuery.of(context)
+                                                    .size
+                                                    .height >
+                                                751)
+                                            ? 512
+                                            : (MediaQuery.of(context)
+                                                        .size
+                                                        .height >
+                                                    652)
+                                                ? 512
+                                                : 312,
+                                        decoration: const BoxDecoration(
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  "Images/cards/testpage/0.png"),
+                                              fit: BoxFit.fill),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 35.0, horizontal: 20.0),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              AutoSizeText(
+                                                // 150 chars max
+                                                // definitions[0].toString()[0].toUpperCase()+definitions[0].toString().substring(1),
+                                                definitions[j].toString(),
+                                                maxLines: 6,
+                                                overflow: TextOverflow.ellipsis,
+                                                minFontSize: 17,
+                                                stepGranularity: 1,
+                                                style: TextStyle(
+                                                  fontFamily: "PolySans_Median",
+                                                  color: Color(0xff551B1B),
+                                                  fontSize: 23,
+                                                  fontWeight: FontWeight.bold,
                                                 ),
-                                                Column(
-                                                  children: [
-                                                    for (int k = 0; k < 3; k++)
-                                                      Column(
-                                                        children: [
-                                                          GestureDetector(
-                                                            onTap: () {
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              Column(
+                                                children: [
+                                                  for (int k = 0; k < 3; k++)
+                                                    Column(
+                                                      children: [
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            if (isActive[j])
                                                               setState(() {
+                                                                isActive[j] =
+                                                                    false;
+                                                                if (j + 1 <
+                                                                    definitions
+                                                                        .length)
+                                                                  isActive[j +
+                                                                      1] = true;
                                                                 // developer.log('displayed ' +
                                                                 //     terms[j][random[
                                                                 //             k]]
@@ -425,90 +444,89 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                                                                     end[j] =
                                                                         500;
                                                                   i++;
-                                                                  random
-                                                                      .shuffle();
                                                                 });
                                                               });
-                                                            },
-                                                            child: ShakeWidget(
-                                                              shakeConstant:
-                                                                  ShakeRotateConstant2(),
-                                                              autoPlay:
-                                                                  jiggle[j]
-                                                                          [k] ??
-                                                                      false,
-                                                              duration: Duration(
-                                                                  milliseconds:
-                                                                      200),
-                                                              enableWebMouseHover:
-                                                                  true,
-                                                              child: Container(
-                                                                  width: 305,
-                                                                  height: 71,
-                                                                  decoration: checkBox((jiggle[j]
-                                                                              [
-                                                                              k] !=
-                                                                          null)
-                                                                      ? !jiggle[
-                                                                          j][k]!
-                                                                      : null),
-                                                                  child:
-                                                                      Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .symmetric(
-                                                                        horizontal:
-                                                                            8.0),
+                                                          },
+                                                          child: ShakeWidget(
+                                                            shakeConstant:
+                                                                ShakeRotateConstant2(),
+                                                            autoPlay: jiggle[j]
+                                                                    [k] ??
+                                                                false,
+                                                            duration: Duration(
+                                                                milliseconds:
+                                                                    200),
+                                                            enableWebMouseHover:
+                                                                true,
+                                                            child: Container(
+                                                                width: 305,
+                                                                height: 71,
+                                                                decoration: checkBox(
+                                                                    (jiggle[j][k] !=
+                                                                            null)
+                                                                        ? !jiggle[j]
+                                                                            [k]!
+                                                                        : null),
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                      horizontal:
+                                                                          8.0),
+                                                                  child: Align(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
                                                                     child:
-                                                                        Align(
-                                                                      alignment:
-                                                                          Alignment
-                                                                              .center,
-                                                                      child:
-                                                                          AutoSizeText(
-                                                                        terms[j][random[k]]
-                                                                            .toString(),
-                                                                        maxLines:
-                                                                            1,
-                                                                        overflow:
-                                                                            TextOverflow.ellipsis,
-                                                                        minFontSize:
-                                                                            16,
-                                                                        // 37 around 35 chars max
-                                                                        stepGranularity:
-                                                                            1,
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontFamily:
-                                                                              "PolySans_Neutral",
-                                                                          color: Color.fromARGB(
-                                                                              255,
-                                                                              56,
-                                                                              18,
-                                                                              18),
-                                                                          fontSize:
-                                                                              26,
-                                                                          fontWeight:
-                                                                              FontWeight.bold,
-                                                                        ),
-                                                                        textAlign:
-                                                                            TextAlign.center,
+                                                                        AutoSizeText(
+                                                                      terms[j][randomlist[j]
+                                                                              [
+                                                                              k]]
+                                                                          .toString(),
+                                                                      maxLines:
+                                                                          1,
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                      minFontSize:
+                                                                          16,
+                                                                      // 37 around 35 chars max
+                                                                      stepGranularity:
+                                                                          1,
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontFamily:
+                                                                            "PolySans_Neutral",
+                                                                        color: Color.fromARGB(
+                                                                            255,
+                                                                            56,
+                                                                            18,
+                                                                            18),
+                                                                        fontSize:
+                                                                            26,
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
                                                                       ),
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
                                                                     ),
-                                                                  )),
-                                                            ),
+                                                                  ),
+                                                                )),
                                                           ),
-                                                          if (k != 2)
-                                                            SizedBox(
-                                                              height: 20,
-                                                            ),
-                                                        ],
-                                                      ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          )),
-                                    )),
+                                                        ),
+                                                        if (k != 2)
+                                                          SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                      ],
+                                                    ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        )),
+                                  );
+                                })
                         ],
                       )
                     : Center(

@@ -6,6 +6,7 @@ class Leaderboard {
   Leaderboard({
     this.deckID = "1",
   }) {
+    
     leaderboardlist = [
       User(
           firstname: "Lara",

@@ -1,9 +1,10 @@
+import 'package:cardflip/data/Leaderboard.dart';
 import 'package:cardflip/data/tag.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../data/deck.dart';
 import 'package:cardflip/data/card.dart';
-import '../data/user.dart';
+import '../data/User.dart';
 
 class DeckModel {
   final List<Deck> recentDecks = [
@@ -466,6 +467,13 @@ class DeckModel {
       return decks;
     }
     return userPreferences.where((element) => element.userID == id).toList();
+  }
+
+  Future leaderboardUsers(String id) async {
+    var querySnapshot = await _deckCollection.doc("bvIbRB1Du66aBA8gjeOY").get();
+
+    Map<dynamic, dynamic> data = querySnapshot.data() as Map<dynamic, dynamic>;
+    return ((data["leaderboard"] != null) ? data["leaderboard"] : []);
   }
 
   List<Deck> filter(List<Deck> deckList) {
