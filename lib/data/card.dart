@@ -22,7 +22,7 @@ class Card {
   get getDefinitions => definition;
 
   Map<String, dynamic> toJson() =>
-      {'id': id, 'Term': term, 'Definition': definition};
+      {'id': id, 'term': term, 'definition': definition};
 
   static fromJson(dynamic data) {
     return Card(
