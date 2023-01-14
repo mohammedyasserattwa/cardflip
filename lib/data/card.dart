@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Card {
   String term;
   String definition;
@@ -18,4 +20,12 @@ class Card {
 
   get getTerm => term;
   get getDefinitions => definition;
+
+  Map<String, dynamic> toJson() =>
+      {'id': id, 'Term': term, 'Definition': definition};
+
+  static fromJson(dynamic data) {
+    return Card(
+        id: data["id"], term: data['term'], definition: data['definition']);
+  }
 }

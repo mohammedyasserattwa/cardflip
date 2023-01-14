@@ -465,7 +465,10 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                               GestureDetector(
                                                   onTap: () {
                                                     Navigator.pushNamed(context,
-                                                        "/addFlashcards");
+                                                        "/addFlashcards",
+                                                        arguments: {
+                                                          'deck': widget.deck
+                                                        });
                                                   },
                                                   child: Container(
                                                     width: 45,

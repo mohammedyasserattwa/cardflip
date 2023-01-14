@@ -78,9 +78,9 @@ class _MainState extends State<Main> {
           '/testresults': (context) => TestResults(model: data!["model"]),
           '/search': (context) => Search(),
           '/settings': (context) => const Settings(),
-          '/addFlashcards': (context) => const AddFlashcards(),
+          '/addFlashcards': (context) => AddFlashcards(deck: data!["deck"]),
           '/editprofile': (context) => const EditProfile(),
-          '/adddeck': (context) => const Adddeck(),
+          // '/adddeck': (context) => const Adddeck(),
         };
         WidgetBuilder builder = routes[settings.name]!;
         return MaterialPageRoute(builder: (context) => builder(context));

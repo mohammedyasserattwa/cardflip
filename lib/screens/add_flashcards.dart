@@ -1,29 +1,19 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, unused_local_variable
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, unused_local_variable, await_only_futures
 
 import 'package:cardflip/widgets/addflashcards_input.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
 import 'package:no_glow_scroll/no_glow_scroll.dart';
+import 'package:cardflip/data/card.dart' as card_data;
+
+import '../data/deck.dart';
 
 class AddFlashcards extends StatefulWidget {
-  const AddFlashcards({super.key});
+  const AddFlashcards({super.key, required this.deck});
+  final Deck deck;
 
   @override
   State<AddFlashcards> createState() => _AddFlashcardsState();
-}
-
-class flashCards {
-  String id;
-  final String Term;
-  final String Definition;
-
-  flashCards({
-    this.id = '',
-    required this.Term,
-    required this.Definition,
-  });
-  Map<String, dynamic> toJson() =>
-      {'id': id, 'Term': Term, 'Definition': Definition};
 }
 
 class _AddFlashcardsState extends State<AddFlashcards> {
@@ -35,21 +25,35 @@ class _AddFlashcardsState extends State<AddFlashcards> {
   List definitionkeys = [GlobalKey<FormState>()];
   List resultedData = [Column()];
 
-  Future createUser(
+  Future createFlashCard(
       {required TextEditingController Term,
       required TextEditingController Definition}) async {
-    final docDeck = FirebaseFirestore.instance.collection("deck").doc();
-    // final json = {
-    //   'dataTerm': ControllerTermData,
-    //   'dataDefinition': ControllerDefinitionData,
-    // };
-    final flash = flashCards(
-      id: docDeck.id,
-      Term: Term.text,
-      Definition: Definition.text,
+    final docDeck =
+        await FirebaseFirestore.instance.collection("deck").doc(widget.deck.id);
+    final data = await docDeck.get();
+    //print(widget.id);
+    List gatheredList = data['flashcards'].map((e) {
+      return card_data.Card.fromJson(e);
+    }).toList();
+    final flash = card_data.Card(
+      id: data['flashcards'].length.toString(),
+      term: Term.text,
+      definition: Definition.text,
     );
-    final json = flash.toJson();
-    await docDeck.set(json);
+    gatheredList.add(flash);
+    final json = gatheredList.map((e) {
+      return e.toJson();
+    }).toList();
+    final updatedData = docDeck.update({'flashcards': json});
+    // final update = docDeck.update({'flashcards': card_data.Card(
+    //   id: data['flashcards'].length,
+    //   term: Term.text,
+    //   definition: Definition.text,
+    // );});
+    // 'flashcards.definition': Definition.text,
+    // 'flashcards.term': Term.text,
+    // 'flashcards.id': data['flashcards'].length,
+    // await docDeck.set(json);
   }
 
   @override
@@ -257,7 +261,7 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                                         .text
                                         .isNotEmpty ||
                                     ControllerTermData[index].text.isNotEmpty) {
-                                  createUser(
+                                  createFlashCard(
                                       Definition:
                                           ControllerDefinitionData[index],
                                       Term: ControllerTermData[index]);
