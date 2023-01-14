@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cardflip/data/card_generator.dart';
 import "package:flutter/material.dart";
 import 'package:go_router/go_router.dart';
+import 'package:recase/recase.dart';
 
 import '../data/category.dart';
 
@@ -13,9 +14,11 @@ class CategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.of(context).pushNamed("/category", arguments: {
-        "categoryID": category.id,
-      }),
+      onTap: () {
+        Navigator.of(context).pushNamed("/category", arguments: {
+          "category": category,
+        });
+      },
       child: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
@@ -26,7 +29,7 @@ class CategoryCard extends StatelessWidget {
         height: 116.67,
         child: Center(
           child: AutoSizeText(
-            category.categoryName,
+            ReCase(category.categoryName).titleCase,
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
             minFontSize: 12,

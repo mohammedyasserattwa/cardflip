@@ -1,22 +1,25 @@
 // ignore_for_file: unnecessary_this, file_names, non_constant_identifier_names
 
+import 'package:cardflip/data/deck.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class User {
   //CONSTRUCTOR
-  User({
-    required this.firstname,
-    required this.lastname,
-    required this.email,
-    required this.password,
-    required this.username,
-    required this.profileIcon,
-    required this.id,
-    this.role = "learner",
-    this.favourites = const [],
-    this.badges = const [],
-  });
+  User(
+      {required this.firstname,
+      required this.lastname,
+      required this.email,
+      required this.password,
+      required this.username,
+      required this.profileIcon,
+      required this.id,
+      this.role = "learner",
+      this.favourites = const [],
+      this.badges = const [],
+      this.tags = const [],
+      this.userPreferences = const []
+      });
   User.New() {
     firstname = "";
     lastname = "";
@@ -28,11 +31,12 @@ class User {
     role = "learner";
   }
   factory User.fromSnapshot(
-      DocumentSnapshot snapshot, String email, String password, String id) {
+      DocumentSnapshot snapshot, String email, String password, String id, List<Deck> preferences) {
     String firstname = snapshot.get("fname");
     String lastname = snapshot.get("lname");
     String username = snapshot.get("username");
     String profileIcon = snapshot.get("profileIcon");
+    List tags = snapshot.get("tags");
     return User(
         firstname: firstname,
         lastname: lastname,
@@ -40,20 +44,22 @@ class User {
         profileIcon: profileIcon,
         id: id,
         email: email,
+        tags: tags,
+        userPreferences: preferences,
         password: password);
 
     // this.
   }
   Map<String, dynamic> toJSON() {
     return {
-      "email" : email,
-      "fname" : firstname,
-      "lname" : lastname,
-      "username" : username,
-      "profileIcon" : profileIcon,
-      "role" : role,
-      "badges" : badges,
-      "favourites" : favourites,
+      "email": email,
+      "fname": firstname,
+      "lname": lastname,
+      "username": username,
+      "profileIcon": profileIcon,
+      "role": role,
+      "badges": badges,
+      "favourites": favourites,
     };
   }
 
@@ -67,10 +73,11 @@ class User {
   late String profileIcon;
   late String role;
   List favourites = [];
+  List tags = [];
+  List userPreferences = [];
 
   // List _reminders;
   List badges = [];
-  List tags = [];
 
   //SETTER & GETTERS
   get userID => id;

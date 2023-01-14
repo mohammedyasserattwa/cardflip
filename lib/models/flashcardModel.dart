@@ -6,10 +6,9 @@ import '../data/deck.dart';
 import 'deckModel.dart';
 
 class FlashcardModel {
-  String id;
-  late Deck deck;
-  FlashcardModel({required this.id}) {
-    deck = DeckModel().deckByID(id);
+  // String id;
+  Deck deck;
+  FlashcardModel({required this.deck}) {
     queue = deck.cards.length;
   }
   final bool personalDeck = false;
@@ -26,7 +25,7 @@ class FlashcardModel {
   List<Card> get getCards => deck.cards;
   List<String> get getImages => _cardBackgrounds;
 
-  void pushForward(int id) {
+  void pushForward(String id) {
     Card temp = deck.cards.firstWhere((element) => element.id == id);
     deck.cards.remove(temp);
     deck.cards.add(temp);

@@ -8,14 +8,17 @@ import '../models/flashcardModel.dart';
 import "../screens/FlashcardScreen.dart" as FlashcardScreen;
 import "../data/card.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "../data/deck.dart" as deck_data;
 
 class Card extends ConsumerWidget {
   String cardName;
   String path;
-  int index;
+  String index;
   String id;
+  deck_data.Deck deck;
   Card(
       {super.key,
+      required this.deck,
       required this.cardName,
       required this.path,
       required this.index,
@@ -53,7 +56,7 @@ class Card extends ConsumerWidget {
         onTap: () {
           ref.read(FlashcardStateProvider.notifier).state = index;
           Navigator.pushNamed(context, '/flashcards',
-              arguments: {"deckID": id});
+              arguments: {"deck": deck});
         },
         child: Container(
             decoration: image,

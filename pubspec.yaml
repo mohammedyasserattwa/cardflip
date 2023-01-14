@@ -102,6 +102,7 @@ flutter:
     - Images/icons/svg/library.svg
     - Images/icons/svg/profile.svg
     - Images/icons/svg/arrow-up-left.svg
+    - Images/icons/svg/filter_search.svg
     - Images/icons/
     - Images/backgrounds/
     - Images/cards/flashcards/
@@ -312,7 +313,7 @@ flutter:
     - Images/avatars/logo/
     - Images/vectors/
     - Images/banners/leaderboardpage/
-    
+    - Images/backgrounds/category_screen/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -92,7 +92,7 @@ class _SearchInputFieldState extends ConsumerState<SearchInputField> {
                               ref.read(SearchProvider.notifier).state = value;
                               ref.read(SearchSubmitProvider.notifier).state =
                                   true;
-                              widget.controller.clear();
+                              // widget.controller.clear();
                               setState(() {
                                 resetButton = false;
                               });
@@ -101,10 +101,10 @@ class _SearchInputFieldState extends ConsumerState<SearchInputField> {
                           cursorColor: Colors.grey[600],
                           cursorHeight: 30,
                           onChanged: (value) {
+                            ref.read(SearchSubmitProvider.notifier).state =
+                                false;
                             if (value.isNotEmpty) {
                               resetButton = true;
-                              // ref.read(SearchSubmitProvider.notifier).state =
-                              //     false;
                             } else {
                               resetButton = false;
                             }

@@ -1,10 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:no_glow_scroll/no_glow_scroll.dart';
 import "package:flutter/material.dart";
 import '../data/Repositories/user_decks.dart';
-import '../data/card_generator.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-
 import '../models/deckModel.dart';
 import '../data/deck.dart' as DeckUI;
 
@@ -16,12 +13,14 @@ class Deck extends ConsumerWidget {
     required this.path,
     required this.min,
     required this.onTap,
+    this.deck,
     this.id = "1",
   }) : super(key: key);
 
   final Function() onTap;
   final double height;
   final double width;
+  final DeckUI.Deck? deck;
   final String path;
   final int min;
   final String id;
@@ -29,7 +28,9 @@ class Deck extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ratings = ref.watch(RatingProvider);
-    DeckUI.Deck deck = model.deckByID(id);
+
+    // DeckUI.Deck deck = model.deckByID(id);
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -51,7 +52,7 @@ class Deck extends ConsumerWidget {
                         decoration: BoxDecoration(
                           image: DecorationImage(
                               image: AssetImage(
-                                  "Images/icons/${ratings.contains(id) ? "star-fill" : "star-line"}.png"),
+                                  "Images/icons/${ratings.contains(deck!.id) ? "star-fill" : "star-line"}.png"),
                               fit: BoxFit.cover),
                         ),
                         width: 15,
@@ -60,7 +61,7 @@ class Deck extends ConsumerWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 5),
                         child: Text(
-                          deck.deckRating,
+                          deck!.deckRating,
                           style: const TextStyle(
                             fontFamily: "PolySans_Neutral.ttf",
                             fontSize: 14,
@@ -88,7 +89,7 @@ class Deck extends ConsumerWidget {
               const SizedBox(height: 15),
               Flexible(
                 child: AutoSizeText(
-                  deck.deckName,
+                  deck!.deckName,
                   maxLines: min,
                   overflow: TextOverflow.ellipsis,
                   minFontSize: 12,

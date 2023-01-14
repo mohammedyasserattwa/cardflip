@@ -13,21 +13,23 @@ import '../models/DeckModel.dart';
 import '../models/flashcardModel.dart';
 import '../widgets/navibar.dart';
 import '../widgets/deck.dart';
+import "../data/deck.dart" as deck_data;
 
-main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: Editdeck(),
-  ));
-}
+// main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   await Firebase.initializeApp(
+//     options: DefaultFirebaseOptions.currentPlatform,
+//   );
+//   runApp(MaterialApp(
+//     debugShowCheckedModeBanner: false,
+//     home: Editdeck(),
+//   ));
+// }
 
 class Editdeck extends StatefulWidget {
-  String id;
-  Editdeck({Key? key, this.id = "1"}) : super(key: key);
+  // String id;
+  deck_data.Deck deck;
+  Editdeck({Key? key, required this.deck}) : super(key: key);
 
   @override
   State<Editdeck> createState() => _EditdeckState();
@@ -40,7 +42,7 @@ class _EditdeckState extends State<Editdeck> {
   void initState() {
     super.initState();
 
-    model = FlashcardModel(id: widget.id);
+    model = FlashcardModel(deck: widget.deck);
   }
 
   @override
@@ -112,7 +114,7 @@ class _EditdeckState extends State<Editdeck> {
                     ),
                     filled: true,
                     fillColor: Colors.black.withOpacity(0.1),
-                    label: Text(deckModel.deckByID(widget.id).deckName),
+                    label: Text(widget.deck.deckName),
                   ),
                 ),
                 Text(
@@ -135,7 +137,7 @@ class _EditdeckState extends State<Editdeck> {
                     ),
                     filled: true,
                     fillColor: Colors.black.withOpacity(0.1),
-                    label: Text(deckModel.deckByID(widget.id).deckDescription),
+                    label: Text(widget.deck.deckDescription),
                   ),
                 ),
                 Text(

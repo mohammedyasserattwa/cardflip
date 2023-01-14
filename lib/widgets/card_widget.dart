@@ -47,7 +47,7 @@ class CardWidget extends StatefulWidget {
   final String image;
   // final String term;
   // final String definition;
-  CardHandler.Card? card = CardHandler.Card(term: "", definition: "", id: 0);
+  CardHandler.Card? card = CardHandler.Card(term: "", definition: "", id: '0');
   final double begin;
   final double end;
   final bool empty;

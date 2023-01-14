@@ -18,6 +18,21 @@ class Search extends ConsumerWidget {
     return null;
   }
 
+  void filterPage(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          ),
+        ),
+        builder: (BuildContext context) {
+          return FilterScreen();
+        });
+  }
+
   final _searchController = TextEditingController();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -61,12 +76,30 @@ class Search extends ConsumerWidget {
                       hint: "Search here..",
                       controller: _searchController,
                     ),
-                  )
+                  ),
+                  if (submitted)
+                    GestureDetector(
+                      onTap: () {
+                        filterPage(context);
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Color(0x1f1A0404),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        padding: const EdgeInsets.all(16),
+                        child: SvgPicture.asset(
+                          "Images/icons/svg/filter_search.svg",
+                          width: 28.12,
+                          height: 20.75,
+                        ),
+                      ),
+                    ),
                 ],
               ),
               if (submitted)
                 Expanded(child: SearchResult(query: searchResult))
-              else if (_searchController.text.isEmpty)
+              else if (!submitted)
                 FutureBuilder(
                     future: searchHistory,
                     builder: (context, snapshot) {
@@ -179,6 +212,162 @@ class Search extends ConsumerWidget {
                     })
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class FilterScreen extends StatefulWidget {
+  const FilterScreen({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<FilterScreen> createState() => _FilterScreenState();
+}
+
+class _FilterScreenState extends State<FilterScreen> {
+  final _activeFilterSelection = BoxDecoration(
+    color: const Color(0x441A0404),
+    borderRadius: BorderRadius.circular(12),
+  );
+  final _inactiveFilterSelection = BoxDecoration(
+    color: const Color(0x081A0404),
+    borderRadius: BorderRadius.circular(12),
+  );
+  List<bool> filters = [false, false, false];
+  resetFilters() {
+    filters = [false, false, false];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
+        ),
+        image: DecorationImage(
+            image: AssetImage("Images/backgrounds/homepage.png"),
+            fit: BoxFit.cover),
+      ),
+      child: SizedBox(
+        height: 250,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // crossAxisAlignment: WrapCrossAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+              child: Text(
+                "Sort deck by:",
+                style: TextStyle(
+                  fontFamily: "PolySans_Neutral",
+                  fontSize: 24,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff212523),
+                ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      resetFilters();
+                      filters[0] = true;
+                    });
+                  },
+                  child: Container(
+                      decoration: filters[0]
+                          ? _activeFilterSelection
+                          : _inactiveFilterSelection,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 30),
+                      child: Text("Popularity")),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      resetFilters();
+                      filters[1] = true;
+                    });
+                  },
+                  child: Container(
+                      decoration: filters[1]
+                          ? _activeFilterSelection
+                          : _inactiveFilterSelection,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 30),
+                      child: Text("Rating")),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      resetFilters();
+                      filters[2] = true;
+                    });
+                  },
+                  child: Container(
+                      decoration: filters[2]
+                          ? _activeFilterSelection
+                          : _inactiveFilterSelection,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 30),
+                      child: const Text("Date Created")),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        resetFilters();
+                      });
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      child: const Text(
+                        "Reset",
+                        style: TextStyle(
+                          fontFamily: "PolySans_Neutral",
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff212523),
+                        ),
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      child: const Text(
+                        "Done",
+                        style: TextStyle(
+                          fontFamily: "PolySans_Neutral",
+                          fontSize: 20,
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xff212523),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );

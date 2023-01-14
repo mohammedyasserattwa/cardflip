@@ -1,6 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:cardflip/data/Repositories/flashcard_state.dart';
+import 'package:cardflip/data/Repositories/user_decks.dart';
+import 'package:cardflip/data/Repositories/user_state.dart';
+import 'package:cardflip/data/deck.dart';
+import 'package:cardflip/data/uncompleted_deck_item.dart';
+import 'package:cardflip/data/uncompleted_decks.dart';
 import "package:flutter/material.dart";
 import "../models/flashcardModel.dart";
 import '../widgets/navibar.dart';
@@ -8,10 +14,12 @@ import "../widgets/card_widget.dart";
 import 'package:cardflip/data/card.dart' as CardHandler;
 import 'package:flutter_svg/flutter_svg.dart';
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Flashcard extends ConsumerStatefulWidget {
-  String id;
-  Flashcard({key, this.id = "1"});
+  // String id;
+  Deck deck;
+  Flashcard({super.key, required this.deck});
 
   @override
   ConsumerState<Flashcard> createState() => _FlashcardState();
@@ -31,7 +39,7 @@ class _FlashcardState extends ConsumerState<Flashcard>
   @override
   void initState() {
     super.initState();
-    model = FlashcardModel(id: widget.id);
+    model = FlashcardModel(deck: widget.deck);
     // model.pushForward(0);
     // print(widget.id);
     currentList = model.getCards;
@@ -70,7 +78,12 @@ class _FlashcardState extends ConsumerState<Flashcard>
   @override
   Widget build(BuildContext context) {
     final flashcardState = ref.watch(FlashcardStateProvider);
-    model.pushForward(flashcardState);
+    final userData = ref.watch(UserDataProvider);
+    try {
+      model.pushForward(flashcardState);
+    } catch (e) {
+      model.pushForward("0");
+    }
     return Scaffold(
       body: Container(
         height: double.infinity,
@@ -275,7 +288,58 @@ class _FlashcardState extends ConsumerState<Flashcard>
                           // }
                           if (_currentCard > 0) {
                             _currentCard = await Future.delayed(
-                                const Duration(milliseconds: 250), () {
+                                const Duration(milliseconds: 250), () async {
+                              if (_currentCard == 1) {
+                                SharedPreferences.getInstance().then((prefs) {
+                                  if (prefs.getString("uncompletedDecks2") !=
+                                      null) {
+                                    List<dynamic> uncompleteDecks =
+                                        UncompletedDecks.fromJson(prefs
+                                            .getString("uncompletedDecks2")!);
+                                    UncompletedDeckItem item =
+                                        UncompletedDeckItem(
+                                            uid: userData!.id,
+                                            deckID: widget.deck.id);   
+                                    int deckIndex = uncompleteDecks.indexOf(
+                                        uncompleteDecks
+                                            .where((e) =>
+                                                e.deckID.trim().toLowerCase() ==
+                                                item.deckID
+                                                    .trim()
+                                                    .toLowerCase())
+                                            .toList()[0]);
+                                    if (deckIndex != -1) {
+                                      uncompleteDecks.removeAt(deckIndex);
+                                      final data = json.encode(uncompleteDecks
+                                          .map((e) => e.toJson())
+                                          .toList());
+                                      prefs.setString(
+                                          "uncompletedDecks2", data);
+                                    }
+                                    // print(deckIndex);
+                                    // print(uncompleteDecks);
+                                    //   if (uncompleteDecks
+                                    //       .where((e) =>
+                                    //           e.deckID.trim().toLowerCase() ==
+                                    //           item.deckID.trim().toLowerCase())
+                                    //       .isNotEmpty) {
+                                    //     uncompleteDecks.removeWhere((e) =>
+                                    //         e.deckID.trim().toLowerCase() ==
+                                    //         item.deckID.trim().toLowerCase());
+                                    //     final data = json.encode(uncompleteDecks
+                                    //         .map((e) => e.toJson())
+                                    //         .toList());
+                                    //     prefs.setString(
+                                    //         "uncompletedDecks2", data);
+                                    //     print("Hena");
+                                    //     // ref.read(
+                                    //     //         UnCompletedDecksProvider.notifier)
+                                    //     //     .state = Future.value(data);
+                                    //     //
+                                    //   }
+                                  }
+                                });
+                              }
                               _progress++;
                               return _currentCard - 1;
                             });

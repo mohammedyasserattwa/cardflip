@@ -13,6 +13,7 @@ class Deck {
   late Leaderboard leaderboard;
   List<Tag> tags = [];
   String userID;
+  Map user;
   Deck(
       {required this.name,
       this.description = "",
@@ -21,7 +22,9 @@ class Deck {
       required this.id,
       this.tags = const <Tag>[],
       this.cards = const <Card>[],
-      this.userID = "01f4bll7"}) {
+      this.userID = "01f4bll7",
+      required this.user,
+      }) {
     leaderboard = Leaderboard(deckID: id);
   }
 
@@ -30,7 +33,7 @@ class Deck {
   String get deckAuthor => author;
   String get deckID => id;
   String get deckRating {
-    return (rating / 1000).toStringAsFixed(1);
+    return rating.toStringAsFixed(0);
   }
 
   List<Card> get deckCards => cards;

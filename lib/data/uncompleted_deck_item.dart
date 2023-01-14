@@ -1,24 +1,23 @@
 import 'dart:convert';
 
-class HistoryItem {
+class UncompletedDeckItem {
   String uid;
-  String query;
-  HistoryItem({
+  String deckID;
+  UncompletedDeckItem({
     required this.uid,
-    required this.query,
+    required this.deckID,
   });
   String toJson() {
     return json.encode({
       "uid": uid,
-      "query": query,
+      "deckID": deckID,
     });
   }
-
-  static fromJson(String data) {
+  static fromJson(String data){
     final jsonData = json.decode(data);
-    return HistoryItem(
+    return UncompletedDeckItem(
       uid: jsonData["uid"],
-      query: jsonData["query"],
+      deckID: jsonData["deckID"],
     );
   }
 }

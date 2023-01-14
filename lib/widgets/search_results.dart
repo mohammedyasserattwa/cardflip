@@ -2,7 +2,10 @@ import 'package:cardflip/data/deck.dart';
 import 'package:cardflip/main.dart';
 import 'package:cardflip/models/deckModel.dart';
 import 'package:cardflip/models/userModel.dart';
+import 'package:cardflip/widgets/deck_search_screen.dart';
+import 'package:cardflip/widgets/people_search_screen.dart';
 import 'package:cardflip/widgets/search_deck_item.dart';
+import 'package:cardflip/widgets/tag_search_screen.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
@@ -30,7 +33,7 @@ class _SearchResultState extends State<SearchResult> {
   Future getData() async {
     return {
       "decks": await deckModel.decksByQuery(widget.query),
-      "tags": await deckModel.getData(),
+      "tags": await deckModel.tagsByQuery(widget.query),
       "people": await userModel.userByQuery(widget.query),
     };
   }
@@ -96,7 +99,7 @@ class _SearchResultState extends State<SearchResult> {
                           setState(() {
                             _resetPages();
                             _currentPage[1] = true;
-                            _currentState = DeckScreen(decks);
+                            _currentState = DeckSearchScreen(decks: decks);
                           });
                         }
                       },
@@ -142,6 +145,7 @@ class _SearchResultState extends State<SearchResult> {
                           setState(() {
                             _resetPages();
                             _currentPage[3] = true;
+                            _currentState = PeopleScreen(people: people);
                           });
                         }
                       },
@@ -171,382 +175,270 @@ class _SearchResultState extends State<SearchResult> {
   }
 
   Widget AllScreen(dynamic decks, dynamic tags, dynamic people) {
-    return Column(children: [
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              "Decks",
-              style: TextStyle(
-                fontFamily: "PolySans_Median",
-                fontWeight: FontWeight.w600,
-                fontSize: 24,
-                color: Color(0xff212523),
-              ),
-            ),
-            GestureDetector(
-              onTap: (() {
-                setState(() {
-                  _resetPages();
-                  _currentPage[1] = true;
-                  _currentState = DeckScreen(decks);
-                });
-              }),
-              child: const Text(
-                "View All",
-                style: TextStyle(
-                  fontFamily: "Poppins-Regular",
-                  fontSize: 16,
-                  color: Color(0xff212523),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-      SizedBox(
-        height: 116.67,
+    return Expanded(
         child: NoGlowScroll(
-          child: ListView.builder(
-            padding: EdgeInsets.zero,
-            scrollDirection: Axis.horizontal,
-            itemCount: decks.length > 3 ? 3 : decks.length,
-            itemBuilder: (context, index) {
-              return SearchDeckItem(name: decks[index]["name"]);
-            },
-          ),
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              "Tags",
-              style: TextStyle(
-                fontFamily: "PolySans_Median",
-                fontWeight: FontWeight.w600,
-                fontSize: 24,
-                color: Color(0xff212523),
-              ),
-            ),
-            GestureDetector(
-              onTap: (() {
-                setState(() {
-                  _resetPages();
-                  _currentPage[2] = true;
-                  _currentState = TagScreen(tags: tags);
-                });
-              }),
-              child: const Text(
-                "View All",
+      child: ListView(padding: EdgeInsets.zero, children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                "Decks",
                 style: TextStyle(
-                  fontFamily: "Poppins-Regular",
-                  fontSize: 16,
+                  fontFamily: "PolySans_Median",
+                  fontWeight: FontWeight.w600,
+                  fontSize: 24,
                   color: Color(0xff212523),
                 ),
               ),
-            )
-          ],
-        ),
-      ),
-      NoGlowScroll(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.zero,
-          scrollDirection: Axis.horizontal,
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                for (int i = 0;
-                    i < (tags.length < 12 ? tags.length : 12);
-                    i += 4)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      for (int j = i;
-                          j <= ((tags.length > i + 3) ? i + 3 : i);
-                          j++)
-                        Padding(
-                          padding: const EdgeInsets.all(2.0),
-                          child: Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Color.fromARGB(255, 175, 175, 175),
-                                    width: 1),
-                                borderRadius: BorderRadius.circular(16),
-                                color: const Color(0x8FDADADA),
-                              ),
-                              child: Text(ReCase(tags[j]).titleCase)),
-                        ),
-                    ],
-                  )
-              ]),
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              "People",
-              style: TextStyle(
-                fontFamily: "PolySans_Median",
-                fontWeight: FontWeight.w600,
-                fontSize: 24,
-                color: Color(0xff212523),
-              ),
-            ),
-            GestureDetector(
-              onTap: (() {
-                setState(() {
-                  _resetPages();
-                  _currentPage[3] = true;
-                  // _currentState = PeopleScreen(people: tags);
-                });
-              }),
-              child: const Text(
-                "View All",
-                style: TextStyle(
-                  fontFamily: "Poppins-Regular",
-                  fontSize: 16,
-                  color: Color(0xff212523),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-      NoGlowScroll(
-          child: SingleChildScrollView(
-        child: Column(children: [
-          for (int index = 0; index < people.length; index++)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SvgPicture.asset(
-                    "Images/avatars/${people[index]["profileIcon"]}.svg",
-                    height: 40,
-                    width: 40),
-                const SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  people[index]["fname"],
-                  style: const TextStyle(
-                    fontFamily: "PolySans_Median",
-                    fontWeight: FontWeight.w600,
+              GestureDetector(
+                onTap: (() {
+                  setState(() {
+                    _resetPages();
+                    _currentPage[1] = true;
+                    _currentState = DeckSearchScreen(decks: decks);
+                  });
+                }),
+                child: const Text(
+                  "View All",
+                  style: TextStyle(
+                    fontFamily: "Poppins-Regular",
                     fontSize: 16,
                     color: Color(0xff212523),
                   ),
-                )
-              ],
-            ),
-        ]),
-      ))
-    ]);
-  }
-
-  Widget DeckScreen(dynamic decks) => Column(
-        children: [
-          for (int i = 0; i < decks.length; i += 2)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: Row(
-                mainAxisAlignment: (decks.length < i + 1)
-                    ? MainAxisAlignment.spaceBetween
-                    : MainAxisAlignment.start,
-                children: [
-                  SearchDeckItem(
-                    name: decks[i]["name"],
-                  ),
-                  if (decks.length < i + 1)
-                    SearchDeckItem(
-                      name: decks[i + 1]["name"],
-                    ),
-                ],
-              ),
-            )
-        ],
-      );
-}
-
-class TagScreen extends StatefulWidget {
-  final dynamic tags;
-
-  TagScreen({super.key, required this.tags});
-
-  @override
-  State<TagScreen> createState() => _TagScreenState();
-}
-
-class _TagScreenState extends State<TagScreen> {
-  List<Deck> _resultDecks = [];
-  String _chosenTag = "";
-  List<bool> _tagActive = [];
-  final BoxDecoration _inactiveTagDecoration = BoxDecoration(
-    border:
-        Border.all(color: const Color.fromARGB(255, 175, 175, 175), width: 1),
-    borderRadius: BorderRadius.circular(16),
-    color: const Color(0x8FDADADA),
-  );
-  final BoxDecoration _activeTagDecoration = BoxDecoration(
-    border: Border.all(color: const Color(0xffA000A4), width: 1),
-    borderRadius: BorderRadius.circular(16),
-    color: const Color(0xffF4B1EB),
-  );
-  @override
-  void initState() {
-    _tagActive = List.filled(widget.tags.length, false);
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        NoGlowScroll(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.zero,
-            scrollDirection: Axis.horizontal,
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  for (int i = 0;
-                      i < (widget.tags.length < 12 ? widget.tags.length : 12);
-                      i += 4)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        for (int j = i;
-                            j <= ((widget.tags.length > i + 3) ? i + 3 : i);
-                            j++)
-                          Padding(
-                            padding: const EdgeInsets.all(2.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  // _tagActive[j] = !_tagActive[j];
-                                  int c = 0;
-                                  _tagActive = _tagActive.map((e) {
-                                    if (c++ != j) {
-                                      return false;
-                                    } else {
-                                      return !e;
-                                    }
-                                  }).toList();
-                                  if (_tagActive[j] == true) {
-                                    _resultDecks = DeckModel().deckByTagID("1");
-                                    _chosenTag = widget.tags[j];
-                                  } else {
-                                    _resultDecks = [];
-                                    _chosenTag = "";
-                                  }
-                                });
-                                // setState(() {});
-                              },
-                              child: Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: _tagActive[j]
-                                      ? _activeTagDecoration
-                                      : _inactiveTagDecoration,
-                                  child: Center(
-                                    child:
-                                        Text(ReCase(widget.tags[j]).titleCase,
-                                            style: const TextStyle(
-                                              fontFamily: "PolySans_Neutral",
-                                              fontSize: 15,
-                                            )),
-                                  )),
-                            ),
-                          ),
-                      ],
-                    )
-                ]),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(right: 5.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: const [
-              Text(
-                "View All Tags",
-                style: TextStyle(
-                  fontFamily: "PolySans_Regular",
-                  fontSize: 16,
-                  color: Color(0xff212523),
                 ),
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Icon(
-                Icons.arrow_forward_ios,
-                size: 16,
               )
             ],
           ),
         ),
-        if (_resultDecks.isEmpty)
+        if (decks.isNotEmpty)
           SizedBox(
-            height: MediaQuery.of(context).size.height * 0.6,
-            child: const Center(
-              child: Text(
-                "Choose one of the tags above to view the decks",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: "PolySans_Neutral",
-                  fontSize: 25,
-                ),
+            height: 116.67,
+            child: NoGlowScroll(
+              child: ListView.builder(
+                padding: EdgeInsets.zero,
+                scrollDirection: Axis.horizontal,
+                itemCount: decks.length > 3 ? 3 : decks.length,
+                itemBuilder: (context, index) {
+                  return SearchDeckItem(name: decks[index]["name"]);
+                },
               ),
             ),
           )
         else
-          Padding(
-            padding: const EdgeInsets.only(left: 10.0, right: 10, top: 30),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Showing the results of the tag: ${ReCase(_chosenTag).titleCase}",
-                    style: const TextStyle(
-                      fontFamily: "PolySans_Neutral",
-                      fontSize: 20,
-                      color: Color(0xff212523),
-                    ),
+          const SizedBox(
+            height: 116.67,
+            child: Center(
+              child: Text(
+                "No decks found",
+                style: TextStyle(
+                  fontFamily: "PolySans_Median",
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
+                  color: Color.fromARGB(255, 73, 75, 74),
+                ),
+              ),
+            ),
+          ),
+        const SizedBox(
+          height: 20,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                "Tags",
+                style: TextStyle(
+                  fontFamily: "PolySans_Median",
+                  fontWeight: FontWeight.w600,
+                  fontSize: 24,
+                  color: Color(0xff212523),
+                ),
+              ),
+              GestureDetector(
+                onTap: (() {
+                  setState(() {
+                    _resetPages();
+                    _currentPage[2] = true;
+                    _currentState = TagScreen(tags: tags);
+                  });
+                }),
+                child: const Text(
+                  "View All",
+                  style: TextStyle(
+                    fontFamily: "Poppins-Regular",
+                    fontSize: 16,
+                    color: Color(0xff212523),
                   ),
-                  for (int i = 0; i < _resultDecks.length; i += 2)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Row(
-                        mainAxisAlignment: (_resultDecks.length > i + 1)
-                            ? MainAxisAlignment.spaceBetween
-                            : MainAxisAlignment.start,
+                ),
+              )
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        if (tags.isNotEmpty)
+          NoGlowScroll(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.zero,
+              scrollDirection: Axis.horizontal,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Text("${(tags.length)}"),
+                    for (int i = 0;
+                        i < (tags.length > 12 ? 12 : tags.length);
+                        i += 4)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SearchDeckItem(
-                            name: _resultDecks[i].name,
-                          ),
-                          if (_resultDecks.length > i + 1)
-                            SearchDeckItem(
-                              name: _resultDecks[i + 1].name,
+                          for (int j = i; //0 -> 3<3
+                              j < ((tags.length > i + 4) ? i + 4 : tags.length);
+                              j++)
+                            Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color:
+                                            Color.fromARGB(255, 175, 175, 175),
+                                        width: 1),
+                                    borderRadius: BorderRadius.circular(16),
+                                    color: const Color(0x8FDADADA),
+                                  ),
+                                  child: Text(ReCase(tags[j].name).titleCase)),
                             ),
                         ],
-                      ),
-                    )
-                ]),
+                      )
+                  ]),
+            ),
+          )
+        else
+          const SizedBox(
+            height: 116.67,
+            child: Center(
+              child: Text(
+                "No Tags found",
+                style: TextStyle(
+                  fontFamily: "PolySans_Median",
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
+                  color: Color.fromARGB(255, 73, 75, 74),
+                ),
+              ),
+            ),
           ),
-      ],
-    );
+        const SizedBox(
+          height: 20,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Text(
+                "People",
+                style: TextStyle(
+                  fontFamily: "PolySans_Median",
+                  fontWeight: FontWeight.w600,
+                  fontSize: 24,
+                  color: Color(0xff212523),
+                ),
+              ),
+              GestureDetector(
+                onTap: (() {
+                  setState(() {
+                    _resetPages();
+                    _currentPage[3] = true;
+                    _currentState = PeopleScreen(people: people);
+                  });
+                }),
+                child: const Text(
+                  "View All",
+                  style: TextStyle(
+                    fontFamily: "Poppins-Regular",
+                    fontSize: 16,
+                    color: Color(0xff212523),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 15,
+        ),
+        if (people.isNotEmpty)
+          NoGlowScroll(
+              child: SingleChildScrollView(
+            child: Column(children: [
+              for (int index = 0; index < people.length; index++)
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                          "Images/avatars/${people[index]["profileIcon"]}.svg",
+                          height: 47.4,
+                          width: 47.4),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            people[index]["fname"] +
+                                " " +
+                                people[index]["lname"],
+                            style: const TextStyle(
+                              fontFamily: "PolySans_Neutral",
+                              fontSize: 20,
+                              color: Color(0xff212523),
+                            ),
+                          ),
+                          Text(
+                            "@" + people[index]["username"],
+                            style: const TextStyle(
+                              fontFamily: "Poppins-Light",
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14,
+                              color: Color(0xff212523),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+            ]),
+          ))
+        else
+          const SizedBox(
+            height: 116.67,
+            child: Center(
+              child: Text(
+                "No People found",
+                style: TextStyle(
+                  fontFamily: "PolySans_Median",
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
+                  color: Color.fromARGB(255, 73, 75, 74),
+                ),
+              ),
+            ),
+          ),
+      ]),
+    ));
   }
 }

@@ -1,19 +1,14 @@
 // ignore_for_file: unnecessary_new, prefer_const_constructors
-
-import 'package:cardflip/main.dart';
-import 'package:cardflip/models/userModel.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 import "package:flutter/material.dart";
-import '../models/categoryModel.dart';
+import 'package:recase/recase.dart';
 import '../data/card_generator.dart';
 import '../data/category.dart' as CategoryData;
 import '../widgets/deck.dart';
-import '../widgets/navibar.dart';
-import 'package:go_router/go_router.dart';
 
 class Category extends StatelessWidget {
-  String id;
-  Category({super.key, required this.id});
+  CategoryData.Category data;
+  Category({super.key, required this.data});
 
   CardGenerator cardgenerator = new CardGenerator();
   CardGenerator cardgenerator2 = new CardGenerator();
@@ -38,7 +33,6 @@ class Category extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CategoryModel model = new CategoryModel(id: id);
     final height = _responsive(context)["height"];
     final width = _responsive(context)["width"];
     return Scaffold(
@@ -46,8 +40,7 @@ class Category extends StatelessWidget {
             width: double.infinity,
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage(model.category.background),
-                  fit: BoxFit.cover),
+                  image: AssetImage(data.background), fit: BoxFit.cover),
             ),
             child: NoGlowScroll(
               child: ListView(children: [
@@ -82,7 +75,7 @@ class Category extends StatelessWidget {
                         child: Container(
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage(model.category.vector),
+                              image: AssetImage(data.vector),
                               fit: BoxFit.cover,
                               scale: 0.5,
                             ),
@@ -96,7 +89,7 @@ class Category extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(20, 10, 0, 0),
                         child: Text(
-                          model.category.name,
+                          ReCase(data.name).titleCase,
                           textAlign: TextAlign.left,
                           style: TextStyle(
                             // fontFamily: "PolySans_Median",
@@ -111,39 +104,40 @@ class Category extends StatelessWidget {
                 ),
                 Column(
                   children: [
-                    for (int i = 0; i < model.category.decks.length; i += 2)
+                    for (int i = 0; i < data.decks.length; i += 2)
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 8.0, horizontal: 15),
                         child: Row(
-                          mainAxisAlignment:
-                              (i + 1 < model.category.decks.length)
-                                  ? MainAxisAlignment.spaceBetween
-                                  : MainAxisAlignment.start,
+                          mainAxisAlignment: (i + 1 < data.decks.length)
+                              ? MainAxisAlignment.spaceBetween
+                              : MainAxisAlignment.start,
                           children: [
                             Deck(
                               height: height,
-                              id: model.category.decks[i].id,
+                              id: data.decks[i].id,
+                              deck: data.decks[i],
                               width: width,
                               path:
                                   "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
                               min: 3,
                               onTap: () => Navigator.of(context)
                                   .pushNamed("/deck", arguments: {
-                                "deckID": model.category.decks[i].id,
+                                "deck": data.decks[i],
                               }),
                             ),
-                            if (i + 1 < model.category.decks.length)
+                            if (i + 1 < data.decks.length)
                               Deck(
                                 height: height,
                                 width: width,
-                                id: model.category.decks[i + 1].id,
+                                id: data.decks[i + 1].id,
+                                deck: data.decks[i + 1],
                                 path:
                                     "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
                                 min: 3,
                                 onTap: () => Navigator.of(context)
                                     .pushNamed("/deck", arguments: {
-                                  "deckID": model.category.decks[i + 1].id,
+                                  "deck": data.decks[i],
                                 }),
                               ),
                           ],
