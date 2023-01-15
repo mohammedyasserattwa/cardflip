@@ -1,8 +1,11 @@
+// ugly
+import 'package:cardflip/data/deck.dart';
+
 class Test {
-  String deckID;
+  Deck deck;
   Test({
-    this.deckID = "1",
-  }) {}
+    required this.deck,
+  });
   // String question = "Which layer of atmosphere is used for telecommunication?";
   // String choice1 = "troposphere";
   // String choice2 = "mesosphere";

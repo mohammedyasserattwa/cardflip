@@ -289,7 +289,7 @@ class _FilterScreenState extends State<FilterScreen> {
                           : _inactiveFilterSelection,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 30),
-                      child: Text("Popularity")),
+                      child: Text("Most Upvotes")),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -304,7 +304,7 @@ class _FilterScreenState extends State<FilterScreen> {
                           : _inactiveFilterSelection,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 30),
-                      child: Text("Rating")),
+                      child: Text("Date Updated")),
                 ),
                 GestureDetector(
                   onTap: () {

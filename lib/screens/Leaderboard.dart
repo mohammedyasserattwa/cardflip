@@ -1,10 +1,7 @@
-import 'package:cardflip/data/User.dart';
 import 'package:cardflip/models/leaderboardModel.dart';
 import 'package:flutter/material.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
-import '../data/card_generator.dart';
-import '../widgets/card_widget.dart';
-import '../widgets/deck.dart';
+import 'package:cardflip/data/deck.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import 'package:auto_size_text/auto_size_text.dart';
@@ -12,14 +9,18 @@ import 'package:cardflip/data/Repositories/user_state.dart';
 import "dart:developer" as developer;
 
 class Leaderboard extends ConsumerWidget {
-  String id;
+  Deck deck;
   late Leaderboard model;
   late Map leaderboard = {};
-  Leaderboard({super.key, required this.id});
+  Leaderboard({super.key, required this.deck});
 
   Widget userRank(var value, String id) {
     var tempData = value.keys
-        .where((element) => value[element]['userInfo']['ID'] == id)
+        .where((element) =>
+            value[element]['userInfo']['ID'] == id &&
+            value[element]['rank'] != "1" &&
+            value[element]['rank'] != "2" &&
+            value[element]['rank'] != "3")
         .toList();
 
     Widget? userCard = null;
@@ -41,7 +42,7 @@ class Leaderboard extends ConsumerWidget {
                 child: Stack(
                   alignment: AlignmentDirectional.bottomEnd,
                   children: [
-                    Container(
+                    SizedBox(
                       width: 50,
                       height: 50,
                       child: SvgPicture.asset(
@@ -64,7 +65,7 @@ class Leaderboard extends ConsumerWidget {
                                               : "Images/icons/rank.png")),
                                   fit: BoxFit.contain),
                             )
-                          : BoxDecoration(),
+                          : const BoxDecoration(),
                       child: (int.parse(value[tempData[0]]['rank']) >= 3)
                           ? Stack(
                               alignment: AlignmentDirectional.center,
@@ -78,7 +79,7 @@ class Leaderboard extends ConsumerWidget {
                                       ..style = PaintingStyle.stroke
                                       ..strokeWidth = 3
                                       ..color = Color(0xFFE89B05),
-                                    fontSize: 8,
+                                    fontSize: 7.5,
                                   ),
                                 ),
                                 AutoSizeText(
@@ -87,7 +88,7 @@ class Leaderboard extends ConsumerWidget {
                                     fontFamily: "PolySans_Median",
                                     fontWeight: FontWeight.w500,
                                     color: Color(0xFFFFDD28),
-                                    fontSize: 8,
+                                    fontSize: 7.5,
                                   ),
                                 ),
                               ],
@@ -155,7 +156,7 @@ class Leaderboard extends ConsumerWidget {
                           child: Stack(
                             alignment: AlignmentDirectional.bottomEnd,
                             children: [
-                              Container(
+                              SizedBox(
                                 width: 50,
                                 height: 50,
                                 child: SvgPicture.asset(
@@ -182,7 +183,7 @@ class Leaderboard extends ConsumerWidget {
                                                         : "Images/icons/rank.png")),
                                             fit: BoxFit.contain),
                                       )
-                                    : BoxDecoration(),
+                                    : const BoxDecoration(),
                                 // child: Stack(
                                 //   children: [
                                 // Image.network(
@@ -199,7 +200,7 @@ class Leaderboard extends ConsumerWidget {
                                 //   errorBuilder:
                                 //       (BuildContext
                                 //               context,
-                                //           Object
+                                //           Objecta
                                 //               exception,
                                 //           StackTrace?
                                 //               stackTrace) {
@@ -280,15 +281,13 @@ class Leaderboard extends ConsumerWidget {
   }
 
   Future getData(String id) async {
-    LeaderboardModel model = LeaderboardModel(id: id);
-    leaderboard = await model.leaderboardData(id);
-    developer.log("leaderboard $leaderboard");
+    LeaderboardModel model = LeaderboardModel(deck: deck);
+    leaderboard = await model.leaderboardData();
     return leaderboard;
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    LeaderboardModel model = new LeaderboardModel(id: id);
     final userData = ref.watch(UserDataProvider);
 
     return Scaffold(
@@ -314,7 +313,6 @@ class Leaderboard extends ConsumerWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 25),
                   child: Container(
-                    child: Text(""),
                     width: 50,
                     height: 50,
                     decoration: const BoxDecoration(
@@ -385,7 +383,6 @@ class Leaderboard extends ConsumerWidget {
                                 child: ListView(
                                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    // TODO
                                     // if (userData?.id != null)
                                     //   userRank(i)
                                     // deck to function in leaderboard model that returns list
@@ -421,7 +418,6 @@ class Leaderboard extends ConsumerWidget {
                                               ],
                                             );
                                         })
-                                    // todo
                                   ],
                                 ),
                               ),

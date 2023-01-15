@@ -139,7 +139,10 @@ class DeckModel {
           List<Card> cards = [];
           final flashcards = doc.get("flashcards");
           for (int i = 0; i < flashcards.length; i++) {
-            cards.add(Card.fromMap(flashcards[i]));
+            if (flashcards[i]['id'] != null ||
+                flashcards[i]['term'] != null ||
+                flashcards[i]['definition'] != null)
+              cards.add(Card.fromMap(flashcards[i]));
           }
           data.add(Deck(
             name: doc.get("name"),
@@ -183,7 +186,7 @@ class DeckModel {
   }
 
   Future leaderboardUsers(String id) async {
-    var querySnapshot = await _deckCollection.doc("bvIbRB1Du66aBA8gjeOY").get();
+    var querySnapshot = await _deckCollection.doc(id).get();
 
     Map<dynamic, dynamic> data = querySnapshot.data() as Map<dynamic, dynamic>;
     return ((data["leaderboard"] != null) ? data["leaderboard"] : []);
@@ -198,9 +201,9 @@ class DeckModel {
     return deckList;
   }
 
-  List deckTerms(String id) {
+  List deckTerms(Deck deck) {
     List<String> terms = [];
-    for (Card card in deckByID(id).cards) {
+    for (Card card in deck.cards) {
       terms.add(card.term);
     }
     return terms;

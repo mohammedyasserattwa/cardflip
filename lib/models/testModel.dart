@@ -1,22 +1,22 @@
 import 'dart:math';
-
+import 'dart:developer' as developer;
 import "package:cardflip/data/Test.dart";
 import 'package:cardflip/data/deck.dart';
 import 'package:cardflip/models/deckModel.dart';
 
 class TestModel {
-  String id;
   late Deck deck;
   late Test test;
   DeckModel deckModel = DeckModel();
   late var testCards = {};
   late List terms = [];
+  late int length;
 
-  TestModel({required this.id}) {
-    deck = deckModel.deckByID(id);
+  TestModel({required this.deck}) {
     late final random = Random();
-    late final int length = deckModel.deckByID(id).cards.length;
-    terms = deckModel.deckTerms(id);
+    length = deck.cards.length;
+
+    terms = deckModel.deckTerms(deck);
     var firstRandomTerm = terms[random.nextInt(length - 1)];
     var secondRandomTerm = terms[random.nextInt(length - 1)];
 
@@ -38,7 +38,7 @@ class TestModel {
             {deck.cards[i].term, firstRandomTerm, secondRandomTerm}.toList()
       });
     }
-    test = Test(deckID: id);
+    // test = Test(deck: deck);
   }
 
   get getTerms => terms;

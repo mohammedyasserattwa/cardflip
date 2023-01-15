@@ -213,7 +213,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                               Navigator.pushNamed(
                                                   context, '/leaderboard',
                                                   arguments: {
-                                                    "deckID": widget.id
+                                                    "deck": widget.deck
                                                   })),
                                           child: Wrap(
                                             crossAxisAlignment:
@@ -562,7 +562,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                         ),
                         GestureDetector(
                           onTap: () => Navigator.pushNamed(context, '/test',
-                              arguments: {"deckID": widget.id}),
+                              arguments: {"deck": widget.deck}),
                           child: Container(
                             decoration: const BoxDecoration(
                               image: DecorationImage(

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cardflip/data/deck.dart';
 import 'package:cardflip/models/testModel.dart';
 import 'package:flutter_shake_animated/flutter_shake_animated.dart';
 import "package:flutter/material.dart";
@@ -10,15 +11,14 @@ import 'dart:developer' as developer;
 import 'package:shimmer_animation/shimmer_animation.dart';
 
 class Test extends StatefulWidget {
-  String id;
-  Test({key, required this.id});
+  Deck deck;
+  Test({super.key, required this.deck});
 
   @override
-  State<Test> createState() => _TestState(id: id);
+  State<Test> createState() => _TestState();
 }
 
 class _TestState extends State<Test> with SingleTickerProviderStateMixin {
-  String id;
   bool continuetimer = true;
   Stream<int>? stopwatch;
   StreamSubscription<int>? stopwatchsubscrip;
@@ -83,7 +83,7 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
-    model = TestModel(id: id);
+    model = TestModel(deck: widget.deck);
     testCards = model.getTestCards;
     // testCards..toList();
     testCards.forEach((d, t) => testCardsList.add([d, t[0], t[1], t[2]]));
@@ -164,13 +164,14 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
     return status;
   }
 
-  _TestState({key, required this.id});
   @override
   Future<void> setState(VoidCallback fn) async {
     if (i >= definitions.length)
       background = 'Images/backgrounds/finaltest.png';
     super.setState(fn);
   }
+
+  _TestState({key});
 
   @override
   Widget build(BuildContext context) {
@@ -687,7 +688,7 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                                                     Navigator.pushNamed(
                                                         context, '/leaderboard',
                                                         arguments: {
-                                                          "deckID": widget.id,
+                                                          "deck": widget.deck
                                                         })));
                                               },
                                               child: Container(
@@ -801,7 +802,7 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                                                     Navigator.popAndPushNamed(
                                                         context, '/test',
                                                         arguments: {
-                                                          "deckID": widget.id,
+                                                          "deck": widget.deck
                                                         });
                                                   })
                                                 },

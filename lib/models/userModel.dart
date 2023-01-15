@@ -84,7 +84,7 @@ class UserModel {
     return usersData;
   }
 
-  Future userNameandPic(String ID) async {
+  Future getNameandPic(String ID) async {
     var querySnapshot = await _userCollection.doc(ID).get();
     Map usersData = {
       "profileIcon": querySnapshot.get("profileIcon"),
@@ -109,7 +109,12 @@ class UserModel {
 
   Future<Map> getUserByID(String docID) async {
     final user = await _userCollection.doc(docID).get();
-    return {"id":user.id, "username" : user["username"], "fname": user["fname"], "lname": user["lname"]};
+    return {
+      "id": user.id,
+      "username": user["username"],
+      "fname": user["fname"],
+      "lname": user["lname"]
+    };
   }
 
   signOut() async {
