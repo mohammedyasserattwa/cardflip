@@ -41,13 +41,13 @@ class AdminModel {
 
     final data = querySnapshot.docs.map((doc) async {
       final user = await userModel.userByID(doc.get("userID"));
-        return Deck.fromMap({
-          "name": doc.get("name"),
-          "rating": doc.get("rating"),
-          "userID": doc.get("userID"),
-          "description": doc.get("description"),
-          "id": doc.id,
-        }, user);
+      return Deck.fromMap({
+        "name": doc.get("name"),
+        "rating": doc.get("rating"),
+        "userID": doc.get("userID"),
+        "description": doc.get("description"),
+        "id": doc.id,
+      }, user);
     }).toList();
     return data;
   }
@@ -68,6 +68,11 @@ class AdminModel {
 
   void banUser(String id) {
     _userCollection.doc(id).update({"banned": true});
+    //TODO: Show message "User banned"
+  }
+
+  void unbanUser(String id) {
+    _userCollection.doc(id).update({"banned": false});
     //TODO: Show message "User banned"
   }
 
