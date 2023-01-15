@@ -1,4 +1,5 @@
 import 'dart:async';
+// import 'dart:html';
 import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cardflip/data/deck.dart';
@@ -40,6 +41,7 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
   List<List<int>> randomlist = [];
   var testCardsList = [];
   late List<bool> isActive = [];
+  late bool viable;
   String background = "Images/backgrounds/testpage.png";
   // String background = "Images/backgrounds/finaltest.png";
   // ugly all red or all pink
@@ -84,44 +86,49 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     model = TestModel(deck: widget.deck);
-    testCards = model.getTestCards;
-    // testCards..toList();
-    testCards.forEach((d, t) => testCardsList.add([d, t[0], t[1], t[2]]));
-// print(list);
-    testCardsList.shuffle();
+    viable = model.viable;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (viable == false) {
+        Navigator.pop(context, true);
+      } else {
+        testCards = model.getTestCards;
+        testCards.forEach((d, t) => testCardsList.add([d, t[0], t[1], t[2]]));
 
-    testCardsList.forEach((element) {
-      definitions.add(element[0]);
+        testCardsList.shuffle();
+
+        testCardsList.forEach((element) {
+          definitions.add(element[0]);
+        });
+
+        testCardsList.forEach((element) {
+          terms.add([element[1], element[2], element[3]]);
+        });
+
+        random.shuffle();
+        randomlist = randomize(definitions.length);
+        start = List.filled(definitions.length, 0.0);
+        end = List.filled(definitions.length, 0.0);
+        isActive = List.filled(definitions.length, false);
+        isActive[0] = true;
+        stopwatch = stopWatch();
+        jiggle = List.filled(definitions.length, List.filled(3, null));
+        stopwatchsubscrip = stopwatch!.listen((int tick) {
+          setState(() {
+            min = ((tick / 60) % 60).floor().toString();
+            sec = (tick % 60).floor().toString().padLeft(2, '0');
+          });
+        });
+
+        status = BoxDecoration(
+          border: Border.all(
+            color: Color.fromARGB(71, 36, 0, 0),
+            width: 2,
+          ),
+          borderRadius: BorderRadius.circular(16),
+          color: Color(0x40fff4f4),
+        );
+      }
     });
-
-    // terms = testCards.values.toList();
-    testCardsList.forEach((element) {
-      terms.add([element[1], element[2], element[3]]);
-    });
-
-    random.shuffle();
-    randomlist = randomize(definitions.length);
-    start = List.filled(definitions.length, 0.0);
-    end = List.filled(definitions.length, 0.0);
-    isActive = List.filled(definitions.length, false);
-    isActive[0] = true;
-    stopwatch = stopWatch();
-    jiggle = List.filled(definitions.length, List.filled(3, null));
-    stopwatchsubscrip = stopwatch!.listen((int tick) {
-      setState(() {
-        min = ((tick / 60) % 60).floor().toString();
-        sec = (tick % 60).floor().toString().padLeft(2, '0');
-      });
-    });
-
-    status = BoxDecoration(
-      border: Border.all(
-        color: Color.fromARGB(71, 36, 0, 0),
-        width: 2,
-      ),
-      borderRadius: BorderRadius.circular(16),
-      color: Color(0x40fff4f4),
-    );
     super.initState();
   }
 

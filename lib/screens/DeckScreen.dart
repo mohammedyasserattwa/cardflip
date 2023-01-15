@@ -12,6 +12,7 @@ import 'package:cardflip/data/uncompleted_deck_item.dart';
 import 'package:cardflip/data/uncompleted_decks.dart';
 import 'package:cardflip/models/deckModel.dart';
 import 'package:cardflip/models/userModel.dart';
+import 'package:cardflip/widgets/testalert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
@@ -34,6 +35,7 @@ class DeckScreen extends ConsumerStatefulWidget {
 
 class _MyDeckScreenState extends ConsumerState<DeckScreen> {
   late FlashcardModel model;
+  late TestAlert? testAlert;
   final heartState = ["heart_outline", "heart_filled"];
   final CardGenerator _cardGen = CardGenerator();
   final deckModel = DeckModel();
@@ -47,7 +49,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
   @override
   void initState() {
     super.initState();
-
+    testAlert = TestAlert(deck: widget.deck, context: context);
     model = FlashcardModel(deck: widget.deck);
     _cards = cardList(model.getCards);
     _randomBanner = Random().nextInt(6);
@@ -561,8 +563,9 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () => Navigator.pushNamed(context, '/test',
-                              arguments: {"deck": widget.deck}),
+                          onTap: () {
+                            testAlert!.alert();
+                          },
                           child: Container(
                             decoration: const BoxDecoration(
                               image: DecorationImage(

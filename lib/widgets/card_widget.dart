@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:cardflip/classes.dart';
 import 'package:cardflip/models/deckModel.dart';
+import 'package:cardflip/widgets/testalert.dart';
 import 'package:flip_card/flip_card.dart';
 import "package:flutter/material.dart";
 import 'package:cardflip/data/card.dart' as CardHandler;
@@ -66,6 +68,7 @@ class CardWidget extends StatefulWidget {
   final Function updateParent;
   final IconData star;
   Function? startOver;
+  late TestAlert? testAlert;
 
   @override
   State<CardWidget> createState() => _CardWidgetState();
@@ -286,13 +289,14 @@ class _CardWidgetState extends State<CardWidget> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: GestureDetector(
-                // todo: change to right test page
                 onTap: () {
-                  Navigator.pop(context);
-                  Future(() async => Navigator.pushNamed(context, '/test',
-                          arguments: {
-                            "deck": await widget.deck.getdeckByID(widget.deckID)
-                          }));
+                  Future(() async {
+                    widget.testAlert = TestAlert(
+                        deck: await widget.deck.getdeckByID(widget.deckID),
+                        context: context);
+                    if (!mounted) return;
+                    Navigator.pop(context);
+                  }).then((value) => widget.testAlert!.alert());
                 },
                 child: Container(
                   decoration: const BoxDecoration(
