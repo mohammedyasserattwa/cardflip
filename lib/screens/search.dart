@@ -9,8 +9,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../models/deckModel.dart';
 
 class Search extends ConsumerWidget {
+  DeckModel deck = DeckModel();
   String? validator(String value) {
     if (value.isEmpty) {
       return "Please Enter a value to search";
@@ -218,16 +220,18 @@ class Search extends ConsumerWidget {
   }
 }
 
-class FilterScreen extends StatefulWidget {
+class FilterScreen extends ConsumerStatefulWidget {
   const FilterScreen({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<FilterScreen> createState() => _FilterScreenState();
+  ConsumerState<FilterScreen> createState() => _FilterScreenState();
 }
 
-class _FilterScreenState extends State<FilterScreen> {
+class _FilterScreenState extends ConsumerState<FilterScreen> {
+  DeckModel deck = DeckModel();
+
   final _activeFilterSelection = BoxDecoration(
     color: const Color(0x441A0404),
     borderRadius: BorderRadius.circular(12),
@@ -240,6 +244,8 @@ class _FilterScreenState extends State<FilterScreen> {
   resetFilters() {
     filters = [false, false, false];
   }
+
+  final _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -281,6 +287,10 @@ class _FilterScreenState extends State<FilterScreen> {
                     setState(() {
                       resetFilters();
                       filters[0] = true;
+                      dynamic sort = ref.watch(sortProvider);
+
+                      ref.read(sortProvider.notifier).state =
+                          deck.topRatedDecks.cast<Map>();
                     });
                   },
                   child: Container(
@@ -296,6 +306,10 @@ class _FilterScreenState extends State<FilterScreen> {
                     setState(() {
                       resetFilters();
                       filters[1] = true;
+                      dynamic sort = ref.watch(sortProvider);
+
+                      ref.read(sortProvider.notifier).state =
+                          deck.recentDecks.cast<Map>();
                     });
                   },
                   child: Container(
@@ -311,6 +325,7 @@ class _FilterScreenState extends State<FilterScreen> {
                     setState(() {
                       resetFilters();
                       filters[2] = true;
+                      deck.recentDecks;
                     });
                   },
                   child: Container(
