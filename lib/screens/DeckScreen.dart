@@ -94,28 +94,29 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
   }
 
   Widget filter() => GestureDetector(
-      onTap: () {
-        setState(() {
-          if (_isFiltered == false) {
-            model.filter();
-            _cards = cardList(model.getCards);
-            _isFiltered = true;
-          }
-        });
-      },
-      child: Container(
-        width: 45,
-        height: 45,
-        decoration: const BoxDecoration(
-          color: Color(0xf1A0404),
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SvgPicture.asset("Images/icons/svg/filter.svg",
-              width: 45, height: 45),
-        ),
-      ));
+        onTap: () {
+          setState(() {
+            if (_isFiltered == false) {
+              model.filter();
+              _cards = cardList(model.getCards);
+              _isFiltered = true;
+            }
+          });
+        },
+        // child: Container(
+        //   width: 45,
+        //   height: 45,
+        //   decoration: const BoxDecoration(
+        //     color: Color(0xf1A0404),
+        //     borderRadius: BorderRadius.all(Radius.circular(12)),
+        //   ),
+        //   child: Padding(
+        //     padding: const EdgeInsets.all(8.0),
+        //     child: SvgPicture.asset("Images/icons/svg/filter.svg",
+        //         width: 45, height: 45),
+        //   ),
+        // )
+      );
   @override
   Widget build(BuildContext context) {
     final favourites = ref.watch(FavouritesProvider);
@@ -151,7 +152,12 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                       ),
                       child: SafeArea(
                         child: Padding(
-                          padding: const EdgeInsets.all(20.0),
+                          padding: ((widget.deck.userID == userData.id))
+                              ? EdgeInsets.fromLTRB(30.0, 20, 20, 20)
+                              : EdgeInsets.symmetric(
+                                  horizontal: 30,
+                                  vertical: 15.0,
+                                ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -211,19 +217,15 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                           ),
                                         ),
                                         PopupMenuItem(
-                                          onTap: () => Future(() =>
-                                              Navigator.pushNamed(
-                                                  context, '/leaderboard',
-                                                  arguments: {
-                                                    "deck": widget.deck
-                                                  })),
+                                          onTap: () => filter(),
                                           child: Wrap(
                                             crossAxisAlignment:
                                                 WrapCrossAlignment.center,
                                             children: const [
-                                              Icon(Icons.leaderboard_outlined),
+                                              Icon(Icons.sort_by_alpha_rounded,
+                                                  size: 23),
                                               SizedBox(width: 10),
-                                              Text("Leaderboard"),
+                                              Text("Sort alphabetically"),
                                             ],
                                           ),
                                         ),
@@ -286,6 +288,37 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                         Row(
                                           children: [
                                             GestureDetector(
+                                                onTap: () => Future(() =>
+                                                    Navigator.pushNamed(
+                                                        context, '/leaderboard',
+                                                        arguments: {
+                                                          "deck": widget.deck
+                                                        })),
+                                                child: Container(
+                                                  width: 45,
+                                                  height: 45,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    color: Color(0x0f1a0404),
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                12)),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Image.asset(
+                                                        "Images/icons/leaderboard.png",
+                                                        width: 40,
+                                                        height: 40),
+                                                  ),
+                                                )),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            GestureDetector(
                                                 onTap: () {
                                                   if (!favourites.contains(
                                                       model.deck.id)) {
@@ -330,10 +363,6 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                                         height: 45),
                                                   ),
                                                 )),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            filter()
                                           ],
                                         ),
                                     ],
@@ -343,7 +372,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 20.0),
+                                        horizontal: 5.0),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -391,40 +420,55 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                               )),
                                         GestureDetector(
                                             onTap: () {
-                                              if (!ratings
-                                                  .contains(model.deck.id)) {
-                                                model.deck.incrementRating();
-                                                ref
-                                                        .read(RatingProvider
-                                                            .notifier)
-                                                        .state =
-                                                    ratings + [widget.deck.id];
+                                              if (model.deck.userID ==
+                                                  userData.id) {
+                                                return;
                                               } else {
-                                                widget.deck.decrementRating();
-                                                List<String> temp = ref
-                                                    .read(
-                                                        RatingProvider.notifier)
-                                                    .state;
-                                                temp.remove(widget.deck.id);
-                                                ref
-                                                    .read(
-                                                        RatingProvider.notifier)
-                                                    .state = <String>[] + temp;
-                                                setState(() {});
+                                                if (!ratings
+                                                    .contains(model.deck.id)) {
+                                                  model.deck.incrementRating();
+                                                  ref
+                                                          .read(RatingProvider
+                                                              .notifier)
+                                                          .state =
+                                                      ratings +
+                                                          [widget.deck.id];
+                                                } else {
+                                                  widget.deck.decrementRating();
+                                                  List<String> temp = ref
+                                                      .read(RatingProvider
+                                                          .notifier)
+                                                      .state;
+                                                  temp.remove(widget.deck.id);
+                                                  ref
+                                                          .read(RatingProvider
+                                                              .notifier)
+                                                          .state =
+                                                      <String>[] + temp;
+                                                  setState(() {});
+                                                }
                                               }
                                             },
                                             child: Row(
                                               children: [
-                                                Container(
-                                                    decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                          image: AssetImage(
-                                                              "Images/icons/star-${(ratings.contains(model.deck.deckID)) ? "fill" : "line"}.png"),
-                                                          fit: BoxFit.cover),
-                                                    ),
-                                                    width: 23,
-                                                    height: 23,
-                                                    child: const Text("")),
+                                                SizedBox(
+                                                    width: (ratings.contains(
+                                                                model
+                                                                    .deck.id) ||
+                                                            model.deck.userID !=
+                                                                userData.id)
+                                                        ? 28
+                                                        : 26,
+                                                    height: (ratings.contains(
+                                                                model
+                                                                    .deck.id) ||
+                                                            model.deck.userID !=
+                                                                userData.id)
+                                                        ? 28
+                                                        : 26,
+                                                    child: SvgPicture.asset(
+                                                      "Images/icons/svg/like-${(ratings.contains(model.deck.id) || model.deck.userID == userData.id) ? "fill" : "line"}.svg",
+                                                    )),
                                                 const SizedBox(
                                                   width: 10,
                                                 ),
@@ -442,6 +486,38 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                         if (widget.deck.userID == userData.id)
                                           Row(
                                             children: [
+                                              GestureDetector(
+                                                  onTap: () => Future(() =>
+                                                      Navigator.pushNamed(
+                                                          context,
+                                                          '/leaderboard',
+                                                          arguments: {
+                                                            "deck": widget.deck
+                                                          })),
+                                                  child: Container(
+                                                    width: 45,
+                                                    height: 45,
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      color: Color(0x0f1a0404),
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  12)),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Image.asset(
+                                                          "Images/icons/leaderboard.png",
+                                                          width: 40,
+                                                          height: 40),
+                                                    ),
+                                                  )),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
                                               GestureDetector(
                                                   child: Container(
                                                 width: 45,
@@ -496,7 +572,6 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                               const SizedBox(
                                                 width: 10,
                                               ),
-                                              filter()
                                             ],
                                           )
                                       ],
