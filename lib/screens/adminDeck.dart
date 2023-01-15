@@ -21,29 +21,25 @@ import 'package:auto_size_text/auto_size_text.dart';
 
 main() => runApp(MaterialApp(home: Admin()));
 
-class Admin extends StatelessWidget {
+class Admin extends StatefulWidget {
   Admin({key});
-  // TODO: REMOVE the profile model with the UserModel
 
+  @override
+  State<Admin> createState() => _AdminState();
+}
+
+class _AdminState extends State<Admin> {
+  // TODO: REMOVE the profile model with the UserModel
   AdminModel model = AdminModel();
 
   // TODO: ADD the leaderboard model here
   DeckModel deckModel = DeckModel();
+
   CardGenerator cardgenerator = CardGenerator();
+
   late String profileBanner;
 
   // _responsive(BuildContext context) {
-  //   if (MediaQuery.of(context).size.width < 299) {
-  //     return {"height": 113.67, "width": 118.67, "fontSize": 16};
-  //   } else if (MediaQuery.of(context).size.width < 340) {
-  //     return {"height": 128.67, "width": 133.67, "fontSize": 20};
-  //   } else if (MediaQuery.of(context).size.width < 358) {
-  //     return {"height": 148.67, "width": 153.67, "fontSize": 20};
-  //   } else {
-  //     return {"height": 158.67, "width": 163.67, "fontSize": 20};
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     final deckData = model.deckDataList();
@@ -240,7 +236,10 @@ class Admin extends StatelessWidget {
                                       path:
                                           "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
                                       min: 2,
-                                      onTap: () {},
+                                      onTap: () async {
+                                        // model.deleteDeck(
+                                        //     snapshot.data![i]["id"]);
+                                      },
                                     ),
                                     if (i + 1 < snapshot.data!.length)
                                       AdminDeck(
@@ -253,9 +252,6 @@ class Admin extends StatelessWidget {
                                         onTap: () {},
                                       ),
                                   ],
-                                  // SizedBox(
-                                  //   width: 15,
-                                  // )
                                 ),
                               ),
                           ],
@@ -263,6 +259,7 @@ class Admin extends StatelessWidget {
                       ),
                     );
                   }
+                  if (snapshot.hasError) return Text("${snapshot.error}");
                   return Center(child: CircularProgressIndicator());
                 }),
           ],

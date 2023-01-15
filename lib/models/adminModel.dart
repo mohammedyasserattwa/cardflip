@@ -14,6 +14,7 @@ class AdminModel {
   final UserModel userModel = UserModel();
   final _userCollection = FirebaseFirestore.instance.collection("user");
   final _deckCollection = FirebaseFirestore.instance.collection("deck");
+  final _reportCollection = FirebaseFirestore.instance.collection("reports");
 
   Future<List> userDataList() async {
     QuerySnapshot querySnapshot = await _userCollection
@@ -48,6 +49,20 @@ class AdminModel {
           "id": doc.id,
         }, user);
     }).toList();
+    return data;
+  }
+
+  Future<List> reportDataList() async {
+    QuerySnapshot querySnapshot = await _reportCollection.get();
+    final data = querySnapshot.docs
+        .map((doc) => {
+              "date": doc.get("date"),
+              "deckID": doc.get("deckID"),
+              "userID": doc.get("userID"),
+              "reporterID": doc.get("reporterID"),
+              "id": doc.id,
+            })
+        .toList();
     return data;
   }
 

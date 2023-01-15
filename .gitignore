@@ -52,3 +52,4 @@ android/app/upload-keystore.jks
 #database
 /lib/firebase_options.dart
 pubspec.lock
+pubspec.lock

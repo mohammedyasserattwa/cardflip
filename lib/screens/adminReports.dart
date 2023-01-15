@@ -42,6 +42,7 @@ class AdminReports extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final reportsData = model.reportDataList();
     final height = 128.67;
     final width = 133.67;
     return Scaffold(
@@ -167,92 +168,99 @@ class AdminReports extends StatelessWidget {
                 ],
               ),
             ),
-            Expanded(
-              child: NoGlowScroll(
-                child: ListView(
-                  children: [
-                    for (var i = 0; i < 10; i++)
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            FutureBuilder(
+                future: reportsData
+                // reportsData.then((value) {
+                //   List<Map> reportedDecks = [];
+                //   for (int i = 0; i < value.length; i++) {
+                //     //TODO:getDeckbyID here
+                //     reportedDecks.add(value[i]);
+                //   }
+                // })
+                ,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Expanded(
+                      child: NoGlowScroll(
+                        child: ListView(
                           children: [
-                            Container(
-                              alignment: Alignment.centerRight,
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image:
-                                            AssetImage("Images/avatars/14.png"),
-                                        fit: BoxFit.cover),
-                                  ),
-                                  width: 60,
-                                  height: 60,
-                                  child: Text("")),
-                            ),
-                            const SizedBox(width: 5),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Shehab ElDin Mohsen",
-                                  style: TextStyle(
-                                    fontFamily: "PolySans_Slim",
-                                    color: Color(0xf0493C3F),
-                                    fontSize: 20,
-                                  ),
-                                ),
-                                Row(
+                            for (var i = 0; i < snapshot.data!.length; i++)
+                              Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 20, 0, 0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Text(
-                                      "@shehabemohsen",
-                                      style: TextStyle(
-                                        fontFamily: "PolySans_Slim",
-                                        color: Color(0xf0493C3F),
-                                        fontSize: 13,
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          60, 0, 0, 0),
-                                      child: Container(
-                                        alignment: Alignment.centerRight,
-                                        child: Container(
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                  image: AssetImage(
-                                                      "Images/avatars/8.png"),
-                                                  fit: BoxFit.cover),
+                                    const SizedBox(width: 5),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "${snapshot.data![i]["deckID"]}",
+                                          style: TextStyle(
+                                            fontFamily: "PolySans_Slim",
+                                            color: Color(0xf0493C3F),
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "@shehabemohsen",
+                                              style: TextStyle(
+                                                fontFamily: "PolySans_Slim",
+                                                color: Color(0xf0493C3F),
+                                                fontSize: 13,
+                                              ),
                                             ),
-                                            width: 30,
-                                            height: 30,
-                                            child: Text("")),
-                                      ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      60, 0, 0, 0),
+                                              child: Container(
+                                                alignment:
+                                                    Alignment.centerRight,
+                                                child: Container(
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                          image: AssetImage(
+                                                              "Images/avatars/8.png"),
+                                                          fit: BoxFit.cover),
+                                                    ),
+                                                    width: 30,
+                                                    height: 30,
+                                                    child: Text("")),
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {},
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: AssetImage(
+                                                    "Images/icons/arrow-right-s-line.png"),
+                                                fit: BoxFit.cover),
+                                          ),
+                                          width: 35,
+                                          height: 35,
+                                          child: Text("")),
                                     ),
                                   ],
-                                )
-                              ],
-                            ),
-                            GestureDetector(
-                              onTap: () {},
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            "Images/icons/arrow-right-s-line.png"),
-                                        fit: BoxFit.cover),
-                                  ),
-                                  width: 35,
-                                  height: 35,
-                                  child: Text("")),
-                            ),
+                                ),
+                              ),
                           ],
                         ),
                       ),
-                  ],
-                ),
-              ),
-            ),
+                    );
+                  }
+                  return Center(child: CircularProgressIndicator());
+                }),
           ],
         ),
       ),
