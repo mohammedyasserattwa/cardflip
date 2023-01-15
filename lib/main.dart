@@ -80,7 +80,10 @@ class _MainState extends State<Main> {
           '/settings': (context) => const Settings(),
           '/addFlashcards': (context) => AddFlashcards(deck: data!["deck"]),
           '/editprofile': (context) => const EditProfile(),
-          // '/adddeck': (context) => const Adddeck(),
+          '/adddeck': (context) => const Adddeck(screens: '',),
+          '/adminUsers': (context) => AdminUsers(),
+          '/adminReports': (context) => AdminReports(),
+          '/adminDeck': (context) => Admin(),
         };
         WidgetBuilder builder = routes[settings.name]!;
         return MaterialPageRoute(builder: (context) => builder(context));

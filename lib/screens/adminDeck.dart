@@ -223,7 +223,7 @@ class Admin extends StatelessWidget {
                       child: NoGlowScroll(
                         child: ListView(
                           children: [
-                            for (var i = 0; i < snapshot.data!.length; i += 2)
+                            for (int i = 0; i < snapshot.data!.length; i += 2)
                               Padding(
                                 padding: EdgeInsets.symmetric(
                                     vertical: 8.0, horizontal: 30),
@@ -236,7 +236,7 @@ class Admin extends StatelessWidget {
                                     AdminDeck(
                                       width: 139,
                                       height: 116.67,
-                                      deckName: snapshot.data![i]["name"],
+                                      deck: snapshot.data![i],
                                       path:
                                           "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
                                       min: 2,
@@ -246,7 +246,7 @@ class Admin extends StatelessWidget {
                                       AdminDeck(
                                         width: 139,
                                         height: 116.67,
-                                        deckName: snapshot.data![i + 1]["name"],
+                                        deck: snapshot.data![i+1],
                                         path:
                                             "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
                                         min: 2,

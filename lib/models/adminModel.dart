@@ -1,3 +1,5 @@
+import 'package:cardflip/data/deck.dart';
+import 'package:cardflip/models/userModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../data/dummy_data.dart';
@@ -9,7 +11,7 @@ class AdminModel {
   List<String> reports = [];
   List<String> decks = [];
   List<String> users = [];
-
+  final UserModel userModel = UserModel();
   final _userCollection = FirebaseFirestore.instance.collection("user");
   final _deckCollection = FirebaseFirestore.instance.collection("deck");
 
@@ -33,17 +35,19 @@ class AdminModel {
     return data;
   }
 
-  Future<List> deckDataList() async {
+  Future<List<Future<Deck>>> deckDataList() async {
     QuerySnapshot querySnapshot = await _deckCollection.get();
-    final data = querySnapshot.docs
-        .map((doc) => {
-              "name": doc.get("name"),
-              "rating": doc.get("rating"),
-              "userID": doc.get("userID"),
-              "description": doc.get("description"),
-              "id": doc.id,
-            })
-        .toList();
+
+    final data = querySnapshot.docs.map((doc) async {
+      final user = await userModel.userByID(doc.get("userID"));
+        return Deck.fromMap({
+          "name": doc.get("name"),
+          "rating": doc.get("rating"),
+          "userID": doc.get("userID"),
+          "description": doc.get("description"),
+          "id": doc.id,
+        }, user);
+    }).toList();
     return data;
   }
 

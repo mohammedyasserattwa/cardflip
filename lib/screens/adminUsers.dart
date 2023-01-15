@@ -108,7 +108,7 @@ class _AdminUsersState extends State<AdminUsers> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, "/admin");
+                      Navigator.pushNamed(context, "/adminDeck");
                     },
                     child: Text(
                       "Decks",

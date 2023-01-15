@@ -110,7 +110,7 @@ class AdminReports extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, "/admin");
+                      Navigator.pushNamed(context, "/adminDeck");
                     },
                     child: Text(
                       "Decks",

@@ -52,16 +52,16 @@ class _LoginState extends ConsumerState<Login> {
         );
         DeckModel deckModel = DeckModel();
         userModel.userData.then((user) {
-          deckModel.getUserPreference(user.get("tags")).then((value) {
-            ref.read(UserDataProvider.notifier).state =
-                user_data.User.fromSnapshot(user, _emailController.text,
-                    _passwordController.text, userModel.id, value);
-            if (user.get("role") == 'learner') {
-            Navigator.pushReplacementNamed(context, '/home');
-          } else if (user.get("role") == 'admin') {
-            Navigator.pushReplacementNamed(context, '/admin');
+          if (user.get("role") == 'admin') {
+            Navigator.pushReplacementNamed(context, '/adminDeck');
+          } else if (user.get("role") == 'learner') {
+            deckModel.getUserPreference(user.get("tags")).then((value) {
+              ref.read(UserDataProvider.notifier).state =
+                  user_data.User.fromSnapshot(user, _emailController.text,
+                      _passwordController.text, userModel.id, value);
+              Navigator.pushReplacementNamed(context, '/home');
+            });
           }
-          });
         });
       } on FirebaseAuthException catch (e) {
         if (e.code == "user-not-found") {

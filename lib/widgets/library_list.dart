@@ -31,6 +31,8 @@ class LibraryList {
     }
   }
 
+  late Widget _state;
+
   Widget build({String state = "all"}) {
     int counter = 0;
     List<Map<String, Widget>> renderList = [];
@@ -39,10 +41,10 @@ class LibraryList {
         final height = _responsive(context)["height"];
         final width = _responsive(context)["width"];
         final userModel = UserModel();
-        final userID = userModel.id;
+        final user = ref.watch(UserDataProvider);
         final favourites = ref.watch(FavouritesProvider);
-        final userPersonalDecks = deckModel.deckByUserID(userID);
-        deckList = userPersonalDecks;
+        final userPersonalDecks = deckModel.deckByUserID(user!.id);
+        deckList = [];
         if (state == "all") {
           for (int i = 0; i < favourites.length; i++) {
             deckList.add(deckModel.deckByID(favourites[i]));
@@ -57,149 +59,84 @@ class LibraryList {
         if (filter) deckModel.filter(deckList);
         EdgeInsets kpaddingCards =
             const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15);
+        _state = Expanded(child: FutureBuilder(
+          
+          builder: (context, snapshot) {
+          return (deckList.isEmpty)
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(
+                      Icons.not_interested,
+                      color: Colors.grey,
+                      size: 40,
+                    ),
+                    Text(
+                      "Your library is empty, you can create a new deck or like a deck created by others!",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: "PolySans_Median",
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey,
+                        fontSize: 20,
+                      ),
+                    )
+                  ],
+                )
+              : NoGlowScroll(
+                  child: ListView(
+                  children: [
+                    for (int i = 0; i < deckList.length; i += 2)
+                      Padding(
+                        padding: kpaddingCards,
+                        child: Row(
+                          mainAxisAlignment: (i + 1 < deckList.length)
+                              ? MainAxisAlignment.spaceBetween
+                              : MainAxisAlignment.start,
+                          children: [
+                            deck_widget.Deck(
+                                id: deckList[i].id,
+                                width: width,
+                                height: height,
+                                min: 3,
+                                onTap: () {
+                                  Navigator.pushNamed(context, "/deck",
+                                      arguments: {
+                                        "deckID": deckList[i].id,
+                                      });
+                                },
+                                path:
+                                    "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
+                            if (i + 1 < deckList.length)
+                              deck_widget.Deck(
+                                  id: deckList[i + 1].id,
+                                  width: width,
+                                  height: height,
+                                  min: 3,
+                                  onTap: () {
+                                    Navigator.pushNamed(context, "/deck",
+                                        arguments: {
+                                          "deckID": deckList[i + 1].id,
+                                        });
+                                  },
+                                  path:
+                                      "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
+                          ],
+                        ),
+                      ),
+                  ],
+                ));
+        }));
+
         if (counter++ == 0) {
           renderList.add({
-            state: Expanded(
-                child: (deckList.isEmpty)
-                    ? Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(
-                            Icons.not_interested,
-                            color: Colors.grey,
-                            size: 40,
-                          ),
-                          Text(
-                            "Your library is empty, you can create a new deck or like a deck created by others!",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: "PolySans_Median",
-                              fontWeight: FontWeight.w500,
-                              color: Colors.grey,
-                              fontSize: 20,
-                            ),
-                          )
-                        ],
-                      )
-                    : NoGlowScroll(
-                        child: ListView(
-                        children: [
-                          for (int i = 0; i < deckList.length; i += 2)
-                            Padding(
-                              padding: kpaddingCards,
-                              child: Row(
-                                mainAxisAlignment: (i + 1 < deckList.length)
-                                    ? MainAxisAlignment.spaceBetween
-                                    : MainAxisAlignment.start,
-                                children: [
-                                  deck_widget.Deck(
-                                      id: deckList[i].id,
-                                      width: width,
-                                      height: height,
-                                      min: 3,
-                                      onTap: () {
-                                        Navigator.pushNamed(context, "/deck",
-                                            arguments: {
-                                              "deckID": deckList[i].id,
-                                            });
-                                      },
-                                      path:
-                                          "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                                  if (i + 1 < deckList.length)
-                                    deck_widget.Deck(
-                                        id: deckList[i + 1].id,
-                                        width: width,
-                                        height: height,
-                                        min: 3,
-                                        onTap: () {
-                                          Navigator.pushNamed(context, "/deck",
-                                              arguments: {
-                                                "deckID": deckList[i + 1].id,
-                                              });
-                                        },
-                                        path:
-                                            "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                                ],
-                              ),
-                            ),
-                        ],
-                      )))
+            state: _state,
           });
-          return Expanded(
-              child: (deckList.isEmpty)
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(
-                          Icons.not_interested,
-                          color: Colors.grey,
-                          size: 40,
-                        ),
-                        Text(
-                          "Your library is empty, you can create a new deck or like a deck created by others!",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontFamily: "PolySans_Median",
-                            fontWeight: FontWeight.w500,
-                            color: Colors.grey,
-                            fontSize: 20,
-                          ),
-                        )
-                      ],
-                    )
-                  : NoGlowScroll(
-                      child: ListView(
-                      children: [
-                        for (int i = 0; i < deckList.length; i += 2)
-                          Padding(
-                            padding: kpaddingCards,
-                            child: Row(
-                              mainAxisAlignment: (i + 1 < deckList.length)
-                                  ? MainAxisAlignment.spaceBetween
-                                  : MainAxisAlignment.start,
-                              children: [
-                                deck_widget.Deck(
-                                    id: deckList[i].id,
-                                    width: width,
-                                    height: height,
-                                    min: 3,
-                                    onTap: () {
-                                      Navigator.pushNamed(context, "/deck",
-                                          arguments: {
-                                            "deckID": deckList[i].id,
-                                          });
-                                    },
-                                    path:
-                                        "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                                if (i + 1 < deckList.length)
-                                  deck_widget.Deck(
-                                      id: deckList[i + 1].id,
-                                      width: width,
-                                      height: height,
-                                      min: 3,
-                                      onTap: () {
-                                        Navigator.pushNamed(context, "/deck",
-                                            arguments: {
-                                              "deckID": deckList[i + 1].id,
-                                            });
-                                      },
-                                      path:
-                                          "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                              ],
-                            ),
-                          ),
-                      ],
-                    )));
+          return _state;
         } else {
           return renderList[0][state]!;
         }
       },
     );
   }
-
-  // static Widget build({String state = "all"}) {
-  //   LibraryList.state = state;
-  //   print(deckList);
-  //   return consumerWidget(state);
-  // }
 }
