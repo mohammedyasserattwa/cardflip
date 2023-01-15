@@ -212,17 +212,19 @@ class _FlashcardState extends ConsumerState<Flashcard>
                         height: 60,
                       ),
                       CardWidget.celebrationCard(
-                          startOver: () {
-                            setState(() {
-                              currentList = model.getCards;
-                              _currentCard = model.getCards.length;
-                              _beginAnimation =
-                                  MediaQuery.of(context).size.width * 2;
-                              _endAnimation = 0;
-                            });
-                          },
-                          updateParent: () {},
-                          image: model.getImages[2]),
+                        startOver: () {
+                          setState(() {
+                            currentList = model.getCards;
+                            _currentCard = model.getCards.length;
+                            _beginAnimation =
+                                MediaQuery.of(context).size.width * 2;
+                            _endAnimation = 0;
+                          });
+                        },
+                        updateParent: () {},
+                        image: model.getImages[2],
+                        deckID: widget.deck.id,
+                      ),
                     ],
                   ),
                   for (int i = 0; i < _currentCard; i++)
@@ -299,7 +301,7 @@ class _FlashcardState extends ConsumerState<Flashcard>
                                     UncompletedDeckItem item =
                                         UncompletedDeckItem(
                                             uid: userData!.id,
-                                            deckID: widget.deck.id);   
+                                            deckID: widget.deck.id);
                                     int deckIndex = uncompleteDecks.indexOf(
                                         uncompleteDecks
                                             .where((e) =>

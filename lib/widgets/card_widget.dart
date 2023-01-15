@@ -1,7 +1,11 @@
+import 'dart:convert';
+
+import 'package:cardflip/models/deckModel.dart';
 import 'package:flip_card/flip_card.dart';
 import "package:flutter/material.dart";
 import 'package:cardflip/data/card.dart' as CardHandler;
 import 'package:go_router/go_router.dart';
+import 'dart:developer' as developer;
 
 class CardWidget extends StatefulWidget {
   CardWidget({
@@ -16,6 +20,7 @@ class CardWidget extends StatefulWidget {
     this.height = 511.97,
     required this.updateParent,
     this.star = Icons.star_border,
+    this.deckID = "",
   }) : super(key: key);
   CardWidget.emptyCard({
     super.key,
@@ -29,6 +34,7 @@ class CardWidget extends StatefulWidget {
     this.height = 511.97,
     required this.updateParent,
     this.star = Icons.star_border,
+    this.deckID = "",
   });
   CardWidget.celebrationCard({
     super.key,
@@ -43,7 +49,10 @@ class CardWidget extends StatefulWidget {
     required this.updateParent,
     this.star = Icons.star_border,
     required this.startOver,
+    required this.deckID,
   });
+  String deckID = "";
+  DeckModel deck = DeckModel();
   final String image;
   // final String term;
   // final String definition;
@@ -280,8 +289,10 @@ class _CardWidgetState extends State<CardWidget> {
                 // todo: change to right test page
                 onTap: () {
                   Navigator.pop(context);
-                  Future(() => Navigator.pushNamed(context, '/test',
-                      arguments: {"deckID": "1"}));
+                  Future(() async => Navigator.pushNamed(context, '/test',
+                          arguments: {
+                            "deck": await widget.deck.getdeckByID(widget.deckID)
+                          }));
                 },
                 child: Container(
                   decoration: const BoxDecoration(
