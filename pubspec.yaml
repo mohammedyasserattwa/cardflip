@@ -93,6 +93,8 @@ flutter:
     - Images/icons/svg/heart_filled.svg
     - Images/icons/svg/heart_outline.svg
     - Images/icons/svg/more-fill.svg
+    - Images/icons/svg/like-line.svg
+    - Images/icons/svg/like-fill.svg
     - Images/icons/svg/settings.svg
     - Images/icons/svg/add.svg
     - Images/icons/svg/edit.svg

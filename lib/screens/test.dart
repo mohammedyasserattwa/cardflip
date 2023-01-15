@@ -87,48 +87,49 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
   void initState() {
     model = TestModel(deck: widget.deck);
     viable = model.viable;
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (viable == false) {
+    if (viable == false) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
         Navigator.pop(context, true);
-      } else {
-        testCards = model.getTestCards;
-        testCards.forEach((d, t) => testCardsList.add([d, t[0], t[1], t[2]]));
+      });
+    } else {
+      testCards = model.getTestCards;
+      testCards.forEach((d, t) => testCardsList.add([d, t[0], t[1], t[2]]));
 
-        testCardsList.shuffle();
+      testCardsList.shuffle();
 
-        testCardsList.forEach((element) {
-          definitions.add(element[0]);
+      testCardsList.forEach((element) {
+        definitions.add(element[0]);
+      });
+
+      testCardsList.forEach((element) {
+        terms.add([element[1], element[2], element[3]]);
+      });
+
+      random.shuffle();
+      randomlist = randomize(definitions.length);
+      start = List.filled(definitions.length, 0.0);
+      end = List.filled(definitions.length, 0.0);
+      isActive = List.filled(definitions.length, false);
+      isActive[0] = true;
+      stopwatch = stopWatch();
+      jiggle = List.filled(definitions.length, List.filled(3, null));
+      stopwatchsubscrip = stopwatch!.listen((int tick) {
+        setState(() {
+          min = ((tick / 60) % 60).floor().toString();
+          sec = (tick % 60).floor().toString().padLeft(2, '0');
         });
+      });
 
-        testCardsList.forEach((element) {
-          terms.add([element[1], element[2], element[3]]);
-        });
-
-        random.shuffle();
-        randomlist = randomize(definitions.length);
-        start = List.filled(definitions.length, 0.0);
-        end = List.filled(definitions.length, 0.0);
-        isActive = List.filled(definitions.length, false);
-        isActive[0] = true;
-        stopwatch = stopWatch();
-        jiggle = List.filled(definitions.length, List.filled(3, null));
-        stopwatchsubscrip = stopwatch!.listen((int tick) {
-          setState(() {
-            min = ((tick / 60) % 60).floor().toString();
-            sec = (tick % 60).floor().toString().padLeft(2, '0');
-          });
-        });
-
-        status = BoxDecoration(
-          border: Border.all(
-            color: Color.fromARGB(71, 36, 0, 0),
-            width: 2,
-          ),
-          borderRadius: BorderRadius.circular(16),
-          color: Color(0x40fff4f4),
-        );
-      }
-    });
+      status = BoxDecoration(
+        border: Border.all(
+          color: Color.fromARGB(71, 36, 0, 0),
+          width: 2,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        color: Color(0x40fff4f4),
+      );
+    }
+    ;
     super.initState();
   }
 
@@ -208,7 +209,7 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                   });
                   jiggle =
                       List.filled(definitions.length, List.filled(3, null));
-                  Navigator.pop(context);
+                  Navigator.pop(context, false);
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(top: 40),
