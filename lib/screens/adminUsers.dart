@@ -264,8 +264,6 @@ class _AdminUsersState extends State<AdminUsers> {
                                           children: [
                                             GestureDetector(
                                               onTap: () async {
-                                                model.banUser(
-                                                    snapshot.data![i]["id"]);
                                                 if (await InternetConnectionChecker()
                                                     .hasConnection) {
                                                   if (snapshot.data![i]
@@ -299,7 +297,7 @@ class _AdminUsersState extends State<AdminUsers> {
                                                                 SizedBox(
                                                                     height: 10),
                                                                 Text(
-                                                                  "Action Blocked!",
+                                                                  "Confirm Unbanning!",
                                                                   style:
                                                                       TextStyle(
                                                                     fontFamily:
@@ -315,7 +313,7 @@ class _AdminUsersState extends State<AdminUsers> {
                                                                   ),
                                                                 ),
                                                                 Text(
-                                                                  "User Already Banned",
+                                                                  "Are you sure you want to unban this user?",
                                                                   style:
                                                                       TextStyle(
                                                                     fontFamily:
@@ -327,7 +325,7 @@ class _AdminUsersState extends State<AdminUsers> {
                                                                             0,
                                                                             0),
                                                                     fontSize:
-                                                                        20,
+                                                                        15,
                                                                   ),
                                                                 ),
                                                                 Row(
@@ -338,15 +336,75 @@ class _AdminUsersState extends State<AdminUsers> {
                                                                       CrossAxisAlignment
                                                                           .end,
                                                                   children: [
-                                                                    TextButton(
-                                                                      child: Text(
-                                                                          "Close"),
-                                                                      onPressed:
-                                                                          () {
-                                                                        Navigator.of(context)
-                                                                            .pop();
-                                                                      },
-                                                                    ),
+                                                                    ButtonBar(
+                                                                        children: [
+                                                                          TextButton(
+                                                                            child:
+                                                                                Text("Cancel"),
+                                                                            onPressed:
+                                                                                () {
+                                                                              Navigator.of(context).pop();
+                                                                            },
+                                                                          ),
+                                                                          TextButton(
+                                                                            child:
+                                                                                Text("Yes"),
+                                                                            onPressed:
+                                                                                () {
+                                                                              model.unbanUser(snapshot.data![i]["id"]);
+                                                                              Navigator.of(context).pop();
+                                                                              showDialog(
+                                                                                context: context,
+                                                                                builder: (BuildContext context) {
+                                                                                  return Center(
+                                                                                    child: Container(
+                                                                                      width: 300,
+                                                                                      height: 200,
+                                                                                      decoration: BoxDecoration(
+                                                                                        borderRadius: BorderRadius.circular(10),
+                                                                                        image: DecorationImage(image: AssetImage("Images/backgrounds/homepage.png"), fit: BoxFit.cover),
+                                                                                      ),
+                                                                                      child: Column(
+                                                                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                                        children: [
+                                                                                          SizedBox(height: 10),
+                                                                                          Text(
+                                                                                            "Banned!",
+                                                                                            style: TextStyle(
+                                                                                              fontFamily: "PolySans_Median",
+                                                                                              color: Color.fromARGB(239, 105, 0, 0),
+                                                                                              fontSize: 20,
+                                                                                            ),
+                                                                                          ),
+                                                                                          Text(
+                                                                                            "User Banned Successfully",
+                                                                                            style: TextStyle(
+                                                                                              fontFamily: "PolySans_Slim",
+                                                                                              color: Color.fromARGB(239, 105, 0, 0),
+                                                                                              fontSize: 20,
+                                                                                            ),
+                                                                                          ),
+                                                                                          Row(
+                                                                                            mainAxisAlignment: MainAxisAlignment.end,
+                                                                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                                                                            children: [
+                                                                                              TextButton(
+                                                                                                child: Text("Close"),
+                                                                                                onPressed: () {
+                                                                                                  Navigator.of(context).pop();
+                                                                                                },
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                        ],
+                                                                                      ),
+                                                                                    ),
+                                                                                  );
+                                                                                },
+                                                                              );
+                                                                            },
+                                                                          ),
+                                                                        ]),
                                                                   ],
                                                                 ),
                                                               ],
@@ -357,89 +415,145 @@ class _AdminUsersState extends State<AdminUsers> {
                                                     );
                                                   } else {
                                                     showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return Center(
-                                                          child: Container(
-                                                            width: 300,
-                                                            height: 200,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return Center(
+                                                            child: Container(
+                                                              width: 300,
+                                                              height: 200,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                                image: DecorationImage(
+                                                                    image: AssetImage(
+                                                                        "Images/backgrounds/homepage.png"),
+                                                                    fit: BoxFit
+                                                                        .cover),
+                                                              ),
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceAround,
+                                                                children: [
+                                                                  SizedBox(
+                                                                      height:
                                                                           10),
-                                                              image: DecorationImage(
-                                                                  image: AssetImage(
-                                                                      "Images/backgrounds/homepage.png"),
-                                                                  fit: BoxFit
-                                                                      .cover),
-                                                            ),
-                                                            child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceAround,
-                                                              children: [
-                                                                SizedBox(
-                                                                    height: 10),
-                                                                Text(
-                                                                  "Banned!",
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontFamily:
-                                                                        "PolySans_Median",
-                                                                    color: Color
-                                                                        .fromARGB(
-                                                                            239,
-                                                                            105,
-                                                                            0,
-                                                                            0),
-                                                                    fontSize:
-                                                                        20,
-                                                                  ),
-                                                                ),
-                                                                Text(
-                                                                  "User Banned Successfully",
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontFamily:
-                                                                        "PolySans_Slim",
-                                                                    color: Color
-                                                                        .fromARGB(
-                                                                            239,
-                                                                            105,
-                                                                            0,
-                                                                            0),
-                                                                    fontSize:
-                                                                        20,
-                                                                  ),
-                                                                ),
-                                                                Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .end,
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .end,
-                                                                  children: [
-                                                                    TextButton(
-                                                                      child: Text(
-                                                                          "Close"),
-                                                                      onPressed:
-                                                                          () {
-                                                                        Navigator.of(context)
-                                                                            .pop();
-                                                                      },
+                                                                  Text(
+                                                                    "Confirm Banning!",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontFamily:
+                                                                          "PolySans_Median",
+                                                                      color: Color
+                                                                          .fromARGB(
+                                                                              239,
+                                                                              105,
+                                                                              0,
+                                                                              0),
+                                                                      fontSize:
+                                                                          20,
                                                                     ),
-                                                                  ],
-                                                                ),
-                                                              ],
+                                                                  ),
+                                                                  Text(
+                                                                    "Are you sure you want to ban this user?",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontFamily:
+                                                                          "PolySans_Slim",
+                                                                      color: Color
+                                                                          .fromARGB(
+                                                                              239,
+                                                                              105,
+                                                                              0,
+                                                                              0),
+                                                                      fontSize:
+                                                                          15,
+                                                                    ),
+                                                                  ),
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .end,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .end,
+                                                                    children: [
+                                                                      ButtonBar(
+                                                                          children: [
+                                                                            TextButton(
+                                                                              child: Text("Cancel"),
+                                                                              onPressed: () {
+                                                                                Navigator.of(context).pop();
+                                                                              },
+                                                                            ),
+                                                                            TextButton(
+                                                                              child: Text("Yes"),
+                                                                              onPressed: () {
+                                                                                model.banUser(snapshot.data![i]["id"]);
+                                                                                Navigator.of(context).pop();
+                                                                                showDialog(
+                                                                                  context: context,
+                                                                                  builder: (BuildContext context) {
+                                                                                    return Center(
+                                                                                      child: Container(
+                                                                                        width: 300,
+                                                                                        height: 200,
+                                                                                        decoration: BoxDecoration(
+                                                                                          borderRadius: BorderRadius.circular(10),
+                                                                                          image: DecorationImage(image: AssetImage("Images/backgrounds/homepage.png"), fit: BoxFit.cover),
+                                                                                        ),
+                                                                                        child: Column(
+                                                                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                                          children: [
+                                                                                            SizedBox(height: 10),
+                                                                                            Text(
+                                                                                              "Banned!",
+                                                                                              style: TextStyle(
+                                                                                                fontFamily: "PolySans_Median",
+                                                                                                color: Color.fromARGB(239, 105, 0, 0),
+                                                                                                fontSize: 20,
+                                                                                              ),
+                                                                                            ),
+                                                                                            Text(
+                                                                                              "User Banned Successfully",
+                                                                                              style: TextStyle(
+                                                                                                fontFamily: "PolySans_Slim",
+                                                                                                color: Color.fromARGB(239, 105, 0, 0),
+                                                                                                fontSize: 20,
+                                                                                              ),
+                                                                                            ),
+                                                                                            Row(
+                                                                                              mainAxisAlignment: MainAxisAlignment.end,
+                                                                                              crossAxisAlignment: CrossAxisAlignment.end,
+                                                                                              children: [
+                                                                                                TextButton(
+                                                                                                  child: Text("Close"),
+                                                                                                  onPressed: () {
+                                                                                                    Navigator.of(context).pop();
+                                                                                                  },
+                                                                                                ),
+                                                                                              ],
+                                                                                            ),
+                                                                                          ],
+                                                                                        ),
+                                                                                      ),
+                                                                                    );
+                                                                                  },
+                                                                                );
+                                                                              },
+                                                                            ),
+                                                                          ]),
+                                                                    ],
+                                                                  ),
+                                                                ],
+                                                              ),
                                                             ),
-                                                          ),
-                                                        );
-                                                      },
-                                                    );
+                                                          );
+                                                        });
                                                   }
                                                 } else {
                                                   showDialog(
@@ -531,8 +645,13 @@ class _AdminUsersState extends State<AdminUsers> {
                                               child: Container(
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(
-                                                        image: AssetImage(
-                                                            "Images/icons/ban.png"),
+                                                        image: AssetImage(snapshot
+                                                                        .data![i]
+                                                                    [
+                                                                    "banned"] ==
+                                                                false
+                                                            ? "Images/icons/ban.png"
+                                                            : "Images/icons/unban.png"),
                                                         fit: BoxFit.cover),
                                                   ),
                                                   width: 35,
