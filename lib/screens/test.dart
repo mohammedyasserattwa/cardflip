@@ -10,6 +10,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../widgets/card_widget.dart';
 import 'dart:developer' as developer;
 import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:date_time_format/date_time_format.dart';
+import 'dart:core';
 
 class Test extends StatefulWidget {
   Deck deck;
@@ -42,6 +44,10 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
   var testCardsList = [];
   late List<bool> isActive = [];
   late bool viable;
+  bool missed = false;
+  List missedCards = [];
+  Map wrongCards = {};
+  var timeTaken;
   String background = "Images/backgrounds/testpage.png";
   // String background = "Images/backgrounds/finaltest.png";
   // ugly all red or all pink
@@ -74,11 +80,20 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
       timer = Timer.periodic(duration, tick);
     }
 
+    void pauseTimer() {
+      if (timer != null) {
+        timeTaken = DateTimeFormat.relative(DateTime.now().subtract(
+            Duration(minutes: int.parse(min), seconds: int.parse(sec))));
+        // timer!.cancel();
+        // timer = null;
+      }
+    }
+
     controller = StreamController<int>(
       onListen: startTimer,
       onCancel: stopTimer,
       onResume: startTimer,
-      onPause: stopTimer,
+      onPause: pauseTimer,
     );
     return controller.stream;
   }
@@ -172,6 +187,7 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
     return status;
   }
 
+// ugly all red or all pink
   @override
   Future<void> setState(VoidCallback fn) async {
     if (i >= definitions.length)
@@ -209,48 +225,50 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                   });
                   jiggle =
                       List.filled(definitions.length, List.filled(3, null));
+                  missedCards.clear();
+                  wrongCards.clear();
+                  randomize(definitions.length);
                   Navigator.pop(context, false);
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(top: 40),
                   child: Container(
-                    child: Text(""),
                     width: 50,
                     height: 50,
                     decoration: const BoxDecoration(
                       image: DecorationImage(
                           image: AssetImage("Images/icons/close_button.png")),
                     ),
+                    child: const Text(""),
                   ),
                 ),
               ),
             ),
-            if (i < definitions.length)
-              Padding(
-                padding: const EdgeInsets.only(top: 38.0),
-                child: Column(
-                  children: [
-                    Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                            image: const DecorationImage(
-                          image: AssetImage("Images/icons/stopwatch.png"),
-                          fit: BoxFit.cover,
-                        ))),
-                    Text(
-                      "$min:$sec",
-                      style: const TextStyle(
-                        fontFamily: "PolySans_Median",
-                        color: Color(0xff551B1B),
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
+            Padding(
+              padding: const EdgeInsets.only(top: 38.0),
+              child: Column(
+                children: [
+                  Container(
+                      width: 30,
+                      height: 30,
+                      decoration: const BoxDecoration(
+                          image: DecorationImage(
+                        image: AssetImage("Images/icons/stopwatch.png"),
+                        fit: BoxFit.cover,
+                      ))),
+                  Text(
+                    "$min:$sec",
+                    style: const TextStyle(
+                      fontFamily: "PolySans_Median",
+                      color: Color(0xff551B1B),
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
                     ),
-                  ],
-                ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
+            ),
             Padding(
               padding:
                   const EdgeInsets.only(left: 20.0, right: 20.0, top: 40.0),
@@ -258,7 +276,7 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                 width: 55,
                 height: 55,
                 child: PopupMenuButton(
-                  color: Color.fromARGB(255, 244, 198, 198),
+                  color: const Color.fromARGB(255, 244, 198, 198),
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(
                       Radius.circular(8.0),
@@ -267,13 +285,21 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                   icon: SvgPicture.asset("Images/icons/svg/more-fill.svg"),
                   itemBuilder: (BuildContext context) => [
                     PopupMenuItem(
-                      onTap: () {},
+                      onTap: () {
+                        setState(() {
+                          missed = true;
+                          for (int m = i; m < definitions.length; m++) {
+                            missedCards.add(testCardsList[m][1]);
+                          }
+                          stopwatchsubscrip!.pause();
+                        });
+                      },
                       child: Wrap(
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: const [
                           Icon(Icons.exit_to_app_rounded),
                           SizedBox(width: 10),
-                          Text("Quit & Submit Test"), //todo
+                          Text("Quit & Submit Test"),
                         ],
                       ),
                     ),
@@ -294,7 +320,7 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
             )
           ],
         ),
-        SizedBox(
+        const SizedBox(
           height: 25,
         ),
         Stack(
@@ -302,7 +328,7 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
           children: [
             Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
                 CardWidget.emptyCard(
@@ -321,10 +347,10 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
             ),
             Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 100,
                 ),
-                (i < definitions.length)
+                (i < definitions.length && !missed)
                     ? Stack(
                         children: [
                           for (int j = definitions.length - 1; j >= 0; j--)
@@ -333,7 +359,6 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                                     Tween<double>(begin: start[j], end: end[j]),
                                 duration: animduration,
                                 builder: (context, pos, __) {
-                                  // random.shuffle();
                                   return Transform(
                                     transform: Matrix4.identity()
                                       ..translate(pos),
@@ -392,21 +417,16 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                                                         GestureDetector(
                                                           onTap: () {
                                                             if (isActive[j])
+                                                              // ignore: curly_braces_in_flow_control_structures
                                                               setState(() {
                                                                 isActive[j] =
                                                                     false;
                                                                 if (j + 1 <
                                                                     definitions
                                                                         .length)
+                                                                  // ignore: curly_braces_in_flow_control_structures
                                                                   isActive[j +
                                                                       1] = true;
-                                                                // developer.log('displayed ' +
-                                                                //     terms[j][random[
-                                                                //             k]]
-                                                                //         .toString() +
-                                                                //     '\ntest card list' +
-                                                                //     testCardsList[
-                                                                //             j][1]);
                                                                 jiggle = List.filled(
                                                                     definitions
                                                                         .length,
@@ -441,6 +461,13 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                                                                       else
                                                                         null
                                                                   ];
+                                                                  wrongCards[
+                                                                      testCardsList[
+                                                                              j]
+                                                                          [
+                                                                          1]] = terms[j]
+                                                                      [random[
+                                                                          k]];
                                                                 }
                                                                 Timer(
                                                                     Duration(
@@ -454,6 +481,15 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                                                                         500;
                                                                   i++;
                                                                 });
+                                                                if (j ==
+                                                                    definitions
+                                                                            .length -
+                                                                        1) {
+                                                                  end[j] = 500;
+                                                                  i++;
+                                                                  stopwatchsubscrip!
+                                                                      .pause();
+                                                                }
                                                               });
                                                           },
                                                           child: ShakeWidget(
@@ -524,7 +560,7 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                                                           ),
                                                         ),
                                                         if (k != 2)
-                                                          SizedBox(
+                                                          const SizedBox(
                                                             height: 20,
                                                           ),
                                                       ],
@@ -563,12 +599,12 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                               //     MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                SizedBox(
+                                const SizedBox(
                                   height: 50,
                                 ),
                                 Row(
                                   children: [
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 55,
                                     ),
                                     const Text(
@@ -586,7 +622,7 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                                   padding: const EdgeInsets.only(top: 5.0),
                                   child: Row(
                                     children: [
-                                      SizedBox(width: 85),
+                                      const SizedBox(width: 85),
                                       const Text(
                                         "You’re done with your test!",
                                         style: TextStyle(
@@ -598,7 +634,7 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                                     ],
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 30,
                                 ),
                                 Center(
@@ -800,15 +836,9 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                                                     jiggle = List.filled(
                                                         definitions.length,
                                                         List.filled(3, null));
-
-                                                    // Navigator
-                                                    //     .pushReplacementNamed(
-                                                    //         context, '/test',
-                                                    //         arguments: {
-                                                    //       "deckID": widget.id,
-                                                    //     });
                                                     Navigator.popAndPushNamed(
                                                         context, '/test',
+                                                        result: false,
                                                         arguments: {
                                                           "deck": widget.deck
                                                         });
