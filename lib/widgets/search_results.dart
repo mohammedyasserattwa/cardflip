@@ -1,3 +1,4 @@
+import 'package:cardflip/data/Repositories/search_provider.dart';
 import 'package:cardflip/data/deck.dart';
 import 'package:cardflip/main.dart';
 import 'package:cardflip/models/deckModel.dart';
@@ -7,19 +8,20 @@ import 'package:cardflip/widgets/people_search_screen.dart';
 import 'package:cardflip/widgets/search_deck_item.dart';
 import 'package:cardflip/widgets/tag_search_screen.dart';
 import "package:flutter/material.dart";
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 import 'package:recase/recase.dart';
 
-class SearchResult extends StatefulWidget {
+class SearchResult extends ConsumerStatefulWidget {
   String query;
   SearchResult({super.key, required this.query});
 
   @override
-  State<SearchResult> createState() => _SearchResultState();
+  ConsumerState<SearchResult> createState() => _SearchResultState();
 }
 
-class _SearchResultState extends State<SearchResult> {
+class _SearchResultState extends ConsumerState<SearchResult> {
   DeckModel deckModel = DeckModel();
   UserModel userModel = UserModel();
   List<bool> _currentPage = [true, false, false, false];
@@ -52,6 +54,9 @@ class _SearchResultState extends State<SearchResult> {
     color: Colors.transparent,
   );
   int counter = 0;
+  Future<void> executeAfterBuild(dynamic decks) async {
+    ref.read(sortProvider.notifier).state = decks;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +67,33 @@ class _SearchResultState extends State<SearchResult> {
             final decks = snapshot.data["decks"];
             final tags = snapshot.data["tags"];
             final people = snapshot.data["people"];
+
             if (counter++ == 0) {
-              _currentState = AllScreen(decks, tags, people);
+              executeAfterBuild(decks);
+              _currentState =
+                  AllScreen(decks: decks, tags: tags, people: people, onTap: [
+                () {
+                  setState(() {
+                    _resetPages();
+                    _currentPage[1] = true;
+                    _currentState = DeckSearchScreen(decks: decks);
+                  });
+                },
+                () {
+                  setState(() {
+                    _resetPages();
+                    _currentPage[2] = true;
+                    _currentState = TagScreen(tags: tags);
+                  });
+                },
+                () {
+                  setState(() {
+                    _resetPages();
+                    _currentPage[3] = true;
+                    _currentState = PeopleScreen(people: people);
+                  });
+                }
+              ]);
             }
             return Column(
               children: [
@@ -76,7 +106,35 @@ class _SearchResultState extends State<SearchResult> {
                           setState(() {
                             _resetPages();
                             _currentPage[0] = true;
-                            _currentState = AllScreen(decks, tags, people);
+                            _currentState = AllScreen(
+                                decks: decks,
+                                tags: tags,
+                                people: people,
+                                onTap: [
+                                  () {
+                                    setState(() {
+                                      _resetPages();
+                                      _currentPage[1] = true;
+                                      _currentState =
+                                          DeckSearchScreen(decks: decks);
+                                    });
+                                  },
+                                  () {
+                                    setState(() {
+                                      _resetPages();
+                                      _currentPage[2] = true;
+                                      _currentState = TagScreen(tags: tags);
+                                    });
+                                  },
+                                  () {
+                                    setState(() {
+                                      _resetPages();
+                                      _currentPage[3] = true;
+                                      _currentState =
+                                          PeopleScreen(people: people);
+                                    });
+                                  }
+                                ]);
                           });
                         }
                       },
@@ -173,8 +231,21 @@ class _SearchResultState extends State<SearchResult> {
           return Center(child: CircularProgressIndicator());
         });
   }
+}
 
-  Widget AllScreen(dynamic decks, dynamic tags, dynamic people) {
+class AllScreen extends ConsumerWidget {
+  dynamic decks;
+  dynamic tags;
+  dynamic people;
+  List<Function> onTap;
+  AllScreen(
+      {required this.decks,
+      required this.tags,
+      required this.people,
+      required this.onTap});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     return Expanded(
         child: NoGlowScroll(
       child: ListView(padding: EdgeInsets.zero, children: [
@@ -194,13 +265,7 @@ class _SearchResultState extends State<SearchResult> {
                 ),
               ),
               GestureDetector(
-                onTap: (() {
-                  setState(() {
-                    _resetPages();
-                    _currentPage[1] = true;
-                    _currentState = DeckSearchScreen(decks: decks);
-                  });
-                }),
+                onTap: (() {}),
                 child: const Text(
                   "View All",
                   style: TextStyle(
@@ -220,9 +285,12 @@ class _SearchResultState extends State<SearchResult> {
               child: ListView.builder(
                 padding: EdgeInsets.zero,
                 scrollDirection: Axis.horizontal,
-                itemCount: decks.length > 3 ? 3 : decks.length,
+                itemCount: ref.watch(sortProvider).length > 3
+                    ? 3
+                    : ref.watch(sortProvider).length,
                 itemBuilder: (context, index) {
-                  return SearchDeckItem(name: decks[index]["name"]);
+                  return SearchDeckItem(
+                      name: ref.watch(sortProvider)[index]["name"]);
                 },
               ),
             ),
@@ -261,13 +329,7 @@ class _SearchResultState extends State<SearchResult> {
                 ),
               ),
               GestureDetector(
-                onTap: (() {
-                  setState(() {
-                    _resetPages();
-                    _currentPage[2] = true;
-                    _currentState = TagScreen(tags: tags);
-                  });
-                }),
+                onTap: (() {}),
                 child: const Text(
                   "View All",
                   style: TextStyle(
@@ -355,13 +417,7 @@ class _SearchResultState extends State<SearchResult> {
                 ),
               ),
               GestureDetector(
-                onTap: (() {
-                  setState(() {
-                    _resetPages();
-                    _currentPage[3] = true;
-                    _currentState = PeopleScreen(people: people);
-                  });
-                }),
+                onTap: (() {}),
                 child: const Text(
                   "View All",
                   style: TextStyle(
