@@ -188,71 +188,79 @@ class AdminReports extends StatelessWidget {
                               Padding(
                                 padding:
                                     const EdgeInsets.fromLTRB(20, 20, 0, 0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    const SizedBox(width: 5),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "${snapshot.data![i]["deckID"]}",
-                                          style: TextStyle(
-                                            fontFamily: "PolySans_Slim",
-                                            color: Color(0xf0493C3F),
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                        Row(
+                                child: FutureBuilder(
+                                    future: deckModel.getdeckByID(
+                                        snapshot.data![i]['deckID']),
+                                    builder: (context, reportedDecks) {
+                                      if (reportedDecks.hasData) {
+                                        return Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
                                           children: [
-                                            Text(
-                                              "@shehabemohsen",
-                                              style: TextStyle(
-                                                fontFamily: "PolySans_Slim",
-                                                color: Color(0xf0493C3F),
-                                                fontSize: 13,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      60, 0, 0, 0),
-                                              child: Container(
-                                                alignment:
-                                                    Alignment.centerRight,
-                                                child: Container(
-                                                    decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                          image: AssetImage(
-                                                              "Images/avatars/8.png"),
-                                                          fit: BoxFit.cover),
+                                            const SizedBox(width: 5),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  "${reportedDecks.data!.name}",
+                                                  style: TextStyle(
+                                                    fontFamily: "PolySans_Slim",
+                                                    color: Color(0xf0493C3F),
+                                                    fontSize: 20,
+                                                  ),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Text(
+                                                      "Made By: ${reportedDecks.data!.user['fname']} ${reportedDecks.data!.user['lname']}",
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                            "PolySans_Slim",
+                                                        color:
+                                                            Color(0xf0493C3F),
+                                                        fontSize: 13,
+                                                      ),
                                                     ),
-                                                    width: 30,
-                                                    height: 30,
-                                                    child: Text("")),
-                                              ),
+                                                  ],
+                                                ),
+                                                //TODO: Reported By
+
+                                                // Row(
+                                                //   children: [
+                                                //     Text(
+                                                //       "Reported By: ${reportedDecks.data!.user['fname']} ${reportedDecks.data!.user['lname']}",
+                                                //       style: TextStyle(
+                                                //         fontFamily:
+                                                //             "PolySans_Slim",
+                                                //         color:
+                                                //             Color(0xf0493C3F),
+                                                //         fontSize: 13,
+                                                //       ),
+                                                //     ),
+                                                //   ],
+                                                // )
+                                              ],
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {},
+                                              child: Container(
+                                                  decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                        image: AssetImage(
+                                                            "Images/icons/arrow-right-s-line.png"),
+                                                        fit: BoxFit.cover),
+                                                  ),
+                                                  width: 35,
+                                                  height: 35,
+                                                  child: Text("")),
                                             ),
                                           ],
-                                        )
-                                      ],
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {},
-                                      child: Container(
-                                          decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                                image: AssetImage(
-                                                    "Images/icons/arrow-right-s-line.png"),
-                                                fit: BoxFit.cover),
-                                          ),
-                                          width: 35,
-                                          height: 35,
-                                          child: Text("")),
-                                    ),
-                                  ],
-                                ),
+                                        );
+                                      }
+                                      return Center(
+                                          child: CircularProgressIndicator());
+                                    }),
                               ),
                           ],
                         ),
