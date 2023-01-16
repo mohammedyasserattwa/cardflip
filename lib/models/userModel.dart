@@ -113,7 +113,8 @@ class UserModel {
       "id": user.id,
       "username": user["username"],
       "fname": user["fname"],
-      "lname": user["lname"]
+      "lname": user["lname"],
+      "profileIcon": user["profileIcon"]
     };
   }
 
