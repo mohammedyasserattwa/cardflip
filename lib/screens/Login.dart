@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, unused_import, non_constant_identifier_names, avoid_types_as_parameter_names, library_private_types_in_public_api, file_names, prefer_const_literals_to_create_immutables, body_might_complete_normally_nullable, unrelated_type_equality_checks, unnecessary_string_interpolations
 
+import 'package:cardflip/data/Repositories/user_decks.dart';
 import 'package:cardflip/data/Repositories/user_state.dart';
 import 'package:cardflip/data/User.dart' as user_data;
 import 'package:cardflip/main.dart';
@@ -56,6 +57,8 @@ class _LoginState extends ConsumerState<Login> {
             Navigator.pushReplacementNamed(context, '/adminDeck');
           } else if (user.get("role") == 'learner') {
             deckModel.getUserPreference(user.get("tags")).then((value) {
+              ref.read(FavouritesProvider.notifier).state =
+                  user["favourites"].map((e) => e.toString()).toList();
               ref.read(UserDataProvider.notifier).state =
                   user_data.User.fromSnapshot(user, _emailController.text,
                       _passwordController.text, userModel.id, value);

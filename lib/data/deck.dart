@@ -2,6 +2,7 @@ import 'package:cardflip/data/Leaderboard.dart';
 import 'package:cardflip/data/card.dart';
 import 'package:cardflip/data/User.dart';
 import 'package:cardflip/data/tag.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Deck {
   String name;
@@ -33,6 +34,16 @@ class Deck {
       description: map['description'],
       rating: double.parse(map['rating']),
       id: map['id'],
+      userID: map['userID'],
+      user: user,
+    );
+  }
+  factory Deck.fromSnapshot(QueryDocumentSnapshot<Map> map, Map user) {
+    return Deck(
+      name: map['name'],
+      description: map['description'],
+      rating: double.parse(map['rating']),
+      id: map.id,
       userID: map['userID'],
       user: user,
     );

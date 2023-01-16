@@ -1,27 +1,17 @@
-//import 'dart:ffi';
-// ignore_for_file: file_names, avoid_unnecessary_containers, prefer_const_constructors
-
-import 'dart:io';
-import 'dart:math';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cardflip/data/Repositories/user_state.dart';
 import 'package:cardflip/models/deckModel.dart';
 import 'package:cardflip/widgets/deck.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 import "package:flutter/material.dart";
+import 'package:recase/recase.dart';
 import '../models/ProfileModel.dart';
 import '../data/dummy_data.dart';
 import '../data/card_generator.dart';
-import '../widgets/navibar.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 
 class Profile extends ConsumerWidget {
-  Profile({key});
-  // TODO: REMOVE the profile model with the UserModel
-  ProfileModel model = ProfileModel(DummyData());
+  Profile({super.key});
   // TODO: ADD the leaderboard model here
   DeckModel deckModel = DeckModel();
   CardGenerator cardgenerator = CardGenerator();
@@ -100,7 +90,8 @@ class Profile extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "${userData.fname} ${userData.lname}",
+                              ReCase("${userData.fname} ${userData.lname}")
+                                  .titleCase,
                               style: TextStyle(
                                 fontFamily: "PolySans_Slim",
                                 color: Color(0xf0493C3F),
@@ -140,7 +131,7 @@ class Profile extends ConsumerWidget {
                           ),
                           width: 103,
                           height: 34,
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               "Edit Profile",
                               style: TextStyle(

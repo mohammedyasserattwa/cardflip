@@ -31,31 +31,8 @@ main() async {
   runApp(const ProviderScope(child: Main()));
 }
 
-class Main extends StatefulWidget {
+class Main extends StatelessWidget {
   const Main({super.key});
-
-  @override
-  State<Main> createState() => _MainState();
-}
-
-class _MainState extends State<Main> {
-  late bool home, library, profile;
-  @override
-  void initState() {
-    home = true;
-    library = false;
-    profile = false;
-    super.initState();
-  }
-
-  Widget getScreen() {
-    if (home)
-      return Home();
-    else if (library)
-      return Library();
-    else
-      return Profile();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +46,7 @@ class _MainState extends State<Main> {
         var routes = <String, WidgetBuilder>{
           '/': (context) => const Login(),
           '/register': (context) => const Register(),
-          '/home': (context) => Navigator(),
+          '/home': (context) => Navigation(nav: data?["nav"] ?? 0),
           '/deck': (context) => DeckScreen(deck: data!["deck"]),
           '/category': (context) => Category(data: data!["category"]),
           '/flashcards': (context) => Flashcard(deck: data!["deck"]),
@@ -80,7 +57,9 @@ class _MainState extends State<Main> {
           '/settings': (context) => const Settings(),
           '/addFlashcards': (context) => AddFlashcards(deck: data!["deck"]),
           '/editprofile': (context) => const EditProfile(),
-          '/adddeck': (context) => const Adddeck(screens: '',),
+          '/adddeck': (context) => const Adddeck(
+                screens: '',
+              ),
           '/adminUsers': (context) => AdminUsers(),
           '/adminReports': (context) => AdminReports(),
           '/adminDeck': (context) => Admin(),
@@ -90,8 +69,47 @@ class _MainState extends State<Main> {
       },
     );
   }
+}
 
-  Scaffold Navigator() {
+class Navigation extends StatefulWidget {
+  Navigation({super.key, this.nav = 0});
+  int nav = 0;
+  @override
+  State<Navigation> createState() => _NavigatorState();
+}
+
+class _NavigatorState extends State<Navigation> {
+  late bool home, library, profile;
+  @override
+  void initState() {
+    if (widget.nav == 0) {
+      home = true;
+      library = false;
+      profile = false;
+    } else if (widget.nav == 1) {
+      home = false;
+      library = true;
+      profile = false;
+    } else {
+      home = false;
+      library = false;
+      profile = true;
+    }
+    super.initState();
+  }
+
+  Widget getScreen() {
+    // print("Hena");
+    if (home)
+      return Home();
+    else if (library)
+      return Library();
+    else
+      return Profile();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: getScreen(),
