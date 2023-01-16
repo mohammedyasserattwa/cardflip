@@ -27,8 +27,12 @@ class TestResults extends StatefulWidget {
 
 class _TestResultsState extends State<TestResults> {
   late TestModel model;
-  // late double stuckAmount = 0.0;
   bool isStuck = false;
+  var length = 0;
+  Map testresults = {};
+  var key;
+  var deckCards;
+  var display;
   Map<String, bool> status = {
     "all": true,
     "correct": false,
@@ -36,19 +40,33 @@ class _TestResultsState extends State<TestResults> {
     "missed": false
   };
 
+  String getMessage() {
+    if (0 <= testresults['percentage'] && testresults['percentage'] < 50) {
+      return "Tough luck!";
+    } else if (50 <= testresults['percentage'] &&
+        testresults['percentage'] < 70) {
+      return "Almost there!";
+    } else if (70 <= testresults['percentage'] &&
+        testresults['percentage'] < 90) {
+      return "Well done!";
+    } else {
+      return "Sensational!";
+    }
+  }
+
   _TestResultsState({required this.model});
 
   @override
   void initState() {
+    testresults = model.gettestResults;
+    deckCards = model.getdeckCards;
+    display = [...deckCards];
+    length = deckCards.length;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // stuckAmount = 1.0 - stuckAmount.clamp(0.0, 1.0);
-
-    final GlobalKey eventListHeaderKey = GlobalKey();
-    final GlobalKey shaderMaskKey = GlobalKey();
     return Scaffold(
         body: Container(
             height: 1000,
@@ -118,7 +136,7 @@ class _TestResultsState extends State<TestResults> {
                                         child: Row(
                                           children: [
                                             AutoSizeText(
-                                              "Tough Luck!",
+                                              getMessage(),
                                               maxLines: 1,
                                               minFontSize: 16,
                                               overflow: TextOverflow.ellipsis,
@@ -134,7 +152,7 @@ class _TestResultsState extends State<TestResults> {
                                               padding: const EdgeInsets.only(
                                                   top: 3.0),
                                               child: AutoSizeText(
-                                                "Out of 127 questions,",
+                                                "Out of ${length} questions,",
                                                 maxLines: 1,
                                                 minFontSize: 15,
                                                 overflow: TextOverflow.ellipsis,
@@ -181,9 +199,13 @@ class _TestResultsState extends State<TestResults> {
                                                 radius: 35.0,
                                                 lineWidth: 6.0,
                                                 animation: true,
-                                                percent: 0.75,
+                                                percent:
+                                                    testresults['percentage'] /
+                                                        100.0,
                                                 center: new Text(
-                                                  "75%",
+                                                  testresults['percentage']
+                                                          .toString() +
+                                                      "%",
                                                   style: TextStyle(
                                                     color: Color(0xff6B8C8E),
                                                     fontFamily:
@@ -204,7 +226,7 @@ class _TestResultsState extends State<TestResults> {
                                               padding: const EdgeInsets.only(
                                                   top: 15.0),
                                               child: AutoSizeText(
-                                                "right in 45 minutes.",
+                                                "right in ${testresults['duration']}.",
                                                 maxLines: 1,
                                                 minFontSize: 15,
                                                 overflow: TextOverflow.ellipsis,
@@ -251,7 +273,14 @@ class _TestResultsState extends State<TestResults> {
                                                     animation: true,
                                                     percent: 1,
                                                     center: new AutoSizeText(
-                                                      "96",
+                                                      ((length -
+                                                              ((testresults[
+                                                                          'wrong']
+                                                                      .length) +
+                                                                  (testresults[
+                                                                          'missed']
+                                                                      .length)))
+                                                          .toString()),
                                                       maxLines: 1,
                                                       minFontSize: 14,
                                                       overflow:
@@ -292,7 +321,9 @@ class _TestResultsState extends State<TestResults> {
                                                     animation: true,
                                                     percent: 1,
                                                     center: new AutoSizeText(
-                                                      "0",
+                                                      (testresults['missed']
+                                                              .length)
+                                                          .toString(),
                                                       maxLines: 1,
                                                       minFontSize: 14,
                                                       overflow:
@@ -333,7 +364,9 @@ class _TestResultsState extends State<TestResults> {
                                                     animation: true,
                                                     percent: 1,
                                                     center: new AutoSizeText(
-                                                      "31",
+                                                      (testresults['wrong']
+                                                              .length)
+                                                          .toString(),
                                                       maxLines: 1,
                                                       minFontSize: 14,
                                                       overflow:
@@ -384,9 +417,6 @@ class _TestResultsState extends State<TestResults> {
                                       .addPostFrameCallback((_) => setState(() {
                                             isStuck = true;
                                           }))
-                                  // setState(() {
-                                  //   isStuck = true;
-                                  // })
                                 }
                               else
                                 {
@@ -394,21 +424,15 @@ class _TestResultsState extends State<TestResults> {
                                       .addPostFrameCallback((_) => setState(() {
                                             isStuck = false;
                                           }))
-                                  // setState(() {
-                                  //   isStuck = false;
-                                  // })
                                 }
                             },
                             header: Stack(
                               children: [
                                 Container(
-                                  // key: eventListHeaderKey,
                                   height: 140,
-                                  // color: Colors.white,
                                   width: double.infinity,
                                   decoration: (isStuck)
                                       ? BoxDecoration(
-                                          // backgroundBlendMode: BlendMode.overlay,
                                           image: DecorationImage(
                                             image: AssetImage(
                                                 "Images/backgrounds/testresultsheader.png"),
@@ -455,6 +479,9 @@ class _TestResultsState extends State<TestResults> {
                                                         status["missed"] =
                                                             false;
                                                       }
+                                                      display = [...deckCards];
+                                                      developer.log("all " +
+                                                          display.toString());
                                                     });
                                                   },
                                                   child: Container(
@@ -498,6 +525,39 @@ class _TestResultsState extends State<TestResults> {
                                                         status["false"] = false;
                                                         status["missed"] =
                                                             false;
+                                                        //  testresults[
+                                                        //           'wrong']
+                                                        //       .containsKey(
+                                                        //           deckCards[i]
+                                                        //               .getterm
+                                                        display.clear();
+                                                        display = [
+                                                          ...deckCards
+                                                        ];
+                                                        for (int x = 0;
+                                                            x <
+                                                                testresults
+                                                                    .length;
+                                                            x++) {
+                                                          if (testresults[
+                                                                      'wrong']
+                                                                  .containsKey(
+                                                                      deckCards[
+                                                                              x]
+                                                                          .getterm) ||
+                                                              testresults[
+                                                                      'missed']
+                                                                  .contains(
+                                                                      deckCards[
+                                                                              x]
+                                                                          .getterm))
+                                                            display.remove(
+                                                                deckCards[x]);
+                                                        }
+                                                        developer.log(
+                                                            "correct " +
+                                                                display
+                                                                    .toString());
                                                       }
                                                     });
                                                   },
@@ -528,8 +588,6 @@ class _TestResultsState extends State<TestResults> {
                                                                 0xff484848),
                                                             fontSize: 20,
                                                             fontFamily:
-                                                                // (status["correct"]! == true)
-                                                                //     ? "PolySans_Median":
                                                                 "PolySans_Neutral"),
                                                       )))),
                                               GestureDetector(
@@ -543,6 +601,19 @@ class _TestResultsState extends State<TestResults> {
                                                         status["missed"] =
                                                             false;
                                                       }
+                                                      display.clear();
+                                                      for (int x = 0;
+                                                          x < deckCards.length;
+                                                          x++) {
+                                                        if (testresults['wrong']
+                                                            .containsKey(
+                                                                deckCards[x]
+                                                                    .getterm))
+                                                          display.add(
+                                                              deckCards[x]);
+                                                      }
+                                                      developer.log("false " +
+                                                          display.toString());
                                                     });
                                                   },
                                                   child: Container(
@@ -571,8 +642,6 @@ class _TestResultsState extends State<TestResults> {
                                                                 0xff484848),
                                                             fontSize: 20,
                                                             fontFamily:
-                                                                // (status["false"]! == true)? "PolySans_Median"
-                                                                //     :
                                                                 "PolySans_Neutral"),
                                                       )))),
                                               GestureDetector(
@@ -585,6 +654,22 @@ class _TestResultsState extends State<TestResults> {
                                                         status["false"] = false;
                                                         status["missed"] = true;
                                                       }
+                                                      display.clear();
+                                                      for (int x = 0;
+                                                          x <
+                                                              testresults
+                                                                  .length;
+                                                          x++) {
+                                                        if (testresults[
+                                                                'missed']
+                                                            .contains(
+                                                                deckCards[x]
+                                                                    .getterm))
+                                                          display.add(
+                                                              deckCards[x]);
+                                                      }
+                                                      developer.log("missed " +
+                                                          display.toString());
                                                     });
                                                   },
                                                   child: Container(
@@ -614,9 +699,6 @@ class _TestResultsState extends State<TestResults> {
                                                                 0xff484848),
                                                             fontSize: 20,
                                                             fontFamily:
-                                                                // (status["missed"]! == true)
-                                                                //     ? "PolySans_Median"
-                                                                //     :
                                                                 "PolySans_Neutral"),
                                                       )))),
                                             ],
@@ -670,58 +752,19 @@ class _TestResultsState extends State<TestResults> {
                                 ),
                               ],
                             ),
-                            content:
-                                // ShaderMask(
-                                // key: shaderMaskKey,
-                                // shaderCallback: (rect) {
-                                //   // final RenderBox listHeaderRenderBox =
-                                //   //     eventListHeaderKey.currentContext!
-                                //   //         .findRenderObject() as RenderBox;
-                                //   // final Offset offset = listHeaderRenderBox
-                                //   //     .localToGlobal(Offset.zero);
-
-                                //   // final RenderBox shaderMaskRenderBox =
-                                //   //     shaderMaskKey.currentContext!
-                                //   //         .findRenderObject() as RenderBox;
-                                //   // final Offset offset2 = shaderMaskRenderBox
-                                //   //     .globalToLocal(offset);
-                                //   return LinearGradient(
-                                //       begin: Alignment.topCenter,
-                                //       end: Alignment.bottomCenter,
-                                //       stops: <double>[
-                                //         0,
-                                //         (rect.top + stuckAmount) /
-                                //             rect.height,
-                                //         (rect.top + stuckAmount) /
-                                //             rect.height,
-                                //         1
-                                //       ],
-                                //       colors: <Color>[
-                                //         Colors.transparent,
-                                //         Colors.transparent,
-                                //         Colors.white,
-                                //         Colors.white
-                                //       ]).createShader(Rect.fromLTWH(
-                                //     rect.width,
-                                //     rect.height,
-                                //     0,
-                                //     0,
-                                //   ));
-                                // },
-                                // child:
-                                NoGlowScroll(
+                            content: NoGlowScroll(
                               child: SingleChildScrollView(
                                 scrollDirection: Axis.vertical,
                                 child: Column(
                                   children: [
-                                    for (int i = 0; i < 10; i++)
+                                    // todo
+                                    for (int i = 0; i < display.length; i++)
                                       Padding(
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 50.0),
                                         child: Column(
                                           children: [
                                             Container(
-                                              // alignment: Alignment.center,
                                               decoration: BoxDecoration(
                                                 color: const Color(0x29A7A7A7),
                                                 borderRadius:
@@ -740,15 +783,20 @@ class _TestResultsState extends State<TestResults> {
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
                                                               .start,
-                                                      // mainAxisAlignment:
-                                                      //     MainAxisAlignment.center,
                                                       children: [
                                                         Expanded(
                                                           child: SizedBox(
                                                             width: 100,
                                                             height: 50,
                                                             child: AutoSizeText(
-                                                              "Air Mass",
+                                                              (status['all'] ==
+                                                                      true)
+                                                                  ? deckCards[i]
+                                                                      .getterm
+                                                                      .toString()
+                                                                  : display[i]
+                                                                      .getterm
+                                                                      .toString(),
                                                               maxLines: 2,
                                                               minFontSize: 13,
                                                               wrapWords: true,
@@ -766,29 +814,54 @@ class _TestResultsState extends State<TestResults> {
                                                             ),
                                                           ),
                                                         ),
-                                                        Expanded(
-                                                          child: SizedBox(
-                                                            width: 100,
-                                                            height: 50,
-                                                            child: AutoSizeText(
-                                                              "You picked: Air Mass",
-                                                              maxLines: 2,
-                                                              minFontSize: 13,
-                                                              wrapWords: true,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              stepGranularity:
-                                                                  1,
-                                                              style: TextStyle(
-                                                                  color: const Color(
-                                                                      0xff484848),
-                                                                  fontSize: 17,
-                                                                  fontFamily:
-                                                                      "PolySans_Median"),
-                                                            ),
-                                                          ),
-                                                        ),
+                                                        ((key = testresults[
+                                                                        'wrong']
+                                                                    .containsKey(deckCards[
+                                                                            i]
+                                                                        .getterm
+                                                                        .toString())) &&
+                                                                (status["all"] ==
+                                                                        true ||
+                                                                    status["false"] ==
+                                                                        true))
+                                                            ? Expanded(
+                                                                child: SizedBox(
+                                                                  width: 100,
+                                                                  height: 50,
+                                                                  child:
+                                                                      AutoSizeText(
+                                                                    (status['all'] ==
+                                                                                true &&
+                                                                            testresults['wrong'][deckCards[i].getterm] !=
+                                                                                null)
+                                                                        ? 'You picked:\n' +
+                                                                            testresults['wrong'][deckCards[i].getterm]
+                                                                                .toString()
+                                                                        : (status['false'] == true &&
+                                                                                testresults['wrong'][display[i].getterm] != null)
+                                                                            ? 'You picked:\n' + testresults['wrong'][display[i].getterm].toString()
+                                                                            : "",
+                                                                    maxLines: 2,
+                                                                    minFontSize:
+                                                                        13,
+                                                                    wrapWords:
+                                                                        true,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    stepGranularity:
+                                                                        1,
+                                                                    style: TextStyle(
+                                                                        color: const Color(
+                                                                            0xff484848),
+                                                                        fontSize:
+                                                                            17,
+                                                                        fontFamily:
+                                                                            "PolySans_Median"),
+                                                                  ),
+                                                                ),
+                                                              )
+                                                            : Text(""),
                                                       ],
                                                     ),
                                                   ),
@@ -801,7 +874,15 @@ class _TestResultsState extends State<TestResults> {
                                                         width: 150,
                                                         height: 200,
                                                         child: AutoSizeText(
-                                                          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ultrices nisl erat, non tempus mi pulvinar sit amet. Mauris cursus est molestie fringilla pellentesque. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam a sem erat. Integer eget massa varius, mattis purus a, dapibus neque. Nunc lacinia massa feugiat magna consequat sodales. Sed varius, ipsum a ullamcorper volutpat, leo mi dignissim sapien, ac ultrices urna leo id enim. Duis semper, dolor id elementum vestibulum, turpis sapien pretium ligula, in consectetur nunc ante in tellus. Integer posuere justo quis leo elementum elementum. Mauris faucibus tempor lectus, in efficitur ipsum vulputate sit amet. Integer quam magna, ultricies ut gravida sit amet, fringilla eget lectus. Pellentesque sed malesuada lorem. Curabitur velit ipsum, mattis volutpat justo a, iaculis viverra risus. Nulla quis tortor urna. Nunc dolor nibh, hendrerit ut iaculis et, porttitor at magna. Vestibulum tempor pellentesque urna, dignissim bibendum neque venenatis sed. Nullam tincidunt mauris a ex feugiat, vel placerat turpis tincidunt. Praesent vitae tellus augue. Maecenas non consectetur diam. In dapibus, eros vel consectetur suscipit, ante enim tincidunt justo, non rutrum lacus odio a ante. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam dapibus luctus nulla, scelerisque maximus turpis venenatis ut.",
+                                                          (status['all'] ==
+                                                                  true)
+                                                              ? deckCards[i]
+                                                                  .getdefinition
+                                                                  .toString()
+                                                              : display[i]
+                                                                  .getdefinition
+                                                                  .toString(),
+                                                          // "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce ultrices nisl erat, non tempus mi pulvinar sit amet. Mauris cursus est molestie fringilla pellentesque. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam a sem erat. Integer eget massa varius, mattis purus a, dapibus neque. Nunc lacinia massa feugiat magna consequat sodales. Sed varius, ipsum a ullamcorper volutpat, leo mi dignissim sapien, ac ultrices urna leo id enim. Duis semper, dolor id elementum vestibulum, turpis sapien pretium ligula, in consectetur nunc ante in tellus. Integer posuere justo quis leo elementum elementum. Mauris faucibus tempor lectus, in efficitur ipsum vulputate sit amet. Integer quam magna, ultricies ut gravida sit amet, fringilla eget lectus. Pellentesque sed malesuada lorem. Curabitur velit ipsum, mattis volutpat justo a, iaculis viverra risus. Nulla quis tortor urna. Nunc dolor nibh, hendrerit ut iaculis et, porttitor at magna. Vestibulum tempor pellentesque urna, dignissim bibendum neque venenatis sed. Nullam tincidunt mauris a ex feugiat, vel placerat turpis tincidunt. Praesent vitae tellus augue. Maecenas non consectetur diam. In dapibus, eros vel consectetur suscipit, ante enim tincidunt justo, non rutrum lacus odio a ante. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nam dapibus luctus nulla, scelerisque maximus turpis venenatis ut.",
                                                           maxLines: 6,
                                                           minFontSize: 14,
                                                           overflow: TextOverflow
@@ -831,7 +912,6 @@ class _TestResultsState extends State<TestResults> {
                               ),
                             ),
                           )),
-                          // ),
                         ),
                       ],
                     ),

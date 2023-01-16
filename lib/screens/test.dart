@@ -2,8 +2,10 @@ import 'dart:async';
 // import 'dart:html';
 import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:cardflip/data/Repositories/user_state.dart';
 import 'package:cardflip/data/deck.dart';
 import 'package:cardflip/models/testModel.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_shake_animated/flutter_shake_animated.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,15 +15,16 @@ import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:date_time_format/date_time_format.dart';
 import 'dart:core';
 
-class Test extends StatefulWidget {
+class Test extends ConsumerStatefulWidget {
   Deck deck;
   Test({super.key, required this.deck});
 
   @override
-  State<Test> createState() => _TestState();
+  ConsumerState<Test> createState() => _TestState();
 }
 
-class _TestState extends State<Test> with SingleTickerProviderStateMixin {
+class _TestState extends ConsumerState<Test>
+    with SingleTickerProviderStateMixin {
   bool continuetimer = true;
   Stream<int>? stopwatch;
   StreamSubscription<int>? stopwatchsubscrip;
@@ -199,6 +202,8 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final userData = ref.watch(UserDataProvider);
+
     return Scaffold(
         body: Container(
       height: 1000,
@@ -292,6 +297,8 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                             missedCards.add(testCardsList[m][1]);
                           }
                           stopwatchsubscrip!.pause();
+                          model.addTestResults(
+                              wrongCards, missedCards, timeTaken, userData!.id);
                         });
                       },
                       child: Wrap(
@@ -489,6 +496,12 @@ class _TestState extends State<Test> with SingleTickerProviderStateMixin {
                                                                   i++;
                                                                   stopwatchsubscrip!
                                                                       .pause();
+                                                                  model.addTestResults(
+                                                                      wrongCards,
+                                                                      missedCards,
+                                                                      timeTaken,
+                                                                      userData!
+                                                                          .id);
                                                                 }
                                                               });
                                                           },

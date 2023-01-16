@@ -28,4 +28,7 @@ class Card {
     return Card(
         id: data["id"], term: data['term'], definition: data['definition']);
   }
+
+  get getterm => term;
+  get getdefinition => definition;
 }
