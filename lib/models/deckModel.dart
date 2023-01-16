@@ -179,10 +179,12 @@ class DeckModel {
     return data;
   }
 
-  Future<List<Deck>> deckByUserID(String id) {
-    List<Deck> decks =
-        recentDecks.where((element) => element.userID == id).toList();
-    return Future.value(decks);
+  Future<List<Future<Deck>>> deckByUserID(String id) async {
+    final decks = await _deckCollection.where("userID", isEqualTo: id).get();
+    return decks.docs
+        .map((e) async =>
+            Deck.fromSnapshot(e, await userModel.getUserByID(e["userID"])))
+        .toList();
   }
 
   Future leaderboardUsers(String id) async {

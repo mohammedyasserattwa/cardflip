@@ -330,7 +330,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                                         favourites +
                                                             [model.deck.id];
                                                   } else {
-                                                    List<String> temp = ref
+                                                    List<dynamic> temp = ref
                                                         .read(FavouritesProvider
                                                             .notifier)
                                                         .state;

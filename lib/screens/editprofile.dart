@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, curly_braces_in_flow_control_structures, avoid_print
 
 import 'dart:math';
+import 'package:cardflip/data/Repositories/user_state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cardflip/models/userModel.dart';
@@ -8,17 +9,18 @@ import "dart:developer" as developer;
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 
-class EditProfile extends StatefulWidget {
+class EditProfile extends ConsumerStatefulWidget {
   const EditProfile({super.key});
 
   @override
-  State<EditProfile> createState() => _EditProfileState();
+  ConsumerState<EditProfile> createState() => _EditProfileState();
 }
 
-class _EditProfileState extends State<EditProfile> {
+class _EditProfileState extends ConsumerState<EditProfile> {
   late String currentIcon;
   @override
   void initState() {
@@ -34,11 +36,17 @@ class _EditProfileState extends State<EditProfile> {
   final firstNameKey = GlobalKey<FormState>();
   final lastNameKey = GlobalKey<FormState>();
   final usernameKey = GlobalKey<FormState>();
-  static final FirebaseFirestore _database = FirebaseFirestore.instance;
-  final _auth = FirebaseAuth.instance;
   final _userCollection = FirebaseFirestore.instance.collection("user");
+  int counter = 0;
   @override
   Widget build(BuildContext context) {
+    final userData = ref.watch(UserDataProvider);
+    if (counter++ == 0) {
+      ControllerFirstNameData.text = userData!.fname;
+      ControllerLastNameData.text = userData.lname;
+      ControllerUsernameData.text = userData.username;
+      currentIcon = userData.icon;
+    }
     return Scaffold(
         body: Container(
       width: MediaQuery.of(context).size.width,
@@ -309,14 +317,133 @@ class _EditProfileState extends State<EditProfile> {
                   alignment: Alignment.center,
                   child: GestureDetector(
                       onTap: () async {
-                        await _userCollection
-                            .doc(FirebaseAuth.instance.currentUser!.uid)
-                            .update({
-                          "fname": ControllerFirstNameData.text,
-                          "lname": ControllerLastNameData.text,
-                          "username": ControllerUsernameData.text,
-                        });
-                        Navigator.pushNamed(context, "/home");
+                        if (ControllerFirstNameData.text != userData!.fname ||
+                            ControllerLastNameData.text != userData.lname ||
+                            ControllerUsernameData.text != userData.username ||
+                            currentIcon != userData.profileIcon) {
+                          if (ControllerFirstNameData.text.isNotEmpty &&
+                              ControllerLastNameData.text.isNotEmpty &&
+                              ControllerUsernameData.text.isNotEmpty) {
+                            _userCollection.doc(userData.id).update({
+                              "fname": ControllerFirstNameData.text,
+                              "lname": ControllerLastNameData.text,
+                              "username": ControllerUsernameData.text,
+                              "profileIcon": currentIcon
+                            }).then((value) {
+                              ref
+                                  .read(UserDataProvider.notifier)
+                                  .state!
+                                  .firstname = ControllerFirstNameData.text;
+                              ref
+                                  .read(UserDataProvider.notifier)
+                                  .state!
+                                  .lastname = ControllerLastNameData.text;
+                              ref
+                                  .read(UserDataProvider.notifier)
+                                  .state!
+                                  .username = ControllerUsernameData.text;
+                              ref
+                                  .read(UserDataProvider.notifier)
+                                  .state!
+                                  .profileIcon = currentIcon;
+
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Center(
+                                      child: Container(
+                                        width: 300,
+                                        height: 200,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: AssetImage(
+                                                    "Images/backgrounds/homepage.png"),
+                                                fit: BoxFit.cover),
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            DefaultTextStyle(
+                                              style: TextStyle(
+                                                fontFamily: 'PolySans_Neutral',
+                                                fontSize: 24,
+                                                color: Color.fromARGB(
+                                                    255, 49, 49, 49),
+                                              ),
+                                              child: Text(
+                                                "Profile Updated",
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                                onTap: () {
+                                                  Navigator
+                                                      .pushReplacementNamed(
+                                                          context, "/home",
+                                                          arguments: {
+                                                        "nav": 2,
+                                                      });
+                                                },
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(10),
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(15),
+                                                        color: Colors.grey
+                                                            .withOpacity(0.30)),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            10),
+                                                    child: DefaultTextStyle(
+                                                      style: TextStyle(
+                                                        fontFamily:
+                                                            'PolySans_Neutral',
+                                                        fontSize: 25,
+                                                        color: Color.fromARGB(
+                                                            255, 49, 49, 49),
+                                                      ),
+                                                      child: Text(
+                                                        "Ok",
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ))
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  });
+                            });
+                            // Navigator.pushNamed(context, "/home");
+                          } else {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text("Error"),
+                                    content: Text("Please fill in all fields"),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text("Ok"))
+                                    ],
+                                  );
+                                });
+                          }
+                        }
+                        // await _userCollection.doc(userData!.id).update({
+                        //   "fname": ControllerFirstNameData.text,
+                        //   "lname": ControllerLastNameData.text,
+                        //   "username": ControllerUsernameData.text,
+                        //   "profileIcon": currentIcon
+                        // });
+                        // Navigator.pushNamed(context, "/home");
                       },
                       child: Container(
                           alignment: Alignment.center,
