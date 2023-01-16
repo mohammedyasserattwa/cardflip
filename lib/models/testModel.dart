@@ -3,6 +3,7 @@ import 'dart:developer' as developer;
 import "package:cardflip/data/Test.dart";
 import 'package:cardflip/data/deck.dart';
 import 'package:cardflip/models/deckModel.dart';
+import 'package:cardflip/models/leaderboardModel.dart';
 import 'package:cardflip/screens/testresults.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,9 +21,8 @@ class TestModel {
   late int length;
   late bool viable;
   late Map<String, dynamic> testResults;
+  late LeaderboardModel leaderboardModel = LeaderboardModel(deck: deck);
   TestModel({required this.deck}) {
-    Map<String, dynamic> testResults = {};
-
     late final random = Random();
     length = deck.cards.length;
     if (length >= 3) {
@@ -79,6 +79,14 @@ class TestModel {
         _testCollection.doc(value.docs[0].id).update(testResults);
       }
     });
+
+    leaderboardModel.updateLeaderboard(
+        (100 *
+                (testCards.length - (wrong.length + missed.length)) /
+                testCards.length)
+            .round(),
+        time,
+        userID, _testCollection, deck.id);
   }
 
   get gettestResults => testResults;

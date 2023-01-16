@@ -18,9 +18,9 @@ class Leaderboard extends ConsumerWidget {
     var tempData = value.keys
         .where((element) =>
             value[element]['userInfo']['ID'] == id &&
-            value[element]['rank'] != "1" &&
-            value[element]['rank'] != "2" &&
-            value[element]['rank'] != "3")
+            value[element]['rank'] != 1 &&
+            value[element]['rank'] != 2 &&
+            value[element]['rank'] != 3)
         .toList();
 
     Widget? userCard = null;
@@ -51,22 +51,22 @@ class Leaderboard extends ConsumerWidget {
                     Container(
                       width: 26,
                       height: 24,
-                      decoration: (int.parse(value[tempData[0]]['rank']) < 5)
+                      decoration: (value[tempData[0]]['rank'] < 5)
                           ? BoxDecoration(
                               image: DecorationImage(
                                   image: AssetImage(((value[tempData[0]]
                                               ['rank'] ==
-                                          "1")
+                                          1)
                                       ? "Images/icons/1strank.png"
-                                      : (value[tempData[0]]['rank'] == "2")
+                                      : (value[tempData[0]]['rank'] == 2)
                                           ? "Images/icons/2ndrank.png"
-                                          : (value[tempData[0]]['rank'] == "3")
+                                          : (value[tempData[0]]['rank'] == 3)
                                               ? "Images/icons/3rdrank.png"
                                               : "Images/icons/rank.png")),
                                   fit: BoxFit.contain),
                             )
                           : const BoxDecoration(),
-                      child: (int.parse(value[tempData[0]]['rank']) >= 3)
+                      child: (value[tempData[0]]['rank'] >= 3)
                           ? Stack(
                               alignment: AlignmentDirectional.center,
                               children: [
@@ -137,7 +137,7 @@ class Leaderboard extends ConsumerWidget {
         SizedBox(
           height: 450,
           child: ListView.builder(
-              itemCount: (value.keys.length < 250) ? value.keys.length : 250,
+              itemCount: (value.keys.length <= 50) ? value.keys.length : 50,
               itemBuilder: (BuildContext context, int i) {
                 return Padding(
                   padding:
@@ -170,15 +170,15 @@ class Leaderboard extends ConsumerWidget {
                                         image: DecorationImage(
                                             image: AssetImage(((value.values
                                                         .toList()[i]['rank'] ==
-                                                    "1")
+                                                    1)
                                                 ? "Images/icons/1strank.png"
                                                 : (value.values.toList()[i]
                                                             ['rank'] ==
-                                                        "2")
+                                                        2)
                                                     ? "Images/icons/2ndrank.png"
                                                     : (value.values.toList()[i]
                                                                 ['rank'] ==
-                                                            "3")
+                                                            3)
                                                         ? "Images/icons/3rdrank.png"
                                                         : "Images/icons/rank.png")),
                                             fit: BoxFit.contain),
@@ -400,6 +400,8 @@ class Leaderboard extends ConsumerWidget {
                                             return Center(
                                                 child: Text(snapshot.stackTrace
                                                     .toString()));
+                                            // child: Text(
+                                            //     snapshot.error.toString()));
                                           }
                                           if (snapshot.hasData) {
                                             leaderboard = snapshot.data!;
