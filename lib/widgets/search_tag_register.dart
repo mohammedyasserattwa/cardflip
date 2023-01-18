@@ -17,7 +17,7 @@ class SearchTag extends StatefulWidget {
 class _SearchTagState extends State<SearchTag> {
   final _tagController = TextEditingController();
 
-  late Future<Map<String, bool>> tagMap;
+  late Future<Map<Map, bool>> tagMap;
   late final active;
   int counter = 0;
   String search = "";
@@ -42,9 +42,9 @@ class _SearchTagState extends State<SearchTag> {
           if (snapshot.hasError)
             return const Text("Error while loading the tags");
           if (snapshot.hasData) {
-            Map<String, bool> data = Map.from(snapshot.data!);
+            Map<Map, bool> data = Map.from(snapshot.data!);
             if (search.isNotEmpty) {
-              data.removeWhere((key, value) => !key
+              data.removeWhere((key, value) => !key["name"]
                   .trim()
                   .toLowerCase()
                   .contains(search.trim().toLowerCase()));
@@ -53,6 +53,7 @@ class _SearchTagState extends State<SearchTag> {
             }
 
             final tags = data.keys.toList();
+            // print(tags);
             if (counter++ == 0) active = data.values.toList();
 
             return Padding(
@@ -82,7 +83,7 @@ class _SearchTagState extends State<SearchTag> {
                             child: TextField(
                               cursorColor: Colors.grey[600],
                               controller: _tagController,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontFamily: "PolySans_Neutral",
                                 fontSize: 20,
@@ -136,18 +137,18 @@ class _SearchTagState extends State<SearchTag> {
                                                 onTap: () {
                                                   setState(() {
                                                     if (active[i] == false) {
-                                                      widget
-                                                          .addTagList(tags[i]);
+                                                      widget.addTagList(
+                                                          tags[i]["id"]);
                                                       active[i] = true;
                                                     } else {
                                                       widget.removeTagList(
-                                                          tags[i]);
+                                                          tags[i]["id"]);
                                                       active[i] = false;
                                                     }
                                                   });
                                                 },
                                                 child: TagContainer(
-                                                  tag: tags[i],
+                                                  tag: tags[i]["name"],
                                                   active: active[i],
                                                 ),
                                               ),
@@ -157,17 +158,17 @@ class _SearchTagState extends State<SearchTag> {
                                                     setState(() {
                                                       if (!active[i + 1]) {
                                                         widget.addTagList(
-                                                            tags[i + 1]);
+                                                            tags[i + 1]["id"]);
                                                         active[i + 1] = true;
                                                       } else {
                                                         widget.removeTagList(
-                                                            tags[i + 1]);
+                                                            tags[i + 1]["id"]);
                                                         active[i + 1] = false;
                                                       }
                                                     });
                                                   },
                                                   child: TagContainer(
-                                                    tag: tags[i + 1],
+                                                    tag: tags[i + 1]["name"],
                                                     active: active[i + 1],
                                                   ),
                                                 ),
@@ -177,17 +178,17 @@ class _SearchTagState extends State<SearchTag> {
                                                     setState(() {
                                                       if (!active[i + 2]) {
                                                         widget.addTagList(
-                                                            tags[i + 2]);
+                                                            tags[i + 2]["id"]);
                                                         active[i + 2] = true;
                                                       } else {
                                                         widget.removeTagList(
-                                                            tags[i - 2]);
+                                                            tags[i - 2]["id"]);
                                                         active[i + 2] = false;
                                                       }
                                                     });
                                                   },
                                                   child: TagContainer(
-                                                    tag: tags[i + 2],
+                                                    tag: tags[i + 2]["name"],
                                                     active: active[i + 2],
                                                   ),
                                                 ),

@@ -39,6 +39,14 @@ class Home extends StatelessWidget {
         "Images/cards/homepage/2/2_1/${randomCard.getcolor}/${randomCard.getshape}.png",
         "Images/cards/homepage/2/2_4/${randomCard.getcolor}/${randomCard.getshape}.png",
       ];
+  Future getUncompletedDecks(String id) async {
+    await UncompletedDecks.init(id);
+    List<UncompletedDeckItem> result =
+        UncompletedDecks.fromJson(UncompletedDecks.uncompletedDecks)
+            .where((e) => e.uid == id)
+            .toList();
+    return deckModel.getDecksByIDs(result.map((e) => e.deckID).toList());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -117,17 +125,7 @@ class Home extends StatelessWidget {
                 ),
               ),
               FutureBuilder(
-                  future:
-                      ref.watch(UnCompletedDecksProvider).then((value) async {
-                    await UncompletedDecks.init();
-                    List<UncompletedDeckItem> result =
-                        UncompletedDecks.fromJson(
-                                UncompletedDecks.uncompletedDecks)
-                            .where((e) => e.uid == userData.id)
-                            .toList();
-                    return deckModel
-                        .getDecksByIDs(result.map((e) => e.deckID).toList());
-                  }),
+                  future: getUncompletedDecks(userData.id),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       final data = snapshot.data;
@@ -169,6 +167,11 @@ class Home extends StatelessWidget {
                                         path:
                                             "Images/cards/homepage/1_3/${randomCard.getcolor}/${randomCard.getshape}.png",
                                         min: 3)))),
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text(snapshot.error.toString()),
                       );
                     }
                     return Center(

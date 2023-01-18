@@ -19,7 +19,7 @@ class DeckModel {
   final UserModel userModel = UserModel();
   Future<List<dynamic>> getData() async {
     QuerySnapshot querySnapshot = await _tagCollection.get();
-    final data = querySnapshot.docs.map((doc) => doc.get("name")).toList();
+    final data = querySnapshot.docs.map((doc) => {"name":doc.get("name"),"id":doc.id}).toList();
     return data;
   }
 

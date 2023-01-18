@@ -1,6 +1,7 @@
 import 'package:cardflip/models/userModel.dart';
 import 'package:cardflip/screens/loading_screen.dart';
 import 'package:cardflip/widgets/Input.dart';
+import 'package:cardflip/widgets/card_widget.dart';
 import 'package:cardflip/widgets/registration_card.dart';
 import "package:flutter/material.dart";
 
@@ -191,7 +192,16 @@ class EmailInfoCard extends StatelessWidget {
               ),
             );
           }
-          return LoadingWidget();
+          return RegistrationCard(
+            cardWidth: width,
+            cardHeight: height,
+            model: model,
+            child: Center(
+              child: LoadingWidget(
+                transparent: true,
+              ),
+            ),
+          );
         });
   }
 }

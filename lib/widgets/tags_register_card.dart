@@ -44,8 +44,6 @@ class _TagsRegisterState extends State<TagsRegister> {
       duration: widget.duration,
       builder: (context, double pos, __) => Transform(
         transform: Matrix4.identity()..translate(pos),
-        
-        
         child: RegistrationCard(
           cardWidth: widget.width,
           cardHeight: widget.height,
@@ -101,6 +99,7 @@ class _TagsRegisterState extends State<TagsRegister> {
                         vertical: 35),
                     child: ElevatedButton(
                       onPressed: () {
+                        // print(_tagList);
                         widget.user.setUserTags(_tagList);
                         widget.onNext();
                         // }

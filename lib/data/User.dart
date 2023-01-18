@@ -5,6 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class User {
+  bool isBanned = false;
+
   //CONSTRUCTOR
   User(
       {required this.firstname,
@@ -14,6 +16,7 @@ class User {
       required this.username,
       required this.profileIcon,
       required this.id,
+      this.isBanned = false,
       this.role = "learner",
       this.favourites = const [],
       this.badges = const [],
@@ -36,6 +39,7 @@ class User {
     String username = snapshot.get("username");
     String profileIcon = snapshot.get("profileIcon");
     List tags = snapshot.get("tags");
+
     return User(
         firstname: firstname,
         lastname: lastname,
@@ -43,6 +47,7 @@ class User {
         profileIcon: profileIcon,
         id: id,
         email: email,
+        isBanned: snapshot.get("banned"),
         tags: tags,
         userPreferences: preferences,
         password: password,
@@ -59,6 +64,8 @@ class User {
       "profileIcon": profileIcon,
       "role": role,
       "badges": badges,
+      "tags": tags,
+      "banned": isBanned,
       "favourites": favourites,
     };
   }

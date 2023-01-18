@@ -293,14 +293,15 @@ class _FlashcardState extends ConsumerState<Flashcard>
                                 const Duration(milliseconds: 250), () async {
                               if (_currentCard == 1) {
                                 SharedPreferences.getInstance().then((prefs) {
-                                  if (prefs.getString("uncompletedDecks2") !=
+                                  if (prefs.getString(
+                                          "uncompleted_decks_${userData!.id}") !=
                                       null) {
                                     List<dynamic> uncompleteDecks =
-                                        UncompletedDecks.fromJson(prefs
-                                            .getString("uncompletedDecks2")!);
+                                        UncompletedDecks.fromJson(prefs.getString(
+                                            "uncompleted_decks_${userData.id}")!);
                                     UncompletedDeckItem item =
                                         UncompletedDeckItem(
-                                            uid: userData!.id,
+                                            uid: userData.id,
                                             deckID: widget.deck.id);
                                     int deckIndex = uncompleteDecks.indexOf(
                                         uncompleteDecks
@@ -316,7 +317,8 @@ class _FlashcardState extends ConsumerState<Flashcard>
                                           .map((e) => e.toJson())
                                           .toList());
                                       prefs.setString(
-                                          "uncompletedDecks2", data);
+                                          "uncompleted_decks_${userData.id}",
+                                          data);
                                     }
                                     // print(deckIndex);
                                     // print(uncompleteDecks);

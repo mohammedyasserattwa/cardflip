@@ -5,9 +5,10 @@ import 'dart:convert';
 class UncompletedDecks {
   static String uncompletedDecks = "{}";
   static SharedPreferences? _prefs;
-  static init() async {
+  static init(String id) async {
     _prefs = await SharedPreferences.getInstance();
-    uncompletedDecks = _prefs!.getString("uncompletedDecks2") ?? "{}";
+    // _prefs!.clear();
+    uncompletedDecks = _prefs!.getString("uncompleted_decks_$id") ?? "{}";
   }
 
   static toJson(List<UncompletedDeckItem> data) {
@@ -15,7 +16,11 @@ class UncompletedDecks {
   }
 
   static List<UncompletedDeckItem> fromJson(String data) {
-    final jsonData = json.decode(data) as List;
-    return List.from(jsonData.map((e) => UncompletedDeckItem.fromJson(e)));
+    try {
+      final jsonData = json.decode(data) as List;
+      return List.from(jsonData.map((e) => UncompletedDeckItem.fromJson(e)));
+    } catch (e) {
+      return [];
+    }
   }
 }

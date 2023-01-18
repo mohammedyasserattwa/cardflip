@@ -15,7 +15,4 @@ final RatingProvider = StateProvider<List<String>>((ref) {
 final ReportProvider = StateProvider<List<String>>((ref) {
   return <String>[];
 });
-final UnCompletedDecksProvider = StateProvider<Future<String>>((ref) async {
-  await UncompletedDecks.init();
-  return UncompletedDecks.uncompletedDecks;
-});
+

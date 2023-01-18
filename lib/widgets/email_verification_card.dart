@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cardflip/data/Repositories/user_state.dart';
 import 'package:cardflip/data/User.dart' as user_data;
 import 'package:cardflip/models/userModel.dart';
@@ -13,6 +15,7 @@ class EmailVerificationCard extends ConsumerStatefulWidget {
   UserModel model;
   Function onBack;
   bool check;
+  bool isBanned = false;
   user_data.User user;
   EmailVerificationCard(
       {super.key,
@@ -31,24 +34,20 @@ class EmailVerificationCard extends ConsumerStatefulWidget {
 class _EmailVerificationCardState extends ConsumerState<EmailVerificationCard> {
   bool _isVerified = false;
   Future? _credentials;
+  Timer? timer;
+
   // @override
   // void initState() {
-  //   _credentials = FirebaseAuth.instance
-  //       .createUserWithEmailAndPassword(
-  //         email: widget.user.email.trim(),
-  //         password: widget.user.password.trim(),
-  //       )
-  //       .then((value) => sendEmail());
+
   //   super.initState();
   // }
 
-  @override
   Future sendEmail() async {
     try {
       final user = FirebaseAuth.instance.currentUser!;
       await user.sendEmailVerification();
     } catch (e) {
-      print("Error fel send:" + e.toString());
+      print("Error while sending:" + e.toString());
     }
   }
 
@@ -60,24 +59,31 @@ class _EmailVerificationCardState extends ConsumerState<EmailVerificationCard> {
     });
   }
 
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
   int counter = 0;
   @override
   Widget build(BuildContext context) {
+    // print(counter);
     if (widget.check) {
-      try {
-        if (counter++ == 0) {
-          _credentials = FirebaseAuth.instance
-              .createUserWithEmailAndPassword(
-                email: widget.user.email.trim(),
-                password: widget.user.password.trim(),
-              )
-              .then((value) => sendEmail())
-              .onError((error, stackTrace) => print(error));
-        }
-        if(!_isVerified)
-          checkEmailVerified();
-      } catch (e) {
-        print(e);
+      // try {
+      if (counter++ == 0) {
+        _credentials = FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+          email: widget.user.email.trim(),
+          password: widget.user.password.trim(),
+        ).then((value) {
+          sendEmail();
+          if (!_isVerified) {
+            timer = Timer.periodic(const Duration(seconds: 4), (timer) {
+              checkEmailVerified();
+            });
+          }
+        });
       }
 
       return FutureBuilder(
@@ -126,13 +132,13 @@ class _EmailVerificationCardState extends ConsumerState<EmailVerificationCard> {
                         child: RichText(
                           textAlign: TextAlign.center,
                           text: TextSpan(
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: Color(0xFF191C32),
                                   fontFamily: 'Poppins',
                                   fontSize: 19,
                                   fontWeight: FontWeight.w500),
                               children: <TextSpan>[
-                                TextSpan(
+                                const TextSpan(
                                     text: "Account activation link has been\n"),
                                 TextSpan(
                                     text: "sent to the email address you\n"),
@@ -163,13 +169,10 @@ class _EmailVerificationCardState extends ConsumerState<EmailVerificationCard> {
                     Padding(
                       padding:
                           const EdgeInsets.only(top: 15, left: 30, right: 30),
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF191C32),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0)),
-                        ),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: const Color(0xFF191C32),
+                            borderRadius: BorderRadius.circular(10)),
                         child: GestureDetector(
                           onTap: () {
                             showDialog(
@@ -193,8 +196,15 @@ class _EmailVerificationCardState extends ConsumerState<EmailVerificationCard> {
                           },
                           child: const Padding(
                             padding: EdgeInsets.symmetric(vertical: 20),
-                            child:
-                                Center(child: Text('Done, click to proceed')),
+                            child: Center(
+                                child: Text(
+                              'Done, click to proceed',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'Poppins',
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500),
+                            )),
                           ),
                         ),
                       ),

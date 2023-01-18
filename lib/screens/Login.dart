@@ -90,21 +90,95 @@ class _LoginState extends ConsumerState<Login> {
               Navigator.pushReplacementNamed(context, '/adminDeck');
             }
           } else if (user.get("role") == 'learner') {
-            deckModel.getUserPreference(user.get("tags")).then((value) {
-              ref.read(FavouritesProvider.notifier).state =
-                  user["favourites"].map((e) => e.toString()).toList();
-              ref.read(UserDataProvider.notifier).state =
-                  user_data.User.fromSnapshot(
-                      user, email, password, userModel.id, value);
+            if (user.get("banned") == false) {
+              deckModel.getUserPreference(user.get("tags")).then((value) {
+                ref.read(FavouritesProvider.notifier).state =
+                    user["favourites"].map((e) => e.toString()).toList();
+                ref.read(UserDataProvider.notifier).state =
+                    user_data.User.fromSnapshot(
+                        user, email, password, userModel.id, value);
 
-              if (_rememberMeCheckBox) {
-                saveUserInVault(_emailController.text, _passwordController.text)
-                    .then((value) =>
-                        Navigator.pushReplacementNamed(context, '/home'));
-              } else {
-                Navigator.pushReplacementNamed(context, '/home');
-              }
-            });
+                if (_rememberMeCheckBox) {
+                  saveUserInVault(
+                          _emailController.text, _passwordController.text)
+                      .then((value) =>
+                          Navigator.pushReplacementNamed(context, '/home'));
+                } else {
+                  Navigator.pushReplacementNamed(context, '/home');
+                }
+              });
+            } else {
+              Navigator.pop(context);
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return Center(
+                    child: Container(
+                      width: 300,
+                      height: 200,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                            image:
+                                AssetImage("Images/backgrounds/homepage.png"),
+                            fit: BoxFit.cover),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          SizedBox(height: 10),
+                          DefaultTextStyle(
+                            style: TextStyle(
+                              fontFamily: "PolySans_Median",
+                              color: Color.fromARGB(239, 105, 0, 0),
+                              fontSize: 20,
+                            ),
+                            child: Text(
+                              "You have been banned",
+                            ),
+                          ),
+                          DefaultTextStyle(
+                            style: TextStyle(
+                              fontFamily: "PolySans_Slim",
+                              color: Color.fromARGB(239, 105, 0, 0),
+                              fontSize: 15,
+                            ),
+                            child: Text(
+                              "The account you are trying to access has been banned",
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () => Navigator.pop(context),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Colors.grey.withOpacity(0.30)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: DefaultTextStyle(
+                                    style: TextStyle(
+                                      fontFamily: 'PolySans_Neutral',
+                                      fontSize: 25,
+                                      color: Color.fromARGB(255, 49, 49, 49),
+                                    ),
+                                    child: Text(
+                                      "Ok",
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            }
           }
         });
       } on FirebaseAuthException catch (e) {
