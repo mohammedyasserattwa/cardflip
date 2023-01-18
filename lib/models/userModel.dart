@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
 import '../data/card.dart';
 import '../data/category.dart';
 import '../data/deck.dart';
@@ -112,10 +115,23 @@ class UserModel {
     return {
       "id": user.id,
       "username": user["username"],
+      "email": user["email"],
       "fname": user["fname"],
       "lname": user["lname"],
       "profileIcon": user["profileIcon"]
     };
+  }
+
+  Future resetPassword(String email, BuildContext context) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        return Container();
+      } else {
+        return Container();
+      }
+    }
   }
 
   signOut() async {

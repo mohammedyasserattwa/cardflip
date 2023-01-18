@@ -16,7 +16,7 @@ class SearchTag extends StatefulWidget {
 
 class _SearchTagState extends State<SearchTag> {
   final _tagController = TextEditingController();
-  
+
   late Future<Map<String, bool>> tagMap;
   late final active;
   int counter = 0;
@@ -39,7 +39,8 @@ class _SearchTagState extends State<SearchTag> {
     return FutureBuilder(
         future: tagMap,
         builder: (context, snapshot) {
-          if (snapshot.hasError) return Text("Error while loading the tags");
+          if (snapshot.hasError)
+            return const Text("Error while loading the tags");
           if (snapshot.hasData) {
             Map<String, bool> data = Map.from(snapshot.data!);
             if (search.isNotEmpty) {
@@ -110,77 +111,98 @@ class _SearchTagState extends State<SearchTag> {
                   Expanded(
                     child: NoGlowScroll(
                       child: Scrollbar(
-                        child: ListView(
-                          children: [
-                            for (int i = 0; i < data.length; i += 3)
-                              Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: (i != tags.length - 1)
-                                        ? MainAxisAlignment.spaceAround
-                                        : MainAxisAlignment.start,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            if (active[i] == false) {
-                                              widget.addTagList(tags[i]);
-                                              active[i] = true;
-                                            } else {
-                                              widget.removeTagList(tags[i]);
-                                              active[i] = false;
-                                            }
-                                          });
-                                        },
-                                        child: TagContainer(
-                                          tag: tags[i],
-                                          active: active[i],
-                                        ),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: SizedBox(
+                            width: 750,
+                            child: NoGlowScroll(
+                              child: Scrollbar(
+                                child: ListView(
+                                  children: [
+                                    for (int i = 0; i < data.length; i += 3)
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                (i != tags.length - 1)
+                                                    ? MainAxisAlignment.start
+                                                    : MainAxisAlignment.start,
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    if (active[i] == false) {
+                                                      widget
+                                                          .addTagList(tags[i]);
+                                                      active[i] = true;
+                                                    } else {
+                                                      widget.removeTagList(
+                                                          tags[i]);
+                                                      active[i] = false;
+                                                    }
+                                                  });
+                                                },
+                                                child: TagContainer(
+                                                  tag: tags[i],
+                                                  active: active[i],
+                                                ),
+                                              ),
+                                              if (i + 1 < tags.length)
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      if (!active[i + 1]) {
+                                                        widget.addTagList(
+                                                            tags[i + 1]);
+                                                        active[i + 1] = true;
+                                                      } else {
+                                                        widget.removeTagList(
+                                                            tags[i + 1]);
+                                                        active[i + 1] = false;
+                                                      }
+                                                    });
+                                                  },
+                                                  child: TagContainer(
+                                                    tag: tags[i + 1],
+                                                    active: active[i + 1],
+                                                  ),
+                                                ),
+                                              if (i + 2 < tags.length)
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      if (!active[i + 2]) {
+                                                        widget.addTagList(
+                                                            tags[i + 2]);
+                                                        active[i + 2] = true;
+                                                      } else {
+                                                        widget.removeTagList(
+                                                            tags[i - 2]);
+                                                        active[i + 2] = false;
+                                                      }
+                                                    });
+                                                  },
+                                                  child: TagContainer(
+                                                    tag: tags[i + 2],
+                                                    active: active[i + 2],
+                                                  ),
+                                                ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 5,
+                                          )
+                                        ],
                                       ),
-                                      if (i + 1 < tags.length)
-                                        GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              if (!active[i + 1]) {
-                                                widget.addTagList(tags[i + 1]);
-                                                active[i + 1] = true;
-                                              } else {
-                                                widget.removeTagList(tags[i + 1]);
-                                                active[i + 1] = false;
-                                              }
-                                            });
-                                          },
-                                          child: TagContainer(
-                                            tag: tags[i + 1],
-                                            active: active[i + 1],
-                                          ),
-                                        ),
-                                      if (i + 2 < tags.length)
-                                        GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              if (!active[i + 2]) {
-                                                widget.addTagList(tags[i + 2]);
-                                                active[i + 2] = true;
-                                              } else {
-                                                widget.removeTagList(tags[i - 2]);
-                                                active[i + 2] = false;
-                                              }
-                                            });
-                                          },
-                                          child: TagContainer(
-                                            tag: tags[i + 2],
-                                            active: active[i + 2],
-                                          ),
-                                        ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  )
-                                ],
+                                  ],
+                                ),
                               ),
-                          ],
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -189,7 +211,7 @@ class _SearchTagState extends State<SearchTag> {
               ),
             );
           }
-          return LoadingWidget();
+          return Container();
         });
   }
 }

@@ -29,7 +29,7 @@ class TagsRegister extends StatefulWidget {
 }
 
 class _TagsRegisterState extends State<TagsRegister> {
-  List _tagList = [];
+  final List _tagList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -106,7 +106,7 @@ class _TagsRegisterState extends State<TagsRegister> {
                         // }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF191C32),
+                        backgroundColor: const Color(0xFF191C32),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0)),
                       ),

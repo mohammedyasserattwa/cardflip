@@ -187,6 +187,10 @@ class DeckModel {
         .toList();
   }
 
+  Future<List<Future<Deck>>> getTopRatedDecks(){
+    return _deckCollection.orderBy("rating", descending: true).limit(3).get().then((value) => value.docs.map((e) async => Deck.fromSnapshot(e, await userModel.getUserByID(e["userID"]))).toList());
+  }
+
   Future leaderboardUsers(String id) async {
     var querySnapshot = await _deckCollection.doc(id).get();
 

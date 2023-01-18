@@ -1,11 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, library_private_types_in_public_api, non_constant_identifier_names, unused_local_variable, body_might_complete_normally_nullable, no_leading_underscores_for_local_identifiers, prefer_const_declarations
 
 import 'dart:math';
-
-import 'package:cardflip/models/deckModel.dart';
-import 'package:cardflip/models/loginModel.dart';
 import 'package:cardflip/models/userModel.dart';
-import 'package:cardflip/screens/loading_screen.dart';
 import 'package:cardflip/widgets/card_widget.dart';
 import 'package:cardflip/widgets/email_info_card.dart';
 import 'package:cardflip/widgets/email_verification_card.dart';
@@ -13,12 +9,8 @@ import 'package:cardflip/widgets/personal_information_card.dart';
 import 'package:cardflip/widgets/profile_icon_card.dart';
 import 'package:cardflip/widgets/tags_register_card.dart';
 import 'package:flutter/material.dart';
-import 'package:cardflip/screens/Login.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:form_field_validator/form_field_validator.dart';
-import 'package:no_glow_scroll/no_glow_scroll.dart';
 import '../data/User.dart';
-import '../widgets/Input.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -44,7 +36,7 @@ class _RegisterState extends State<Register> {
     "Category": GlobalKey<FormState>(),
     "Icon": GlobalKey<FormState>(),
   };
-  Map<String, bool> _pages = {
+  final Map<String, bool> _pages = {
     "email": false,
     "name": false,
     "icon": false,

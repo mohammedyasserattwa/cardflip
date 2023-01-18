@@ -41,6 +41,12 @@ class EmailInfoCard extends StatelessWidget {
     return FutureBuilder(
         future: getData(),
         builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Container(
+              color: Colors.red,
+              child: Text(snapshot.error.toString()),
+            );
+          }
           if (snapshot.hasData) {
             return TweenAnimationBuilder(
               tween: Tween<double>(

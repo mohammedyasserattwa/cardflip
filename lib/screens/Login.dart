@@ -16,7 +16,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:recase/recase.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class Login extends ConsumerStatefulWidget {
   const Login({super.key});
@@ -26,18 +30,38 @@ class Login extends ConsumerStatefulWidget {
 }
 
 class _LoginState extends ConsumerState<Login> {
+  final storage = FlutterSecureStorage();
+
   late final _firebaseAuth;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _isChecked = false;
+  bool _rememberMeCheckBox = false;
   UserModel userModel = UserModel();
+
+  Future<List<Map>> getSavedUsers() async {
+    Map savedUsers = await storage.readAll();
+    List<Map> result = [];
+    print(savedUsers);
+    for (String user in savedUsers.keys) {
+      result.add({
+        "data": await userModel.getUserByID(user),
+        "password": savedUsers[user]
+      });
+    }
+    return result;
+  }
+
+  Future saveUserInVault(String email, String password) async {
+    await storage.write(key: "${userModel.id}", value: password);
+  }
+
   @override
   void initState() {
     _firebaseAuth = FirebaseAuth.instance;
     super.initState();
   }
 
-  Future signIn() async {
+  Future signIn(String email, String password) async {
     bool result = true;
     if (result) {
       try {
@@ -48,9 +72,10 @@ class _LoginState extends ConsumerState<Login> {
             });
 
         final credentials = await _firebaseAuth.signInWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim(),
+          email: email.trim(),
+          password: password.trim(),
         );
+        // print("Reached Here");
         DeckModel deckModel = DeckModel();
         userModel.userData.then((user) {
           if (user.get("role") == 'admin') {
@@ -60,22 +85,228 @@ class _LoginState extends ConsumerState<Login> {
               ref.read(FavouritesProvider.notifier).state =
                   user["favourites"].map((e) => e.toString()).toList();
               ref.read(UserDataProvider.notifier).state =
-                  user_data.User.fromSnapshot(user, _emailController.text,
-                      _passwordController.text, userModel.id, value);
-              Navigator.pushReplacementNamed(context, '/home');
+                  user_data.User.fromSnapshot(
+                      user, email, password, userModel.id, value);
+
+              if (_rememberMeCheckBox) {
+                saveUserInVault(_emailController.text, _passwordController.text)
+                    .then((value) =>
+                        Navigator.pushReplacementNamed(context, '/home'));
+              } else {
+                Navigator.pushReplacementNamed(context, '/home');
+              }
             });
           }
         });
       } on FirebaseAuthException catch (e) {
+        Navigator.pop(context);
         if (e.code == "user-not-found") {
-          print("User not found");
-          Navigator.pop(context);
-        } else if (e.code == "wrong-password") {
-          print("Password is wrong");
-          Navigator.pop(context);
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return Center(
+                child: Container(
+                  width: 300,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    image: DecorationImage(
+                        image: AssetImage("Images/backgrounds/homepage.png"),
+                        fit: BoxFit.cover),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SizedBox(height: 10),
+                      DefaultTextStyle(
+                        style: TextStyle(
+                          fontFamily: "PolySans_Median",
+                          color: Color.fromARGB(239, 105, 0, 0),
+                          fontSize: 20,
+                        ),
+                        child: Text(
+                          "User Not Found",
+                        ),
+                      ),
+                      DefaultTextStyle(
+                        style: TextStyle(
+                          fontFamily: "PolySans_Slim",
+                          color: Color.fromARGB(239, 105, 0, 0),
+                          fontSize: 15,
+                        ),
+                        textAlign: TextAlign.center,
+                        child: Text(
+                          "Email not registered. Please register to continue",
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.grey.withOpacity(0.30)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: DefaultTextStyle(
+                                style: TextStyle(
+                                  fontFamily: 'PolySans_Neutral',
+                                  fontSize: 25,
+                                  color: Color.fromARGB(255, 49, 49, 49),
+                                ),
+                                child: Text(
+                                  "Ok",
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        } else if (e.code == "wrong-password" || e.code == "invalid-email") {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return Center(
+                child: Container(
+                  width: 300,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    image: DecorationImage(
+                        image: AssetImage("Images/backgrounds/homepage.png"),
+                        fit: BoxFit.cover),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SizedBox(height: 10),
+                      DefaultTextStyle(
+                        style: TextStyle(
+                          fontFamily: "PolySans_Median",
+                          color: Color.fromARGB(239, 105, 0, 0),
+                          fontSize: 20,
+                        ),
+                        child: Text(
+                          "Incorrect Email or Password",
+                        ),
+                      ),
+                      DefaultTextStyle(
+                        style: TextStyle(
+                          fontFamily: "PolySans_Slim",
+                          color: Color.fromARGB(239, 105, 0, 0),
+                          fontSize: 15,
+                        ),
+                        textAlign: TextAlign.center,
+                        child: Text(
+                          "Please check your username and password and try again",
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.grey.withOpacity(0.30)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: DefaultTextStyle(
+                                style: TextStyle(
+                                  fontFamily: 'PolySans_Neutral',
+                                  fontSize: 25,
+                                  color: Color.fromARGB(255, 49, 49, 49),
+                                ),
+                                child: Text(
+                                  "Ok",
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
         } else {
-          print("no Internet");
-          Navigator.pop(context);
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return Center(
+                child: Container(
+                  width: 300,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    image: DecorationImage(
+                        image: AssetImage("Images/backgrounds/homepage.png"),
+                        fit: BoxFit.cover),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SizedBox(height: 10),
+                      DefaultTextStyle(
+                        style: TextStyle(
+                          fontFamily: "PolySans_Median",
+                          color: Color.fromARGB(239, 105, 0, 0),
+                          fontSize: 20,
+                        ),
+                        child: Text(
+                          "Error connecting to the internet",
+                        ),
+                      ),
+                      DefaultTextStyle(
+                        style: TextStyle(
+                          fontFamily: "PolySans_Slim",
+                          color: Color.fromARGB(239, 105, 0, 0),
+                          fontSize: 15,
+                        ),
+                        textAlign: TextAlign.center,
+                        child: Text(
+                          "Please check your internet connection and try again",
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () => Navigator.pop(context),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.grey.withOpacity(0.30)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: DefaultTextStyle(
+                                style: TextStyle(
+                                  fontFamily: 'PolySans_Neutral',
+                                  fontSize: 25,
+                                  color: Color.fromARGB(255, 49, 49, 49),
+                                ),
+                                child: Text(
+                                  "Ok",
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
         }
       }
     }
@@ -88,204 +319,396 @@ class _LoginState extends ConsumerState<Login> {
     super.dispose();
   }
 
+  int counter = 0;
+  bool _anotherUser = false;
   @override
   Widget build(BuildContext context) {
-    final _key = GlobalKey<FormState>();
+    final key = GlobalKey<FormState>();
     return Scaffold(
-      body: Form(
-        key: _key,
-        child: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('Images/backgrounds/loginpage.png'),
-                fit: BoxFit.cover),
-          ),
-          child: Scaffold(
-            backgroundColor: Colors.transparent,
-            body: Padding(
-              padding: const EdgeInsets.only(top: 185),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30, bottom: 20),
-                    child: Text(
-                      'Log In',
-                      style: TextStyle(
-                        color: Color(0xFF191C32),
-                        fontFamily: 'PolySans_Median',
-                        fontSize: 48,
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('Images/backgrounds/loginpage.png'),
+              fit: BoxFit.cover),
+        ),
+        child: FutureBuilder(
+            future: getSavedUsers(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Text("${snapshot.error}");
+              }
+              if (snapshot.hasData) {
+                if (snapshot.data!.isNotEmpty && !_anotherUser) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 25.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Welcome Back',
+                                style: TextStyle(
+                                  color: Color(0xFF191C32),
+                                  fontFamily: 'PolySans_Median',
+                                  fontSize: 38,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'Pick one of the accounts below to login, or login with another account',
+                                style: TextStyle(
+                                  color: Color(0xFF191C32),
+                                  fontFamily: 'PolySans_Normal',
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  Expanded(
-                    child: ListView(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(
-                                  left: 25, right: 25, bottom: 15),
-                              child: Column(
-                                children: [
-                                  Input(
-                                    hintTextOne: "Email or Username",
-                                    icon: Icons.person_outline_outlined,
-                                    obscureText: false,
-                                    controller: _emailController,
-                                    color: Color(0xFFF98800),
-                                    validator: (val) {
-                                      if (val == null || val.isEmpty) {
-                                        return "Please enter your email or username";
-                                      }
-                                      return null;
-                                    },
+                      Expanded(
+                        flex: 2,
+                        child: ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () => signIn(
+                                snapshot.data![index]["data"]["email"],
+                                snapshot.data![index]["password"],
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 30, right: 30, top: 10),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Color(0xb394D1D9),
+                                    border: Border.all(
+                                      color: Color(0xFF191C32),
+                                      width: 2,
+                                    ),
                                   ),
-                                  SizedBox(
-                                    height: 30,
-                                  ),
-                                  Input(
-                                    hintTextOne: "Password",
-                                    icon: Icons.lock_outline,
-                                    obscureText: true,
-                                    color: Color.fromARGB(255, 184, 145, 229),
-                                    controller: _passwordController,
-                                    validator: (val) {
-                                      if (val == null || val.isEmpty) {
-                                        return "Please enter a valid password.";
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 10.0),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
                                     child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        CustomCheckbox(
-                                          isChecked: _isChecked,
-                                          onChange: (isChecked) {
-                                            print(isChecked);
-                                          },
-                                          size: 25,
-                                          selectedColor: Colors.white,
-                                          selectedIconColor: Color(0xFF191C32),
-                                          iconSize: 19,
-                                          borderColor: Color(0xFF191C32),
-                                          checkIcon: Icon(Icons.check),
+                                        SvgPicture.asset(
+                                          "Images/avatars/${snapshot.data![index]["data"]["profileIcon"]}.svg",
+                                          width: 50,
+                                          height: 50,
                                         ),
-                                        SizedBox(
-                                          width: 10,
+                                        Text(
+                                          ReCase(snapshot.data![index]["data"]
+                                                      ["fname"] +
+                                                  " " +
+                                                  snapshot.data![index]["data"]
+                                                      ["lname"])
+                                              .titleCase,
+                                          style: TextStyle(
+                                            color: Color(0xFF191C32),
+                                            fontFamily: 'PolySans_Normal',
+                                            fontSize: 18,
+                                          ),
                                         ),
-                                        Text("Remember me",
-                                            style: TextStyle(
-                                                color: Color(0xFF191C32),
-                                                fontFamily: "PolySans_Median")),
+                                        Icon(
+                                          Icons.arrow_forward_ios_rounded,
+                                          color: Color(0xFF191C32),
+                                        ),
                                       ],
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: 40,
-                                  ),
-                                  SizedBox(
-                                    width: 340,
-                                    height: 58,
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        if (_key.currentState!.validate()) {
-                                          signIn();
-                                          // Navigator.of(context)
-                                          //     .pushReplacementNamed('/home');
-                                        }
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Color(0xFF191C32),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(30.0)),
-                                      ),
-                                      child: Center(
-                                          child: const Text(
-                                        'Login',
-                                      )),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _anotherUser = true;
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 30, right: 30, top: 10, bottom: 15),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Color(0xFF191C32),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Login with another account",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: 'PolySans_Normal',
+                                      fontSize: 18,
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: 40,
-                                  ),
-                                  TextButton(
-                                      onPressed: () {},
-                                      child: Text(
-                                        'Forgot Password?',
-                                        style: TextStyle(
-                                          decoration: TextDecoration.underline,
-                                          color: Colors.black,
-                                          fontSize: 15,
-                                        ),
-                                      )),
-                                  SizedBox(
-                                    width: 240,
-                                    height: 40,
-                                    child: ElevatedButton(
-                                      onPressed: () {},
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Color(0xFF78E7F5),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(30.0)),
-                                      ),
-                                      child: Center(
-                                          child: Row(
-                                        children: [
-                                          Image.asset('Images/icons/google.png',
-                                              fit: BoxFit.cover),
-                                          const Text('  Continue with Google',
-                                              style: TextStyle(
-                                                  color: Colors.black)),
-                                        ],
-                                      )),
-                                    ),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pushNamed(context, "/register");
-                                    },
-                                    child: RichText(
-                                      text: TextSpan(
-                                          style: const TextStyle(
-                                            color: Colors.black,
-                                            decoration:
-                                                TextDecoration.underline,
-                                          ),
-                                          children: <TextSpan>[
-                                            TextSpan(
-                                                text:
-                                                    "Don't have an account? "),
-                                            TextSpan(
-                                                text: "Sign up",
-                                                style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold)),
-                                          ]),
-                                    ),
+                                  Icon(
+                                    Icons.arrow_forward_ios_rounded,
+                                    color: Colors.white,
                                   ),
                                 ],
                               ),
-                            )
-                          ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                }
+                return Form(
+                  key: key,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 185),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 30, bottom: 20),
+                          child: Text(
+                            'Log In',
+                            style: TextStyle(
+                              color: Color(0xFF191C32),
+                              fontFamily: 'PolySans_Median',
+                              fontSize: 48,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: ListView(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    margin: EdgeInsets.only(
+                                        left: 25, right: 25, bottom: 15),
+                                    child: Column(
+                                      children: [
+                                        Input(
+                                          hintTextOne: "Email or Username",
+                                          icon: Icons.person_outline_outlined,
+                                          obscureText: false,
+                                          controller: _emailController,
+                                          color: Color(0xFFF98800),
+                                          validator: (val) {
+                                            if (val == null || val.isEmpty) {
+                                              return "Please enter your email or username";
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 30,
+                                        ),
+                                        Input(
+                                          hintTextOne: "Password",
+                                          icon: Icons.lock_outline,
+                                          obscureText: true,
+                                          color: Color.fromARGB(
+                                              255, 184, 145, 229),
+                                          controller: _passwordController,
+                                          validator: (val) {
+                                            if (val == null || val.isEmpty) {
+                                              return "Please enter a valid password.";
+                                            }
+                                            return null;
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 10.0),
+                                          child: Row(
+                                            children: [
+                                              CustomCheckbox(
+                                                isChecked: _rememberMeCheckBox,
+                                                onChange: (isChecked) {
+                                                  setState(() {
+                                                    _rememberMeCheckBox =
+                                                        isChecked;
+                                                  });
+                                                },
+                                                size: 25,
+                                                selectedColor: Colors.white,
+                                                selectedIconColor:
+                                                    Color(0xFF191C32),
+                                                iconSize: 19,
+                                                borderColor: Color(0xFF191C32),
+                                                checkIcon: Icon(Icons.check),
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text("Remember me",
+                                                  style: TextStyle(
+                                                      color: Color(0xFF191C32),
+                                                      fontFamily:
+                                                          "PolySans_Median")),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 40,
+                                        ),
+                                        SizedBox(
+                                          width: 340,
+                                          height: 58,
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              if (key.currentState!
+                                                  .validate()) {
+                                                signIn(_emailController.text,
+                                                    _passwordController.text);
+                                                // Navigator.of(context)
+                                                //     .pushReplacementNamed('/home');
+                                              }
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                                  Color(0xFF191C32),
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          30.0)),
+                                            ),
+                                            child: Center(
+                                                child: const Text(
+                                              'Login',
+                                            )),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 40,
+                                        ),
+                                        TextButton(
+                                            onPressed: () {
+                                              if (_emailController
+                                                  .text.isNotEmpty) {
+                                                userModel
+                                                    .resetPassword(
+                                                        _emailController.text,
+                                                        context)
+                                                    .then((value) => {
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                                  SnackBar(
+                                                            content: Text(
+                                                                "A mail has been sent to your email address"),
+                                                            duration: Duration(
+                                                                seconds: 2),
+                                                          ))
+                                                        });
+                                              } else {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(SnackBar(
+                                                  content: Text(
+                                                      "Please enter your email in the field above in order to send a mail"),
+                                                  duration:
+                                                      Duration(seconds: 2),
+                                                ));
+                                              }
+                                            },
+                                            child: Text(
+                                              'Forgot Password?',
+                                              style: TextStyle(
+                                                decoration:
+                                                    TextDecoration.underline,
+                                                color: Colors.black,
+                                                fontSize: 15,
+                                              ),
+                                            )),
+                                        if (snapshot.data!.isNotEmpty)
+                                          ElevatedButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                _anotherUser = false;
+                                              });
+                                            },
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                                  Color(0xFF78E7F5),
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          30.0)),
+                                            ),
+                                            child: SizedBox(
+                                              width: 240,
+                                              height: 40,
+                                              child: Center(
+                                                  child: const Text(
+                                                      ' View Saved Users',
+                                                      style: TextStyle(
+                                                          color:
+                                                              Colors.black))),
+                                            ),
+                                          ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pushNamed(
+                                                context, "/register");
+                                          },
+                                          child: RichText(
+                                            text: TextSpan(
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  decoration:
+                                                      TextDecoration.underline,
+                                                ),
+                                                children: <TextSpan>[
+                                                  TextSpan(
+                                                      text:
+                                                          "Don't have an account? "),
+                                                  TextSpan(
+                                                      text: "Sign up",
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold)),
+                                                ]),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
-        ),
+                );
+              }
+              return Scaffold(
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
+            }),
       ),
     );
   }

@@ -141,8 +141,8 @@ class Profile extends ConsumerWidget {
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(26, 10, 0, 0),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(26, 10, 0, 0),
               child: Text(
                 "Badges",
                 style: TextStyle(
@@ -207,8 +207,8 @@ class Profile extends ConsumerWidget {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(26, 10, 0, 0),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(26, 10, 0, 0),
               child: Text(
                 "Recent Decks",
                 style: TextStyle(
@@ -242,7 +242,7 @@ class Profile extends ConsumerWidget {
                                     "deckID": deckModel.recentDecks[index].id,
                                   },
                                 )),
-                        SizedBox(
+                        const SizedBox(
                           width: 15,
                         )
                       ],
@@ -251,8 +251,8 @@ class Profile extends ConsumerWidget {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(26, 15, 0, 0),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(26, 15, 0, 0),
               child: Text("Top Rated Decks",
                   style: TextStyle(
                     fontFamily: "Poppins-Medium",
@@ -263,34 +263,53 @@ class Profile extends ConsumerWidget {
               padding: const EdgeInsets.fromLTRB(15, 10, 2, 0),
               child: SizedBox(
                 height: height,
-                child: NoGlowScroll(
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: deckModel.topRatedDecks.length,
-                    itemBuilder: (context, index) => Row(
-                      children: [
-                        Deck(
-                          width: 139,
-                          height: 116.67,
-                          path:
-                              "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
-                          id: deckModel.topRatedDecks[index].id,
-                          min: 3,
-                          onTap: (() => Navigator.pushNamed(
-                                context,
-                                "/deck",
-                                arguments: {
-                                  "deckID": deckModel.topRatedDecks[index].id,
-                                },
-                              )),
-                        ),
-                        SizedBox(
-                          width: 15,
-                        )
-                      ],
-                    ),
-                  ),
-                ),
+                child: FutureBuilder(
+                    future: deckModel.getTopRatedDecks(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return NoGlowScroll(
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (context, index) => Row(
+                              children: [
+                                FutureBuilder(
+                                    future: snapshot.data![index],
+                                    builder: (context, deck) {
+                                      if (deck.hasData) {
+                                        return Deck(
+                                          width: 139,
+                                          height: 116.67,
+                                          path:
+                                              "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                                          deck: deck.data!,
+                                          min: 3,
+                                          onTap: (() => Navigator.pushNamed(
+                                                context,
+                                                "/deck",
+                                                arguments: {
+                                                  "deckID": deckModel
+                                                      .topRatedDecks[index].id,
+                                                },
+                                              )),
+                                        );
+                                      }
+                                      if (deck.hasError) {
+                                        return Text("${deck.error}");
+                                      }
+                                      return Container();
+                                    }),
+                                const SizedBox(
+                                  width: 15,
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                    }),
               ),
             ),
             Padding(

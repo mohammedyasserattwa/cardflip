@@ -55,6 +55,7 @@ dependencies:
   internet_connection_checker: ^1.0.0+1
   sticky_headers: ^0.3.0+2
   date_time_format: ^2.0.1
+  flutter_secure_storage: ^7.0.1
 
 
 flutter_icons:
