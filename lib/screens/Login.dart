@@ -79,7 +79,16 @@ class _LoginState extends ConsumerState<Login> {
         DeckModel deckModel = DeckModel();
         userModel.userData.then((user) {
           if (user.get("role") == 'admin') {
-            Navigator.pushReplacementNamed(context, '/adminDeck');
+            ref.read(UserDataProvider.notifier).state =
+                user_data.User.fromSnapshot(
+                    user, email, password, userModel.id, []);
+            if (_rememberMeCheckBox) {
+              saveUserInVault(_emailController.text, _passwordController.text)
+                  .then((value) =>
+                      Navigator.pushReplacementNamed(context, '/adminDeck'));
+            } else {
+              Navigator.pushReplacementNamed(context, '/adminDeck');
+            }
           } else if (user.get("role") == 'learner') {
             deckModel.getUserPreference(user.get("tags")).then((value) {
               ref.read(FavouritesProvider.notifier).state =

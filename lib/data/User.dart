@@ -18,8 +18,7 @@ class User {
       this.favourites = const [],
       this.badges = const [],
       this.tags = const [],
-      this.userPreferences = const []
-      });
+      this.userPreferences = const []});
   User.New() {
     firstname = "";
     lastname = "";
@@ -30,8 +29,8 @@ class User {
     id = "";
     role = "learner";
   }
-  factory User.fromSnapshot(
-      DocumentSnapshot snapshot, String email, String password, String id, List<Deck> preferences) {
+  factory User.fromSnapshot(DocumentSnapshot snapshot, String email,
+      String password, String id, List<Deck> preferences) {
     String firstname = snapshot.get("fname");
     String lastname = snapshot.get("lname");
     String username = snapshot.get("username");
@@ -46,7 +45,8 @@ class User {
         email: email,
         tags: tags,
         userPreferences: preferences,
-        password: password);
+        password: password,
+        role: snapshot.get("role"));
 
     // this.
   }

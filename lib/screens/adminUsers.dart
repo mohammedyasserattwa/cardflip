@@ -684,6 +684,9 @@ class _AdminUsersState extends State<AdminUsers> {
                       ),
                     );
                   }
+                  if (snapshot.hasError) {
+                    print(snapshot.error);
+                  }
                   return Center(child: CircularProgressIndicator());
                 }),
           ],

@@ -168,8 +168,12 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                 children: [
                                   GestureDetector(
                                       onTap: () {
-                                        Navigator.pushReplacementNamed(
-                                            context, "/home");
+                                        if (userData.role == "learner") {
+                                          Navigator.pushReplacementNamed(
+                                              context, "/home");
+                                        } else if (userData.role == "admin") {
+                                          Navigator.pop(context);
+                                        }
                                       },
                                       child: Container(
                                           decoration: const BoxDecoration(

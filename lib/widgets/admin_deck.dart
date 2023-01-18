@@ -63,10 +63,161 @@ class _AdminDeckState extends State<AdminDeck> {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              adminModel.deleteDeck(snapshot.data!.id);
-                              setState(() {
-                                
-                              });
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Center(
+                                      child: Container(
+                                        width: 300,
+                                        height: 200,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  "Images/backgrounds/homepage.png"),
+                                              fit: BoxFit.cover),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            SizedBox(height: 10),
+                                            Text(
+                                              "Confirm Deletion!",
+                                              style: TextStyle(
+                                                fontFamily: "PolySans_Median",
+                                                color: Color.fromARGB(
+                                                    239, 105, 0, 0),
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                            Text(
+                                              "Are you sure you want to delete this deck?",
+                                              style: TextStyle(
+                                                fontFamily: "PolySans_Slim",
+                                                color: Color.fromARGB(
+                                                    239, 105, 0, 0),
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              children: [
+                                                ButtonBar(children: [
+                                                  TextButton(
+                                                    child: Text("Cancel"),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  ),
+                                                  TextButton(
+                                                    child: Text("Yes"),
+                                                    onPressed: () {
+                                                      adminModel.deleteDeck(
+                                                          snapshot.data!.id);
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return Center(
+                                                            child: Container(
+                                                              width: 300,
+                                                              height: 200,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                                image: DecorationImage(
+                                                                    image: AssetImage(
+                                                                        "Images/backgrounds/homepage.png"),
+                                                                    fit: BoxFit
+                                                                        .cover),
+                                                              ),
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceAround,
+                                                                children: [
+                                                                  SizedBox(
+                                                                      height:
+                                                                          10),
+                                                                  Text(
+                                                                    "Banned!",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontFamily:
+                                                                          "PolySans_Median",
+                                                                      color: Color
+                                                                          .fromARGB(
+                                                                              239,
+                                                                              105,
+                                                                              0,
+                                                                              0),
+                                                                      fontSize:
+                                                                          20,
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    "Deck Banned Successfully",
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontFamily:
+                                                                          "PolySans_Slim",
+                                                                      color: Color
+                                                                          .fromARGB(
+                                                                              239,
+                                                                              105,
+                                                                              0,
+                                                                              0),
+                                                                      fontSize:
+                                                                          20,
+                                                                    ),
+                                                                  ),
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .end,
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .end,
+                                                                    children: [
+                                                                      TextButton(
+                                                                        child: Text(
+                                                                            "Close"),
+                                                                        onPressed:
+                                                                            () {
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                        },
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
+                                                      );
+                                                    },
+                                                  ),
+                                                ]),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  });
+                              setState(() {});
                             },
                             child: Container(
                               decoration: const BoxDecoration(
