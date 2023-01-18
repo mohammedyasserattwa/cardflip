@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import "package:flutter/material.dart";
+import 'package:flutter_svg/svg.dart';
 import '../data/Repositories/user_decks.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import '../models/deckModel.dart';
@@ -49,14 +50,12 @@ class Deck extends ConsumerWidget {
                   Row(
                     children: [
                       Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: AssetImage(
-                                  "Images/icons/${ratings.contains(deck!.id) ? "star-fill" : "star-line"}.png"),
-                              fit: BoxFit.cover),
-                        ),
                         width: 15,
                         height: 15,
+                        child: SvgPicture.asset(
+                            "Images/icons/svg/${ratings.contains(deck!.id) ? "like-fill" : "like-line"}.svg",
+                            height: 47.4,
+                            width: 47.4),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 5),
@@ -90,7 +89,7 @@ class Deck extends ConsumerWidget {
               Flexible(
                 child: AutoSizeText(
                   deck!.deckName,
-                  maxLines: min,
+                  maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   minFontSize: 12,
                   stepGranularity: 1,

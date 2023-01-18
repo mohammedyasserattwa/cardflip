@@ -560,7 +560,8 @@ class _LoginState extends ConsumerState<Login> {
                                                   });
                                                 },
                                                 size: 25,
-                                                selectedColor: Colors.white,
+                                                selectedColor: Color.fromARGB(
+                                                    204, 255, 255, 255),
                                                 selectedIconColor:
                                                     Color(0xFF191C32),
                                                 iconSize: 19,

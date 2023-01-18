@@ -55,10 +55,12 @@ class TestModel {
     // test = Test(deck: deck);
   }
 
-  addTestResults(Map wrong, List missed, String time, String userID) async {
+  Future addTestResults(
+      Map wrong, List missed, String time, var seconds, String userID) async {
     testResults = {
       "deckID": deck.id,
       "duration": time,
+      "seconds": seconds,
       "missed": missed,
       "percentage": (100 *
               (testCards.length - (wrong.length + missed.length)) /
@@ -72,21 +74,23 @@ class TestModel {
         .where('userID', isEqualTo: userID)
         .where('deckID', isEqualTo: deck.id)
         .get()
-        .then((value) {
+        .then((value) async {
       if (value.docs.isEmpty) {
         _testCollection.add(testResults);
       } else {
         _testCollection.doc(value.docs[0].id).update(testResults);
       }
-    });
 
-    leaderboardModel.updateLeaderboard(
-        (100 *
-                (testCards.length - (wrong.length + missed.length)) /
-                testCards.length)
-            .round(),
-        time,
-        userID, _testCollection, deck.id);
+      await leaderboardModel.updateLeaderboard(
+          (100 *
+                  (testCards.length - (wrong.length + missed.length)) /
+                  testCards.length)
+              .round(),
+          seconds,
+          userID,
+          _testCollection,
+          deck.id);
+    });
   }
 
   get gettestResults => testResults;

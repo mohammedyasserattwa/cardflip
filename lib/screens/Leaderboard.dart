@@ -51,7 +51,7 @@ class Leaderboard extends ConsumerWidget {
                     Container(
                       width: 26,
                       height: 24,
-                      decoration: (value[tempData[0]]['rank'] < 5)
+                      decoration: (value[tempData[0]]['rank'] <= 5)
                           ? BoxDecoration(
                               image: DecorationImage(
                                   image: AssetImage(((value[tempData[0]]
@@ -165,7 +165,7 @@ class Leaderboard extends ConsumerWidget {
                               Container(
                                 width: 26,
                                 height: 24,
-                                decoration: (i < 5)
+                                decoration: (i <= 5)
                                     ? BoxDecoration(
                                         image: DecorationImage(
                                             image: AssetImage(((value.values
@@ -381,42 +381,86 @@ class Leaderboard extends ConsumerWidget {
                             child: NoGlowScroll(
                               child: Scrollbar(
                                 child: ListView(
-                                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
-                                    // if (userData?.id != null)
-                                    //   userRank(i)
-                                    // deck to function in leaderboard model that returns list
-                                    // getData().then((value) {
-                                    //   value = model.leaderboardList;
-                                    // }),
-                                    // for (int i = 0;
-                                    //     i < value.length && i < 250;
-                                    //     i++)
-                                    //   userRank(i)
                                     FutureBuilder(
-                                        future: getData(userData!.id),
+                                        future: Future.delayed(
+                                            Duration(seconds: 1),
+                                            () => getData(userData!.id)),
                                         builder: (context, snapshot) {
                                           if (snapshot.hasError) {
                                             return Center(
-                                                child: Text(snapshot.stackTrace
-                                                    .toString()));
-                                            // child: Text(
-                                            //     snapshot.error.toString()));
+                                                // child: Text(snapshot.stackTrace
+                                                //     .toString()));
+                                                child: Text(
+                                                    snapshot.error.toString()));
                                           }
                                           if (snapshot.hasData) {
-                                            leaderboard = snapshot.data!;
-
+                                            if (snapshot.data.isEmpty) {
+                                              return Column(
+                                                children: [
+                                                  SizedBox(
+                                                    height: 170,
+                                                  ),
+                                                  Center(
+                                                    child: SizedBox(
+                                                      width: 250,
+                                                      child: Column(
+                                                        children: [
+                                                          Text(
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: TextStyle(
+                                                                  color: const Color(
+                                                                      0xff484848),
+                                                                  fontSize: 20,
+                                                                  fontFamily:
+                                                                      "PolySans_Neutral"),
+                                                              "The leaderboard is currently empty."),
+                                                          SizedBox(
+                                                            height: 10,
+                                                          ),
+                                                          Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 8.0),
+                                                            child: Text(
+                                                              "Be the first to claim your spot!",
+                                                              style: TextStyle(
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          82,
+                                                                          82,
+                                                                          82),
+                                                                  fontSize: 16,
+                                                                  fontFamily:
+                                                                      "PolySans_Neutral"),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            } else {
+                                              leaderboard = snapshot.data!;
+                                            }
                                             return userRank(
-                                                leaderboard, userData.id);
+                                                leaderboard, userData!.id);
                                           } else
                                             return Column(
                                               children: [
                                                 SizedBox(
                                                   height: 200,
                                                 ),
-                                                Center(
-                                                    child:
-                                                        CircularProgressIndicator()),
+                                                CircularProgressIndicator(
+                                                  color: Color.fromARGB(
+                                                      255, 37, 124, 43),
+                                                  semanticsValue: 'Loading',
+                                                ),
                                               ],
                                             );
                                         })

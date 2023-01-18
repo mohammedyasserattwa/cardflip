@@ -32,10 +32,9 @@ class LeaderboardModel {
     var data = await deckModel.leaderboardUsers(deck.id);
 
     for (int i = 0; i < data.length; i++) {
-      usersInfo
-          .add(await userModel.getNameandPic(data[i.toString()]!['userID']));
+      usersInfo.add(await userModel.getNameandPic(data[i]!['userID']));
 
-      ranks.add((data[i.toString()]!['rank']));
+      ranks.add((data[i]!['rank']));
     }
 
     for (int i = 0; i < data.length; i++) {
@@ -54,153 +53,131 @@ class LeaderboardModel {
     return s;
   }
 
-  updateLeaderboard(int percentage, String time, String userID,
+  Future updateLeaderboard(int percentage, int time, String userID,
       dynamic testCollection, String deckID) async {
-    int rank = 0;
-    var myoldrank;
+    int rank = 1;
+    // int rank = 1;
 
     QuerySnapshot snapshot =
         await testCollection.where('deckID', isEqualTo: deckID).get();
 
-    if (snapshot.docs.isNotEmpty) {
-      Query rankcalc = testCollection
-          .where('percentage', isEqualTo: percentage)
-          .where('duration', isEqualTo: time);
-      QuerySnapshot snapshot2 = await rankcalc.get();
-      int count = snapshot2.docs.length;
-      if (snapshot2.docs.isEmpty) {
-        Query rankcalc = testCollection
-            .where('percentage', isEqualTo: percentage)
-            .where('duration', isGreaterThan: time);
-        QuerySnapshot snapshot3 = await rankcalc.get();
-        int count = snapshot3.docs.length;
-        if (snapshot3.docs.isEmpty) {
-          Query rankcalc =
-              testCollection.where('percentage', isGreaterThan: percentage);
-          QuerySnapshot snapshot4 = await rankcalc.get();
-          int count = snapshot4.docs.length;
-          rank = (count + 1);
-        } else
-          rank = count;
-      } else
-        rank = count;
-    }
+    Query rankCalc = testCollection
+        .where('percentage', isGreaterThanOrEqualTo: percentage)
+        .orderBy('percentage', descending: true)
+        .orderBy('seconds');
 
-    // developer.log(rank.toString());
+    QuerySnapshot snapshot4 = await rankCalc.get();
+    if (snapshot4.docs.isEmpty) {
+      rank = 1;
+    }
+    for (var i = 0; i < snapshot4.docs.length; i++) {
+      if ((snapshot4.docs[i].data() as Map<String, dynamic>)['percentage'] ==
+              percentage &&
+          (snapshot4.docs[i].data() as Map<String, dynamic>)['seconds'] ==
+              time) {
+        rank += i;
+        break;
+      } else if ((snapshot4.docs[i].data()
+                  as Map<String, dynamic>)['percentage'] ==
+              percentage &&
+          (snapshot4.docs[i].data() as Map<String, dynamic>)['seconds'] <
+              time) {
+        rank += i + 1;
+        break;
+      } else if ((snapshot4.docs[i].data()
+              as Map<String, dynamic>)['percentage'] <
+          percentage) {
+        rank += i + 1;
+        break;
+      }
+    }
 
     DocumentSnapshot doc =
         await FirebaseFirestore.instance.collection("deck").doc(deckID).get();
 
     if (doc.exists) {
       var leaderboard = (doc.data() as Map<String, dynamic>)["leaderboard"];
-
-      bool userFound = false;
-
-      for (int i = 0; i < leaderboard.length; i++) {
-        try {
-          if (leaderboard[i] != null &&
-              leaderboard[i].containsKey("userID") &&
-              leaderboard[i]["userID"].isNotEmpty &&
-              leaderboard[i]["userID"] == userID) {
+      if (leaderboard.length == 0) {
+        // Add new user to the leaderboard
+        Map<String, dynamic> newUser = {"rank": rank, "userID": userID};
+        await FirebaseFirestore.instance.collection("deck").doc(deckID).update({
+          "leaderboard": FieldValue.arrayUnion([newUser])
+        });
+      } else {
+        bool userFound = false;
+        int myoldrank = 0;
+        int index = 0;
+        for (int i = 0; i < leaderboard.length; i++) {
+          if (leaderboard[i] != null && leaderboard[i]["userID"] == userID) {
             userFound = true;
             myoldrank = leaderboard[i]["rank"];
-            if (rank > 50 && myoldrank <= 50) {
-              //update myrank and subtract 1 from everyone whose rank < myoldrank
-
-              for (int j = 0; j < leaderboard.length; j++) {
-                if (leaderboard[j]["rank"] < myoldrank) {
-                  FirebaseFirestore.instance
-                      .collection("deck")
-                      .doc(deckID)
-                      .update({
-                    "leaderboard.$j": {
-                      "leaderboard.$j.rank": leaderboard[j]["rank"] - 1,
-                      "leaderboard.$j.userID": userID
-                    }
-                  });
-                }
-              }
-              FirebaseFirestore.instance.collection("deck").doc(deckID).update({
-                "leaderboard.$i": {
-                  {"leaderboard.$i.rank": rank, "leaderboard.$i.userID": userID}
-                }
-              });
-              // todo
-              developer.log("rank>50 && myoldrank<=50");
-            } else if (rank <= 50 && myoldrank <= 50) {
-              //subtract 1 from everyone's ranks < myoldrank in the database then update myrank and myuserID into leaderboard then adds one to everyone's ranks < myrank
-
-              for (int j = 0; j < leaderboard.length; j++) {
-                if (leaderboard[j]["rank"] < myoldrank) {
-                  FirebaseFirestore.instance
-                      .collection("deck")
-                      .doc(deckID)
-                      .update({
-                    "leaderboard.$j": {
-                      "leaderboard.$j.rank": leaderboard[j]["rank"] - 1,
-                      "leaderboard.$j.userID": userID
-                    }
-                  });
-                }
-                if (leaderboard[j]["rank"] < rank) {
-                  FirebaseFirestore.instance
-                      .collection("deck")
-                      .doc(deckID)
-                      .update({
-                    "leaderboard.$j": {
-                      "leaderboard.$j.rank": leaderboard[j]["rank"] + 1,
-                      "leaderboard.$j.userID": userID
-                    }
-                  });
-                }
-              }
-              FirebaseFirestore.instance.collection("deck").doc(deckID).update({
-                "leaderboard.$i": {
-                  {"leaderboard.$i.rank": rank, "leaderboard.$i.userID": userID}
-                }
-              });
-              // todo NO USERID FOR SOME REASON
-              developer.log(i.toString() + "rank<=50 && myoldrank<=50");
-            }
+            index = i;
             break;
           }
-
-          // try {if (leaderboard[i] != null) {if (rank <= 50) {
-          if (!userFound && rank <= 50 && leaderboard.length > 1) {
-            // add 1 to everyone's ranks below myrank in the database then add myrank and myuserID into leaderboard
-            for (int j = 0; j < leaderboard.length; j++) {
-              if (leaderboard[j]["rank"] < rank) {
-                FirebaseFirestore.instance
-                    .collection("deck")
-                    .doc(deckID)
-                    .update({
-                  "leaderboard.$j": {
-                    {
-                      "leaderboard.$j.rank": rank + 1,
-                      "leaderboard.$j.userID": userID
+        }
+        if (userFound) {
+          if (rank > 50) {
+            // update myrank and subtract 1 from everyone whose rank < myoldrank
+            FirebaseFirestore.instance.runTransaction((transaction) async {
+              DocumentSnapshot snapshot5 = await transaction.get(doc.reference);
+              List<dynamic> leaderboard =
+                  (snapshot5.data() as Map<String, dynamic>)['leaderboard'];
+              if (myoldrank <= 50) {
+                for (int j = 0; j < leaderboard.length; j++) {
+                  if (j != index && leaderboard[j]["rank"] < myoldrank) {
+                    leaderboard[j]["rank"] = leaderboard[j]["rank"] - 1;
+                  }
+                }
+              }
+              leaderboard[index]["rank"] = rank;
+              leaderboard[index]["userID"] = userID;
+              transaction.update(doc.reference, {"leaderboard": leaderboard});
+            });
+          } else if (rank <= 50) {
+            FirebaseFirestore.instance.runTransaction((transaction) async {
+              DocumentSnapshot snapshot5 = await transaction.get(doc.reference);
+              List<dynamic> leaderboard =
+                  (snapshot5.data() as Map<String, dynamic>)['leaderboard'];
+              if (myoldrank < rank) {
+                for (int j = 0; j < leaderboard.length; j++) {
+                  if (j != index) {
+                    if (leaderboard[j]["rank"] > myoldrank) {
+                      leaderboard[j]["rank"] = leaderboard[j]["rank"] - 1;
+                    }
+                    if (leaderboard[j]["rank"] >= rank) {
+                      leaderboard[j]["rank"] = leaderboard[j]["rank"] + 1;
                     }
                   }
-                });
+                }
+              } else if (myoldrank > rank) {
+                for (int j = 0; j < leaderboard.length; j++) {
+                  if (j != index) {
+                    if (leaderboard[j]["rank"] >= rank &&
+                        leaderboard[j]["rank"] < myoldrank) {
+                      leaderboard[j]["rank"] = leaderboard[j]["rank"] + 1;
+                    }
+                  }
+                }
+              }
+              leaderboard[index]["rank"] = rank;
+              leaderboard[index]["userID"] = userID;
+              transaction.update(doc.reference, {"leaderboard": leaderboard});
+            });
+          }
+        } else if (!userFound && rank <= 50) {
+// add 1 to everyone's ranks below myrank in the database then add myrank and myuserID into leaderboard
+          FirebaseFirestore.instance.runTransaction((transaction) async {
+            DocumentSnapshot snapshot5 = await transaction.get(doc.reference);
+            var leaderboard =
+                (snapshot5.data() as Map<String, dynamic>)['leaderboard'];
+            for (int j = 0; j < leaderboard.length; j++) {
+              if (leaderboard[j]["rank"] >= rank) {
+                leaderboard[j]["rank"] = leaderboard[j]["rank"] + 1;
               }
             }
-            //add new user to the leaderboard
-            Map<String, dynamic> newUser = {"rank": rank, "userID": userID};
-            FirebaseFirestore.instance.collection("deck").doc(deckID).update({
-              "leaderboard": FieldValue.arrayUnion([newUser])
-            });
-            // todo
-            developer.log("userfound and rank<=50");
-          } else if ((!userFound && rank > 50) || leaderboard.length == 0) {
-            // just add myrank and myuserID into leaderboard
-            Map<String, dynamic> newUser = {"rank": rank, "userID": userID};
-            FirebaseFirestore.instance.collection("deck").doc(deckID).update({
-              "leaderboard": FieldValue.arrayUnion([newUser])
-            });
-            // todo
-            developer.log("userfound and rank>50");
-          }
-        } catch (e) {
-          developer.log(e.toString());
+            leaderboard.add({"rank": rank, "userID": userID});
+            transaction.update(doc.reference, {"leaderboard": leaderboard});
+          });
         }
       }
     }

@@ -43,7 +43,7 @@ class _TestState extends ConsumerState<Test>
   List<double> end = [];
   int i = 0;
   var random = [0, 1, 2];
-  List<List<int>> randomlist = [];
+  late List<List<int>> randomlist;
   var testCardsList = [];
   late List<bool> isActive = [];
   late bool viable;
@@ -51,6 +51,8 @@ class _TestState extends ConsumerState<Test>
   List missedCards = [];
   Map wrongCards = {};
   var timeTaken;
+  var seconds;
+  bool gotData = false;
   String background = "Images/backgrounds/testpage.png";
   // String background = "Images/backgrounds/finaltest.png";
   // ugly all red or all pink
@@ -87,6 +89,8 @@ class _TestState extends ConsumerState<Test>
       if (timer != null) {
         timeTaken = DateTimeFormat.relative(DateTime.now().subtract(
             Duration(minutes: int.parse(min), seconds: int.parse(sec))));
+        seconds = Duration(minutes: int.parse(min)).inSeconds + int.parse(sec);
+
         // timer!.cancel();
         // timer = null;
       }
@@ -124,7 +128,9 @@ class _TestState extends ConsumerState<Test>
       });
 
       random.shuffle();
+      randomlist = List.filled(definitions.length, [0, 1, 2]);
       randomlist = randomize(definitions.length);
+
       start = List.filled(definitions.length, 0.0);
       end = List.filled(definitions.length, 0.0);
       isActive = List.filled(definitions.length, false);
@@ -152,10 +158,9 @@ class _TestState extends ConsumerState<Test>
   }
 
   List<List<int>> randomize(int size) {
-    List<List<int>> randomlist = [];
     for (int i = 0; i < size; i++) {
       random.shuffle();
-      randomlist.add(random);
+      randomlist[i] = [...random];
     }
     return randomlist;
   }
@@ -297,8 +302,12 @@ class _TestState extends ConsumerState<Test>
                             missedCards.add(testCardsList[m][1]);
                           }
                           stopwatchsubscrip!.pause();
-                          model.addTestResults(
-                              wrongCards, missedCards, timeTaken, userData!.id);
+                          model
+                              .addTestResults(wrongCards, missedCards,
+                                  timeTaken, seconds, userData!.id)
+                              .then(
+                                (value) => gotData = true,
+                              );
                         });
                       },
                       child: Wrap(
@@ -440,9 +449,10 @@ class _TestState extends ConsumerState<Test>
                                                                     List.filled(
                                                                         3,
                                                                         null));
-                                                                if (terms[j][
-                                                                        random[
-                                                                            k]] ==
+                                                                if (terms[
+                                                                        j][randomlist[
+                                                                            j]
+                                                                        [k]] ==
                                                                     testCardsList[
                                                                         j][1]) {
                                                                   jiggle[j] = [
@@ -473,8 +483,10 @@ class _TestState extends ConsumerState<Test>
                                                                               j]
                                                                           [
                                                                           1]] = terms[j]
-                                                                      [random[
-                                                                          k]];
+                                                                      [
+                                                                      randomlist[
+                                                                              j]
+                                                                          [k]];
                                                                 }
                                                                 Timer(
                                                                     Duration(
@@ -496,12 +508,19 @@ class _TestState extends ConsumerState<Test>
                                                                   i++;
                                                                   stopwatchsubscrip!
                                                                       .pause();
-                                                                  model.addTestResults(
-                                                                      wrongCards,
-                                                                      missedCards,
-                                                                      timeTaken,
-                                                                      userData!
-                                                                          .id);
+                                                                  model
+                                                                      .addTestResults(
+                                                                          wrongCards,
+                                                                          missedCards,
+                                                                          timeTaken,
+                                                                          seconds,
+                                                                          userData!
+                                                                              .id)
+                                                                      .then(
+                                                                        (value) =>
+                                                                            gotData =
+                                                                                true,
+                                                                      );
                                                                 }
                                                               });
                                                           },
@@ -656,109 +675,136 @@ class _TestState extends ConsumerState<Test>
                                         vertical: 35.0, horizontal: 20.0),
                                     child: Column(
                                       children: [
-                                        Stack(
-                                          alignment: Alignment.bottomRight,
-                                          children: [
-                                            PhysicalShape(
-                                              clipBehavior: Clip.hardEdge,
-                                              color: Colors.transparent,
-                                              clipper: ShapeBorderClipper(
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              16),
-                                                      side: BorderSide(
-                                                          width: 2))),
-                                              child: Shimmer(
-                                                color: Color.fromARGB(
-                                                    255, 253, 255, 226),
-                                                colorOpacity: 0.5,
-                                                interval: Duration(seconds: 5),
-                                                direction:
-                                                    ShimmerDirection.fromRTLB(),
-                                                child: RawMaterialButton(
-                                                    enableFeedback: false,
-                                                    splashColor:
-                                                        Colors.transparent,
-                                                    highlightColor:
-                                                        Colors.transparent,
-                                                    elevation: 0,
-                                                    focusElevation: 0,
-                                                    highlightElevation: 0,
-                                                    disabledElevation: 0,
-                                                    padding: EdgeInsets.all(0),
-                                                    materialTapTargetSize:
-                                                        MaterialTapTargetSize
-                                                            .shrinkWrap,
-                                                    fillColor: Color.fromARGB(
-                                                        230, 200, 255, 209),
-                                                    constraints: BoxConstraints(
-                                                        maxWidth: 305.0,
-                                                        maxHeight: 61.0),
-                                                    shape:
-                                                        RoundedRectangleBorder(
+                                        (gotData)
+                                            ? Stack(
+                                                alignment:
+                                                    Alignment.bottomRight,
+                                                children: [
+                                                  PhysicalShape(
+                                                    clipBehavior: Clip.hardEdge,
+                                                    color: Colors.transparent,
+                                                    clipper: ShapeBorderClipper(
+                                                        shape: RoundedRectangleBorder(
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
-                                                                        16.0),
+                                                                        16),
                                                             side: BorderSide(
-                                                              width: 2,
-                                                              color: Color(
-                                                                  0xCC6BFFA6),
-                                                            )),
-                                                    onPressed: () => {},
-                                                    child: Padding(
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: 8.0),
-                                                      child: Align(
-                                                        alignment:
-                                                            Alignment.center,
-                                                        child: AutoSizeText(
-                                                          "View Leaderboard",
-                                                          maxLines: 1,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          minFontSize: 16,
-                                                          stepGranularity: 1,
-                                                          style: TextStyle(
-                                                            fontFamily:
-                                                                "PolySans_Neutral",
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    36,
-                                                                    36,
-                                                                    36),
-                                                            fontSize: 22,
-                                                          ),
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                        ),
-                                                      ),
-                                                    )),
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                Future((() =>
-                                                    Navigator.pushNamed(
-                                                        context, '/leaderboard',
-                                                        arguments: {
-                                                          "deck": widget.deck
-                                                        })));
-                                              },
-                                              child: Container(
-                                                  width: 305,
-                                                  height: 70,
-                                                  decoration: BoxDecoration(
-                                                    image: DecorationImage(
-                                                        image: AssetImage(
-                                                            "Images/icons/stars.png")),
-                                                  )),
-                                            )
-                                          ],
-                                        ),
+                                                                width: 2))),
+                                                    child: Shimmer(
+                                                      color: Color.fromARGB(
+                                                          255, 253, 255, 226),
+                                                      colorOpacity: 0.5,
+                                                      interval:
+                                                          Duration(seconds: 5),
+                                                      direction:
+                                                          ShimmerDirection
+                                                              .fromRTLB(),
+                                                      child: RawMaterialButton(
+                                                          enableFeedback: false,
+                                                          splashColor: Colors
+                                                              .transparent,
+                                                          highlightColor: Colors
+                                                              .transparent,
+                                                          elevation: 0,
+                                                          focusElevation: 0,
+                                                          highlightElevation: 0,
+                                                          disabledElevation: 0,
+                                                          padding:
+                                                              EdgeInsets.all(0),
+                                                          materialTapTargetSize:
+                                                              MaterialTapTargetSize
+                                                                  .shrinkWrap,
+                                                          fillColor:
+                                                              Color.fromARGB(
+                                                                  230,
+                                                                  200,
+                                                                  255,
+                                                                  209),
+                                                          constraints:
+                                                              BoxConstraints(
+                                                                  maxWidth:
+                                                                      305.0,
+                                                                  maxHeight:
+                                                                      61.0),
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              16.0),
+                                                                  side:
+                                                                      BorderSide(
+                                                                    width: 2,
+                                                                    color: Color(
+                                                                        0xCC6BFFA6),
+                                                                  )),
+                                                          onPressed: () {},
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        8.0),
+                                                            child: Align(
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              child:
+                                                                  AutoSizeText(
+                                                                "View Leaderboard",
+                                                                maxLines: 1,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                minFontSize: 16,
+                                                                stepGranularity:
+                                                                    1,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontFamily:
+                                                                      "PolySans_Neutral",
+                                                                  color: Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          36,
+                                                                          36,
+                                                                          36),
+                                                                  fontSize: 22,
+                                                                ),
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                              ),
+                                                            ),
+                                                          )),
+                                                    ),
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      if (gotData)
+                                                        Future((() =>
+                                                            Navigator.pushNamed(
+                                                                context,
+                                                                '/leaderboard',
+                                                                arguments: {
+                                                                  "deck": widget
+                                                                      .deck
+                                                                })));
+                                                    },
+                                                    child: Container(
+                                                        width: 305,
+                                                        height: 70,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          image: DecorationImage(
+                                                              image: AssetImage(
+                                                                  "Images/icons/stars.png")),
+                                                        )),
+                                                  )
+                                                ],
+                                              )
+                                            : Container(),
                                         SizedBox(
                                           height: 30,
                                         ),
