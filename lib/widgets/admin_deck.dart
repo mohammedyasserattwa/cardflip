@@ -46,7 +46,10 @@ class _AdminDeckState extends State<AdminDeck> {
           }
           if (snapshot.hasData) {
             return GestureDetector(
-              onTap: widget.onTap,
+              onTap: () {
+                Navigator.pushNamed(context, '/deck',
+                    arguments: {"deck": snapshot.data});
+              },
               child: Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(

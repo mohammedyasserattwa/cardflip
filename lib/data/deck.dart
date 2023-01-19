@@ -36,6 +36,7 @@ class Deck {
       id: map['id'],
       userID: map['userID'],
       user: user,
+      cards:map["cards"],
     );
   }
   factory Deck.fromSnapshot(QueryDocumentSnapshot<Map> map, Map user) {

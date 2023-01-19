@@ -2,6 +2,7 @@ import 'package:cardflip/data/deck.dart';
 import 'package:cardflip/models/userModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../data/card.dart';
 import '../data/dummy_data.dart';
 
 class AdminModel {
@@ -41,12 +42,18 @@ class AdminModel {
 
     final data = querySnapshot.docs.map((doc) async {
       final user = await userModel.userByID(doc.get("userID"));
+      List<Card> cards = [];
+      final flashcards = doc.get("flashcards");
+      for (int i = 0; i < flashcards.length; i++) {
+        cards.add(Card.fromMap(flashcards[i]));
+      }
       return Deck.fromMap({
         "name": doc.get("name"),
         "rating": doc.get("rating"),
         "userID": doc.get("userID"),
         "description": doc.get("description"),
         "id": doc.id,
+        "cards": cards
       }, user);
     }).toList();
     return data;

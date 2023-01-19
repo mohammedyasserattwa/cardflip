@@ -238,10 +238,7 @@ class _AdminState extends State<Admin> {
                                       path:
                                           "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
                                       min: 2,
-                                      onTap: () async {
-                                        // model.deleteDeck(
-                                        //     snapshot.data![i]["id"]);
-                                      },
+                                      onTap: () {},
                                     ),
                                     if (i + 1 < snapshot.data!.length)
                                       AdminDeck(
