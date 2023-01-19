@@ -217,8 +217,7 @@ class _LibraryState extends State<Library> {
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, '/adddeck',
-                              arguments: {'screens': 'add'});
+                          Navigator.pushNamed(context, '/adddeck');
                         },
                         child: Container(
                             decoration: const BoxDecoration(

@@ -351,8 +351,9 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                                         setState(() {});
                                                       }
                                                       await userModel
-                                                      .updateFavourites(
-                                                          favourites, userData);
+                                                          .updateFavourites(
+                                                              favourites,
+                                                              userData);
                                                     },
                                                     child: Container(
                                                       width: 45,
@@ -391,7 +392,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                                                       BorderRadius
                                                                           .circular(
                                                                               10),
-                                                                  image: DecorationImage(
+                                                                  image: const DecorationImage(
                                                                       image: AssetImage(
                                                                           "Images/backgrounds/homepage.png"),
                                                                       fit: BoxFit
@@ -405,7 +406,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                                                     const SizedBox(
                                                                         height:
                                                                             10),
-                                                                    Text(
+                                                                    const Text(
                                                                       "Confirm Deletion!",
                                                                       style:
                                                                           TextStyle(
@@ -420,7 +421,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                                                             20,
                                                                       ),
                                                                     ),
-                                                                    Text(
+                                                                    const Text(
                                                                       "Are you sure you want to delete this deck?",
                                                                       style:
                                                                           TextStyle(
@@ -446,13 +447,13 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                                                         ButtonBar(
                                                                             children: [
                                                                               TextButton(
-                                                                                child: Text("Cancel"),
+                                                                                child: const Text("Cancel"),
                                                                                 onPressed: () {
                                                                                   Navigator.of(context).pop();
                                                                                 },
                                                                               ),
                                                                               TextButton(
-                                                                                child: Text("Yes"),
+                                                                                child: const Text("Yes"),
                                                                                 onPressed: () {
                                                                                   AdminModel().deleteDeck(widget.deck.id);
                                                                                   Navigator.of(context).pop();
@@ -465,13 +466,13 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                                                                           height: 200,
                                                                                           decoration: BoxDecoration(
                                                                                             borderRadius: BorderRadius.circular(10),
-                                                                                            image: DecorationImage(image: AssetImage("Images/backgrounds/homepage.png"), fit: BoxFit.cover),
+                                                                                            image: const DecorationImage(image: AssetImage("Images/backgrounds/homepage.png"), fit: BoxFit.cover),
                                                                                           ),
                                                                                           child: Column(
                                                                                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                                                             children: [
-                                                                                              SizedBox(height: 10),
-                                                                                              Text(
+                                                                                              const SizedBox(height: 10),
+                                                                                              const Text(
                                                                                                 "Banned!",
                                                                                                 style: TextStyle(
                                                                                                   fontFamily: "PolySans_Median",
@@ -479,7 +480,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                                                                                   fontSize: 20,
                                                                                                 ),
                                                                                               ),
-                                                                                              Text(
+                                                                                              const Text(
                                                                                                 "Deck Banned Successfully",
                                                                                                 style: TextStyle(
                                                                                                   fontFamily: "PolySans_Slim",
@@ -492,7 +493,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                                                                                 crossAxisAlignment: CrossAxisAlignment.end,
                                                                                                 children: [
                                                                                                   TextButton(
-                                                                                                    child: Text("Close"),
+                                                                                                    child: const Text("Close"),
                                                                                                     onPressed: () {
                                                                                                       Navigator.of(context).pop();
                                                                                                     },
@@ -518,7 +519,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                                     },
                                                     child: Container(
                                                         decoration:
-                                                            BoxDecoration(
+                                                            const BoxDecoration(
                                                           image: DecorationImage(
                                                               image: AssetImage(
                                                                   "Images/icons/banDeck.png"),
@@ -527,7 +528,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                                         ),
                                                         width: 45,
                                                         height: 45,
-                                                        child: Text("")),
+                                                        child: const Text("")),
                                                   ),
                                           ],
                                         ),
@@ -550,20 +551,11 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                                 children: [
                                                   Row(
                                                     children: [
-                                                      Container(
-                                                          decoration:
-                                                              const BoxDecoration(
-                                                            image:
-                                                                DecorationImage(
-                                                                    image: AssetImage(
-                                                                        "Images/icons/profile.png"), //TODO:PUT THE USER'S ICON
-                                                                    fit: BoxFit
-                                                                        .cover),
-                                                          ),
-                                                          width: 35,
-                                                          height: 35,
-                                                          child:
-                                                              const Text("")),
+                                                      SvgPicture.asset(
+                                                        "Images/avatars/${widget.deck.user["profileIcon"]}.svg",
+                                                        width: 35,
+                                                        height: 35,
+                                                      ),
                                                       const SizedBox(
                                                         width: 10,
                                                       ),
@@ -692,24 +684,34 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                                 width: 10,
                                               ),
                                               GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.pushNamed(
+                                                        context, '/editdeck',
+                                                        arguments: {
+                                                          "deck": widget.deck
+                                                        });
+                                                  },
                                                   child: Container(
-                                                width: 45,
-                                                height: 45,
-                                                decoration: const BoxDecoration(
-                                                  color: Color(0xf1A0404),
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(12)),
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: SvgPicture.asset(
-                                                      "Images/icons/svg/edit.svg",
-                                                      width: 28,
-                                                      height: 28),
-                                                ),
-                                              )),
+                                                    width: 45,
+                                                    height: 45,
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      color: Color(0xf1A0404),
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  12)),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: SvgPicture.asset(
+                                                          "Images/icons/svg/edit.svg",
+                                                          width: 28,
+                                                          height: 28),
+                                                    ),
+                                                  )),
                                               const SizedBox(
                                                 width: 10,
                                               ),
@@ -768,24 +770,24 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                             onTap: () {
                               if (snapshot.hasData) {
                                 final SharedPreferences prefs = snapshot.data!;
-                              List<dynamic> uncompleteDecks =
-                                  UncompletedDecks.fromJson(prefs.getString(
-                                          "uncompleted_decks_${userData.id}") ??
-                                      "[]");
-                              UncompletedDeckItem item = UncompletedDeckItem(
-                                  uid: userID, deckID: widget.deck.id);
-                              if (uncompleteDecks
-                                  .where((e) =>
-                                      e.deckID.trim().toLowerCase() ==
-                                      item.deckID.trim().toLowerCase())
-                                  .isEmpty) {
-                                uncompleteDecks.add(item);
-                                final data = json.encode(uncompleteDecks
-                                    .map((e) => e.toJson())
-                                    .toList());
-                                prefs.setString(
-                                    "uncompleted_decks_${userData.id}", data);
-                                  }
+                                List<dynamic> uncompleteDecks =
+                                    UncompletedDecks.fromJson(prefs.getString(
+                                            "uncompleted_decks_${userData.id}") ??
+                                        "[]");
+                                UncompletedDeckItem item = UncompletedDeckItem(
+                                    uid: userID, deckID: widget.deck.id);
+                                if (uncompleteDecks
+                                    .where((e) =>
+                                        e.deckID.trim().toLowerCase() ==
+                                        item.deckID.trim().toLowerCase())
+                                    .isEmpty) {
+                                  uncompleteDecks.add(item);
+                                  final data = json.encode(uncompleteDecks
+                                      .map((e) => e.toJson())
+                                      .toList());
+                                  prefs.setString(
+                                      "uncompleted_decks_${userData.id}", data);
+                                }
                               }
                               ref.read(FlashcardStateProvider.notifier).state =
                                   "1";

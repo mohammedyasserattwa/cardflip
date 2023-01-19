@@ -11,7 +11,7 @@ class Deck {
   String id;
   List<Card> cards;
   late Leaderboard leaderboard;
-  List<Tag> tags = [];
+  List<String> tags = [];
   String userID;
   Map user;
   Deck({
@@ -20,7 +20,7 @@ class Deck {
     this.author = "",
     required this.rating,
     required this.id,
-    this.tags = const <Tag>[],
+    this.tags = const <String>[],
     this.cards = const <Card>[],
     this.userID = "01f4bll7",
     required this.user,
@@ -35,7 +35,7 @@ class Deck {
       id: map['id'],
       userID: map['userID'],
       user: user,
-      cards:map["cards"],
+      cards: map["cards"],
     );
   }
   factory Deck.fromSnapshot(QueryDocumentSnapshot<Map> map, Map user) {
@@ -45,6 +45,7 @@ class Deck {
       rating: double.parse(map['rating']),
       id: map.id,
       userID: map['userID'],
+      tags: (map["tags"] as List).map((item) => item as String).toList(),
       user: user,
     );
   }

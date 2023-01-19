@@ -59,7 +59,11 @@ class Main extends StatelessWidget {
           '/addFlashcards': (context) => AddFlashcards(deck: data!["deck"]),
           '/editprofile': (context) => const EditProfile(),
           '/adddeck': (context) => const Adddeck(
-                screens: '',
+                screens: 'add',
+              ),
+          '/editdeck': (context) => Adddeck(
+                screens: 'edit',
+                deck: data!["deck"],
               ),
           '/adminUsers': (context) => AdminUsers(),
           '/adminReports': (context) => AdminReports(),

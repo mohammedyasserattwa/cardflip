@@ -27,7 +27,7 @@ class DeckModel {
 
   List<Deck> deckByTagID(String id) {
     return recentDecks
-        .where((element) => element.tags.where((e) => e.tagID == id).isNotEmpty)
+        .where((element) => element.tags.where((e) => e == id).isNotEmpty)
         .toList();
   }
 
@@ -62,6 +62,7 @@ class DeckModel {
       id: deck.id,
       userID: deck.get('userID'),
       cards: cards,
+      tags: (deck.get("tags") as List).map((item) => item as String).toList(),
       user: await userModel.getUserByID(deck.get("userID")),
     );
   }
@@ -119,6 +120,7 @@ class DeckModel {
           id: doc.id,
           userID: doc.get('userID'),
           cards: cards,
+          tags: (doc.get("tags") as List).map((item) => item as String).toList(),
           user: await userModel.getUserByID(doc.get("userID")),
         ));
       }
@@ -150,6 +152,9 @@ class DeckModel {
           id: doc.id,
           userID: doc.get('userID'),
           cards: cards,
+          tags: (doc.get("tags") as List)
+              .map((item) => item as String)
+              .toList(),
           user: await userModel.getUserByID(doc.get("userID")),
         ));
       }
