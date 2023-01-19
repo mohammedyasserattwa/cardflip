@@ -10,6 +10,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/deck_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Search extends ConsumerWidget {
   DeckModel deck = DeckModel();
@@ -231,7 +232,7 @@ class FilterScreen extends ConsumerStatefulWidget {
 
 class _FilterScreenState extends ConsumerState<FilterScreen> {
   DeckModel deck = DeckModel();
-
+  final _deckCollection = FirebaseFirestore.instance.collection("deck");
   final _activeFilterSelection = BoxDecoration(
     color: const Color(0x441A0404),
     borderRadius: BorderRadius.circular(12),
@@ -287,10 +288,18 @@ class _FilterScreenState extends ConsumerState<FilterScreen> {
                     setState(() {
                       resetFilters();
                       filters[0] = true;
-                      dynamic sort = ref.watch(sortProvider);
-
-                      ref.read(sortProvider.notifier).state =
-                          deck.topRatedDecks.cast<Map>();
+                      Future<List<dynamic>> getData() async {
+                        QuerySnapshot querySnapshot =
+                            await _deckCollection.orderBy("rating").get();
+                        final data = querySnapshot.docs
+                            .map((doc) => {
+                                  "name": doc.get("name"),
+                                  "id": doc.id,
+                                  "rating": doc.get("rating")
+                                })
+                            .toList();
+                        return data;
+                      }
                     });
                   },
                   child: Container(
@@ -309,7 +318,7 @@ class _FilterScreenState extends ConsumerState<FilterScreen> {
                       dynamic sort = ref.watch(sortProvider);
 
                       ref.read(sortProvider.notifier).state =
-                          deck.recentDecks.cast<Map>();
+                          deck.getdeckByID("0") as List<Map>;
                     });
                   },
                   child: Container(
