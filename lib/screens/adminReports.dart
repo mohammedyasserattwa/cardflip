@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cardflip/main.dart';
 import 'package:cardflip/models/deckModel.dart';
+import 'package:cardflip/models/userModel.dart';
 import 'package:cardflip/widgets/deck.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -191,8 +192,18 @@ class AdminReports extends StatelessWidget {
                                 padding:
                                     const EdgeInsets.fromLTRB(20, 20, 0, 0),
                                 child: FutureBuilder(
-                                    future: deckModel.getdeckByID(
-                                        snapshot.data![i]['deckID']),
+                                    future: deckModel
+                                        .getdeckByID(
+                                            snapshot.data![i]['deckID'])
+                                        .then((value) async{
+                                      final reporter =await UserModel().getUserByID(
+                                          snapshot.data![i]["reporterID"]);
+                                      Map<String, dynamic> result = {
+                                        "deckData": value,
+                                        "reportingUser": reporter
+                                      };
+                                      return result;
+                                    }),
                                     builder: (context, reportedDecks) {
                                       if (reportedDecks.hasData) {
                                         return Row(
@@ -205,7 +216,7 @@ class AdminReports extends StatelessWidget {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "${reportedDecks.data!.name}",
+                                                  "${reportedDecks.data!["deckData"].name}",
                                                   style: TextStyle(
                                                     fontFamily: "PolySans_Slim",
                                                     color: Color(0xf0493C3F),
@@ -226,7 +237,7 @@ class AdminReports extends StatelessWidget {
                                                       ),
                                                     ),
                                                     SvgPicture.asset(
-                                                        "Images/avatars/${reportedDecks.data!.user["profileIcon"]}.svg",
+                                                        "Images/avatars/${reportedDecks.data!["deckData"].user["profileIcon"]}.svg",
                                                         width: 23,
                                                         height: 23),
                                                   ],
@@ -246,7 +257,7 @@ class AdminReports extends StatelessWidget {
                                                       ),
                                                     ),
                                                     SvgPicture.asset(
-                                                        "Images/avatars/${reportedDecks.data!.user["profileIcon"]}.svg",
+                                                        "Images/avatars/${reportedDecks.data!["reportingUser"]["profileIcon"]}.svg",
                                                         width: 23,
                                                         height: 23),
                                                     Text(
@@ -266,7 +277,7 @@ class AdminReports extends StatelessWidget {
                                             GestureDetector(
                                               onTap: () {
                                                 if (reportedDecks
-                                                        .data!.user["banned"] ==
+                                                        .data!["deckData"].user["banned"] ==
                                                     true) {
                                                   showDialog(
                                                     context: context,
@@ -493,7 +504,7 @@ class AdminReports extends StatelessWidget {
                                                                                 Text("Yes"),
                                                                             onPressed:
                                                                                 () {
-                                                                              model.banUser(reportedDecks.data!.user["id"]);
+                                                                              model.banUser(reportedDecks.data!["deckData"].user["id"]);
                                                                               Navigator.of(context).pop();
                                                                               showDialog(
                                                                                 context: context,
@@ -649,7 +660,7 @@ class AdminReports extends StatelessWidget {
                                                                               Text("Yes"),
                                                                           onPressed:
                                                                               () {
-                                                                            model.deleteDeck(reportedDecks.data!.id);
+                                                                            model.deleteDeck(reportedDecks.data!["deckData"].id);
                                                                             Navigator.of(context).pop();
                                                                             showDialog(
                                                                               context: context,
@@ -727,7 +738,7 @@ class AdminReports extends StatelessWidget {
                                                 Navigator.pushNamed(
                                                     context, "/deck",
                                                     arguments: {
-                                                      "deck": reportedDecks.data
+                                                      "deck": reportedDecks.data!["deckData"]
                                                     });
                                               },
                                               child: Container(

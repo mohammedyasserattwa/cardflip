@@ -20,6 +20,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import 'package:recase/recase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../data/card_generator.dart';
+import '../models/adminModel.dart';
 import '../models/flashcardModel.dart';
 import "../widgets/term_card.dart" as TermCard;
 import 'package:cardflip/data/card.dart' as dataCard;
@@ -324,32 +325,34 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                             const SizedBox(
                                               width: 10,
                                             ),
-                                            GestureDetector(
-                                              onTap: () {
-                                                if (!favourites
-                                                    .contains(model.deck.id)) {
-                                                  ref
-                                                          .read(
-                                                              FavouritesProvider
-                                                                  .notifier)
-                                                          .state =
-                                                      favourites +
-                                                          [model.deck.id];
-                                                } else {
-                                                  List<dynamic> temp = ref
-                                                      .read(FavouritesProvider
-                                                          .notifier)
-                                                      .state;
-                                                  temp.remove(model.deck.id);
-                                                  ref
-                                                      .read(FavouritesProvider
-                                                          .notifier)
-                                                      .state = temp;
-                                                  setState(() {});
-                                                }
-                                              },
-                                              child: userData.role == "learner"
-                                                  ? Container(
+                                            userData.role == "learner"
+                                                ? GestureDetector(
+                                                    onTap: () {
+                                                      if (!favourites.contains(
+                                                          model.deck.id)) {
+                                                        ref
+                                                                .read(FavouritesProvider
+                                                                    .notifier)
+                                                                .state =
+                                                            favourites +
+                                                                [model.deck.id];
+                                                      } else {
+                                                        List<dynamic> temp = ref
+                                                            .read(
+                                                                FavouritesProvider
+                                                                    .notifier)
+                                                            .state;
+                                                        temp.remove(
+                                                            model.deck.id);
+                                                        ref
+                                                            .read(
+                                                                FavouritesProvider
+                                                                    .notifier)
+                                                            .state = temp;
+                                                        setState(() {});
+                                                      }
+                                                    },
+                                                    child: Container(
                                                       width: 45,
                                                       height: 45,
                                                       decoration:
@@ -369,19 +372,161 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                                               "Images/icons/svg/${heartState[favourites.contains(model.deck.id) ? 1 : 0]}.svg",
                                                               width: 45,
                                                               height: 45)),
-                                                    )
-                                                  : Container(
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        image: DecorationImage(
-                                                            image: AssetImage(
-                                                                "Images/icons/banDeck.png"),
-                                                            fit: BoxFit.cover),
-                                                      ),
-                                                      width: 45,
-                                                      height: 45,
-                                                      child: const Text("")),
-                                            ),
+                                                    ))
+                                                : GestureDetector(
+                                                    onTap: () {
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return Center(
+                                                              child: Container(
+                                                                width: 300,
+                                                                height: 200,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
+                                                                  image: DecorationImage(
+                                                                      image: AssetImage(
+                                                                          "Images/backgrounds/homepage.png"),
+                                                                      fit: BoxFit
+                                                                          .cover),
+                                                                ),
+                                                                child: Column(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceAround,
+                                                                  children: [
+                                                                    const SizedBox(
+                                                                        height:
+                                                                            10),
+                                                                    Text(
+                                                                      "Confirm Deletion!",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontFamily:
+                                                                            "PolySans_Median",
+                                                                        color: Color.fromARGB(
+                                                                            239,
+                                                                            105,
+                                                                            0,
+                                                                            0),
+                                                                        fontSize:
+                                                                            20,
+                                                                      ),
+                                                                    ),
+                                                                    Text(
+                                                                      "Are you sure you want to delete this deck?",
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontFamily:
+                                                                            "PolySans_Slim",
+                                                                        color: Color.fromARGB(
+                                                                            239,
+                                                                            105,
+                                                                            0,
+                                                                            0),
+                                                                        fontSize:
+                                                                            15,
+                                                                      ),
+                                                                    ),
+                                                                    Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .end,
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .end,
+                                                                      children: [
+                                                                        ButtonBar(
+                                                                            children: [
+                                                                              TextButton(
+                                                                                child: Text("Cancel"),
+                                                                                onPressed: () {
+                                                                                  Navigator.of(context).pop();
+                                                                                },
+                                                                              ),
+                                                                              TextButton(
+                                                                                child: Text("Yes"),
+                                                                                onPressed: () {
+                                                                                  AdminModel().deleteDeck(widget.deck.id);
+                                                                                  Navigator.of(context).pop();
+                                                                                  showDialog(
+                                                                                    context: context,
+                                                                                    builder: (BuildContext context) {
+                                                                                      return Center(
+                                                                                        child: Container(
+                                                                                          width: 300,
+                                                                                          height: 200,
+                                                                                          decoration: BoxDecoration(
+                                                                                            borderRadius: BorderRadius.circular(10),
+                                                                                            image: DecorationImage(image: AssetImage("Images/backgrounds/homepage.png"), fit: BoxFit.cover),
+                                                                                          ),
+                                                                                          child: Column(
+                                                                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                                                                            children: [
+                                                                                              SizedBox(height: 10),
+                                                                                              Text(
+                                                                                                "Banned!",
+                                                                                                style: TextStyle(
+                                                                                                  fontFamily: "PolySans_Median",
+                                                                                                  color: Color.fromARGB(239, 105, 0, 0),
+                                                                                                  fontSize: 20,
+                                                                                                ),
+                                                                                              ),
+                                                                                              Text(
+                                                                                                "Deck Banned Successfully",
+                                                                                                style: TextStyle(
+                                                                                                  fontFamily: "PolySans_Slim",
+                                                                                                  color: Color.fromARGB(239, 105, 0, 0),
+                                                                                                  fontSize: 20,
+                                                                                                ),
+                                                                                              ),
+                                                                                              Row(
+                                                                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                                                                crossAxisAlignment: CrossAxisAlignment.end,
+                                                                                                children: [
+                                                                                                  TextButton(
+                                                                                                    child: Text("Close"),
+                                                                                                    onPressed: () {
+                                                                                                      Navigator.of(context).pop();
+                                                                                                    },
+                                                                                                  ),
+                                                                                                ],
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                        ),
+                                                                                      );
+                                                                                    },
+                                                                                  );
+                                                                                },
+                                                                              ),
+                                                                            ]),
+                                                                      ],
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            );
+                                                          });
+                                                    },
+                                                    child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          image: DecorationImage(
+                                                              image: AssetImage(
+                                                                  "Images/icons/banDeck.png"),
+                                                              fit:
+                                                                  BoxFit.cover),
+                                                        ),
+                                                        width: 45,
+                                                        height: 45,
+                                                        child: Text("")),
+                                                  ),
                                           ],
                                         ),
                                     ],
