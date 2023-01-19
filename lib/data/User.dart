@@ -2,7 +2,6 @@
 
 import 'package:cardflip/data/deck.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 
 class User {
   bool isBanned = false;
@@ -39,7 +38,7 @@ class User {
     String username = snapshot.get("username");
     String profileIcon = snapshot.get("profileIcon");
     List tags = snapshot.get("tags");
-
+    
     return User(
         firstname: firstname,
         lastname: lastname,

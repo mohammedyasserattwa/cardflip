@@ -1,6 +1,5 @@
 // ignore_for_file: non_constant_identifier_names, prefer_const_constructors, file_names
 
-import 'package:cardflip/models/loginModel.dart';
 import 'package:flutter/material.dart';
 
 class Input extends StatelessWidget {

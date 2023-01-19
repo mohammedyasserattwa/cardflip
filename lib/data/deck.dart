@@ -1,6 +1,5 @@
-import 'package:cardflip/data/Leaderboard.dart';
+import 'package:cardflip/data/leaderboard.dart';
 import 'package:cardflip/data/card.dart';
-import 'package:cardflip/data/User.dart';
 import 'package:cardflip/data/tag.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

@@ -1,28 +1,22 @@
 // ignore_for_file: unnecessary_new, prefer_const_constructors
 
-import 'package:cardflip/data/Repositories/user_decks.dart';
 import 'package:cardflip/data/Repositories/user_state.dart';
-import 'package:cardflip/data/uncompleted_deck_item.dart';
-import 'package:cardflip/data/uncompleted_decks.dart';
-import 'package:cardflip/models/userModel.dart';
-import 'package:cardflip/screens/loading_screen.dart';
-import 'package:cardflip/widgets/category_card.dart';
+import 'package:cardflip/data/uncompleted_decks_data/uncompleted_deck_item.dart';
+import 'package:cardflip/data/uncompleted_decks_data/uncompleted_decks.dart';
+import 'package:cardflip/helpers/random_generator.dart';
+import 'package:cardflip/models/user_model.dart';
+import 'package:cardflip/widgets/category/category_card.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 import "package:flutter/material.dart";
-import '../models/deckModel.dart';
-import '../models/homeModel.dart';
-import '../data/dummy_data.dart';
-import '../data/card_generator.dart';
-import '../widgets/deck.dart';
-import '../widgets/navibar.dart';
-import 'package:go_router/go_router.dart';
+import '../models/deck_model.dart';
+import '../widgets/deck/deck.dart';
 
 class Home extends StatelessWidget {
   Home({super.key});
   UserModel user = new UserModel();
   DeckModel deckModel = new DeckModel();
-  CardGenerator randomCard = new CardGenerator();
+  RandomGenerator randomCard = new RandomGenerator();
   final List<Map<String, double>> _preferencesSizes = [
     {"width": 127.04, "height": 103.8},
     {"width": 127.04, "height": 125.1},

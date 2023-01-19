@@ -1,5 +1,3 @@
-// ignore_for_file: unnecessary_this
-
 class Badges {
   //PARAMETERS
   String? name;
@@ -7,13 +5,13 @@ class Badges {
   String? description;
 
   //SETTERS & GETTERS
-  get getName => this.name;
+  get getName => name;
   set setName(name) => this.name = name;
 
-  get getImage => this.image;
+  get getImage => image;
   set setImage(image) => this.image = image;
 
-  get getDescription => this.description;
+  get getDescription => description;
   set setDescription(description) => this.description = description;
 
   //CONSTRUCTOR

@@ -1,25 +1,25 @@
-import 'package:cardflip/screens/DeckScreen.dart';
-import 'package:cardflip/screens/FlashcardScreen.dart';
-import 'package:cardflip/screens/Leaderboard.dart';
-import 'package:cardflip/screens/Profile.dart';
-import 'package:cardflip/screens/add_flashcards.dart';
-import 'package:cardflip/screens/adddeck.dart';
-import 'package:cardflip/screens/adminReports.dart';
-import 'package:cardflip/screens/adminUsers.dart';
-import 'package:cardflip/screens/category.dart';
-import 'package:cardflip/screens/editprofile.dart';
+import 'package:cardflip/screens/deck/deck_screen.dart';
+import 'package:cardflip/screens/flashcards/flashcard_screen.dart';
+import 'package:cardflip/screens/deck/leaderboard.dart';
+import 'package:cardflip/screens/profile/profile.dart';
+import 'package:cardflip/screens/flashcards/add_flashcards.dart';
+import 'package:cardflip/screens/deck/add_deck.dart';
+import 'package:cardflip/screens/admin/admin_reports.dart';
+import 'package:cardflip/screens/admin/admin_users.dart';
+import 'package:cardflip/screens/deck/category_screen.dart';
+import 'package:cardflip/screens/profile/edit_profile.dart';
 import 'package:cardflip/screens/library.dart';
+import 'package:cardflip/screens/user/register.dart';
+import 'package:cardflip/screens/deck/search.dart';
+import 'package:cardflip/screens/user/settings.dart';
+import 'package:cardflip/screens/test/test_results.dart';
 import 'package:cardflip/screens/othersProfile.dart';
-import 'package:cardflip/screens/register.dart';
-import 'package:cardflip/screens/search.dart';
-import 'package:cardflip/screens/settings.dart';
-import 'package:cardflip/screens/Test.dart';
-import 'package:cardflip/screens/testresults.dart';
-import 'package:cardflip/screens/adminDeck.dart';
+import 'package:cardflip/screens/test/test.dart';
+import 'package:cardflip/screens/admin/admin_deck.dart';
 import 'package:cardflip/widgets/navibar.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'screens/Login.dart';
+import 'screens/user/login.dart';
 import 'screens/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -49,7 +49,7 @@ class Main extends StatelessWidget {
           '/register': (context) => const Register(),
           '/home': (context) => Navigation(nav: data?["nav"] ?? 0),
           '/deck': (context) => DeckScreen(deck: data!["deck"]),
-          '/category': (context) => Category(data: data!["category"]),
+          '/category': (context) => CategoryScreen(data: data!["category"]),
           '/flashcards': (context) => Flashcard(deck: data!["deck"]),
           '/leaderboard': (context) => Leaderboard(deck: data!["deck"]),
           '/test': (context) => Test(deck: data!["deck"]),
@@ -102,12 +102,13 @@ class _NavigatorState extends State<Navigation> {
 
   Widget getScreen() {
     // print("Hena");
-    if (home)
+    if (home) {
       return Home();
-    else if (library)
-      return Library();
-    else
+    } else if (library) {
+      return const Library();
+    } else {
       return Profile();
+    }
   }
 
   @override

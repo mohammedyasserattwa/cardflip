@@ -1,5 +1,4 @@
 import 'package:cardflip/data/deck.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Category {
   String name;

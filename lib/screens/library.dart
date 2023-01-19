@@ -1,9 +1,8 @@
 // ignore_for_file: unnecessary_new
-import 'package:cardflip/widgets/library_list.dart';
+import 'package:cardflip/widgets/library/library_list.dart';
 import "package:flutter/material.dart";
-import '../data/card_generator.dart';
-import '../models/deckModel.dart';
-import '../data/deck.dart' as deck_data;
+import '../helpers/random_generator.dart';
+import '../models/deck_model.dart';
 
 class Library extends StatefulWidget {
   const Library({super.key});
@@ -13,7 +12,7 @@ class Library extends StatefulWidget {
 }
 
 class _LibraryState extends State<Library> {
-  late CardGenerator cardgenerator;
+  late RandomGenerator cardgenerator;
   late DeckModel deckModel;
   late Widget _consumerState;
   late AssetImage _banner;
@@ -29,7 +28,7 @@ class _LibraryState extends State<Library> {
   @override
   void initState() {
     deckModel = DeckModel();
-    cardgenerator = new CardGenerator();
+    cardgenerator = RandomGenerator();
     _banner = AssetImage(
         "Images/banners/librarypage/${cardgenerator.librarycolor}.png");
     _header = Container(

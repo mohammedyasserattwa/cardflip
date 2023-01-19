@@ -1,5 +1,4 @@
 import 'package:cardflip/data/Repositories/user_state.dart';
-import 'package:cardflip/helpers/random_generator.dart';
 import 'package:cardflip/models/deck_model.dart';
 import 'package:cardflip/widgets/deck/deck.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,9 +6,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
 import "package:flutter/material.dart";
 import 'package:recase/recase.dart';
+import '../../helpers/random_generator.dart';
 
-class OthersProfile extends ConsumerWidget {
-  OthersProfile({super.key});
+class Profile extends ConsumerWidget {
+  Profile({super.key});
   // TODO: ADD the leaderboard model here
   DeckModel deckModel = DeckModel();
   RandomGenerator cardgenerator = RandomGenerator();
@@ -338,7 +338,7 @@ class OthersProfile extends ConsumerWidget {
                                 },
                               )),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 15,
                         )
                       ],
