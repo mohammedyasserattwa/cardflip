@@ -9,6 +9,7 @@ import 'package:cardflip/screens/adminUsers.dart';
 import 'package:cardflip/screens/category.dart';
 import 'package:cardflip/screens/editprofile.dart';
 import 'package:cardflip/screens/library.dart';
+import 'package:cardflip/screens/othersProfile.dart';
 import 'package:cardflip/screens/register.dart';
 import 'package:cardflip/screens/search.dart';
 import 'package:cardflip/screens/settings.dart';
@@ -63,6 +64,7 @@ class Main extends StatelessWidget {
           '/adminUsers': (context) => AdminUsers(),
           '/adminReports': (context) => AdminReports(),
           '/adminDeck': (context) => Admin(),
+          '/othersProfile': (context) => OthersProfile(),
         };
         WidgetBuilder builder = routes[settings.name]!;
         return MaterialPageRoute(builder: (context) => builder(context));

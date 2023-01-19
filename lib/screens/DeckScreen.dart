@@ -198,28 +198,30 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                       icon: SvgPicture.asset(
                                           "Images/icons/svg/more-fill.svg"),
                                       itemBuilder: (BuildContext context) => [
-                                        PopupMenuItem(
-                                          enabled: !isReported,
-                                          onTap: () {
-                                            if (!reports
-                                                .contains(model.deck.id)) {
-                                              ref
-                                                      .read(ReportProvider.notifier)
-                                                      .state =
-                                                  reports + [model.deck.id];
-                                              isReported = true;
-                                            }
-                                          },
-                                          child: Wrap(
-                                            crossAxisAlignment:
-                                                WrapCrossAlignment.center,
-                                            children: const [
-                                              Icon(Icons.flag),
-                                              SizedBox(width: 10),
-                                              Text("Report"),
-                                            ],
+                                        if (userData.role == "learner")
+                                          PopupMenuItem(
+                                            enabled: !isReported,
+                                            onTap: () {
+                                              if (!reports
+                                                  .contains(model.deck.id)) {
+                                                ref
+                                                        .read(ReportProvider
+                                                            .notifier)
+                                                        .state =
+                                                    reports + [model.deck.id];
+                                                isReported = true;
+                                              }
+                                            },
+                                            child: Wrap(
+                                              crossAxisAlignment:
+                                                  WrapCrossAlignment.center,
+                                              children: const [
+                                                Icon(Icons.flag),
+                                                SizedBox(width: 10),
+                                                Text("Report"),
+                                              ],
+                                            ),
                                           ),
-                                        ),
                                         PopupMenuItem(
                                           onTap: () => filter(),
                                           child: Wrap(
@@ -323,50 +325,63 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                               width: 10,
                                             ),
                                             GestureDetector(
-                                                onTap: () {
-                                                  if (!favourites.contains(
-                                                      model.deck.id)) {
-                                                    ref
-                                                            .read(
-                                                                FavouritesProvider
-                                                                    .notifier)
-                                                            .state =
-                                                        favourites +
-                                                            [model.deck.id];
-                                                  } else {
-                                                    List<dynamic> temp = ref
-                                                        .read(FavouritesProvider
-                                                            .notifier)
-                                                        .state;
-                                                    temp.remove(model.deck.id);
-                                                    ref
-                                                        .read(FavouritesProvider
-                                                            .notifier)
-                                                        .state = temp;
-                                                    setState(() {});
-                                                  }
-                                                },
-                                                child: Container(
-                                                  width: 45,
-                                                  height: 45,
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                    color: Color(0x0f1a0404),
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                12)),
-                                                  ),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: SvgPicture.asset(
-                                                        "Images/icons/svg/${heartState[favourites.contains(model.deck.id) ? 1 : 0]}.svg",
-                                                        width: 45,
-                                                        height: 45),
-                                                  ),
-                                                )),
+                                              onTap: () {
+                                                if (!favourites
+                                                    .contains(model.deck.id)) {
+                                                  ref
+                                                          .read(
+                                                              FavouritesProvider
+                                                                  .notifier)
+                                                          .state =
+                                                      favourites +
+                                                          [model.deck.id];
+                                                } else {
+                                                  List<dynamic> temp = ref
+                                                      .read(FavouritesProvider
+                                                          .notifier)
+                                                      .state;
+                                                  temp.remove(model.deck.id);
+                                                  ref
+                                                      .read(FavouritesProvider
+                                                          .notifier)
+                                                      .state = temp;
+                                                  setState(() {});
+                                                }
+                                              },
+                                              child: userData.role == "learner"
+                                                  ? Container(
+                                                      width: 45,
+                                                      height: 45,
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        color:
+                                                            Color(0x0f1a0404),
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    12)),
+                                                      ),
+                                                      child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: SvgPicture.asset(
+                                                              "Images/icons/svg/${heartState[favourites.contains(model.deck.id) ? 1 : 0]}.svg",
+                                                              width: 45,
+                                                              height: 45)),
+                                                    )
+                                                  : Container(
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        image: DecorationImage(
+                                                            image: AssetImage(
+                                                                "Images/icons/banDeck.png"),
+                                                            fit: BoxFit.cover),
+                                                      ),
+                                                      width: 45,
+                                                      height: 45,
+                                                      child: const Text("")),
+                                            ),
                                           ],
                                         ),
                                     ],
@@ -391,11 +406,12 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                                       Container(
                                                           decoration:
                                                               const BoxDecoration(
-                                                            image: DecorationImage(
-                                                                image: AssetImage(
-                                                                    "Images/icons/profile.png"),
-                                                                fit: BoxFit
-                                                                    .cover),
+                                                            image:
+                                                                DecorationImage(
+                                                                    image: AssetImage(
+                                                                        "Images/icons/profile.png"), //TODO:PUT THE USER'S ICON
+                                                                    fit: BoxFit
+                                                                        .cover),
                                                           ),
                                                           width: 35,
                                                           height: 35,
@@ -424,33 +440,39 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                               )),
                                         GestureDetector(
                                             onTap: () {
-                                              if (model.deck.userID ==
-                                                  userData.id) {
-                                                return;
-                                              } else {
-                                                if (!ratings
-                                                    .contains(model.deck.id)) {
-                                                  model.deck.incrementRating();
-                                                  ref
-                                                          .read(RatingProvider
-                                                              .notifier)
-                                                          .state =
-                                                      ratings +
-                                                          [widget.deck.id];
+                                              if (userData.role == "learner") {
+                                                if (model.deck.userID ==
+                                                    userData.id) {
+                                                  return;
                                                 } else {
-                                                  widget.deck.decrementRating();
-                                                  List<String> temp = ref
-                                                      .read(RatingProvider
-                                                          .notifier)
-                                                      .state;
-                                                  temp.remove(widget.deck.id);
-                                                  ref
-                                                          .read(RatingProvider
-                                                              .notifier)
-                                                          .state =
-                                                      <String>[] + temp;
-                                                  setState(() {});
+                                                  if (!ratings.contains(
+                                                      model.deck.id)) {
+                                                    model.deck
+                                                        .incrementRating();
+                                                    ref
+                                                            .read(RatingProvider
+                                                                .notifier)
+                                                            .state =
+                                                        ratings +
+                                                            [widget.deck.id];
+                                                  } else {
+                                                    widget.deck
+                                                        .decrementRating();
+                                                    List<String> temp = ref
+                                                        .read(RatingProvider
+                                                            .notifier)
+                                                        .state;
+                                                    temp.remove(widget.deck.id);
+                                                    ref
+                                                            .read(RatingProvider
+                                                                .notifier)
+                                                            .state =
+                                                        <String>[] + temp;
+                                                    setState(() {});
+                                                  }
                                                 }
+                                              } else {
+                                                {}
                                               }
                                             },
                                             child: Row(
@@ -591,82 +613,83 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                         ),
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            if (snapshot.hasData) {
-                              final SharedPreferences prefs = snapshot.data!;
-                              List<dynamic> uncompleteDecks =
-                                  UncompletedDecks.fromJson(
-                                      prefs.getString("uncompletedDecks2") ??
-                                          "[]");
-                              UncompletedDeckItem item = UncompletedDeckItem(
-                                  uid: userID, deckID: widget.deck.id);
-                              if (uncompleteDecks
-                                  .where((e) =>
-                                      e.deckID.trim().toLowerCase() ==
-                                      item.deckID.trim().toLowerCase())
-                                  .isEmpty) {
-                                uncompleteDecks.add(item);
-                                final data = json.encode(uncompleteDecks
-                                    .map((e) => e.toJson())
-                                    .toList());
-                                prefs.setString("uncompletedDecks2", data);
+                    if (userData.role == "learner")
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              if (snapshot.hasData) {
+                                final SharedPreferences prefs = snapshot.data!;
+                                List<dynamic> uncompleteDecks =
+                                    UncompletedDecks.fromJson(
+                                        prefs.getString("uncompletedDecks2") ??
+                                            "[]");
+                                UncompletedDeckItem item = UncompletedDeckItem(
+                                    uid: userID, deckID: widget.deck.id);
+                                if (uncompleteDecks
+                                    .where((e) =>
+                                        e.deckID.trim().toLowerCase() ==
+                                        item.deckID.trim().toLowerCase())
+                                    .isEmpty) {
+                                  uncompleteDecks.add(item);
+                                  final data = json.encode(uncompleteDecks
+                                      .map((e) => e.toJson())
+                                      .toList());
+                                  prefs.setString("uncompletedDecks2", data);
+                                }
                               }
-                            }
-                            ref.read(FlashcardStateProvider.notifier).state =
-                                "1";
-                            Navigator.pushNamed(context, '/flashcards',
-                                arguments: {"deck": widget.deck});
-                          },
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage("Images/icons/bar.png"),
-                                  fit: BoxFit.cover),
-                            ),
-                            width: 136.71,
-                            height: 55,
-                            child: const Center(
-                              child: Text(
-                                "Study",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 32,
-                                  fontFamily: "PolySans_Median",
+                              ref.read(FlashcardStateProvider.notifier).state =
+                                  "1";
+                              Navigator.pushNamed(context, '/flashcards',
+                                  arguments: {"deck": widget.deck});
+                            },
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage("Images/icons/bar.png"),
+                                    fit: BoxFit.cover),
+                              ),
+                              width: 136.71,
+                              height: 55,
+                              child: const Center(
+                                child: Text(
+                                  "Study",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 32,
+                                    fontFamily: "PolySans_Median",
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            testAlert!.alert();
-                          },
-                          child: Container(
-                            decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage("Images/icons/bar.png"),
-                                  fit: BoxFit.cover),
-                            ),
-                            width: 136.71,
-                            height: 55,
-                            child: const Center(
-                              child: Text(
-                                "Test",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 32,
-                                  fontFamily: "PolySans_Median",
+                          GestureDetector(
+                            onTap: () {
+                              testAlert!.alert();
+                            },
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                image: DecorationImage(
+                                    image: AssetImage("Images/icons/bar.png"),
+                                    fit: BoxFit.cover),
+                              ),
+                              width: 136.71,
+                              height: 55,
+                              child: const Center(
+                                child: Text(
+                                  "Test",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 32,
+                                    fontFamily: "PolySans_Median",
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        )
-                      ],
-                    ),
+                          )
+                        ],
+                      ),
                     const SizedBox(
                       height: 20,
                     ),

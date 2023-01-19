@@ -60,15 +60,17 @@ class _AdminState extends State<Admin> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, "/settings");
-                    },
-                    child: SvgPicture.asset(
-                      "Images/icons/svg/settings.svg",
-                      width: 25,
-                      height: 25,
-                      color: Color(0xff8C9595),
+                  SafeArea(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, "/settings");
+                      },
+                      child: SvgPicture.asset(
+                        "Images/icons/svg/settings.svg",
+                        width: 25,
+                        height: 25,
+                        color: Color(0xff8C9595),
+                      ),
                     ),
                   ),
                 ],
@@ -245,7 +247,7 @@ class _AdminState extends State<Admin> {
                                       AdminDeck(
                                         width: 139,
                                         height: 116.67,
-                                        deck: snapshot.data![i+1],
+                                        deck: snapshot.data![i + 1],
                                         path:
                                             "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
                                         min: 2,

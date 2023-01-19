@@ -57,15 +57,17 @@ class _AdminUsersState extends State<AdminUsers> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, "/settings");
-                    },
-                    child: SvgPicture.asset(
-                      "Images/icons/svg/settings.svg",
-                      width: 25,
-                      height: 25,
-                      color: Color(0xff8C9595),
+                  SafeArea(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, "/settings");
+                      },
+                      child: SvgPicture.asset(
+                        "Images/icons/svg/settings.svg",
+                        width: 25,
+                        height: 25,
+                        color: Color(0xff8C9595),
+                      ),
                     ),
                   ),
                 ],
@@ -659,7 +661,10 @@ class _AdminUsersState extends State<AdminUsers> {
                                                   child: Text("")),
                                             ),
                                             GestureDetector(
-                                              onTap: () {},
+                                              onTap: () {
+                                                Navigator.pushNamed(
+                                                    context, '/othersProfile');
+                                              },
                                               child: Container(
                                                   decoration: BoxDecoration(
                                                     image: DecorationImage(
