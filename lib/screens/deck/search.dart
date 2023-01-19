@@ -288,7 +288,7 @@ class _FilterScreenState extends ConsumerState<FilterScreen> {
                     setState(() {
                       resetFilters();
                       filters[0] = true;
-                      Future<List<dynamic>> getData() async {
+                      Future<List<dynamic>> getDataRating() async {
                         QuerySnapshot querySnapshot =
                             await _deckCollection.orderBy("rating").get();
                         final data = querySnapshot.docs
@@ -315,10 +315,18 @@ class _FilterScreenState extends ConsumerState<FilterScreen> {
                     setState(() {
                       resetFilters();
                       filters[1] = true;
-                      dynamic sort = ref.watch(sortProvider);
-
-                      ref.read(sortProvider.notifier).state =
-                          deck.getdeckByID("0") as List<Map>;
+                      Future<List<dynamic>> getDataCreated() async {
+                        QuerySnapshot querySnapshot =
+                            await _deckCollection.orderBy("createdat").get();
+                        final data = querySnapshot.docs
+                            .map((doc) => {
+                                  "name": doc.get("name"),
+                                  "id": doc.id,
+                                  "createdat": doc.get("createdat")
+                                })
+                            .toList();
+                        return data;
+                      }
                     });
                   },
                   child: Container(
@@ -327,14 +335,25 @@ class _FilterScreenState extends ConsumerState<FilterScreen> {
                           : _inactiveFilterSelection,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 30),
-                      child: Text("Date Updated")),
+                      child: Text("Date Created")),
                 ),
                 GestureDetector(
                   onTap: () {
                     setState(() {
                       resetFilters();
                       filters[2] = true;
-                      deck.recentDecks;
+                      Future<List<dynamic>> getDataCreated() async {
+                        QuerySnapshot querySnapshot =
+                            await _deckCollection.orderBy("name").get();
+                        final data = querySnapshot.docs
+                            .map((doc) => {
+                                  "name": doc.get("name"),
+                                  "id": doc.id,
+                                  "createdat": doc.get("createdat")
+                                })
+                            .toList();
+                        return data;
+                      }
                     });
                   },
                   child: Container(
@@ -343,7 +362,7 @@ class _FilterScreenState extends ConsumerState<FilterScreen> {
                           : _inactiveFilterSelection,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 30),
-                      child: const Text("Date Created")),
+                      child: const Text("a-z")),
                 ),
               ],
             ),
