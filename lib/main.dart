@@ -13,7 +13,7 @@ import 'package:cardflip/screens/user/register.dart';
 import 'package:cardflip/screens/deck/search.dart';
 import 'package:cardflip/screens/user/settings.dart';
 import 'package:cardflip/screens/test/test_results.dart';
-import 'package:cardflip/screens/othersProfile.dart';
+import 'package:cardflip/screens/others_profile.dart';
 import 'package:cardflip/screens/test/test.dart';
 import 'package:cardflip/screens/admin/admin_deck.dart';
 import 'package:cardflip/widgets/navibar.dart';

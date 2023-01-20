@@ -1,7 +1,6 @@
 //import 'dart:ffi';
 // ignore_for_file: file_names, avoid_unnecessary_containers, prefer_const_constructors
 
-
 import 'package:cardflip/models/deck_model.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';

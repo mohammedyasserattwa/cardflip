@@ -143,52 +143,10 @@ class _AdminState extends State<Admin> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+              padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Container(
-                    width: 63,
-                    height: 31,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: Color.fromARGB(100, 124, 120, 120),
-                    ),
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: Text(
-                        "ALL",
-                        style: TextStyle(
-                          fontFamily: "PolySans_Slim",
-                          color: Colors.black,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Text(
-                      "Banned",
-                      style: TextStyle(
-                        fontFamily: "PolySans_Slim",
-                        color: Colors.black,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Text(
-                      "Normal",
-                      style: TextStyle(
-                        fontFamily: "PolySans_Slim",
-                        color: Colors.black,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
                   GestureDetector(
                       onTap: () {},
                       child: Container(
