@@ -652,7 +652,12 @@ class _AdminUsersState extends State<AdminUsers> {
                                             GestureDetector(
                                               onTap: () {
                                                 Navigator.pushNamed(
-                                                    context, '/othersProfile');
+                                                    context, '/othersProfile',
+                                                    arguments: {
+                                                      "id": (snapshot.data![i]
+                                                          ["id"]),
+                                                    });
+                                                print(snapshot.data![i]["id"]);
                                               },
                                               child: Container(
                                                   decoration: BoxDecoration(

@@ -71,8 +71,8 @@ class Main extends StatelessWidget {
           '/adminUsers': (context) => AdminUsers(),
           '/adminReports': (context) => AdminReports(),
           '/adminDeck': (context) => Admin(),
-          '/othersProfile': (context) => OthersProfile(),
           '/badges': (context) => BadgePopUp(badgeIndex: data!["badgeIndex"]),
+          '/othersProfile': (context) => OthersProfile(id:data!["id"]),
         };
         WidgetBuilder builder = routes[settings.name]!;
         return MaterialPageRoute(builder: (context) => builder(context));
