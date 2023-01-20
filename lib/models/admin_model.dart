@@ -3,7 +3,6 @@ import 'package:cardflip/data/deck.dart';
 import 'package:cardflip/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
 class AdminModel {
   String username = "admin";
   String password = "cardFlip12345";
@@ -53,7 +52,7 @@ class AdminModel {
         "description": doc.get("description"),
         "id": doc.id,
         "cards": cards
-      }, user);
+      }, user, doc.id);
     }).toList();
     return data;
   }

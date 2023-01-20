@@ -9,6 +9,7 @@ import 'package:cardflip/screens/admin/admin_users.dart';
 import 'package:cardflip/screens/deck/category_screen.dart';
 import 'package:cardflip/screens/profile/edit_profile.dart';
 import 'package:cardflip/screens/library.dart';
+import 'package:cardflip/screens/user/edit_credential_screen.dart';
 import 'package:cardflip/screens/user/register.dart';
 import 'package:cardflip/screens/deck/search.dart';
 import 'package:cardflip/screens/user/settings.dart';
@@ -62,6 +63,7 @@ class Main extends StatelessWidget {
           '/adddeck': (context) => const Adddeck(
                 screens: 'add',
               ),
+          '/editCredentials': (context) => const EditCredentials(),
           '/editdeck': (context) => Adddeck(
                 screens: 'edit',
                 deck: data!["deck"],

@@ -174,10 +174,6 @@ class LibraryList extends StatelessWidget {
                                                 builder: (context, deckData) {
                                                   if (deckData.hasData) {
                                                     Deck deck = deckData.data!;
-                                                    //UGLY: code contains a bug in the Yours page
-                                                    if (state == "user")
-                                                      print(
-                                                          "Current Length: ${_temp.length} , deck name: ${deck.name}");
                                                     _temp = [];
                                                     _temp.add(deck);
                                                     return deck_widget.Deck(

@@ -308,7 +308,7 @@ class _FilterScreenState extends ConsumerState<FilterScreen> {
                           : _inactiveFilterSelection,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 30),
-                      child: Text("Most Upvotes")),
+                      child: const Text("Most Upvotes")),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -335,7 +335,7 @@ class _FilterScreenState extends ConsumerState<FilterScreen> {
                           : _inactiveFilterSelection,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 30),
-                      child: Text("Date Created")),
+                      child: const Text("Date Created")),
                 ),
                 GestureDetector(
                   onTap: () {

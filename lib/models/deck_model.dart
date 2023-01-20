@@ -24,10 +24,29 @@ class DeckModel {
     return data;
   }
 
-  List<Deck> deckByTagID(String id) {
-    return recentDecks
-        .where((element) => element.tags.where((e) => e == id).isNotEmpty)
-        .toList();
+  Future<List<Future<Deck>>> deckByTagID(String id) async {
+    QuerySnapshot querySnapshot =
+        await _deckCollection.where("tags", arrayContains: id).get();
+    final data = querySnapshot.docs.map((doc) async {
+      final deck = doc;
+      List<Card> cards = [];
+      final flashcards = deck.get("flashcards");
+      for (int i = 0; i < flashcards.length; i++) {
+        cards.add(Card.fromMap(flashcards[i]));
+      }
+      return Deck(
+        name: deck.get("name"),
+        description: deck.get("description"),
+        rating: double.parse(deck.get('rating')),
+        id: deck.id,
+        userID: deck.get('userID'),
+        cards: cards,
+        tags: (deck.get("tags") as List).map((item) => item as String).toList(),
+        user: await userModel.getUserByID(deck.get("userID")),
+      );
+    }).toList();
+
+    return data;
   }
 
   Deck deckByIDRecent(String id) {
@@ -66,17 +85,20 @@ class DeckModel {
     );
   }
 
-  Future<List<Map>> decksByQuery(String query) async {
+  Future<List<Deck>> decksByQuery(String query) async {
     QuerySnapshot querySnapshot = await _deckCollection.get();
-    final data = (querySnapshot.docs
-        .map((doc) => {"id": doc.id, "name": doc.get("name")})).toList();
-    List<Map> result = [];
+    final data = (querySnapshot.docs.map((doc) =>
+        {"id": doc.id, "name": doc.get("name"), "data": doc.data()})).toList();
+    List<Deck> result = [];
     for (int i = 0; i < data.length; i++) {
       if (data[i]["name"]
           .trim()
           .toLowerCase()
           .contains(query.trim().toLowerCase())) {
-        result.add(data[i]);
+        result.add(Deck.fromMap(
+            data[i]["data"],
+            await userModel.getUserByID(data[i]["data"]["userID"]),
+            data[i]["id"]));
       }
     }
     return result;
@@ -119,7 +141,8 @@ class DeckModel {
           id: doc.id,
           userID: doc.get('userID'),
           cards: cards,
-          tags: (doc.get("tags") as List).map((item) => item as String).toList(),
+          tags:
+              (doc.get("tags") as List).map((item) => item as String).toList(),
           user: await userModel.getUserByID(doc.get("userID")),
         ));
       }
@@ -151,9 +174,8 @@ class DeckModel {
           id: doc.id,
           userID: doc.get('userID'),
           cards: cards,
-          tags: (doc.get("tags") as List)
-              .map((item) => item as String)
-              .toList(),
+          tags:
+              (doc.get("tags") as List).map((item) => item as String).toList(),
           user: await userModel.getUserByID(doc.get("userID")),
         ));
       }
@@ -221,8 +243,25 @@ class DeckModel {
         .toList();
   }
 
-  Future<List<Future<Deck>>> getTopRatedDecks() {
+  Future<Map<String, dynamic>> getDeckByLeaderboardUserID(String id) async {
+    final decks = await _deckCollection.where("leaderboard", arrayContainsAny: [
+      {"rank": 1, "userID": id},
+      {"rank": 2, "userID": id},
+      {"rank": 3, "userID": id}
+    ]).get();
+    final result = decks.docs
+        .map((e) async =>
+            Deck.fromSnapshot(e, await userModel.getUserByID(e["userID"])))
+        .toList();
+    return {
+      "data": result,
+      "leaderboard": decks.docs.map((e) => e["leaderboard"]).toList()
+    };
+  }
+
+  Future<List<Future<Deck>>> getTopRatedDecks(String userid) {
     return _deckCollection
+        .where("userID", isEqualTo: userid)
         .orderBy("rating", descending: true)
         .limit(3)
         .get()

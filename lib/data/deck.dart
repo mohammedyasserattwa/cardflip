@@ -20,21 +20,34 @@ class Deck {
     required this.id,
     this.tags = const <String>[],
     this.cards = const <Card>[],
-    this.userID = "01f4bll7",
+    required this.userID,
     required this.user,
-  });
-  factory Deck.fromMap(Map<String, dynamic> map, Map user) {
+  }) {
+    // leaderboard = Leaderboard(deckID: id);
+  }
+  factory Deck.fromMap(Map<String, dynamic> map, Map user, String id) {
+    List<Card> cards = [];
+    final flashcards = map["flashcards"];
+    for (int i = 0; i < flashcards.length; i++) {
+      cards.add(Card.fromMap(flashcards[i]));
+    }
     return Deck(
       name: map['name'],
       description: map['description'],
       rating: double.parse(map['rating']),
-      id: map['id'],
+      id: id,
       userID: map['userID'],
+      tags: (map["tags"] as List).map((item) => item as String).toList(),
+      cards: cards,
       user: user,
-      cards: map["cards"],
     );
   }
   factory Deck.fromSnapshot(QueryDocumentSnapshot<Map> map, Map user) {
+    List<Card> cards = [];
+    final flashcards = map["flashcards"];
+    for (int i = 0; i < flashcards.length; i++) {
+      cards.add(Card.fromMap(flashcards[i]));
+    }
     return Deck(
       name: map['name'],
       description: map['description'],
@@ -42,6 +55,7 @@ class Deck {
       id: map.id,
       userID: map['userID'],
       tags: (map["tags"] as List).map((item) => item as String).toList(),
+      cards: cards,
       user: user,
     );
   }

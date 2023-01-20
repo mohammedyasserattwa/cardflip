@@ -261,7 +261,7 @@ class OthersProfile extends ConsumerWidget {
               child: SizedBox(
                 height: height,
                 child: FutureBuilder(
-                    future: deckModel.getTopRatedDecks(),
+                    future: deckModel.getTopRatedDecks(userData.id),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         return NoGlowScroll(

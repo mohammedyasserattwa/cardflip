@@ -2,13 +2,10 @@
 
 import 'dart:math';
 import 'package:cardflip/data/Repositories/user_state.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cardflip/models/user_model.dart';
 import "dart:developer" as developer;
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';

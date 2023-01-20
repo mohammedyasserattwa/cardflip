@@ -1,11 +1,13 @@
 import 'package:cardflip/data/Repositories/search_provider.dart';
 import 'package:cardflip/data/deck.dart';
+import 'package:cardflip/helpers/random_generator.dart';
 import 'package:cardflip/main.dart';
 import 'package:cardflip/models/deck_model.dart';
 import 'package:cardflip/models/user_model.dart';
-import 'package:cardflip/widgets/deck/deck_search_screen.dart';
+import 'package:cardflip/widgets/search/deck_search_screen.dart';
 import 'package:cardflip/widgets/search/people_search_screen.dart';
 import 'package:cardflip/widgets/search/search_deck_item.dart';
+import 'package:cardflip/widgets/deck/deck.dart' as deck_ui;
 import 'package:cardflip/widgets/search/tag_search_screen.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,7 +26,7 @@ class SearchResult extends ConsumerStatefulWidget {
 class _SearchResultState extends ConsumerState<SearchResult> {
   DeckModel deckModel = DeckModel();
   UserModel userModel = UserModel();
-  List<bool> _currentPage = [true, false, false, false];
+  final List<bool> _currentPage = [true, false, false, false];
   late Widget _currentState;
   _resetPages() {
     for (int i = 0; i < _currentPage.length; i++) {
@@ -54,7 +56,7 @@ class _SearchResultState extends ConsumerState<SearchResult> {
     color: Colors.transparent,
   );
   int counter = 0;
-  Future<void> executeAfterBuild(dynamic decks) async {
+  Future<void> executeAfterBuild(List<Deck> decks) async {
     ref.read(sortProvider.notifier).state = decks;
   }
 
@@ -69,7 +71,8 @@ class _SearchResultState extends ConsumerState<SearchResult> {
             final people = snapshot.data["people"];
 
             if (counter++ == 0) {
-              executeAfterBuild(decks);
+              WidgetsBinding.instance
+                  .addPostFrameCallback((_) => executeAfterBuild(decks));
               _currentState =
                   AllScreen(decks: decks, tags: tags, people: people, onTap: [
                 () {
@@ -226,20 +229,23 @@ class _SearchResultState extends ConsumerState<SearchResult> {
               ],
             );
           }
-          if (snapshot.hasError)
-            return Center(child: Text(snapshot.error.toString()));
-          return Center(child: CircularProgressIndicator());
+          if (snapshot.hasError) {
+            return Center(child: Text(snapshot.stackTrace.toString()));
+          }
+          return const Center(child: CircularProgressIndicator());
         });
   }
 }
 
 class AllScreen extends ConsumerWidget {
-  dynamic decks;
+  List<Deck> decks;
   dynamic tags;
   dynamic people;
+  RandomGenerator randomizer = RandomGenerator();
   List<Function> onTap;
   AllScreen(
-      {required this.decks,
+      {super.key,
+      required this.decks,
       required this.tags,
       required this.people,
       required this.onTap});
@@ -265,7 +271,9 @@ class AllScreen extends ConsumerWidget {
                 ),
               ),
               GestureDetector(
-                onTap: (() {}),
+                onTap: (() {
+                  onTap[0]();
+                }),
                 child: const Text(
                   "View All",
                   style: TextStyle(
@@ -289,8 +297,24 @@ class AllScreen extends ConsumerWidget {
                     ? 3
                     : ref.watch(sortProvider).length,
                 itemBuilder: (context, index) {
-                  return SearchDeckItem(
-                      name: ref.watch(sortProvider)[index]["name"]);
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 10.0),
+                    child: deck_ui.Deck(
+                      height: 116.67,
+                      width: 139,
+                      deck: decks[decks.indexWhere((element) =>
+                          element.id == ref.watch(sortProvider)[index].id)],
+                      path:
+                          "Images/cards/homepage/1_3/${randomizer.getcolor}/${randomizer.getshape}.png",
+                      min: 3,
+                      onTap: () {
+                        Navigator.pushNamed(context, "/deck", arguments: {
+                          "deck": decks[decks.indexWhere((element) =>
+                              element.id == ref.watch(sortProvider)[index].id)]
+                        });
+                      },
+                    ),
+                  );
                 },
               ),
             ),
@@ -329,7 +353,9 @@ class AllScreen extends ConsumerWidget {
                 ),
               ),
               GestureDetector(
-                onTap: (() {}),
+                onTap: (() {
+                  onTap[1]();
+                }),
                 child: const Text(
                   "View All",
                   style: TextStyle(
@@ -417,7 +443,9 @@ class AllScreen extends ConsumerWidget {
                 ),
               ),
               GestureDetector(
-                onTap: (() {}),
+                onTap: (() {
+                  onTap[2]();
+                }),
                 child: const Text(
                   "View All",
                   style: TextStyle(

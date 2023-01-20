@@ -39,7 +39,7 @@ class User {
     String profileIcon = snapshot.get("profileIcon");
     List tags = snapshot.get("tags");
     Map badges =
-        (snapshot.get("role") != 'admin') ? snapshot.get("badges") : [];
+        (snapshot.get("role") != 'admin') ? snapshot.get("badges") : {};
 
     return User(
         firstname: firstname,

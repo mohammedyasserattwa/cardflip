@@ -1,4 +1,5 @@
 import 'package:cardflip/data/Repositories/user_state.dart';
+import 'package:cardflip/data/deck.dart' as deck_data;
 import 'package:cardflip/models/deck_model.dart';
 import 'package:cardflip/widgets/deck/deck.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -261,8 +262,11 @@ class Profile extends ConsumerWidget {
               child: SizedBox(
                 height: height,
                 child: FutureBuilder(
-                    future: deckModel.getTopRatedDecks(),
+                    future: deckModel.getTopRatedDecks(userData.id),
                     builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Center(child: Text(snapshot.error.toString()));
+                      }
                       if (snapshot.hasData) {
                         return NoGlowScroll(
                           child: ListView.builder(
@@ -285,8 +289,7 @@ class Profile extends ConsumerWidget {
                                                 context,
                                                 "/deck",
                                                 arguments: {
-                                                  "deckID": deckModel
-                                                      .topRatedDecks[index].id,
+                                                  "deck": deck.data!,
                                                 },
                                               )),
                                         );
@@ -309,42 +312,101 @@ class Profile extends ConsumerWidget {
                     }),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(26, 15, 0, 0),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(26, 15, 0, 0),
               child: Text("Leaderboard",
                   style: TextStyle(fontFamily: "Poppins-Medium", fontSize: 17)),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(15, 10, 2, 10),
+              padding: const EdgeInsets.fromLTRB(15, 10, 2, 0),
               child: SizedBox(
-                height: (height),
-                child: NoGlowScroll(
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: deckModel.recentDecks.length,
-                    itemBuilder: (context, index) => Row(
-                      children: [
-                        Deck(
-                          width: 139,
-                          height: 116.67,
-                          path:
-                              "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
-                          min: 3,
-                          onTap: (() => Navigator.pushNamed(
-                                context,
-                                "/deck",
-                                arguments: {
-                                  "deckID": deckModel.recentDecks[index].id,
-                                },
-                              )),
-                        ),
-                        const SizedBox(
-                          width: 15,
-                        )
-                      ],
-                    ),
-                  ),
-                ),
+                height: height,
+                child: FutureBuilder(
+                    future: deckModel.getDeckByLeaderboardUserID(userData.id),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Center(child: Text(snapshot.error.toString()));
+                      }
+                      if (snapshot.hasData) {
+                        return NoGlowScroll(
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: snapshot.data!["data"].length,
+                            itemBuilder: (context, index) => Row(
+                              children: [
+                                FutureBuilder(
+                                    future: snapshot.data!["data"][index],
+                                    builder: (context, deck) {
+                                      if (deck.hasError) {
+                                        return Text("${deck.error}");
+                                      }
+                                      if (deck.hasData) {
+                                        return Stack(
+                                          children: [
+                                            Column(
+                                              children: [
+                                                const SizedBox(
+                                                  height: 3,
+                                                ),
+                                                Deck(
+                                                  width: 139,
+                                                  height: 116.67,
+                                                  path:
+                                                      "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                                                  deck: deck.data!
+                                                      as deck_data.Deck?,
+                                                  min: 3,
+                                                  onTap: (() =>
+                                                      Navigator.pushNamed(
+                                                        context,
+                                                        "/deck",
+                                                        arguments: {
+                                                          "deck": deck.data!,
+                                                        },
+                                                      )),
+                                                ),
+                                              ],
+                                            ),
+                                            Container(
+                                              width: 139,
+                                              height: 146.67,
+                                              // color: Colors.red,
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      0, 0, 10, 0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    "Images/icons/svg/rank${snapshot.data!["leaderboard"][index].where((element) => element["userID"] == userData.id).first["rank"]}.svg",
+                                                    width: 35,
+                                                    height: 40,
+                                                  ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        );
+                                      }
+                                      if (deck.hasError) {
+                                        return Text("${deck.error}");
+                                      }
+                                      return Container();
+                                    }),
+                                const SizedBox(
+                                  width: 15,
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                    }),
               ),
             ),
           ],

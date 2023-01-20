@@ -31,7 +31,9 @@ class Deck extends ConsumerWidget {
     // deck_widget.Deck deck = model.deckByID(id);
 
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        Navigator.pushNamed(context, "/deck", arguments: {"deck": deck});
+      },
       child: Container(
         decoration: BoxDecoration(
           image: DecorationImage(image: AssetImage(path), fit: BoxFit.cover),
@@ -45,28 +47,29 @@ class Deck extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 5),
-                    child: Text(
-                      deck!.deckRating,
-                      style: const TextStyle(
-                        fontFamily: "PolySans_Neutral.ttf",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff2D2D2D),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: SvgPicture.asset(
-                      "Images/icons/svg/${ratings.contains(deck!.id) ? "like-fill" : "like-line"}.svg",
-                      height: 47.4,
-                      width: 47.4,
-                      color: const Color(0xff2D2D2D),
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.only(left: 5),
+                  //   child: Text(
+                  //     deck!.deckRating,
+                  //     style: const TextStyle(
+                  //       fontFamily: "PolySans_Neutral.ttf",
+                  //       fontSize: 14,
+                  //       fontWeight: FontWeight.w400,
+                  //       color: Color(0xff2D2D2D),
+                  //     ),
+                  //   ),
+                  // ),
+                  // SizedBox(
+                  //   width: 20,
+                  //   height: 20,
+                  //   child: SvgPicture.asset(
+                  //     "Images/icons/svg/like-fill.svg",
+                  //     // "Images/icons/svg/${ratings.contains(deck!.id) ? "like-fill" : "like-line"}.svg",
+                  //     height: 47.4,
+                  //     width: 47.4,
+                  //     color: const Color(0xff2D2D2D),
+                  //   ),
+                  // ),
                 ],
               ),
               Expanded(

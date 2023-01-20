@@ -22,7 +22,8 @@ class UserModel {
   }
 
   Future<List<dynamic>> userByQuery(String query) async {
-    QuerySnapshot querySnapshot = await _userCollection.get();
+    QuerySnapshot querySnapshot =
+        await _userCollection.where("role", isNotEqualTo: "admin").get();
     final usersData = querySnapshot.docs
         .map((doc) => {
               "fname": doc.get("fname"),
@@ -58,25 +59,7 @@ class UserModel {
           result.add(usersData[i]);
         }
       }
-
-      // if (
-      //     //   data[i]["username"].compareTo(query) != 0
-      //     // &&
-      //     usersData[i]["fname"]
-      //             .trim()
-      //             .toLowerCase()
-      //             .contains(query.trim().toLowerCase()) ==
-      //         true
-      //     // &&
-      //     // data[i]["lname"].compareTo(query) != 0
-      //     ) {
-      //   developer.log(
-      //       "${usersData[i]["fname"]} != $query || ${usersData[i]["fname"].trim().toLowerCase().contains(query.trim().toLowerCase())}");
-      //   continue;
-      // }
-      // usersData.remove(usersData[i]);
     }
-    // print(data);
     return result;
   }
 
@@ -85,6 +68,12 @@ class UserModel {
     Map<String, dynamic> usersData =
         querySnapshot.data() as Map<String, dynamic>;
     return usersData;
+  }
+
+  Future editCredentials(String email, String password) async {
+    final user = _auth.currentUser!;
+    await user.updateEmail(email);
+    await user.updatePassword(password);
   }
 
   Future getNameandPic(String ID) async {
@@ -161,7 +150,7 @@ class UserModel {
     "Images/cards/flashcards/0.png",
   ];
   List<String> get getImages => _cardBackgrounds;
-  Future updateFavourites(List<String> favourites, user_data.User currentUser){
+  Future updateFavourites(List<String> favourites, user_data.User currentUser) {
     currentUser.favourites = favourites;
     return _userCollection.doc(currentUser.id).update(currentUser.toJSON());
   }

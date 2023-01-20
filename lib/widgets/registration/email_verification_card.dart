@@ -73,7 +73,8 @@ class _EmailVerificationCardState extends ConsumerState<EmailVerificationCard> {
             .createUserWithEmailAndPassword(
           email: widget.user.email.trim(),
           password: widget.user.password.trim(),
-        ).then((value) {
+        )
+            .then((value) {
           sendEmail();
           if (!_isVerified) {
             timer = Timer.periodic(const Duration(seconds: 4), (timer) {
@@ -137,7 +138,7 @@ class _EmailVerificationCardState extends ConsumerState<EmailVerificationCard> {
                               children: <TextSpan>[
                                 const TextSpan(
                                     text: "Account activation link has been\n"),
-                                TextSpan(
+                                const TextSpan(
                                     text: "sent to the email address you\n"),
                                 TextSpan(text: "${widget.user.email} \n"),
                               ]),
@@ -175,7 +176,7 @@ class _EmailVerificationCardState extends ConsumerState<EmailVerificationCard> {
                             showDialog(
                                 context: context,
                                 builder: (context) {
-                                  return LoadingWidget();
+                                  return const LoadingWidget();
                                   // return CircularProgressIndicator();
                                 });
                             FirebaseAuth.instance
@@ -188,6 +189,7 @@ class _EmailVerificationCardState extends ConsumerState<EmailVerificationCard> {
                                   widget.user;
                               widget.model
                                   .save(value.user!, widget.user.toJSON());
+                              timer?.cancel();
                               Navigator.pushReplacementNamed(context, "/home");
                             });
                           },
