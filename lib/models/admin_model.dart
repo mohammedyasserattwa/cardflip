@@ -40,7 +40,7 @@ class AdminModel {
     QuerySnapshot querySnapshot = await _deckCollection.get();
 
     final data = querySnapshot.docs.map((doc) async {
-      final user = await userModel.userByID(doc.get("userID"));
+      final user = await userModel.userDataByID(doc.get("userID"));
       List<Card> cards = [];
       final flashcards = doc.get("flashcards");
       for (int i = 0; i < flashcards.length; i++) {

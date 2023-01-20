@@ -13,7 +13,6 @@ import 'package:cardflip/data/uncompleted_decks_data/uncompleted_decks.dart';
 import 'package:cardflip/models/admin_model.dart';
 import 'package:cardflip/models/deck_model.dart';
 import 'package:cardflip/models/user_model.dart';
-import 'package:cardflip/widgets/test/test_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:no_glow_scroll/no_glow_scroll.dart';
@@ -35,7 +34,6 @@ class DeckScreen extends ConsumerStatefulWidget {
 
 class _MyDeckScreenState extends ConsumerState<DeckScreen> {
   late FlashcardModel model;
-  late TestAlert? testAlert;
   final heartState = ["heart_outline", "heart_filled"];
   final RandomGenerator _cardGen = RandomGenerator();
   final deckModel = DeckModel();
@@ -49,7 +47,6 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
   @override
   void initState() {
     super.initState();
-    testAlert = TestAlert(deck: widget.deck, context: context);
     model = FlashcardModel(deck: widget.deck);
     _cards = cardList(model.getCards);
     _randomBanner = Random().nextInt(6);
@@ -816,7 +813,21 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              testAlert!.alert();
+                              if (widget.deck.cards.length <= 3) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        behavior: SnackBarBehavior.floating,
+                                        duration: Duration(seconds: 3),
+                                        content: Text(
+                                            style: TextStyle(
+                                                fontFamily: "Poppins"),
+                                            'You can start a test once you have created at least 3 cards!')));
+                                return;
+                              } else {
+                                Navigator.pushReplacementNamed(context, '/test',
+                                    arguments: {"deck": widget.deck});
+                              }
+                              //
                             },
                             child: Container(
                               decoration: const BoxDecoration(

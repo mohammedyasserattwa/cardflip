@@ -18,7 +18,7 @@ class User {
       this.isBanned = false,
       this.role = "learner",
       this.favourites = const [],
-      this.badges = const [],
+      this.badges = const {},
       this.tags = const [],
       this.userPreferences = const []});
   User.New() {
@@ -38,7 +38,9 @@ class User {
     String username = snapshot.get("username");
     String profileIcon = snapshot.get("profileIcon");
     List tags = snapshot.get("tags");
-    
+    Map badges =
+        (snapshot.get("role") != 'admin') ? snapshot.get("badges") : [];
+
     return User(
         firstname: firstname,
         lastname: lastname,
@@ -48,6 +50,7 @@ class User {
         email: email,
         isBanned: snapshot.get("banned"),
         tags: tags,
+        badges: badges,
         userPreferences: preferences,
         password: password,
         role: snapshot.get("role"));
@@ -83,7 +86,7 @@ class User {
   List userPreferences = [];
 
   // List _reminders;
-  List badges = [];
+  Map badges = {};
 
   //SETTER & GETTERS
   get userID => id;

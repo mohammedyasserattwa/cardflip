@@ -80,7 +80,7 @@ class UserModel {
     return result;
   }
 
-  Future userByID(String ID) async {
+  Future userDataByID(String ID) async {
     var querySnapshot = await _userCollection.doc(ID).get();
     Map<String, dynamic> usersData =
         querySnapshot.data() as Map<String, dynamic>;
@@ -136,6 +136,9 @@ class UserModel {
 
   signOut() async {
     await _auth.signOut();
+  }
+  Future updateUser(user_data.User updatedUser){
+    return _userCollection.doc(updatedUser.id).update(updatedUser.toJSON());
   }
 
   String get id {

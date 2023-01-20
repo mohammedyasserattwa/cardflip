@@ -220,7 +220,7 @@ class _FlashcardState extends ConsumerState<Flashcard>
                         },
                         updateParent: () {},
                         image: model.getImages[2],
-                        deckID: widget.deck.id,
+                        deckCards: widget.deck.cards,
                       ),
                     ],
                   ),

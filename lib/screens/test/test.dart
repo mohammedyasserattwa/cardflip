@@ -1,5 +1,4 @@
 import 'dart:async';
-// import 'dart:html';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cardflip/data/Repositories/user_state.dart';
 import 'package:cardflip/data/deck.dart';
@@ -60,7 +59,7 @@ class _TestState extends ConsumerState<Test>
   Stream<int> stopWatch() {
     StreamController<int>? controller;
     Timer? timer;
-    Duration duration = Duration(seconds: 1);
+    Duration duration = const Duration(seconds: 1);
     int counter = 0;
 
     void stopTimer() {
@@ -107,52 +106,45 @@ class _TestState extends ConsumerState<Test>
   @override
   void initState() {
     model = TestModel(deck: widget.deck);
-    viable = model.viable;
-    if (viable == false) {
-      WidgetsBinding.instance.addPostFrameCallback((_) async {
-        Navigator.pop(context, true);
+    testCards = model.getTestCards;
+    testCards.forEach((d, t) => testCardsList.add([d, t[0], t[1], t[2]]));
+
+    testCardsList.shuffle();
+
+    testCardsList.forEach((element) {
+      definitions.add(element[0]);
+    });
+
+    testCardsList.forEach((element) {
+      terms.add([element[1], element[2], element[3]]);
+    });
+
+    random.shuffle();
+    randomlist = List.filled(definitions.length, [0, 1, 2]);
+    randomlist = randomize(definitions.length);
+
+    start = List.filled(definitions.length, 0.0);
+    end = List.filled(definitions.length, 0.0);
+    isActive = List.filled(definitions.length, false);
+    isActive[0] = true;
+    stopwatch = stopWatch();
+    jiggle = List.filled(definitions.length, List.filled(3, null));
+    stopwatchsubscrip = stopwatch!.listen((int tick) {
+      setState(() {
+        min = ((tick / 60) % 60).floor().toString();
+        sec = (tick % 60).floor().toString().padLeft(2, '0');
       });
-    } else {
-      testCards = model.getTestCards;
-      testCards.forEach((d, t) => testCardsList.add([d, t[0], t[1], t[2]]));
+    });
 
-      testCardsList.shuffle();
-
-      testCardsList.forEach((element) {
-        definitions.add(element[0]);
-      });
-
-      testCardsList.forEach((element) {
-        terms.add([element[1], element[2], element[3]]);
-      });
-
-      random.shuffle();
-      randomlist = List.filled(definitions.length, [0, 1, 2]);
-      randomlist = randomize(definitions.length);
-
-      start = List.filled(definitions.length, 0.0);
-      end = List.filled(definitions.length, 0.0);
-      isActive = List.filled(definitions.length, false);
-      isActive[0] = true;
-      stopwatch = stopWatch();
-      jiggle = List.filled(definitions.length, List.filled(3, null));
-      stopwatchsubscrip = stopwatch!.listen((int tick) {
-        setState(() {
-          min = ((tick / 60) % 60).floor().toString();
-          sec = (tick % 60).floor().toString().padLeft(2, '0');
-        });
-      });
-
-      status = BoxDecoration(
-        border: Border.all(
-          color: Color.fromARGB(71, 36, 0, 0),
-          width: 2,
-        ),
-        borderRadius: BorderRadius.circular(16),
-        color: Color(0x40fff4f4),
-      );
-    }
-    ;
+    status = BoxDecoration(
+      border: Border.all(
+        color: const Color.fromARGB(71, 36, 0, 0),
+        width: 2,
+      ),
+      borderRadius: BorderRadius.circular(16),
+      color: const Color(0x40fff4f4),
+    );
+    // }
     super.initState();
   }
 
@@ -169,11 +161,11 @@ class _TestState extends ConsumerState<Test>
     (isCorrect == true)
         ? status = BoxDecoration(
             border: Border.all(
-              color: Color(0xB393FF97),
+              color: const Color(0xB393FF97),
               width: 3,
             ),
             borderRadius: BorderRadius.circular(16),
-            color: Color.fromARGB(175, 217, 255, 218),
+            color: const Color.fromARGB(175, 217, 255, 218),
           )
         : (isCorrect == false)
             ? status = BoxDecoration(
@@ -655,7 +647,7 @@ class _TestState extends ConsumerState<Test>
                                     children: [
                                       const SizedBox(width: 85),
                                       const Text(
-                                        "You’re done with your test!",
+                                        "Youâ€™re done with your test!",
                                         style: TextStyle(
                                             fontFamily: "PolySans_Slim",
                                             fontWeight: FontWeight.w300,

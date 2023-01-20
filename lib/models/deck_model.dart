@@ -1,9 +1,8 @@
-import 'package:cardflip/data/leaderboard.dart';
 import 'package:cardflip/data/category.dart';
 import 'package:cardflip/data/tag.dart';
 import 'package:cardflip/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'dart:developer' as developer;
 import '../data/deck.dart';
 import 'package:cardflip/data/card.dart';
 import '../data/User.dart';
@@ -95,7 +94,7 @@ class DeckModel {
         "id": doc.id,
         "name": doc.get("name"),
         "decks": decks,
-        "vector": "Images/vectors/category_${doc.get("name")}.png",
+        "vector": "Images/vectors/categories/category_${doc.get("name")}.png",
         "background":
             "Images/backgrounds/category_screen/category_${doc.get("name")}.png"
       });

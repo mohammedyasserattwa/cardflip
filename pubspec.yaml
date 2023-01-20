@@ -317,6 +317,8 @@ flutter:
     - Images/avatars/19.svg
     - Images/avatars/logo/
     - Images/vectors/
+    - Images/vectors/badges/
+    - Images/vectors/categories/
     - Images/banners/leaderboardpage/
     - Images/backgrounds/category_screen/
 

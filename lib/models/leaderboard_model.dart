@@ -1,6 +1,5 @@
 import 'dart:collection';
 
-import 'package:cardflip/data/leaderboard.dart';
 import 'package:cardflip/data/User.dart';
 import 'package:cardflip/data/deck.dart';
 import 'package:cardflip/models/deck_model.dart';

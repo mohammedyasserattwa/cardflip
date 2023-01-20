@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, unused_import, non_constant_identifier_names, avoid_types_as_parameter_names, library_private_types_in_public_api, file_names, prefer_const_literals_to_create_immutables, body_might_complete_normally_nullable, unrelated_type_equality_checks, unnecessary_string_interpolations
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cardflip/data/Repositories/user_decks.dart';
 import 'package:cardflip/data/Repositories/user_state.dart';
 import 'package:cardflip/data/user.dart' as user_data;
@@ -335,56 +336,63 @@ class _LoginState extends ConsumerState<Login> {
                         image: AssetImage("Images/backgrounds/homepage.png"),
                         fit: BoxFit.cover),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      SizedBox(height: 10),
-                      DefaultTextStyle(
-                        style: TextStyle(
-                          fontFamily: "PolySans_Median",
-                          color: Color.fromARGB(239, 105, 0, 0),
-                          fontSize: 20,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        SizedBox(height: 10),
+                        DefaultTextStyle(
+                          style: TextStyle(
+                            fontFamily: "PolySans_Median",
+                            color: Color.fromARGB(239, 105, 0, 0),
+                            fontSize: 20,
+                          ),
+                          child: AutoSizeText(
+                            textAlign: TextAlign.center,
+                            "Error connecting to the internet",
+                            maxLines: 3,
+                          ),
                         ),
-                        child: Text(
-                          "Error connecting to the internet",
+                        DefaultTextStyle(
+                          style: TextStyle(
+                            fontFamily: "PolySans_Slim",
+                            color: Color.fromARGB(239, 105, 0, 0),
+                            fontSize: 15,
+                          ),
+                          textAlign: TextAlign.center,
+                          child: AutoSizeText(
+                            textAlign: TextAlign.center,
+                            "Please check your internet connection and try again",
+                            maxLines: 3,
+                          ),
                         ),
-                      ),
-                      DefaultTextStyle(
-                        style: TextStyle(
-                          fontFamily: "PolySans_Slim",
-                          color: Color.fromARGB(239, 105, 0, 0),
-                          fontSize: 15,
-                        ),
-                        textAlign: TextAlign.center,
-                        child: Text(
-                          "Please check your internet connection and try again",
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () => Navigator.pop(context),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                color: Colors.grey.withOpacity(0.30)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: DefaultTextStyle(
-                                style: TextStyle(
-                                  fontFamily: 'PolySans_Neutral',
-                                  fontSize: 25,
-                                  color: Color.fromARGB(255, 49, 49, 49),
-                                ),
-                                child: Text(
-                                  "Ok",
+                        GestureDetector(
+                          onTap: () => Navigator.pop(context),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: Colors.grey.withOpacity(0.30)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: DefaultTextStyle(
+                                  style: TextStyle(
+                                    fontFamily: 'PolySans_Neutral',
+                                    fontSize: 25,
+                                    color: Color.fromARGB(255, 49, 49, 49),
+                                  ),
+                                  child: Text(
+                                    "Ok",
+                                  ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               );

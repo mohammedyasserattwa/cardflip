@@ -1,7 +1,7 @@
-import 'package:cardflip/data/badges.dart';
+import 'package:cardflip/data/badge.dart';
 import 'package:cardflip/models/user_model.dart';
 import 'package:cardflip/models/badges_model.dart';
-import 'package:cardflip/data/badges.dart';
+import 'package:cardflip/data/badge.dart';
 
 class Learner {
   String username = "salmaCS";

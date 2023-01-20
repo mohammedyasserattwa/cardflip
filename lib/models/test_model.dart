@@ -1,58 +1,42 @@
-import 'dart:math';
 import 'dart:developer' as developer;
-import 'package:cardflip/data/test.dart';
 import 'package:cardflip/data/deck.dart';
 import 'package:cardflip/models/deck_model.dart';
 import 'package:cardflip/models/leaderboard_model.dart';
-import 'package:cardflip/screens/test/test_results.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TestModel {
-  static final FirebaseFirestore _database = FirebaseFirestore.instance;
-  final _auth = FirebaseAuth.instance;
   final _testCollection = FirebaseFirestore.instance.collection("testresults");
 
   late Deck deck;
-  late Test test;
   DeckModel deckModel = DeckModel();
-  late var testCards = {};
+  Map testCards = {};
   late List terms = [];
   late int length;
-  late bool viable;
   late Map<String, dynamic> testResults;
   late LeaderboardModel leaderboardModel = LeaderboardModel(deck: deck);
   TestModel({required this.deck}) {
-    late final random = Random();
     length = deck.cards.length;
-    if (length >= 3) {
-      viable = true;
-      terms = deckModel.deckTerms(deck);
-      var firstRandomTerm = terms[random.nextInt(length - 1)];
-      var secondRandomTerm = terms[random.nextInt(length - 1)];
+    terms = deckModel.deckTerms(deck);
+    List randomTerms = [...terms];
+    String firstRandomTerm = "";
+    String secondRandomTerm = "";
+    String rightAnswer = "";
 
-      for (int i = 0; i < deck.cards.length; i++) {
-        firstRandomTerm = terms[random.nextInt(length - 1)];
-        secondRandomTerm = terms[random.nextInt(length - 1)];
-        while (true) {
-          if (firstRandomTerm == secondRandomTerm ||
-              deck.cards[i].term == firstRandomTerm ||
-              deck.cards[i].term == secondRandomTerm) {
-            firstRandomTerm = terms[random.nextInt(length - 1)];
-            secondRandomTerm = terms[random.nextInt(length - 1)];
-          } else {
-            break;
-          }
-        }
-        testCards.addAll({
-          deck.cards[i].definition:
-              {deck.cards[i].term, firstRandomTerm, secondRandomTerm}.toList()
-        });
-      }
-    } else {
-      viable = false;
+    for (int i = 0; i < deck.cards.length; i++) {
+      rightAnswer = deck.cards[i].term;
+      randomTerms.remove(rightAnswer);
+      randomTerms.shuffle();
+      firstRandomTerm = randomTerms[0];
+      secondRandomTerm = randomTerms[1];
+      testCards.addAll({
+        deck.cards[i].definition: [
+          rightAnswer,
+          firstRandomTerm,
+          secondRandomTerm
+        ]
+      });
+      randomTerms = [...terms];
     }
-    // test = Test(deck: deck);
   }
 
   Future addTestResults(

@@ -1,5 +1,4 @@
 import 'package:cardflip/models/deck_model.dart';
-import 'package:cardflip/widgets/test/test_alert.dart';
 import 'package:flip_card/flip_card.dart';
 import "package:flutter/material.dart";
 import 'package:cardflip/data/card.dart' as card_handler;
@@ -17,7 +16,7 @@ class CardWidget extends StatefulWidget {
     this.height = 511.97,
     required this.updateParent,
     this.star = Icons.star_border,
-    this.deckID = "",
+    this.deckCards = const [],
   }) : super(key: key);
   CardWidget.emptyCard({
     super.key,
@@ -31,7 +30,7 @@ class CardWidget extends StatefulWidget {
     this.height = 511.97,
     required this.updateParent,
     this.star = Icons.star_border,
-    this.deckID = "",
+    this.deckCards = const [],
   });
   CardWidget.celebrationCard({
     super.key,
@@ -46,14 +45,15 @@ class CardWidget extends StatefulWidget {
     required this.updateParent,
     this.star = Icons.star_border,
     required this.startOver,
-    required this.deckID,
+    required this.deckCards,
   });
-  String deckID = "";
+  List deckCards = [];
   DeckModel deck = DeckModel();
   final String image;
   // final String term;
   // final String definition;
-  card_handler.Card? card = card_handler.Card(term: "", definition: "", id: '0');
+  card_handler.Card? card =
+      card_handler.Card(term: "", definition: "", id: '0');
   final double begin;
   final double end;
   final bool empty;
@@ -63,7 +63,6 @@ class CardWidget extends StatefulWidget {
   final Function updateParent;
   final IconData star;
   Function? startOver;
-  late TestAlert? testAlert;
 
   @override
   State<CardWidget> createState() => _CardWidgetState();
@@ -285,13 +284,18 @@ class _CardWidgetState extends State<CardWidget> {
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: GestureDetector(
                 onTap: () {
-                  Future(() async {
-                    widget.testAlert = TestAlert(
-                        deck: await widget.deck.getdeckByID(widget.deckID),
-                        context: context);
-                    if (!mounted) return;
-                    Navigator.pop(context);
-                  }).then((value) => widget.testAlert!.alert());
+                  if (widget.deckCards.length <= 3) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        duration: Duration(seconds: 3),
+                        content: Text(
+                            style: TextStyle(fontFamily: "Poppins"),
+                            'You can start a test once you have created at least 3 cards!')));
+                    return;
+                  } else {
+                    Navigator.pushReplacementNamed(context, '/test',
+                        arguments: {"deck": widget.deck});
+                  }
                 },
                 child: Container(
                   decoration: const BoxDecoration(

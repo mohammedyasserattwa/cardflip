@@ -16,6 +16,7 @@ import 'package:cardflip/screens/test/test_results.dart';
 import 'package:cardflip/screens/others_profile.dart';
 import 'package:cardflip/screens/test/test.dart';
 import 'package:cardflip/screens/admin/admin_deck.dart';
+import 'package:cardflip/widgets/badges/badges.dart';
 import 'package:cardflip/widgets/navibar.dart';
 import "package:flutter/material.dart";
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -69,6 +70,7 @@ class Main extends StatelessWidget {
           '/adminReports': (context) => AdminReports(),
           '/adminDeck': (context) => Admin(),
           '/othersProfile': (context) => OthersProfile(),
+          '/badges': (context) => BadgePopUp(badgeIndex: data!["badgeIndex"]),
         };
         WidgetBuilder builder = routes[settings.name]!;
         return MaterialPageRoute(builder: (context) => builder(context));

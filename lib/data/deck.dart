@@ -1,4 +1,3 @@
-import 'package:cardflip/data/leaderboard.dart';
 import 'package:cardflip/data/card.dart';
 import 'package:cardflip/data/tag.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,7 +9,6 @@ class Deck {
   double rating;
   String id;
   List<Card> cards;
-  late Leaderboard leaderboard;
   List<String> tags = [];
   String userID;
   Map user;
@@ -24,9 +22,7 @@ class Deck {
     this.cards = const <Card>[],
     this.userID = "01f4bll7",
     required this.user,
-  }) {
-    leaderboard = Leaderboard(deckID: id);
-  }
+  });
   factory Deck.fromMap(Map<String, dynamic> map, Map user) {
     return Deck(
       name: map['name'],
@@ -59,8 +55,6 @@ class Deck {
   }
 
   List<Card> get deckCards => cards;
-
-  Leaderboard get deckLeaderboard => leaderboard;
 
   void incrementRating() {
     rating++;
