@@ -135,7 +135,7 @@ class OthersProfile extends ConsumerWidget {
                         ],
                       );
                     }
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   }),
               const Padding(
                 padding: EdgeInsets.fromLTRB(26, 10, 0, 0),
@@ -217,7 +217,7 @@ class OthersProfile extends ConsumerWidget {
                         children: [
                           for (int i = 0; i < snapshot.data!.length; i += 2)
                             Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   vertical: 8.0, horizontal: 30),
                               child: Row(
                                 mainAxisAlignment:
@@ -239,7 +239,7 @@ class OthersProfile extends ConsumerWidget {
                                             onTap: () {},
                                           );
                                         }
-                                        return Center(
+                                        return const Center(
                                             child: CircularProgressIndicator());
                                       }),
                                   if (i + 1 < snapshot.data!.length)
@@ -257,7 +257,7 @@ class OthersProfile extends ConsumerWidget {
                                               onTap: () {},
                                             );
                                           }
-                                          return Center(
+                                          return const Center(
                                               child:
                                                   CircularProgressIndicator());
                                         }),
@@ -267,7 +267,7 @@ class OthersProfile extends ConsumerWidget {
                         ],
                       );
                     }
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   }),
             ],
           ),

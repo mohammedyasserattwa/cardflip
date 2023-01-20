@@ -41,17 +41,18 @@ class AdminModel {
     final data = querySnapshot.docs.map((doc) async {
       final user = await userModel.userDataByID(doc.get("userID"));
       List<Card> cards = [];
-      final flashcards = doc.get("flashcards");
-      for (int i = 0; i < flashcards.length; i++) {
-        cards.add(Card.fromMap(flashcards[i]));
-      }
+      // final flashcards = doc.get("flashcards");
+      // for (int i = 0; i < flashcards.length; i++) {
+      //   cards.add(Card.fromMap(flashcards[i]));
+      // }
       return Deck.fromMap({
         "name": doc.get("name"),
         "rating": doc.get("rating"),
         "userID": doc.get("userID"),
         "description": doc.get("description"),
         "id": doc.id,
-        "cards": cards
+        "flashcards": doc.get("flashcards"),
+        "tags": doc.get("tags"),
       }, user, doc.id);
     }).toList();
     return data;
