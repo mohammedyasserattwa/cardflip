@@ -31,7 +31,7 @@ class OthersProfile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final userData = ref.watch(UserDataProvider);
+    final currentUserData = ref.watch(UserDataProvider);
     final userData = UserModel().userDataByID(id);
     final userDecks = DeckModel().deckByUserID(id);
     final height = _responsive(context)["height"];
@@ -57,8 +57,28 @@ class OthersProfile extends ConsumerWidget {
                             padding:
                                 const EdgeInsets.only(top: 15, right: 20.0),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+                                GestureDetector(
+                                    onTap: () {
+                                      if (currentUserData!.role == "learner") {
+                                        Navigator.pushReplacementNamed(
+                                            context, "/home");
+                                      } else if (currentUserData.role ==
+                                          "admin") {
+                                        Navigator.pop(context);
+                                      }
+                                    },
+                                    child: Container(
+                                        decoration: const BoxDecoration(
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  "Images/icons/arrow-left-s-line.png"),
+                                              fit: BoxFit.cover),
+                                        ),
+                                        width: 40,
+                                        height: 40,
+                                        child: const Text(""))),
                                 GestureDetector(
                                   onTap: () {
                                     Navigator.pushNamed(context, "/settings");

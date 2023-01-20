@@ -142,25 +142,6 @@ class _AdminState extends State<Admin> {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage("Images/icons/search.png"),
-                                fit: BoxFit.cover),
-                          ),
-                          width: 40,
-                          height: 40,
-                          child: const Text(""))),
-                ],
-              ),
-            ),
             FutureBuilder(
                 future: deckData,
                 builder: (context, snapshot) {

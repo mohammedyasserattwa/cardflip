@@ -85,22 +85,4 @@ class AdminModel {
   void deleteDeck(String id) {
     _deckCollection.doc(id).delete();
   }
-
-  void viewReports() {
-    for (var i = 0; i < reports.length; i++) {
-      print(reports[i] + '\n');
-    }
-  }
-
-  void viewDecks() {
-    for (var i = 0; i < decks.length; i++) {
-      print(decks[i] + '\n');
-    }
-  }
-
-  void viewUsers() {
-    for (var i = 0; i < users.length; i++) {
-      print(users[i] + '\n');
-    }
-  }
 }
