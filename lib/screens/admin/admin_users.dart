@@ -350,7 +350,7 @@ class _AdminUsersState extends State<AdminUsers> {
                                                                                         children: [
                                                                                           SizedBox(height: 10),
                                                                                           Text(
-                                                                                            "Banned!",
+                                                                                            "Unbanned!",
                                                                                             style: TextStyle(
                                                                                               fontFamily: "PolySans_Median",
                                                                                               color: Color.fromARGB(239, 105, 0, 0),
@@ -358,7 +358,7 @@ class _AdminUsersState extends State<AdminUsers> {
                                                                                             ),
                                                                                           ),
                                                                                           Text(
-                                                                                            "User Banned Successfully",
+                                                                                            "User Unbanned Successfully",
                                                                                             style: TextStyle(
                                                                                               fontFamily: "PolySans_Slim",
                                                                                               color: Color.fromARGB(239, 105, 0, 0),
@@ -372,6 +372,7 @@ class _AdminUsersState extends State<AdminUsers> {
                                                                                               TextButton(
                                                                                                 child: Text("Close"),
                                                                                                 onPressed: () {
+                                                                                                  setState(() {});
                                                                                                   Navigator.of(context).pop();
                                                                                                 },
                                                                                               ),
@@ -515,6 +516,7 @@ class _AdminUsersState extends State<AdminUsers> {
                                                                                                   child: Text("Close"),
                                                                                                   onPressed: () {
                                                                                                     Navigator.of(context).pop();
+                                                                                                    setState(() {});
                                                                                                   },
                                                                                                 ),
                                                                                               ],
