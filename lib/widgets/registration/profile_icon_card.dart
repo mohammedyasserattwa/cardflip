@@ -55,159 +55,161 @@ class _ProfileIconCardState extends State<ProfileIconCard> {
           cardWidth: widget.width,
           cardHeight: widget.height,
           model: widget.model,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+          child: NoGlowScroll(
+            child: ListView(
+              // crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          widget.onBack();
+                        },
+                        child: SvgPicture.asset(
+                          "Images/icons/svg/arrow-left-s-line.svg",
+                          color: const Color(0xFF191C32),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: const Text(
+                          'Pick your profile picture',
+                          style: TextStyle(
+                            color: Color(0xFF191C32),
+                            fontFamily: 'PolySans_Median',
+                            fontSize: 22,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Column(
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        widget.onBack();
-                      },
-                      child: SvgPicture.asset(
-                        "Images/icons/svg/arrow-left-s-line.svg",
-                        color: const Color(0xFF191C32),
+                    CircleAvatar(
+                      backgroundColor: Colors.white60,
+                      radius: 75,
+                      child: Stack(
+                        alignment: AlignmentDirectional.bottomEnd,
+                        children: [
+                          SvgPicture.asset(
+                            "Images/avatars/$currentIcon.svg",
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFF191C32),
+                                    borderRadius: BorderRadius.circular(50)),
+                                child: const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Icon(Icons.upload, color: Colors.white),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.only(left: 5),
-                      child: const Text(
-                        'Pick your profile picture',
-                        style: TextStyle(
-                          color: Color(0xFF191C32),
-                          fontFamily: 'PolySans_Median',
-                          fontSize: 22,
+                    SizedBox(
+                      height: 275,
+                      child: NoGlowScroll(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Scrollbar(
+                            child: ListView(
+                              children: [
+                                for (int i = 0; i < 18; i += 3)
+                                  Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                currentIcon = i.toString();
+                                              });
+                                            },
+                                            child: CircleAvatar(
+                                              backgroundColor: Colors.white60,
+                                              radius: 35,
+                                              child: SvgPicture.asset(
+                                                "Images/avatars/$i.svg",
+                                              ),
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                currentIcon = (i + 1).toString();
+                                              });
+                                            },
+                                            child: CircleAvatar(
+                                              backgroundColor: Colors.white60,
+                                              radius: 35,
+                                              child: (SvgPicture.asset(
+                                                "Images/avatars/${i + 1}.svg",
+                                              )),
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                currentIcon = (i + 2).toString();
+                                              });
+                                            },
+                                            child: CircleAvatar(
+                                              backgroundColor: Colors.white60,
+                                              radius: 35,
+                                              child: SvgPicture.asset(
+                                                "Images/avatars/${i + 2}.svg",
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      )
+                                    ],
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(15),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          widget.user.seticon(currentIcon);
+                          widget.onNext();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF191C32),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0)),
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 20),
+                          child: Center(
+                              child: Text(
+                            'Next',
+                          )),
                         ),
                       ),
                     ),
                   ],
                 ),
-              ),
-              Column(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.white60,
-                    radius: 75,
-                    child: Stack(
-                      alignment: AlignmentDirectional.bottomEnd,
-                      children: [
-                        SvgPicture.asset(
-                          "Images/avatars/$currentIcon.svg",
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: const Color(0xFF191C32),
-                                  borderRadius: BorderRadius.circular(50)),
-                              child: const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Icon(Icons.upload, color: Colors.white),
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 275,
-                    child: NoGlowScroll(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Scrollbar(
-                          child: ListView(
-                            children: [
-                              for (int i = 0; i < 18; i += 3)
-                                Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              currentIcon = i.toString();
-                                            });
-                                          },
-                                          child: CircleAvatar(
-                                            backgroundColor: Colors.white60,
-                                            radius: 35,
-                                            child: SvgPicture.asset(
-                                                    "Images/avatars/$i.svg",
-                                                  ),
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              currentIcon = (i + 1).toString();
-                                            });
-                                          },
-                                          child: CircleAvatar(
-                                            backgroundColor: Colors.white60,
-                                            radius: 35,
-                                            child: (SvgPicture.asset(
-                                                    "Images/avatars/${i + 1}.svg",
-                                                  )),
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              currentIcon = (i + 2).toString();
-                                            });
-                                          },
-                                          child: CircleAvatar(
-                                            backgroundColor: Colors.white60,
-                                            radius: 35,
-                                            child: SvgPicture.asset(
-                                                    "Images/avatars/${i + 2}.svg",
-                                                  ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 20,
-                                    )
-                                  ],
-                                ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        widget.user.seticon(currentIcon);
-                        widget.onNext();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF191C32),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0)),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 20),
-                        child: Center(
-                            child: Text(
-                          'Next',
-                        )),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

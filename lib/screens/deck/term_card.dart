@@ -5,11 +5,11 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import '../../data/deck.dart' as deck_data;
 
 class Card extends ConsumerWidget {
-  String cardName;
-  String path;
-  String index;
-  String id;
-  deck_data.Deck deck;
+  final String cardName;
+  final String path;
+  final String index;
+  final String id;
+  final deck_data.Deck deck;
   Card(
       {super.key,
       required this.deck,

@@ -11,31 +11,16 @@ import 'package:recase/recase.dart';
 import '../models/user_model.dart';
 
 class OthersProfile extends ConsumerWidget {
-  final id;
+  final String id;
   OthersProfile({Key? key, required this.id}) : super(key: key);
-  DeckModel deckModel = DeckModel();
-  RandomGenerator cardgenerator = RandomGenerator();
-  late String profileBanner;
-
-  _responsive(BuildContext context) {
-    if (MediaQuery.of(context).size.width < 299) {
-      return {"height": 113.67, "width": 118.67, "fontSize": 16};
-    } else if (MediaQuery.of(context).size.width < 340) {
-      return {"height": 128.67, "width": 133.67, "fontSize": 20};
-    } else if (MediaQuery.of(context).size.width < 358) {
-      return {"height": 148.67, "width": 153.67, "fontSize": 20};
-    } else {
-      return {"height": 158.67, "width": 163.67, "fontSize": 20};
-    }
-  }
+  final DeckModel deckModel = DeckModel();
+  final RandomGenerator cardgenerator = RandomGenerator();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currentUserData = ref.watch(UserDataProvider);
     final userData = UserModel().userDataByID(id);
     final userDecks = DeckModel().deckByUserID(id);
-    final height = _responsive(context)["height"];
-    final width = _responsive(context)["width"];
     return Scaffold(
       body: Container(
         width: double.infinity,
@@ -54,16 +39,15 @@ class OthersProfile extends ConsumerWidget {
                       return Column(
                         children: [
                           Padding(
-                            padding:
-                                const EdgeInsets.only(top: 15, right: 20.0),
+                            padding: const EdgeInsets.only(
+                                top: 15, right: 20.0, left: 20),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 GestureDetector(
                                     onTap: () {
                                       if (currentUserData!.role == "learner") {
-                                        Navigator.pushReplacementNamed(
-                                            context, "/home");
+                                        Navigator.pop(context);
                                       } else if (currentUserData.role ==
                                           "admin") {
                                         Navigator.pop(context);
@@ -79,17 +63,6 @@ class OthersProfile extends ConsumerWidget {
                                         width: 40,
                                         height: 40,
                                         child: const Text(""))),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.pushNamed(context, "/settings");
-                                  },
-                                  child: SvgPicture.asset(
-                                    "Images/icons/svg/settings.svg",
-                                    width: 25,
-                                    height: 25,
-                                    color: const Color(0xff8C9595),
-                                  ),
-                                ),
                               ],
                             ),
                           ),
@@ -102,7 +75,7 @@ class OthersProfile extends ConsumerWidget {
                               children: [
                                 Container(
                                   alignment: Alignment.centerRight,
-                                  child: Container(
+                                  child: SizedBox(
                                       width:
                                           (MediaQuery.of(context).size.width >
                                                   274)

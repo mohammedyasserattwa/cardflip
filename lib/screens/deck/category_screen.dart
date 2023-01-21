@@ -7,10 +7,11 @@ import '../../helpers/random_generator.dart';
 import '../../widgets/deck/deck.dart';
 
 class CategoryScreen extends StatelessWidget {
-  Category data;
-  CategoryScreen({super.key, required this.data});
+  final Category data;
+  final bool backhome;
+  CategoryScreen({super.key, required this.data, this.backhome = false});
 
-  RandomGenerator randomizer = new RandomGenerator();
+  final RandomGenerator randomizer = new RandomGenerator();
   _responsive(BuildContext context) {
     if (MediaQuery.of(context).size.width < 299) {
       return {"height": 113.67, "width": 118.67, "fontSize": 16};

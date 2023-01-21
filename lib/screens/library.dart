@@ -19,9 +19,17 @@ class _LibraryState extends State<Library> {
   late Widget _header;
   Map<String, bool> status = {"all": true, "user": false, "others": false};
   final List<Widget> _listBuilder = [
-    LibraryList(),
-    LibraryList(state: "user"),
-    LibraryList(state: "others")
+    LibraryList(
+      temp:  [],
+    ),
+    LibraryList(
+      state: "user",
+      temp:  [],
+    ),
+    LibraryList(
+      state: "others",
+      temp:  [],
+    )
   ];
 
   // int counter = 0;
@@ -85,7 +93,9 @@ class _LibraryState extends State<Library> {
         ],
       ),
     );
-    _consumerState = _listBuilder[0];
+    _consumerState = LibraryList(
+      temp: [],
+    );
     super.initState();
   }
 
@@ -120,7 +130,9 @@ class _LibraryState extends State<Library> {
                               status["all"] = true;
                               status["user"] = false;
                               status["others"] = false;
-                              _consumerState = _listBuilder[0];
+                              _consumerState = LibraryList(
+                                temp: [],
+                              );
                               setState(() {});
                             }
                           },
@@ -138,7 +150,7 @@ class _LibraryState extends State<Library> {
                                 "All",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    color: Color(0xff484848),
+                                    color: const Color(0xff484848),
                                     fontSize: 20,
                                     fontFamily: "PolySans_Neutral",
                                     fontWeight: (status["all"]! == true)
@@ -151,7 +163,10 @@ class _LibraryState extends State<Library> {
                             status["all"] = false;
                             status["user"] = true;
                             status["others"] = false;
-                            _consumerState = _listBuilder[1];
+                            _consumerState = LibraryList(
+                              state: "user",
+                              temp: [],
+                            );
                             setState(() {});
                           }
                         },
@@ -183,7 +198,10 @@ class _LibraryState extends State<Library> {
                             status["all"] = false;
                             status["user"] = false;
                             status["others"] = true;
-                            _consumerState = _listBuilder[2];
+                            _consumerState = LibraryList(
+                              state: "others",
+                              temp: [],
+                            );
                             setState(() {});
                           }
                         },

@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:cardflip/data/Repositories/user_decks.dart';
 import 'package:cardflip/data/Repositories/user_state.dart';
 import 'package:cardflip/helpers/random_generator.dart';
@@ -17,8 +19,9 @@ class LibraryList extends StatelessWidget {
   RandomGenerator cardgenerator = RandomGenerator();
   DeckModel deckModel = DeckModel();
   String state;
+  List<deck_data.Deck> temp;
   // List<deck_data.Deck> deckList = <deck_data.Deck>[];
-  LibraryList({this.state = "all"});
+  LibraryList({this.state = "all", required this.temp});
   _responsive(BuildContext context) {
     if (MediaQuery.of(context).size.width < 299) {
       return {"height": 113.67, "width": 118.67, "fontSize": 16};
@@ -36,8 +39,11 @@ class LibraryList extends StatelessWidget {
   Future<List<Future<Deck>>> getDecks(
       String state, String userID, List favourites) async {
     List<Future<Deck>> decks = await deckModel.deckByUserID(userID);
-    List<Future<Deck>> fav =
-        favourites.map((e) async => await deckModel.getdeckByID(e)).toList();
+    List<Future<Deck>> fav = [];
+    if (state != "user") {
+      fav =
+          favourites.map((e) async => await deckModel.getdeckByID(e)).toList();
+    }
     if (state == "all") {
       decks.addAll(fav);
     }
@@ -48,18 +54,19 @@ class LibraryList extends StatelessWidget {
     return decks;
   }
 
-  List<deck_data.Deck> _temp = [];
   EdgeInsets kpaddingCards =
       const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15);
   int counter = 0;
   late Widget rendered;
   @override
   Widget build(BuildContext context) {
+    // print(temp);
     final height = _responsive(context)["height"];
     final width = _responsive(context)["width"];
     if (c2++ == 1) {
+      temp = temp.toSet().toList();
       rendered = Expanded(
-        child: (_temp.isEmpty)
+        child: (temp.isEmpty)
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
@@ -83,37 +90,37 @@ class LibraryList extends StatelessWidget {
             : NoGlowScroll(
                 child: ListView(
                 children: [
-                  for (int i = 0; i < _temp.length; i += 2)
+                  for (int i = 0; i < temp.length; i += 2)
                     Padding(
                       padding: kpaddingCards,
                       child: Row(
-                        mainAxisAlignment: (i + 1 < _temp.length)
+                        mainAxisAlignment: (i + 1 < temp.length)
                             ? MainAxisAlignment.spaceBetween
                             : MainAxisAlignment.start,
                         children: [
                           deck_widget.Deck(
-                              deck: _temp[i],
+                              deck: temp[i],
                               width: width,
                               height: height,
                               min: 3,
                               onTap: () {
                                 Navigator.pushNamed(context, "/deck",
                                     arguments: {
-                                      "deck": _temp[i],
+                                      "deck": temp[i],
                                     });
                               },
                               path:
                                   "Images/cards/librarypage/${cardgenerator.getcolor}/${cardgenerator.getshape}.png"),
-                          if (i + 1 < _temp.length)
+                          if (i + 1 < temp.length)
                             deck_widget.Deck(
-                                deck: _temp[i + 1],
+                                deck: temp[i + 1],
                                 width: width,
                                 height: height,
                                 min: 3,
                                 onTap: () {
                                   Navigator.pushNamed(context, "/deck",
                                       arguments: {
-                                        "deck": _temp[i + 1],
+                                        "deck": temp[i + 1],
                                       });
                                 },
                                 path:
@@ -125,7 +132,7 @@ class LibraryList extends StatelessWidget {
               )),
       );
     }
-    return (counter++ == 0)
+    return (counter++ == 0 && temp.isEmpty)
         ? Consumer(
             builder: (context, ref, __) {
               final user = ref.watch(UserDataProvider);
@@ -136,6 +143,7 @@ class LibraryList extends StatelessWidget {
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           final decks = snapshot.data!;
+
                           return (decks.isEmpty)
                               ? Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -174,8 +182,7 @@ class LibraryList extends StatelessWidget {
                                                 builder: (context, deckData) {
                                                   if (deckData.hasData) {
                                                     Deck deck = deckData.data!;
-                                                    _temp = [];
-                                                    _temp.add(deck);
+                                                    temp.add(deck);
                                                     return deck_widget.Deck(
                                                         width: width,
                                                         deck: deck,
@@ -200,7 +207,7 @@ class LibraryList extends StatelessWidget {
                                                     if (deckData.hasData) {
                                                       final deck =
                                                           deckData.data!;
-                                                      _temp.add(deck);
+                                                      temp.add(deck);
                                                       return deck_widget.Deck(
                                                           deck: deck,
                                                           width: width,

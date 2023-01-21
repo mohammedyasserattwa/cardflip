@@ -31,8 +31,7 @@ class Login extends ConsumerStatefulWidget {
 
 class _LoginState extends ConsumerState<Login> {
   final storage = FlutterSecureStorage();
-
-  late final _firebaseAuth;
+  final _firebaseAuth = FirebaseAuth.instance;
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _rememberMeCheckBox = false;
@@ -41,7 +40,6 @@ class _LoginState extends ConsumerState<Login> {
   Future<List<Map>> getSavedUsers() async {
     Map savedUsers = await storage.readAll();
     List<Map> result = [];
-    print(savedUsers);
     for (String user in savedUsers.keys) {
       result.add({
         "data": await userModel.getUserByID(user),
@@ -55,12 +53,6 @@ class _LoginState extends ConsumerState<Login> {
     await storage.write(key: "${userModel.id}", value: password);
   }
 
-  @override
-  void initState() {
-    _firebaseAuth = FirebaseAuth.instance;
-    super.initState();
-  }
-
   Future signIn(String email, String password) async {
     bool result = true;
     if (result) {
@@ -71,7 +63,7 @@ class _LoginState extends ConsumerState<Login> {
               return LoadingWidget();
             });
 
-        final credentials = await _firebaseAuth.signInWithEmailAndPassword(
+        await _firebaseAuth.signInWithEmailAndPassword(
           email: email.trim(),
           password: password.trim(),
         );
@@ -795,9 +787,9 @@ class _LoginState extends ConsumerState<Login> {
                   ),
                 );
               }
-              return Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(),
+              return Center(
+                child: LoadingWidget(
+                  transparent: true,
                 ),
               );
             }),

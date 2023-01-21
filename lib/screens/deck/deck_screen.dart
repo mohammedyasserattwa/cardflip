@@ -25,8 +25,9 @@ import 'term_card.dart' as term_card;
 import 'package:cardflip/data/card.dart' as card_data;
 
 class DeckScreen extends ConsumerStatefulWidget {
-  Deck deck;
-  DeckScreen({Key? key, required this.deck}) : super(key: key);
+  final bool backhome;
+  final Deck deck;
+  const DeckScreen({Key? key, required this.deck,this.backhome = false}) : super(key: key);
 
   @override
   ConsumerState<DeckScreen> createState() => _MyDeckScreenState();
@@ -166,8 +167,12 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                   GestureDetector(
                                       onTap: () {
                                         if (userData.role == "learner") {
-                                          Navigator.pushReplacementNamed(
+                                          if(widget.backhome) {
+                                            Navigator.pushReplacementNamed(
                                               context, "/home");
+                                          } else {
+                                            Navigator.pop(context);
+                                          }
                                         } else if (userData.role == "admin") {
                                           Navigator.pop(context);
                                         }

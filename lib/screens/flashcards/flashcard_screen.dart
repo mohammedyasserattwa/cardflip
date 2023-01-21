@@ -15,8 +15,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Flashcard extends ConsumerStatefulWidget {
   // String id;
-  Deck deck;
-  Flashcard({super.key, required this.deck});
+  final Deck deck;
+  const Flashcard({super.key, required this.deck});
 
   @override
   ConsumerState<Flashcard> createState() => _FlashcardState();
@@ -106,7 +106,6 @@ class _FlashcardState extends ConsumerState<Flashcard>
                           Navigator.pop(context);
                         },
                         child: Container(
-                          child: Text(""),
                           width: 50,
                           height: 50,
                           decoration: const BoxDecoration(
@@ -114,6 +113,7 @@ class _FlashcardState extends ConsumerState<Flashcard>
                                 image: AssetImage(
                                     "Images/icons/close_button.png")),
                           ),
+                          child: const Text(""),
                         ),
                       ),
                       SizedBox(
@@ -164,25 +164,8 @@ class _FlashcardState extends ConsumerState<Flashcard>
                                   _viewFav = false;
                                 });
                               },
-                              child: Text("View All Flashcards"),
+                              child: const Text("View All Flashcards"),
                             ),
-                            PopupMenuItem(
-                              onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      scrollable: true,
-                                      title: Text('Test'),
-                                      content: Container(
-                                        child: Text("Change Color"),
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
-                              child: const Text("Change Color"),
-                            )
                           ],
                         ),
                       )

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cardflip/data/Repositories/user_state.dart';
 import 'package:cardflip/data/user.dart' as user_data;
 import 'package:cardflip/helpers/loading_screen.dart';
+import 'package:cardflip/models/deck_model.dart';
 import 'package:cardflip/models/user_model.dart';
 import 'package:cardflip/widgets/registration/registration_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -91,19 +92,24 @@ class _EmailVerificationCardState extends ConsumerState<EmailVerificationCard> {
               cardHeight: widget.height,
               cardWidth: widget.width,
               model: widget.model,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: ListView(
+                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 10.0, top: 10),
-                    child: GestureDetector(
-                      onTap: () {
-                        widget.onBack();
-                      },
-                      child: SvgPicture.asset(
-                        "Images/icons/svg/arrow-left-s-line.svg",
-                        color: const Color(0xFF191C32),
-                      ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            widget.onBack();
+                          },
+                          child: SvgPicture.asset(
+                            "Images/icons/svg/arrow-left-s-line.svg",
+                            color: const Color(0xFF191C32),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Center(
@@ -185,12 +191,23 @@ class _EmailVerificationCardState extends ConsumerState<EmailVerificationCard> {
                                     password: widget.user.password)
                                 .then((value) {
                               widget.user.setuserID(value.user!.uid);
-                              ref.read(UserDataProvider.notifier).state =
-                                  widget.user;
+                              
                               widget.model
-                                  .save(value.user!, widget.user.toJSON());
-                              timer?.cancel();
-                              Navigator.pushReplacementNamed(context, "/home");
+                                  .save(value.user!, widget.user.toJSON())
+                                  .then(() {
+                                DeckModel()
+                                    .getUserPreference(widget.user.tags)
+                                    .then((value) {
+                                      widget.user.userPreferences = value;
+                                      ref.read(UserDataProvider.notifier).state =
+                                      widget.user;
+                                      timer?.cancel();
+                                  Navigator.pushReplacementNamed(
+                                      context, "/home");
+                                    });
+                              });
+
+                              
                             });
                           },
                           child: const Padding(

@@ -1,15 +1,16 @@
 import 'package:cardflip/helpers/random_generator.dart';
 import 'package:cardflip/widgets/deck/deck.dart';
-import 'package:cardflip/widgets/search/search_deck_item.dart';
+import "package:cardflip/data/deck.dart" as deck_data;
 import "package:flutter/material.dart";
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DeckSearchScreen extends StatelessWidget {
-  final dynamic decks;
+class DeckSearchScreen extends ConsumerWidget {
+  final List<deck_data.Deck> decks;
   DeckSearchScreen({super.key, required this.decks});
-  RandomGenerator randomizer = RandomGenerator();
+  final RandomGenerator randomizer = RandomGenerator();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return (decks.isNotEmpty)
         ? Column(
             mainAxisAlignment: MainAxisAlignment.center,

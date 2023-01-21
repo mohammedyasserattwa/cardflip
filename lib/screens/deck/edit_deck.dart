@@ -25,10 +25,6 @@ class _EditdeckState extends State<Editdeck> {
 
   @override
   Widget build(BuildContext context) {
-    final deckModel = DeckModel();
-    late FlashcardModel model;
-    Size size = MediaQuery.of(context).size;
-
     return SafeArea(
         child: Scaffold(
       body: Container(

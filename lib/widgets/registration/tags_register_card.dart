@@ -109,13 +109,10 @@ class _TagsRegisterState extends State<TagsRegister> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0)),
                       ),
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 20),
-                        child: Center(
-                            child: Text(
-                          'Next',
-                        )),
-                      ),
+                      child: const Center(
+                          child: Text(
+                        'Next',
+                      )),
                     ),
                   ),
                 ),

@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names, unused_local_variable, await_only_futures
 
+import 'package:cardflip/helpers/loading_screen.dart';
+import 'package:cardflip/models/deck_model.dart';
 import 'package:cardflip/widgets/flashcards/add_flashcards_input.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
@@ -17,43 +19,32 @@ class AddFlashcards extends StatefulWidget {
 }
 
 class _AddFlashcardsState extends State<AddFlashcards> {
-  List<TextEditingController> ControllerDefinitionData = [
-    TextEditingController()
-  ];
-  List<TextEditingController> ControllerTermData = [TextEditingController()];
-  List termkeys = [GlobalKey<FormState>()];
-  List definitionkeys = [GlobalKey<FormState>()];
-  List resultedData = [Column()];
+  List<TextEditingController> ControllerDefinitionData = [];
+  List<TextEditingController> ControllerTermData = [];
+  List termkeys = [];
+  List definitionkeys = [];
+  List resultedData = [];
 
-  Future createFlashCard(
-      {required TextEditingController Term,
-      required TextEditingController Definition}) async {
-    final docDeck =
-        await FirebaseFirestore.instance.collection("deck").doc(widget.deck.id);
-    final data = await docDeck.get();
-    //print(widget.id);
-    List gatheredList = data['flashcards'].map((e) {
-      return card_data.Card.fromJson(e);
-    }).toList();
-    final flash = card_data.Card(
-      id: data['flashcards'].length.toString(),
-      term: Term.text,
-      definition: Definition.text,
-    );
-    gatheredList.add(flash);
-    final json = gatheredList.map((e) {
-      return e.toJson();
-    }).toList();
-    final updatedData = docDeck.update({'flashcards': json});
-    // final update = docDeck.update({'flashcards': card_data.Card(
-    //   id: data['flashcards'].length,
-    //   term: Term.text,
-    //   definition: Definition.text,
-    // );});
-    // 'flashcards.definition': Definition.text,
-    // 'flashcards.term': Term.text,
-    // 'flashcards.id': data['flashcards'].length,
-    // await docDeck.set(json);
+  @override
+  void initState() {
+    if (widget.deck.cards.isEmpty) {
+      ControllerDefinitionData = [TextEditingController()];
+      ControllerTermData = [TextEditingController()];
+      termkeys = [GlobalKey<FormState>()];
+      definitionkeys = [GlobalKey<FormState>()];
+      resultedData = [Column()];
+    }
+    for (int index = 0; index < widget.deck.cards.length; index++) {
+      ControllerDefinitionData.add(TextEditingController());
+      ControllerDefinitionData[index].text =
+          widget.deck.cards[index].definition;
+      ControllerTermData.add(TextEditingController());
+      ControllerTermData[index].text = widget.deck.cards[index].term;
+      termkeys.add(GlobalKey<FormState>());
+      definitionkeys.add(GlobalKey<FormState>());
+      resultedData.add(Column());
+    }
+    super.initState();
   }
 
   @override
@@ -97,33 +88,117 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                           fontWeight: FontWeight.w500)),
                 ),
                 Expanded(
+                    flex: 1,
                     child: NoGlowScroll(
-                  child: ListView(
-                    children: [
-                      Column(
+                      child: ListView(
                         children: [
-                          for (int index = 0;
-                              index < resultedData.length;
-                              index++)
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 25, right: 25, bottom: 25),
-                              child: Container(
-                                height: 350,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Color.fromARGB(42, 167, 167, 167)),
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
+                          Column(
+                            children: [
+                              for (int index = 0;
+                                  index < resultedData.length;
+                                  index++)
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 25, right: 25, bottom: 25),
+                                  child: Container(
+                                    height: 350,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        color:
+                                            Color.fromARGB(42, 167, 167, 167)),
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
+                                          Row(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 25, top: 20),
+                                                child: Text(
+                                                  'Term',
+                                                  style: TextStyle(
+                                                    fontFamily:
+                                                        'PolySans_Median',
+                                                    fontSize: 24,
+                                                    color: Color(0xCC000000),
+                                                    // fontWeight: FontWeight.w400
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 207,
+                                                    right: 15,
+                                                    top: 10),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      resultedData.remove(
+                                                          resultedData[index]);
+                                                      ControllerDefinitionData
+                                                          .remove(
+                                                              ControllerDefinitionData[
+                                                                  index]);
+                                                      ControllerTermData.remove(
+                                                          ControllerTermData[
+                                                              index]);
+                                                      termkeys.remove(
+                                                          termkeys[index]);
+                                                      definitionkeys.remove(
+                                                          definitionkeys[
+                                                              index]);
+                                                    });
+                                                  },
+                                                  child: index == 0
+                                                      ? Container()
+                                                      : Opacity(
+                                                          opacity: 0.85,
+                                                          child: Container(
+                                                            height: 40,
+                                                            width: 40,
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 15,
+                                                                    top: 20),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          16),
+                                                              image:
+                                                                  DecorationImage(
+                                                                image: AssetImage(
+                                                                    "Images/icons/trash.png"),
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 10, left: 12.0, right: 12),
+                                            child: addflashcard_input(
+                                                color: true,
+                                                ControllerData:
+                                                    ControllerTermData[index],
+                                                keys: termkeys[index]),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
                                           Padding(
                                             padding: const EdgeInsets.only(
                                                 left: 25, top: 20),
                                             child: Text(
-                                              'Term',
+                                              'Definition',
                                               style: TextStyle(
                                                 fontFamily: 'PolySans_Median',
                                                 fontSize: 24,
@@ -134,159 +209,133 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                                           ),
                                           Padding(
                                             padding: const EdgeInsets.only(
-                                                left: 207, right: 15, top: 10),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  resultedData.remove(
-                                                      resultedData[index]);
-                                                });
-                                              },
-                                              child: index == 0
-                                                  ? Container()
-                                                  : Opacity(
-                                                      opacity: 0.85,
-                                                      child: Container(
-                                                        height: 40,
-                                                        width: 40,
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                left: 15,
-                                                                top: 20),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(16),
-                                                          image:
-                                                              DecorationImage(
-                                                            image: AssetImage(
-                                                                "Images/icons/trash.png"),
-                                                            fit: BoxFit.cover,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
+                                                left: 17, right: 17, top: 10),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Color.fromARGB(
+                                                    93, 167, 167, 167),
+                                                borderRadius:
+                                                    BorderRadius.circular(16),
+                                              ),
+                                              height: 130,
+                                              child: addflashcard_input(
+                                                color: false,
+                                                ControllerData:
+                                                    ControllerDefinitionData[
+                                                        index],
+                                                keys: definitionkeys[index],
+                                              ),
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 10, left: 12.0, right: 12),
-                                        child: addflashcard_input(
-                                            color: true,
-                                            ControllerData:
-                                                ControllerTermData[index],
-                                            keys: termkeys[index]),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 25, top: 20),
-                                        child: Text(
-                                          'Definition',
-                                          style: TextStyle(
-                                            fontFamily: 'PolySans_Median',
-                                            fontSize: 24,
-                                            color: Color(0xCC000000),
-                                            // fontWeight: FontWeight.w400
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 17, right: 17, top: 10),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: Color.fromARGB(
-                                                93, 167, 167, 167),
-                                            borderRadius:
-                                                BorderRadius.circular(16),
-                                          ),
-                                          height: 130,
-                                          child: addflashcard_input(
-                                            color: false,
-                                            ControllerData:
-                                                ControllerDefinitionData[index],
-                                            keys: definitionkeys[index],
-                                          ),
-                                        ),
-                                      ),
-                                    ]),
-                              ),
-                            ),
+                                        ]),
+                                  ),
+                                ),
+                            ],
+                          ),
                         ],
                       ),
-                      Container(
-                        padding: EdgeInsets.only(right: 25),
-                        alignment: Alignment.centerRight,
-                        child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                resultedData.add(Column());
-                                ControllerDefinitionData.add(
-                                    TextEditingController());
-                                ControllerTermData.add(TextEditingController());
-                                termkeys.add(GlobalKey<FormState>());
-                                definitionkeys.add(GlobalKey<FormState>());
-                              });
-                            },
-                            child: Container(
-                                decoration: const BoxDecoration(
-                                  image: DecorationImage(
-                                      image: AssetImage("Images/icons/add.png"),
-                                      fit: BoxFit.cover),
-                                ),
-                                width: 40,
-                                height: 40,
-                                child: const Text(""))),
+                    )),
+                SizedBox(
+                    height: 85,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            alignment: Alignment.centerRight,
+                            child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    resultedData.add(Column());
+                                    ControllerDefinitionData.add(
+                                        TextEditingController());
+                                    ControllerTermData.add(
+                                        TextEditingController());
+                                    termkeys.add(GlobalKey<FormState>());
+                                    definitionkeys.add(GlobalKey<FormState>());
+                                  });
+                                },
+                                child: Container(
+                                    decoration: const BoxDecoration(
+                                      image: DecorationImage(
+                                          image: AssetImage(
+                                              "Images/icons/add.png"),
+                                          fit: BoxFit.cover),
+                                    ),
+                                    width: 40,
+                                    height: 40,
+                                    child: const Text(""))),
+                          ),
+                          Container(
+                            alignment: Alignment.centerRight,
+                            child: GestureDetector(
+                                onTap: () {
+                                  List<Map<String, String>> flashcards = [];
+                                  bool error = false;
+                                  for (int index = 0;
+                                      index < ControllerDefinitionData.length;
+                                      index++) {
+                                    if (ControllerDefinitionData[index]
+                                            .text
+                                            .isNotEmpty ||
+                                        ControllerTermData[index]
+                                            .text
+                                            .isNotEmpty) {
+                                      flashcards.add({
+                                        'id': (index + 1).toString(),
+                                        'term': ControllerTermData[index].text,
+                                        'definition':
+                                            ControllerDefinitionData[index].text
+                                      });
+                                    } else {
+                                      error = true;
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  'Please fill all the fields')));
+                                    }
+                                  }
+                                  if (error == false) {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) =>
+                                            Center(child: LoadingWidget()));
+                                    DeckModel()
+                                        .addFlashcards(
+                                            flashcards, widget.deck.id)
+                                        .then((value) {
+                                      widget.deck.cards = [];
+                                      widget.deck.setFlashcards(flashcards);
+                                      Navigator.pop(context);
+                                      Navigator.pop(context);
+                                      Navigator.pushReplacementNamed(
+                                          context, "/deck",
+                                          arguments: {"deck": widget.deck});
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                              content: Text(
+                                                  'Flashcards added successfully')));
+                                    });
+                                  }
+                                },
+                                child: Container(
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        color: Colors.grey.withOpacity(0.30)),
+                                    width: 85,
+                                    height: 40,
+                                    child: const Text("Done",
+                                        style: TextStyle(
+                                            color: Color(0xFF191C32),
+                                            fontFamily: 'Poppins',
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500)))),
+                          ),
+                        ],
                       ),
-                      SizedBox(
-                        height: 60,
-                      ),
-                      Container(
-                        padding:
-                            EdgeInsets.only(right: 20, bottom: 35, top: 65),
-                        alignment: Alignment.centerRight,
-                        child: GestureDetector(
-                            onTap: () {
-                              for (int index = 0;
-                                  index < ControllerDefinitionData.length;
-                                  index++) {
-                                if (ControllerDefinitionData[index]
-                                        .text
-                                        .isNotEmpty ||
-                                    ControllerTermData[index].text.isNotEmpty) {
-                                  createFlashCard(
-                                      Definition:
-                                          ControllerDefinitionData[index],
-                                      Term: ControllerTermData[index]);
-                                } else {
-                                  print('Please enter a text into the fields');
-                                }
-                              }
-                            },
-                            child: Container(
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Colors.grey.withOpacity(0.30)),
-                                width: 85,
-                                height: 40,
-                                child: const Text("Done",
-                                    style: TextStyle(
-                                        color: Color(0xFF191C32),
-                                        fontFamily: 'Poppins',
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w500)))),
-                      ),
-                    ],
-                  ),
-                )),
+                    ))
               ],
             )));
   }

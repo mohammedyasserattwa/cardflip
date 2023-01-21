@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:flutter_svg/flutter_svg.dart';
 
-
 class SearchPeopleItem extends StatelessWidget {
   const SearchPeopleItem({
     Key? key,
@@ -14,11 +13,13 @@ class SearchPeopleItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        //TODO: POV of the profile
+        Navigator.pushNamed(context, '/othersProfile', arguments: {
+          "id": person["id"],
+        });
       },
       child: Container(
         color: Colors.transparent,
-        padding: const EdgeInsets.all(25),
+        padding: const EdgeInsets.all(15),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

@@ -1,5 +1,6 @@
 import 'package:cardflip/models/user_model.dart';
 import "package:flutter/material.dart";
+import 'package:flutter_svg/flutter_svg.dart';
 
 class Settings extends StatelessWidget {
   const Settings({super.key});
@@ -20,18 +21,32 @@ class Settings extends StatelessWidget {
             padding: const EdgeInsets.only(top: 50.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(left: 30.0),
-                  child: Text(
-                    "Settings",
-                    textAlign: TextAlign.left,
-                    style: TextStyle(
-                      fontFamily: "PolySans_Median",
-                      color: Color(0xff514F55),
-                      fontSize: 36,
-                    ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 30.0, top: 20),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: SvgPicture.asset(
+                            "Images/icons/svg/arrow-left-s-line.svg"),
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      const Text(
+                        "Settings",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontFamily: "PolySans_Median",
+                          color: Color(0xff514F55),
+                          fontSize: 36,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(

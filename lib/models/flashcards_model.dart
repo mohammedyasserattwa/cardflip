@@ -1,9 +1,5 @@
-import 'dart:collection';
-
 import 'package:cardflip/data/card.dart';
-
 import '../data/deck.dart';
-import 'deck_model.dart';
 
 class FlashcardModel {
   // String id;

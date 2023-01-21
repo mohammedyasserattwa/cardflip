@@ -30,15 +30,20 @@ class _AdddeckState extends ConsumerState<Adddeck> {
   final GlobalKey _nameKey = GlobalKey<FormState>();
   final GlobalKey _descriptionKey = GlobalKey<FormState>();
   final DeckModel deckModel = DeckModel();
-  final List<String> _selectedTags = [];
-
+  List<String> _selectedTags = [];
+  int counter = 0;
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     if (widget.screens == "edit") {
       _controllerTitle.text = widget.deck!.name;
       _controllerDescription.text = widget.deck!.description;
-      _selectedTags.addAll((widget.deck!.tags).map((item) => item));
+      _selectedTags = [...((widget.deck!.tags).map((item) => item)).toList()];
     }
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final userData = ref.watch(UserDataProvider);
     return Scaffold(
       body: FutureBuilder(
@@ -215,9 +220,11 @@ class _AdddeckState extends ConsumerState<Adddeck> {
                                 ],
                                 onChange: (allSelectedItems, selectedItem) {
                                   setState(() {
-                                    _selectedTags.addAll((allSelectedItems)
-                                        .map((item) => item as String)
-                                        .toList());
+                                    if (_selectedTags.contains(selectedItem)) {
+                                      _selectedTags.remove(selectedItem);
+                                    } else {
+                                      _selectedTags.add(selectedItem);
+                                    }
                                   });
                                 }),
                           ),
@@ -265,10 +272,59 @@ class _AdddeckState extends ConsumerState<Adddeck> {
                                       );
                                     });
                               } else {
-                                //TODO: Add deck to database
-
-                                Navigator.pop(context);
+                                if(widget.screens == "edit"){
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Center(
+                                        child: LoadingWidget(),
+                                      );
+                                    });
+                                deckModel
+                                    .updateDeck(
+                                        _controllerTitle.text,
+                                        _controllerDescription.text,
+                                        _selectedTags,
+                                        widget.deck!.id)
+                                    .then((value) {
+                                  widget.deck!.name = _controllerTitle.text;
+                                  widget.deck!.description =
+                                      _controllerDescription.text;
+                                  widget.deck!.tags = _selectedTags;
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text(
+                                              "Deck updated successfully")));
+                                });}
+                                else if(widget.screens == "add"){
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Center(
+                                          child: LoadingWidget(),
+                                        );
+                                      });
+                                  deckModel
+                                      .createDeck(
+                                      _controllerTitle.text,
+                                      _controllerDescription.text,
+                                      _selectedTags,
+                                      userData!.id
+                                      )
+                                      .then((value) {
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text(
+                                                "Deck created successfully")));
+                                  });
+                                }
                               }
+                              //
+                              // Navigator.pop(context);
                             },
                             child: Container(
                                 alignment: Alignment.center,

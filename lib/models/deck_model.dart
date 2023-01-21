@@ -2,10 +2,8 @@ import 'package:cardflip/data/category.dart';
 import 'package:cardflip/data/tag.dart';
 import 'package:cardflip/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:developer' as developer;
 import '../data/deck.dart';
 import 'package:cardflip/data/card.dart';
-import '../data/User.dart';
 
 class DeckModel {
   final List<Deck> recentDecks = [];
@@ -47,6 +45,31 @@ class DeckModel {
     }).toList();
 
     return data;
+  }
+
+  Future updateDeck(String title, String description, List<String> tags, String id){
+    return _deckCollection.doc(id).update({
+      "name": title,
+      "description": description,
+      "tags": tags
+    });
+  }
+  Future addFlashcards(List<Map<String, String>> flashcards, String id) {
+    return _deckCollection.doc(id).update({
+      "flashcards": flashcards,
+    });
+  }
+  Future createDeck(String title, String description, List<String> tags, String userID) {
+    return _deckCollection.add({
+      "name": title,
+      "description": description,
+      "tags": tags,
+      "userID": userID,
+      "rating": "0",
+      "flashcards": [],
+      "createdat": DateTime.now(),
+      "leaderboard": [],
+    });
   }
 
   Deck deckByIDRecent(String id) {
@@ -220,7 +243,6 @@ class DeckModel {
     QuerySnapshot querySnapshot = await _tagCollection.get();
     final data = (querySnapshot.docs
         .map((doc) => Tag(tagID: doc.id, name: doc.get("name")))).toList();
-    List<Tag> result = [];
     List<Tag> temp = List.from(data);
 
     for (int i = 0; i < temp.length; i++) {
@@ -241,6 +263,47 @@ class DeckModel {
         .map((e) async =>
             Deck.fromSnapshot(e, await userModel.getUserByID(e["userID"])))
         .toList();
+  }
+
+  Future<List<Future<Deck>>> getRecentlyAddedDecks(String id) async {
+    final decks =
+        await _deckCollection.where("userID",isEqualTo: id).orderBy("createdat", descending: true).limit(4).get();
+    final data = decks.docs
+        .map((e) async =>
+            Deck.fromSnapshot(e, await userModel.getUserByID(e["userID"])))
+        .toList();
+    return data;
+  }
+
+  Future<List<Deck>> sortDecksByDate() async{
+    QuerySnapshot querySnapshot = await _deckCollection
+    .orderBy("createdat",descending: true)
+    .get();
+    final data = (querySnapshot.docs.map((doc) =>
+        {"id": doc.id, "name": doc.get("name"), "data": doc.data()})).toList();
+    List<Deck> result = [];
+    for (int i = 0; i < data.length; i++) {
+        result.add(Deck.fromMap(
+            data[i]["data"],
+            await userModel.getUserByID(data[i]["data"]["userID"]),
+            data[i]["id"]));
+    }
+    return result;
+  }
+  Future<List<Deck>> sortDecksByUpvotes() async{
+    QuerySnapshot querySnapshot = await _deckCollection
+    .orderBy("rating",descending: true)
+    .get();
+    final data = (querySnapshot.docs.map((doc) =>
+        {"id": doc.id, "name": doc.get("name"), "data": doc.data()})).toList();
+    List<Deck> result = [];
+    for (int i = 0; i < data.length; i++) {
+        result.add(Deck.fromMap(
+            data[i]["data"],
+            await userModel.getUserByID(data[i]["data"]["userID"]),
+            data[i]["id"]));
+    }
+    return result;
   }
 
   Future<Map<String, dynamic>> getDeckByLeaderboardUserID(String id) async {

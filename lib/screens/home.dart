@@ -152,6 +152,7 @@ class Home extends StatelessWidget {
                                           Navigator.of(context)
                                               .pushNamed("/deck", arguments: {
                                             "deck": data[index],
+                                            "backhome": true
                                           });
                                           // context.go('/Home/Deck/${index + 1}');
                                         },
@@ -168,8 +169,11 @@ class Home extends StatelessWidget {
                         child: Text(snapshot.error.toString()),
                       );
                     }
-                    return Center(
-                      child: CircularProgressIndicator(),
+                    return SizedBox(
+                      height: 116.67,
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
                     );
                   }),
               Padding(
@@ -189,7 +193,10 @@ class Home extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       children: <Widget>[
                         for (int i = 0;
-                            i < userData.userPreferences.length;
+                            i <
+                                (userData.userPreferences.length < 6
+                                    ? userData.userPreferences.length
+                                    : 6);
                             i += 2)
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
@@ -201,10 +208,11 @@ class Home extends StatelessWidget {
                               children: [
                                 Deck(
                                     onTap: () {
-                                      Navigator.of(context)
-                                          .pushNamed("/deck", arguments: {
-                                        "deck": userData.userPreferences[i],
-                                      });
+                                      Navigator.of(context).pushNamed("/deck",
+                                          arguments: {
+                                            "deck": userData.userPreferences[i],
+                                            "backhome": true
+                                          });
                                     },
                                     width: _preferencesSizes[i]["width"]!,
                                     height: _preferencesSizes[i]["height"]!,
@@ -222,6 +230,7 @@ class Home extends StatelessWidget {
                                             .pushNamed("/deck", arguments: {
                                           "deck":
                                               userData.userPreferences[i + 1],
+                                          "backhome": true
                                         });
                                       },
                                       width: _preferencesSizes[i + 1]["width"]!,

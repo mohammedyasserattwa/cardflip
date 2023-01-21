@@ -9,10 +9,9 @@ import "package:flutter/material.dart";
 import '../../models/admin_model.dart';
 import '../../widgets/admin/admin_deck.dart';
 
-main() => runApp(MaterialApp(home: Admin()));
 
 class Admin extends StatefulWidget {
-  Admin({key});
+  const Admin({super.key});
 
   @override
   State<Admin> createState() => _AdminState();

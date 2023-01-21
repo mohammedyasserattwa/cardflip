@@ -1,5 +1,4 @@
 import 'package:cardflip/data/card.dart';
-import 'package:cardflip/data/tag.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Deck {
@@ -58,6 +57,14 @@ class Deck {
       cards: cards,
       user: user,
     );
+  }
+
+  setFlashcards(List<Map<String, String>> flashcards) {
+    List<Card> cards = [];
+    for (int i = 0; i < flashcards.length; i++) {
+      cards.add(Card.fromMap(flashcards[i]));
+    }
+    this.cards = cards;
   }
 
   String get deckName => name;

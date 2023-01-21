@@ -1,12 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../data/card.dart';
-import '../data/category.dart';
-import '../data/deck.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import "dart:developer" as developer;
+// import "dart:developer" as developer;
 import '../data/user.dart' as user_data;
 
 class UserModel {
@@ -27,6 +24,7 @@ class UserModel {
     final usersData = querySnapshot.docs
         .map((doc) => {
               "fname": doc.get("fname"),
+              "id": doc.id,
               "lname": doc.get("lname"),
               "profileIcon": doc.get("profileIcon"),
               "username": doc.get("username")
@@ -63,8 +61,8 @@ class UserModel {
     return result;
   }
 
-  Future userDataByID(String ID) async {
-    var querySnapshot = await _userCollection.doc(ID).get();
+  Future userDataByID(String id) async {
+    var querySnapshot = await _userCollection.doc(id).get();
     Map<String, dynamic> usersData =
         querySnapshot.data() as Map<String, dynamic>;
     return usersData;
@@ -76,13 +74,13 @@ class UserModel {
     await user.updatePassword(password);
   }
 
-  Future getNameandPic(String ID) async {
-    var querySnapshot = await _userCollection.doc(ID).get();
+  Future getNameandPic(String id) async {
+    var querySnapshot = await _userCollection.doc(id).get();
     Map usersData = {
       "profileIcon": querySnapshot.get("profileIcon"),
       "fname": querySnapshot.get("fname"),
       "lname": querySnapshot.get("lname"),
-      "ID": ID,
+      "ID": id,
     };
     return usersData;
   }
@@ -126,7 +124,8 @@ class UserModel {
   signOut() async {
     await _auth.signOut();
   }
-  Future updateUser(user_data.User updatedUser){
+
+  Future updateUser(user_data.User updatedUser) {
     return _userCollection.doc(updatedUser.id).update(updatedUser.toJSON());
   }
 

@@ -12,7 +12,7 @@ class SearchInputField extends ConsumerStatefulWidget {
   final String hint;
   final TextEditingController controller;
   final TextInputType type;
-  SearchInputField(
+  const SearchInputField(
       {super.key,
       required this.hint,
       required this.controller,
@@ -107,7 +107,7 @@ class _SearchInputFieldState extends ConsumerState<SearchInputField> {
                             setState(() {});
                           },
                           controller: widget.controller,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Color(0xff3F3F3F),
                             fontFamily: "PolySans_Neutral",
                             fontSize: 22,
@@ -135,7 +135,7 @@ class _SearchInputFieldState extends ConsumerState<SearchInputField> {
                               resetButton = false;
                             });
                           },
-                          icon: Icon(Icons.close)),
+                          icon: const Icon(Icons.close)),
                     )
                   ],
                 ),

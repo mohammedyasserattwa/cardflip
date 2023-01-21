@@ -1,7 +1,6 @@
 import 'package:cardflip/data/deck.dart';
 import 'package:cardflip/helpers/random_generator.dart';
 import 'package:cardflip/models/deck_model.dart';
-import 'package:cardflip/widgets/search/search_deck_item.dart';
 import "package:cardflip/widgets/deck/deck.dart" as deck_ui;
 import "package:flutter/material.dart";
 import 'package:no_glow_scroll/no_glow_scroll.dart';
@@ -10,14 +9,13 @@ import 'package:recase/recase.dart';
 class TagScreen extends StatefulWidget {
   final dynamic tags;
 
-  TagScreen({super.key, required this.tags});
+  const TagScreen({super.key, required this.tags});
 
   @override
   State<TagScreen> createState() => _TagScreenState();
 }
 
 class _TagScreenState extends State<TagScreen> {
-  Future<List<Future<Deck>>> _resultDecks = Future.value([]);
   RandomGenerator randomizer = RandomGenerator();
   String _chosenTag = "";
   String _chosenTagId = "";
@@ -32,7 +30,7 @@ class _TagScreenState extends State<TagScreen> {
   final BoxDecoration _activeTagDecoration = BoxDecoration(
     border: Border.all(color: const Color(0xffA000A4), width: 1),
     borderRadius: BorderRadius.circular(16),
-    color: Color.fromARGB(169, 244, 177, 235),
+    color: const Color.fromARGB(169, 244, 177, 235),
   );
   @override
   void initState() {
@@ -41,7 +39,7 @@ class _TagScreenState extends State<TagScreen> {
   }
 
   int c2 = 0;
-  Map<String, List<deck_ui.Deck>> _renderedDecks = {};
+  final Map<String, List<deck_ui.Deck>> _renderedDecks = {};
   @override
   Widget build(BuildContext context) {
     return (widget.tags.isNotEmpty)
@@ -88,9 +86,6 @@ class _TagScreenState extends State<TagScreen> {
                                             }
                                           }).toList();
                                           if (_tagActive[j] == true) {
-                                            _resultDecks = DeckModel()
-                                                .deckByTagID(
-                                                    widget.tags[j].tagID);
                                             _chosenTagId = widget.tags[j].tagID;
                                             _chosenTag = widget.tags[j].name;
                                             // if (_renderedDecks
@@ -102,7 +97,6 @@ class _TagScreenState extends State<TagScreen> {
                                             // }
                                             // print(_renderedDecks);
                                           } else {
-                                            _resultDecks = Future.value([]);
                                             _chosenTag = "";
                                             _chosenTagId = "";
                                           }
@@ -185,7 +179,7 @@ class _TagScreenState extends State<TagScreen> {
                       padding:
                           const EdgeInsets.only(left: 10.0, right: 10, top: 30),
                       child: SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.5,
+                        height: MediaQuery.of(context).size.height * 0.45,
                         child: NoGlowScroll(
                           child: ListView(
                             children: [
@@ -218,7 +212,8 @@ class _TagScreenState extends State<TagScreen> {
                                   padding: const EdgeInsets.only(top: 10.0),
                                   child: Row(
                                     mainAxisAlignment: (i + 1 <
-                                            _renderedDecks[_chosenTagId]!.length)
+                                            _renderedDecks[_chosenTagId]!
+                                                .length)
                                         ? MainAxisAlignment.spaceBetween
                                         : MainAxisAlignment.start,
                                     children: [

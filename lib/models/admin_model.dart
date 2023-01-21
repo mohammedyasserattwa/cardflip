@@ -1,4 +1,3 @@
-import 'package:cardflip/data/card.dart';
 import 'package:cardflip/data/deck.dart';
 import 'package:cardflip/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -40,7 +39,7 @@ class AdminModel {
 
     final data = querySnapshot.docs.map((doc) async {
       final user = await userModel.userDataByID(doc.get("userID"));
-      List<Card> cards = [];
+      // List<Card> cards = [];
       // final flashcards = doc.get("flashcards");
       // for (int i = 0; i < flashcards.length; i++) {
       //   cards.add(Card.fromMap(flashcards[i]));

@@ -88,16 +88,19 @@ class Profile extends ConsumerWidget {
                       Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              ReCase("${userData.fname} ${userData.lname}")
-                                  .titleCase,
-                              style: TextStyle(
-                                fontFamily: "PolySans_Slim",
-                                color: Color(0xf0493C3F),
-                                fontSize:
-                                    (MediaQuery.of(context).size.width > 300)
-                                        ? 32
-                                        : 25,
+                            FittedBox(
+                              fit: BoxFit.contain,
+                              child: Text(
+                                ReCase("${userData.fname} ${userData.lname}")
+                                    .titleCase,
+                                style: TextStyle(
+                                  fontFamily: "PolySans_Slim",
+                                  color: const Color(0xf0493C3F),
+                                  fontSize:
+                                      (MediaQuery.of(context).size.width > 300)
+                                          ? 32
+                                          : 25,
+                                ),
                               ),
                             ),
                             Text(
@@ -191,7 +194,7 @@ class Profile extends ConsumerWidget {
                     ),
                     height: 55,
                     width: 55,
-                    child: Center(
+                    child: const Center(
                       child: Text(
                         "+32",
                         textAlign: TextAlign.center,
@@ -221,32 +224,66 @@ class Profile extends ConsumerWidget {
               padding: const EdgeInsets.fromLTRB(15, 10, 2, 0),
               child: SizedBox(
                 height: height,
-                child: NoGlowScroll(
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: deckModel.recentDecks.length,
-                    itemBuilder: (context, index) => Row(
-                      children: [
-                        Deck(
-                            width: 139,
-                            height: 116.67,
-                            path:
-                                "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
-                            min: 3,
-                            onTap: () => Navigator.pushNamed(
-                                  context,
-                                  "/deck",
-                                  arguments: {
-                                    "deckID": deckModel.recentDecks[index].id,
-                                  },
-                                )),
-                        const SizedBox(
-                          width: 15,
-                        )
-                      ],
-                    ),
-                  ),
-                ),
+                child: FutureBuilder(
+                    future: deckModel.getRecentlyAddedDecks(userData.id),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        final decks = snapshot.data!;
+                        if (decks.isNotEmpty) {
+                          return NoGlowScroll(
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: decks.length,
+                              itemBuilder: (context, index) => Row(
+                                children: [
+                                  FutureBuilder(
+                                      future: decks[index],
+                                      builder: (context, deckData) {
+                                        if (deckData.hasData) {
+                                          return Deck(
+                                              width: 139,
+                                              height: 116.67,
+                                              path:
+                                                  "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                                              min: 3,
+                                              deck: deckData.data!,
+                                              onTap: () => Navigator.pushNamed(
+                                                    context,
+                                                    "/deck",
+                                                    arguments: {
+                                                      "deck": deckData.data!,
+                                                    },
+                                                  ));
+                                        }
+                                        return const Center(
+                                            child: CircularProgressIndicator());
+                                      }),
+                                  const SizedBox(
+                                    width: 15,
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        } else {
+                          return const Center(
+                              child: Text(
+                            "No decks found",
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 100, 100, 100),
+                              fontSize: 20,
+                              fontFamily: "Poppins-Medium",
+                            ),
+                          ));
+                        }
+                      }
+                      if (snapshot.hasError) {
+                        return Center(child: Text(snapshot.error.toString()));
+                      }
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }),
               ),
             ),
             const Padding(
@@ -268,44 +305,56 @@ class Profile extends ConsumerWidget {
                         return Center(child: Text(snapshot.error.toString()));
                       }
                       if (snapshot.hasData) {
-                        return NoGlowScroll(
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: snapshot.data!.length,
-                            itemBuilder: (context, index) => Row(
-                              children: [
-                                FutureBuilder(
-                                    future: snapshot.data![index],
-                                    builder: (context, deck) {
-                                      if (deck.hasData) {
-                                        return Deck(
-                                          width: 139,
-                                          height: 116.67,
-                                          path:
-                                              "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
-                                          deck: deck.data!,
-                                          min: 3,
-                                          onTap: (() => Navigator.pushNamed(
-                                                context,
-                                                "/deck",
-                                                arguments: {
-                                                  "deck": deck.data!,
-                                                },
-                                              )),
-                                        );
-                                      }
-                                      if (deck.hasError) {
-                                        return Text("${deck.error}");
-                                      }
-                                      return Container();
-                                    }),
-                                const SizedBox(
-                                  width: 15,
-                                )
-                              ],
+                        if (snapshot.data!.isEmpty) {
+                          return const Center(
+                              child: Text(
+                            "No decks found",
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 100, 100, 100),
+                              fontSize: 20,
+                              fontFamily: "Poppins-Medium",
                             ),
-                          ),
-                        );
+                          ));
+                        } else {
+                          return NoGlowScroll(
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, index) => Row(
+                                children: [
+                                  FutureBuilder(
+                                      future: snapshot.data![index],
+                                      builder: (context, deck) {
+                                        if (deck.hasData) {
+                                          return Deck(
+                                            width: 139,
+                                            height: 116.67,
+                                            path:
+                                                "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                                            deck: deck.data!,
+                                            min: 3,
+                                            onTap: (() => Navigator.pushNamed(
+                                                  context,
+                                                  "/deck",
+                                                  arguments: {
+                                                    "deck": deck.data!,
+                                                  },
+                                                )),
+                                          );
+                                        }
+                                        if (deck.hasError) {
+                                          return Text("${deck.error}");
+                                        }
+                                        return Container();
+                                      }),
+                                  const SizedBox(
+                                    width: 15,
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        }
                       } else {
                         return const Center(child: CircularProgressIndicator());
                       }
@@ -328,81 +377,93 @@ class Profile extends ConsumerWidget {
                         return Center(child: Text(snapshot.error.toString()));
                       }
                       if (snapshot.hasData) {
-                        return NoGlowScroll(
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: snapshot.data!["data"].length,
-                            itemBuilder: (context, index) => Row(
-                              children: [
-                                FutureBuilder(
-                                    future: snapshot.data!["data"][index],
-                                    builder: (context, deck) {
-                                      if (deck.hasError) {
-                                        return Text("${deck.error}");
-                                      }
-                                      if (deck.hasData) {
-                                        return Stack(
-                                          children: [
-                                            Column(
-                                              children: [
-                                                const SizedBox(
-                                                  height: 3,
-                                                ),
-                                                Deck(
-                                                  width: 139,
-                                                  height: 116.67,
-                                                  path:
-                                                      "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
-                                                  deck: deck.data!
-                                                      as deck_data.Deck?,
-                                                  min: 3,
-                                                  onTap: (() =>
-                                                      Navigator.pushNamed(
-                                                        context,
-                                                        "/deck",
-                                                        arguments: {
-                                                          "deck": deck.data!,
-                                                        },
-                                                      )),
-                                                ),
-                                              ],
-                                            ),
-                                            Container(
-                                              width: 139,
-                                              height: 146.67,
-                                              // color: Colors.red,
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      0, 0, 10, 0),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                        if (snapshot.data!["data"].length == 0) {
+                          return const Center(
+                              child: Text(
+                            "No decks found",
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 100, 100, 100),
+                              fontSize: 20,
+                              fontFamily: "Poppins-Medium",
+                            ),
+                          ));
+                        } else {
+                          return NoGlowScroll(
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: snapshot.data!["data"].length,
+                              itemBuilder: (context, index) => Row(
+                                children: [
+                                  FutureBuilder(
+                                      future: snapshot.data!["data"][index],
+                                      builder: (context, deck) {
+                                        if (deck.hasError) {
+                                          return Text("${deck.error}");
+                                        }
+                                        if (deck.hasData) {
+                                          return Stack(
+                                            children: [
+                                              Column(
                                                 children: [
-                                                  SvgPicture.asset(
-                                                    "Images/icons/svg/rank${snapshot.data!["leaderboard"][index].where((element) => element["userID"] == userData.id).first["rank"]}.svg",
-                                                    width: 35,
-                                                    height: 40,
+                                                  const SizedBox(
+                                                    height: 3,
+                                                  ),
+                                                  Deck(
+                                                    width: 139,
+                                                    height: 116.67,
+                                                    path:
+                                                        "Images/cards/homepage/1_3/${cardgenerator.getcolor}/${cardgenerator.getshape}.png",
+                                                    deck: deck.data!
+                                                        as deck_data.Deck?,
+                                                    min: 3,
+                                                    onTap: (() =>
+                                                        Navigator.pushNamed(
+                                                          context,
+                                                          "/deck",
+                                                          arguments: {
+                                                            "deck": deck.data!,
+                                                          },
+                                                        )),
                                                   ),
                                                 ],
                                               ),
-                                            )
-                                          ],
-                                        );
-                                      }
-                                      if (deck.hasError) {
-                                        return Text("${deck.error}");
-                                      }
-                                      return Container();
-                                    }),
-                                const SizedBox(
-                                  width: 15,
-                                )
-                              ],
+                                              Container(
+                                                width: 139,
+                                                height: 146.67,
+                                                // color: Colors.red,
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        0, 0, 10, 0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    SvgPicture.asset(
+                                                      "Images/icons/svg/rank${snapshot.data!["leaderboard"][index].where((element) => element["userID"] == userData.id).first["rank"]}.svg",
+                                                      width: 35,
+                                                      height: 40,
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          );
+                                        }
+                                        if (deck.hasError) {
+                                          return Text("${deck.error}");
+                                        }
+                                        return Container();
+                                      }),
+                                  const SizedBox(
+                                    width: 15,
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        }
                       } else {
                         return const Center(child: CircularProgressIndicator());
                       }
