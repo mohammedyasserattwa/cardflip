@@ -322,6 +322,14 @@ flutter:
     - Images/avatars/logo/
     - Images/vectors/
     - Images/vectors/badges/
+    - Images/vectors/badges/bronze.svg
+    - Images/vectors/badges/fastleaderboard.svg
+    - Images/vectors/badges/fasttest.svg
+    - Images/vectors/badges/firsttimer.svg
+    - Images/vectors/badges/frequency.svg
+    - Images/vectors/badges/gold.svg
+    - Images/vectors/badges/leaderboard.svg
+    - Images/vectors/badges/silver.svg
     - Images/vectors/categories/
     - Images/banners/leaderboardpage/
     - Images/backgrounds/category_screen/

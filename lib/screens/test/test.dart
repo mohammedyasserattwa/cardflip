@@ -2,7 +2,9 @@ import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cardflip/data/Repositories/user_state.dart';
 import 'package:cardflip/data/deck.dart';
+import 'package:cardflip/models/badges_model.dart';
 import 'package:cardflip/models/test_model.dart';
+import 'package:cardflip/widgets/badges/badges.dart';
 import 'package:cardflip/widgets/flashcards/card_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_shake_animated/flutter_shake_animated.dart';
@@ -30,6 +32,7 @@ class _TestState extends ConsumerState<Test>
   String sec = "00";
   late BoxDecoration status;
   late TestModel model;
+  late BadgesModel badge;
   late Map testCards;
   late List definitions = [];
   late List terms = [];
@@ -48,6 +51,7 @@ class _TestState extends ConsumerState<Test>
   bool missed = false;
   List missedCards = [];
   Map wrongCards = {};
+  Future<Map<String, bool>> badgecheck = Future.value({});
   var timeTaken;
   var seconds;
   bool gotData = false;
@@ -199,7 +203,11 @@ class _TestState extends ConsumerState<Test>
   @override
   Widget build(BuildContext context) {
     final userData = ref.watch(UserDataProvider);
-
+    try {
+      badge = BadgesModel(currentUser: userData!);
+    } catch (e) {
+      developer.log(e.toString());
+    }
     return Scaffold(
         body: Container(
       height: 1000,
@@ -229,8 +237,53 @@ class _TestState extends ConsumerState<Test>
                   missedCards.clear();
                   wrongCards.clear();
                   randomize(definitions.length);
-                  Navigator.pop(context, false);
+                  // bool allbadgecheck = false;
+                  // Navigator.pop(context);
+                  // for (var entry in badgecheck.entries) {
+                  //   if (entry.value == true) {
+                  //     Navigator.pushNamed(context, '/badges',
+                  //         arguments: {"badgeIndex": badgecheck});
+                  //     break;
+                  //   }
+                  // }
+
+                  badgecheck.then((value) {
+                    Navigator.pushNamed(context, '/deck',
+                        arguments: {"deck": widget.deck});
+                    if (value.containsValue(true)) {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return BadgePopUp(
+                                badgecheck: badgecheck, badge: badge, deck: widget.deck);
+                          });
+                    }
+                  });
+                  // badgecheck.then((value) {
+                  //   if (value != null) {
+                  //     showDialog(
+                  //         context: context,
+                  //         builder: (context) {
+                  //           return BadgePopUp(
+                  //               badgecheck: badgecheck, badge: badge);
+                  //         });
+                  //   }
+                  //   Navigator.pushNamed(context, '/deck',
+                  //       arguments: {"deck": widget.deck});
+                  // });
                 },
+                //   for (int b = 0; b < badgecheck.length - 1; b++) {
+
+                //   //   if (badgecheck[b] == true) {
+                //   //     developer.log(badgecheck[b].toString());
+                //   //     Navigator.pushReplacementNamed(context, '/badges',
+                //   //         arguments: {
+                //   //           "badgeIndex": badgecheck.keys.elementAt(b)
+                //   //         });
+                //   //   }
+                //   // }
+                //   // Navigator.pop(context);
+                // },
                 child: Padding(
                   padding: const EdgeInsets.only(top: 40),
                   child: Container(
@@ -299,6 +352,7 @@ class _TestState extends ConsumerState<Test>
                               .then(
                                 (value) => gotData = true,
                               );
+                          badgecheck = badge.testCheck(widget.deck);
                         });
                       },
                       child: Wrap(
@@ -512,6 +566,10 @@ class _TestState extends ConsumerState<Test>
                                                                             gotData =
                                                                                 true,
                                                                       );
+                                                                  badgecheck = badge
+                                                                      .testCheck(
+                                                                          widget
+                                                                              .deck);
                                                                 }
                                                               });
                                                           },
@@ -647,7 +705,7 @@ class _TestState extends ConsumerState<Test>
                                     children: [
                                       const SizedBox(width: 85),
                                       const Text(
-                                        "Youâ€™re done with your test!",
+                                        "You're done with your test!",
                                         style: TextStyle(
                                             fontFamily: "PolySans_Slim",
                                             fontWeight: FontWeight.w300,
