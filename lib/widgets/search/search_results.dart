@@ -200,7 +200,7 @@ class _SearchResultState extends State<SearchResult> {
             );
           }
           if (snapshot.hasError) {
-            return Center(child: Text(snapshot.stackTrace.toString()));
+            return Center(child: Text(snapshot.error.toString()));
           }
           return const Center(child: CircularProgressIndicator());
         });

@@ -248,15 +248,19 @@ class _TestState extends ConsumerState<Test>
                   // }
 
                   badgecheck.then((value) {
-                    Navigator.pushNamed(context, '/deck',
-                        arguments: {"deck": widget.deck});
                     if (value.containsValue(true)) {
                       showDialog(
                           context: context,
                           builder: (context) {
                             return BadgePopUp(
-                                badgecheck: badgecheck, badge: badge, deck: widget.deck);
+                                badgecheck: badgecheck,
+                                badge: badge,
+                                deck: widget.deck);
                           });
+                    } else {
+                      Navigator.pop(context);
+                      Navigator.pushNamed(context, '/deck',
+                          arguments: {"deck": widget.deck});
                     }
                   });
                   // badgecheck.then((value) {

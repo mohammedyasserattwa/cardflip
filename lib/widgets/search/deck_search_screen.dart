@@ -33,7 +33,7 @@ class DeckSearchScreen extends ConsumerWidget {
                         min: 3,
                         onTap: () {
                           Navigator.pushNamed(context, "/deck",
-                              arguments: {"deck": decks[i + 1]});
+                              arguments: {"deck": decks[i]});
                         },
                       ),
                       if (decks.length > i + 1)

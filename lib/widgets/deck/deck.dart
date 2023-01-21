@@ -32,7 +32,8 @@ class Deck extends ConsumerWidget {
 
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, "/deck", arguments: {"deck": deck});
+        onTap();
+        // Navigator.pushNamed(context, "/deck", arguments: {"deck": deck});
       },
       child: Container(
         decoration: BoxDecoration(

@@ -52,6 +52,7 @@ class AdminModel {
         "id": doc.id,
         "flashcards": doc.get("flashcards"),
         "tags": doc.get("tags"),
+        "likes": doc.get("tags"),
       }, user, doc.id);
     }).toList();
     return data;

@@ -27,7 +27,8 @@ import 'package:cardflip/data/card.dart' as card_data;
 class DeckScreen extends ConsumerStatefulWidget {
   final bool backhome;
   final Deck deck;
-  const DeckScreen({Key? key, required this.deck,this.backhome = false}) : super(key: key);
+  const DeckScreen({Key? key, required this.deck, required this.backhome})
+      : super(key: key);
 
   @override
   ConsumerState<DeckScreen> createState() => _MyDeckScreenState();
@@ -101,19 +102,6 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
             }
           });
         },
-        // child: Container(
-        //   width: 45,
-        //   height: 45,
-        //   decoration: const BoxDecoration(
-        //     color: Color(0xf1A0404),
-        //     borderRadius: BorderRadius.all(Radius.circular(12)),
-        //   ),
-        //   child: Padding(
-        //     padding: const EdgeInsets.all(8.0),
-        //     child: SvgPicture.asset("Images/icons/svg/filter.svg",
-        //         width: 45, height: 45),
-        //   ),
-        // )
       );
   @override
   Widget build(BuildContext context) {
@@ -167,9 +155,9 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                   GestureDetector(
                                       onTap: () {
                                         if (userData.role == "learner") {
-                                          if(widget.backhome) {
+                                          if (widget.backhome) {
                                             Navigator.pushReplacementNamed(
-                                              context, "/home");
+                                                context, "/home");
                                           } else {
                                             Navigator.pop(context);
                                           }
@@ -212,6 +200,20 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                                         .state =
                                                     reports + [model.deck.id];
                                                 isReported = true;
+                                                deckModel
+                                                    .addReport(
+                                                        widget.deck.id,
+                                                        widget.deck.user["id"],
+                                                        userData.id)
+                                                    .then((value) {
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(
+                                                    const SnackBar(
+                                                      content:
+                                                          Text("Deck reported"),
+                                                    ),
+                                                  );
+                                                });
                                               }
                                             },
                                             child: Wrap(
@@ -596,6 +598,22 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                                             .state =
                                                         ratings +
                                                             [widget.deck.id];
+                                                    deckModel
+                                                        .addLike(widget.deck.id,
+                                                            userData.id)
+                                                        .then((value) {
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        SnackBar(
+                                                          content: Text(
+                                                              "Deck Liked!"),
+                                                          duration:
+                                                              const Duration(
+                                                                  seconds: 2),
+                                                        ),
+                                                      );
+                                                    });
                                                   } else {
                                                     widget.deck
                                                         .decrementRating();
@@ -609,6 +627,23 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                                                 .notifier)
                                                             .state =
                                                         <String>[] + temp;
+                                                    deckModel
+                                                        .removeLike(
+                                                            widget.deck.id,
+                                                            userData.id)
+                                                        .then((value) {
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        SnackBar(
+                                                          content: Text(
+                                                              "Deck Unliked!"),
+                                                          duration:
+                                                              const Duration(
+                                                                  seconds: 2),
+                                                        ),
+                                                      );
+                                                    });
                                                     setState(() {});
                                                   }
                                                 }

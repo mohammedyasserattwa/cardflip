@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -61,10 +63,35 @@ class UserModel {
     return result;
   }
 
+  Future<List<String>> getBadgesKeys(String id) async {
+    final querySnapshot = await _userCollection.doc(id).get();
+    print(querySnapshot.get("badges"));
+    final data = querySnapshot.get("badges") as Map<String, dynamic>;
+    List<String> badges = [];
+
+    data.forEach((String k, dynamic e) {
+      // int n =
+      if (k == "firsttimer") {
+        e = e["test"];
+      }
+      if (e != 0) {
+        badges.add((k == "firsttimer") ? "firsttimer" : k);
+      }
+    });
+
+    // for () {
+    // for (int j = 0; j < data[i].length; j++) {
+    // badges.add(data[i]);
+    // }
+    // }
+    return badges;
+  }
+
   Future userDataByID(String id) async {
     var querySnapshot = await _userCollection.doc(id).get();
     Map<String, dynamic> usersData =
         querySnapshot.data() as Map<String, dynamic>;
+    usersData.addAll({"id": querySnapshot.id});
     return usersData;
   }
 
@@ -98,14 +125,14 @@ class UserModel {
   }
 
   Future<Map> getUserByID(String docID) async {
-    final user = await _userCollection.doc(docID).get();
+    final userData = await _userCollection.doc(docID).get();
     return {
-      "id": user.id,
-      "username": user["username"],
-      "email": user["email"],
-      "fname": user["fname"],
-      "lname": user["lname"],
-      "profileIcon": user["profileIcon"]
+      "id": docID,
+      "username": userData["username"],
+      "email": userData["email"],
+      "fname": userData["fname"],
+      "lname": userData["lname"],
+      "profileIcon": userData["profileIcon"]
     };
   }
 

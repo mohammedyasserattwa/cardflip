@@ -90,15 +90,20 @@ class _LoginState extends ConsumerState<Login> {
                 ref.read(UserDataProvider.notifier).state =
                     user_data.User.fromSnapshot(
                         user, email, password, userModel.id, value);
-
-                if (_rememberMeCheckBox) {
-                  saveUserInVault(
-                          _emailController.text, _passwordController.text)
-                      .then((value) =>
-                          Navigator.pushReplacementNamed(context, '/home'));
-                } else {
-                  Navigator.pushReplacementNamed(context, '/home');
-                }
+                deckModel.getReportsByUserID(userModel.id).then((reports) {
+                  ref.read(ReportProvider.notifier).state = reports;
+                  deckModel.getLikesByUserID(userModel.id).then((likes) {
+                    ref.read(RatingProvider.notifier).state = likes;
+                    if (_rememberMeCheckBox) {
+                      saveUserInVault(
+                              _emailController.text, _passwordController.text)
+                          .then((value) =>
+                              Navigator.pushReplacementNamed(context, '/home'));
+                    } else {
+                      Navigator.pushReplacementNamed(context, '/home');
+                    }
+                  });
+                });
               });
             } else {
               Navigator.pop(context);

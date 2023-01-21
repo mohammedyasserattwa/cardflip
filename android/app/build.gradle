@@ -48,10 +48,10 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.CardFlip"
+        versionCode 2
+        versionName "2.0"
         minSdkVersion 19
         multiDexEnabled true
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
     }
 
     signingConfigs {

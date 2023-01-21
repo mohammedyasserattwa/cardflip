@@ -11,6 +11,7 @@ class DeckModel {
   final List<Deck> topRatedDecks = [];
   final _tagCollection = FirebaseFirestore.instance.collection("tag");
   final _deckCollection = FirebaseFirestore.instance.collection("deck");
+  final _reportCollection = FirebaseFirestore.instance.collection("reports");
   final _categoryCollection =
       FirebaseFirestore.instance.collection("categories");
   final UserModel userModel = UserModel();
@@ -32,10 +33,12 @@ class DeckModel {
       for (int i = 0; i < flashcards.length; i++) {
         cards.add(Card.fromMap(flashcards[i]));
       }
+      List<String> likes =
+          (deck.get("likes") as List).map((e) => e as String).toList();
       return Deck(
         name: deck.get("name"),
         description: deck.get("description"),
-        rating: double.parse(deck.get('rating')),
+        likes: likes,
         id: deck.id,
         userID: deck.get('userID'),
         cards: cards,
@@ -47,19 +50,57 @@ class DeckModel {
     return data;
   }
 
-  Future updateDeck(String title, String description, List<String> tags, String id){
-    return _deckCollection.doc(id).update({
-      "name": title,
-      "description": description,
-      "tags": tags
+  Future addLike(String deckID, String userID) {
+    return _deckCollection.doc(deckID).update({
+      "likes": FieldValue.arrayUnion([userID])
     });
   }
+
+  Future removeLike(String deckID, String userID) {
+    return _deckCollection.doc(deckID).update({
+      "likes": FieldValue.arrayRemove([userID])
+    });
+  }
+
+  Future addReport(String deckID, String userID, String reporterID) {
+    return _reportCollection.add({
+      "deckID": deckID,
+      "userID": userID,
+      "reporterID": reporterID,
+      "date": DateTime.now(),
+    });
+  }
+
+  Future<List<String>> getReportsByUserID(String userID) async {
+    QuerySnapshot querySnapshot =
+        await _reportCollection.where("userID", isEqualTo: userID).get();
+    final data =
+        querySnapshot.docs.map((doc) => doc.get("deckID") as String).toList();
+    return data;
+  }
+
+  Future<List<String>> getLikesByUserID(String userID) async {
+    QuerySnapshot querySnapshot =
+        await _deckCollection.where("likes", arrayContains: userID).get();
+    final data = querySnapshot.docs.map((doc) => doc.id).toList();
+    return data;
+  }
+
+  Future updateDeck(
+      String title, String description, List<String> tags, String id) {
+    return _deckCollection
+        .doc(id)
+        .update({"name": title, "description": description, "tags": tags});
+  }
+
   Future addFlashcards(List<Map<String, String>> flashcards, String id) {
     return _deckCollection.doc(id).update({
       "flashcards": flashcards,
     });
   }
-  Future createDeck(String title, String description, List<String> tags, String userID) {
+
+  Future createDeck(
+      String title, String description, List<String> tags, String userID) {
     return _deckCollection.add({
       "name": title,
       "description": description,
@@ -69,6 +110,7 @@ class DeckModel {
       "flashcards": [],
       "createdat": DateTime.now(),
       "leaderboard": [],
+      "likes": []
     });
   }
 
@@ -96,10 +138,12 @@ class DeckModel {
     for (int i = 0; i < flashcards.length; i++) {
       cards.add(Card.fromMap(flashcards[i]));
     }
+    List<String> likes =
+        (deck.get("likes") as List).map((e) => e as String).toList();
     return Deck(
       name: deck.get("name"),
       description: deck.get("description"),
-      rating: double.parse(deck.get('rating')),
+      likes: likes,
       id: deck.id,
       userID: deck.get('userID'),
       cards: cards,
@@ -157,10 +201,12 @@ class DeckModel {
         cards.add(Card.fromMap(flashcards[i]));
       }
       if (deckIDs.contains(doc.id)) {
+        List<String> likes =
+            (doc.get("likes") as List).map((e) => e as String).toList();
         data.add(Deck(
           name: doc.get("name"),
           description: doc.get("description"),
-          rating: double.parse(doc.get('rating')),
+          likes: likes,
           id: doc.id,
           userID: doc.get('userID'),
           cards: cards,
@@ -190,10 +236,12 @@ class DeckModel {
           cards.add(Card.fromMap(flashcards[i]));
         }
         data.removeWhere((element) => element.deckID == doc.id);
+        List<String> likes =
+            (doc.get("likes") as List).map((e) => e as String).toList();
         data.add(Deck(
           name: doc.get("name"),
           description: doc.get("description"),
-          rating: double.parse(doc.get('rating')),
+          likes: likes,
           id: doc.id,
           userID: doc.get('userID'),
           cards: cards,
@@ -205,38 +253,6 @@ class DeckModel {
     }
 
     return data;
-
-    // List<Deck> data = [];
-    // for (int i = 0; i < querySnapshot.docs.length; i++) {
-    //   QueryDocumentSnapshot<Object?> doc = querySnapshot.docs[i];
-    //   if (userTags
-    //       .toSet()
-    //       .intersection(doc.get("tags").toSet())
-    //       .toList()
-    //       .isNotEmpty) {
-    //     if (data.length < 6) {
-    //       List<Card> cards = [];
-    //       final flashcards = doc.get("flashcards");
-    //       for (int i = 0; i < flashcards.length; i++) {
-    //         if (flashcards[i]['id'] != null ||
-    //             flashcards[i]['term'] != null ||
-    //             flashcards[i]['definition'] != null)
-    //           cards.add(Card.fromMap(flashcards[i]));
-    //       }
-    //       data.add(Deck(
-    //         name: doc.get("name"),
-    //         description: doc.get("description"),
-    //         rating: double.parse(doc.get('rating')),
-    //         id: doc.id,
-    //         userID: doc.get('userID'),
-    //         cards: cards,
-    //         user: await userModel.getUserByID(doc.get("userID")),
-    //         // tags:
-    //       ));
-    //     }
-    //   }
-    // }
-    // return data;
   }
 
   Future<List<Tag>> tagsByQuery(String query) async {
@@ -266,8 +282,11 @@ class DeckModel {
   }
 
   Future<List<Future<Deck>>> getRecentlyAddedDecks(String id) async {
-    final decks =
-        await _deckCollection.where("userID",isEqualTo: id).orderBy("createdat", descending: true).limit(4).get();
+    final decks = await _deckCollection
+        .where("userID", isEqualTo: id)
+        .orderBy("createdat", descending: true)
+        .limit(4)
+        .get();
     final data = decks.docs
         .map((e) async =>
             Deck.fromSnapshot(e, await userModel.getUserByID(e["userID"])))
@@ -275,33 +294,32 @@ class DeckModel {
     return data;
   }
 
-  Future<List<Deck>> sortDecksByDate() async{
-    QuerySnapshot querySnapshot = await _deckCollection
-    .orderBy("createdat",descending: true)
-    .get();
+  Future<List<Deck>> sortDecksByDate() async {
+    QuerySnapshot querySnapshot =
+        await _deckCollection.orderBy("createdat", descending: true).get();
     final data = (querySnapshot.docs.map((doc) =>
         {"id": doc.id, "name": doc.get("name"), "data": doc.data()})).toList();
     List<Deck> result = [];
     for (int i = 0; i < data.length; i++) {
-        result.add(Deck.fromMap(
-            data[i]["data"],
-            await userModel.getUserByID(data[i]["data"]["userID"]),
-            data[i]["id"]));
+      result.add(Deck.fromMap(
+          data[i]["data"],
+          await userModel.getUserByID(data[i]["data"]["userID"]),
+          data[i]["id"]));
     }
     return result;
   }
-  Future<List<Deck>> sortDecksByUpvotes() async{
-    QuerySnapshot querySnapshot = await _deckCollection
-    .orderBy("rating",descending: true)
-    .get();
+
+  Future<List<Deck>> sortDecksByUpvotes() async {
+    QuerySnapshot querySnapshot =
+        await _deckCollection.orderBy("rating", descending: true).get();
     final data = (querySnapshot.docs.map((doc) =>
         {"id": doc.id, "name": doc.get("name"), "data": doc.data()})).toList();
     List<Deck> result = [];
     for (int i = 0; i < data.length; i++) {
-        result.add(Deck.fromMap(
-            data[i]["data"],
-            await userModel.getUserByID(data[i]["data"]["userID"]),
-            data[i]["id"]));
+      result.add(Deck.fromMap(
+          data[i]["data"],
+          await userModel.getUserByID(data[i]["data"]["userID"]),
+          data[i]["id"]));
     }
     return result;
   }

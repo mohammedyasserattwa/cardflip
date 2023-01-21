@@ -1,5 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.cardflip">
+    package="com.example.cardflip"
+    android:versionCode="2"
+    android:versionName="2.0"
+    >
    <application
         android:label="CardFlip"
         android:name="${applicationName}"

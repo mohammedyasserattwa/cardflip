@@ -49,7 +49,12 @@ class CategoryScreen extends StatelessWidget {
                           alignment: Alignment.centerLeft,
                           child: GestureDetector(
                               onTap: () {
-                                Navigator.pop(context);
+                                if (backhome) {
+                                  Navigator.of(context).pushNamedAndRemoveUntil(
+                                      "/home", (route) => false);
+                                } else {
+                                  Navigator.pop(context);
+                                }
                               },
                               child: Container(
                                   decoration: const BoxDecoration(

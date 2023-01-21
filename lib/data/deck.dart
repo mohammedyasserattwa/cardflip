@@ -5,7 +5,8 @@ class Deck {
   String name;
   String description;
   String author;
-  double rating;
+  int rating = 0;
+  List<String> likes = [];
   String id;
   List<Card> cards;
   List<String> tags = [];
@@ -15,13 +16,14 @@ class Deck {
     required this.name,
     this.description = "",
     this.author = "",
-    required this.rating,
     required this.id,
     this.tags = const <String>[],
     this.cards = const <Card>[],
+    this.likes = const <String>[],
     required this.userID,
     required this.user,
   }) {
+    rating = likes.length;
     // leaderboard = Leaderboard(deckID: id);
   }
   factory Deck.fromMap(Map<String, dynamic> map, Map user, String id) {
@@ -30,16 +32,17 @@ class Deck {
     for (int i = 0; i < flashcards.length; i++) {
       cards.add(Card.fromMap(flashcards[i]));
     }
+    List<String> likes =
+        (map["likes"] as List).map((e) => e as String).toList();
     return Deck(
-      name: map['name'],
-      description: map['description'],
-      rating: double.parse(map['rating']),
-      id: id,
-      userID: map['userID'],
-      tags: (map["tags"] as List).map((item) => item as String).toList(),
-      cards: cards,
-      user: user,
-    );
+        name: map['name'],
+        description: map['description'],
+        id: id,
+        userID: map['userID'],
+        tags: (map["tags"] as List).map((item) => item as String).toList(),
+        cards: cards,
+        user: user,
+        likes: likes);
   }
   factory Deck.fromSnapshot(QueryDocumentSnapshot<Map> map, Map user) {
     List<Card> cards = [];
@@ -47,16 +50,17 @@ class Deck {
     for (int i = 0; i < flashcards.length; i++) {
       cards.add(Card.fromMap(flashcards[i]));
     }
+    List<String> likes =
+        (map["likes"] as List).map((e) => e as String).toList();
     return Deck(
-      name: map['name'],
-      description: map['description'],
-      rating: double.parse(map['rating']),
-      id: map.id,
-      userID: map['userID'],
-      tags: (map["tags"] as List).map((item) => item as String).toList(),
-      cards: cards,
-      user: user,
-    );
+        name: map['name'],
+        description: map['description'],
+        id: map.id,
+        userID: map['userID'],
+        tags: (map["tags"] as List).map((item) => item as String).toList(),
+        cards: cards,
+        user: user,
+        likes: likes);
   }
 
   setFlashcards(List<Map<String, String>> flashcards) {

@@ -1,6 +1,7 @@
 import 'package:cardflip/data/Repositories/user_state.dart';
 import 'package:cardflip/data/deck.dart' as deck_data;
 import 'package:cardflip/models/deck_model.dart';
+import 'package:cardflip/models/user_model.dart';
 import 'package:cardflip/widgets/deck/deck.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -155,58 +156,47 @@ class Profile extends ConsumerWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("Images/icons/badges1.png"),
-                          fit: BoxFit.cover),
-                    ),
-                    height: 55,
-                    width: 55,
-                  ),
-                  Container(
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("Images/icons/badges2.png"),
-                          fit: BoxFit.cover),
-                    ),
-                    height: 55,
-                    width: 55,
-                  ),
-                  Container(
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("Images/icons/badges3.png"),
-                          fit: BoxFit.cover),
-                    ),
-                    height: 55,
-                    width: 55,
-                  ),
-                  Container(
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("Images/icons/morebadges.png"),
-                          fit: BoxFit.cover),
-                    ),
-                    height: 55,
-                    width: 55,
-                    child: const Center(
-                      child: Text(
-                        "+32",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontFamily: "Poppins-SemiBold",
-                            fontSize: 15,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                ],
+              child: SizedBox(
+                height: 70,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    FutureBuilder(
+                        future: UserModel().getBadgesKeys(userData.id),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                for (var i = 0; i < snapshot.data!.length; i++)
+                                  Row(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  "Images/vectors/badges/${snapshot.data![i]}.png"),
+                                              fit: BoxFit.cover),
+                                        ),
+                                        height: 70,
+                                        width: 70,
+                                      ),
+                                      const SizedBox(
+                                        width: 30,
+                                      ),
+                                    ],
+                                  ),
+                              ],
+                            );
+                          }
+                          if (snapshot.hasError) {
+                            return Center(child: Text("${snapshot.error}"));
+                          }
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }),
+                  ],
+                ),
               ),
             ),
             const Padding(

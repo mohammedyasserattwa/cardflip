@@ -14,9 +14,8 @@ class CategoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).pushNamed("/category", arguments: {
-          "category": category,
-        });
+        Navigator.of(context).pushNamed("/category",
+            arguments: {"category": category, "backhome": true});
       },
       child: Container(
         decoration: BoxDecoration(

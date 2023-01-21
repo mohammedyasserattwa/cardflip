@@ -121,6 +121,8 @@ class _AdminDeckState extends State<AdminDeck> {
                                                       onPressed: () {
                                                         adminModel.deleteDeck(
                                                             snapshot.data!.id);
+                                                        setState(() {});
+
                                                         Navigator.of(context)
                                                             .pop();
                                                         showDialog(
@@ -280,8 +282,7 @@ class _AdminDeckState extends State<AdminDeck> {
                             child: Container(
                               decoration: const BoxDecoration(
                                 image: DecorationImage(
-                                    image: AssetImage(
-                                        "Images/icons/trash.png"),
+                                    image: AssetImage("Images/icons/trash.png"),
                                     fit: BoxFit.cover),
                               ),
                               width: 21.07,
