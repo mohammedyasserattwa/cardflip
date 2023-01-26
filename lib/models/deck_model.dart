@@ -23,6 +23,10 @@ class DeckModel {
     return data;
   }
 
+  Future deleteDeck(String id) {
+    return _deckCollection.doc(id).delete();
+  }
+
   Future<List<Future<Deck>>> deckByTagID(String id) async {
     QuerySnapshot querySnapshot =
         await _deckCollection.where("tags", arrayContains: id).get();

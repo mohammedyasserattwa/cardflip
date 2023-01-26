@@ -1,8 +1,5 @@
-// ignore_for_file: unnecessary_string_interpolations
-
 import 'dart:convert';
 import 'dart:math';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cardflip/data/Repositories/flashcard_state.dart';
 import 'package:cardflip/data/Repositories/user_decks.dart';
@@ -689,6 +686,55 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                         if (widget.deck.userID == userData.id)
                                           Row(
                                             children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  deckModel
+                                                      .deleteDeck(
+                                                          widget.deck.id)
+                                                      .then((value) {
+                                                    if (widget.backhome) {
+                                                      Navigator
+                                                          .pushReplacementNamed(
+                                                              context, "/home");
+                                                    } else {
+                                                      Navigator.pop(context);
+                                                    }
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                      const SnackBar(
+                                                        content: Text(
+                                                            "Deck Deleted!"),
+                                                        duration: Duration(
+                                                            seconds: 2),
+                                                      ),
+                                                    );
+                                                  });
+                                                },
+                                                child: Container(
+                                                  width: 45,
+                                                  height: 45,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    color: Color(0x0f1a0404),
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                12)),
+                                                  ),
+                                                  child: const Padding(
+                                                    padding:
+                                                        EdgeInsets.all(8.0),
+                                                    child: Icon(
+                                                      Icons.delete_forever,
+                                                      size: 28,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
                                               GestureDetector(
                                                   onTap: () => Future(() =>
                                                       Navigator.pushNamed(

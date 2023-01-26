@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cardflip/data/Repositories/user_state.dart';
 import 'package:cardflip/data/deck.dart' as deck_data;
@@ -13,24 +11,12 @@ import 'package:no_glow_scroll/no_glow_scroll.dart';
 import "package:flutter/material.dart";
 import 'package:recase/recase.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
-import 'dart:developer' as developer;
 
-class Profile extends ConsumerStatefulWidget {
-  Profile();
+class Profile extends ConsumerWidget {
+  final DeckModel deckModel = DeckModel();
+  final RandomGenerator cardgenerator = RandomGenerator();
 
-  @override
-  ConsumerState<Profile> createState() => _ProfileState();
-}
-
-class _ProfileState extends ConsumerState<Profile>
-    with TickerProviderStateMixin {
-  DeckModel deckModel = DeckModel();
-
-  RandomGenerator cardgenerator = RandomGenerator();
-
-  late String profileBanner;
-
-  _ProfileState();
+  Profile({super.key});
 
   _responsive(BuildContext context) {
     if (MediaQuery.of(context).size.width < 299) {
@@ -45,10 +31,9 @@ class _ProfileState extends ConsumerState<Profile>
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final userData = ref.watch(UserDataProvider);
     final height = _responsive(context)["height"];
-    final width = _responsive(context)["width"];
     return Container(
         width: double.infinity,
         decoration: const BoxDecoration(
@@ -62,7 +47,7 @@ class _ProfileState extends ConsumerState<Profile>
             child: StickyHeader(
               header: Container(
                 height: 24.0,
-                color: Color.fromARGB(255, 203, 203, 203),
+                color: const Color.fromARGB(255, 203, 203, 203),
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 alignment: Alignment.centerLeft,
               ),
@@ -94,7 +79,7 @@ class _ProfileState extends ConsumerState<Profile>
                                 "Images/icons/svg/settings.svg",
                                 width: 25,
                                 height: 25,
-                                color: Color(0xff8C9595),
+                                color: const Color(0xff8C9595),
                               ),
                             ),
                           ],
@@ -109,7 +94,7 @@ class _ProfileState extends ConsumerState<Profile>
                           children: [
                             Container(
                               alignment: Alignment.centerRight,
-                              child: Container(
+                              child: SizedBox(
                                   width:
                                       (MediaQuery.of(context).size.width > 274)
                                           ? 85
@@ -138,7 +123,7 @@ class _ProfileState extends ConsumerState<Profile>
                                         stepGranularity: 1,
                                         ReCase("${userData.fname} ${userData.lname}")
                                             .titleCase,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           // fontWeight: FontWeight.w600,
                                           letterSpacing: 0.5,
                                           fontFamily: "PolySans_Neutral",
@@ -154,7 +139,7 @@ class _ProfileState extends ConsumerState<Profile>
                                     "@${userData.username}",
                                     style: TextStyle(
                                       fontFamily: "PolySans_Slim",
-                                      color: Color(0xf0493C3F),
+                                      color: const Color(0xf0493C3F),
                                       fontSize:
                                           (MediaQuery.of(context).size.width >
                                                   274)

@@ -50,7 +50,7 @@ android {
         applicationId "com.CardFlip"
         versionCode 2
         versionName "2.0"
-        minSdkVersion 19
+        minSdkVersion 21
         multiDexEnabled true
     }
 

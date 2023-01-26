@@ -13,7 +13,7 @@ class UserModel {
   final _auth = FirebaseAuth.instance;
   final _userCollection = FirebaseFirestore.instance.collection("user");
 
-  save(User user, Map<String, dynamic> data) async {
+  Future save(User user, Map<String, dynamic> data) async {
     final userRef = _database.collection("user").doc(user.uid);
     if (!(await userRef.get()).exists) {
       await userRef.set(data);

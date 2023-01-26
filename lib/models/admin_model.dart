@@ -14,13 +14,28 @@ class AdminModel {
   final _deckCollection = FirebaseFirestore.instance.collection("deck");
   final _reportCollection = FirebaseFirestore.instance.collection("reports");
 
-  Future<List> userDataList() async {
-    QuerySnapshot querySnapshot = await _userCollection
-        .where(
-          "role",
-          isEqualTo: "learner",
-        )
-        .get();
+  Future<List> userDataList({String filter = "all"}) async {
+    QuerySnapshot querySnapshot;
+    if (filter == "all") {
+      querySnapshot = await _userCollection
+          .where(
+            "role",
+            isEqualTo: "learner",
+          )
+          .get();
+    } else {
+querySnapshot = await _userCollection
+          .where(
+            "role",
+            isEqualTo: "learner",
+          )
+          .where(
+            "banned",
+            isEqualTo: filter == "banned" ? true : false,
+          )
+          .get();
+              }
+    // QuerySnapshot 
     final data = querySnapshot.docs
         .map((doc) => {
               "fname": doc.get("fname"),

@@ -12,6 +12,7 @@ import 'package:cardflip/data/card.dart' as card_data;
 import 'package:flutter_svg/flutter_svg.dart';
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:text_to_speech/text_to_speech.dart';
 
 class Flashcard extends ConsumerStatefulWidget {
   // String id;
@@ -32,11 +33,15 @@ class _FlashcardState extends ConsumerState<Flashcard>
   bool _viewFav = false;
   int _progress = 0;
   late List<card_data.Card> currentList;
+  
 
   @override
   void initState() {
     super.initState();
     model = FlashcardModel(deck: widget.deck);
+
+    
+
     // model.pushForward(0);
     // print(widget.id);
     currentList = model.getCards;
@@ -74,6 +79,7 @@ class _FlashcardState extends ConsumerState<Flashcard>
 
   @override
   Widget build(BuildContext context) {
+    
     final flashcardState = ref.watch(FlashcardStateProvider);
     final userData = ref.watch(UserDataProvider);
     try {

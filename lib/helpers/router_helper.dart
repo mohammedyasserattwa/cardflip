@@ -1,4 +1,5 @@
 import 'package:cardflip/screens/user/login.dart';
+import 'package:cardflip/screens/user/verify_email.dart';
 import 'package:flutter/material.dart';
 import 'package:cardflip/screens/deck/deck_screen.dart';
 import 'package:cardflip/screens/flashcards/flashcard_screen.dart';
@@ -60,6 +61,7 @@ class RouterHelper {
           badgecheck: data!["badgecheck"],
           badge: data["badge"],
           deck: data["deck"]),
+      "/verifyEmail": (context) => const VerifyEmail(),
     };
     WidgetBuilder builder = routes[settings.name]!;
     return MaterialPageRoute(builder: (context) => builder(context));

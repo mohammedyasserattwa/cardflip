@@ -229,39 +229,53 @@ class AllScreen extends ConsumerWidget {
             for (int index = 0; index < people.length; index++)
               Padding(
                 padding: const EdgeInsets.only(left: 20.0, bottom: 15),
-                child: Row(
-                  children: [
-                    SvgPicture.asset(
-                        "Images/avatars/${people[index]["profileIcon"]}.svg",
-                        height: 47.4,
-                        width: 47.4),
-                    const SizedBox(
-                      width: 15,
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      "/othersProfile",
+                      arguments: {"id": people[index]["id"]},
+                    );
+                  },
+                  child: Container(
+                    color: Colors.transparent,
+                    child: Row(
                       children: [
-                        Text(
-                          people[index]["fname"] + " " + people[index]["lname"],
-                          style: const TextStyle(
-                            fontFamily: "PolySans_Neutral",
-                            fontSize: 20,
-                            color: Color(0xff212523),
-                          ),
+                        SvgPicture.asset(
+                            "Images/avatars/${people[index]["profileIcon"]}.svg",
+                            height: 47.4,
+                            width: 47.4),
+                        const SizedBox(
+                          width: 15,
                         ),
-                        Text(
-                          "@${people[index]["username"]}",
-                          style: const TextStyle(
-                            fontFamily: "Poppins-Light",
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                            color: Color(0xff212523),
-                          ),
-                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              people[index]["fname"] +
+                                  " " +
+                                  people[index]["lname"],
+                              style: const TextStyle(
+                                fontFamily: "PolySans_Neutral",
+                                fontSize: 20,
+                                color: Color(0xff212523),
+                              ),
+                            ),
+                            Text(
+                              "@${people[index]["username"]}",
+                              style: const TextStyle(
+                                fontFamily: "Poppins-Light",
+                                fontWeight: FontWeight.w500,
+                                fontSize: 14,
+                                color: Color(0xff212523),
+                              ),
+                            ),
+                          ],
+                        )
                       ],
-                    )
-                  ],
+                    ),
+                  ),
                 ),
               ),
           ]),

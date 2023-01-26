@@ -10,7 +10,7 @@ import '../../models/admin_model.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class AdminUsers extends StatefulWidget {
-  AdminUsers({key});
+  const AdminUsers({super.key});
 
   @override
   State<AdminUsers> createState() => _AdminUsersState();
@@ -22,15 +22,22 @@ class _AdminUsersState extends State<AdminUsers> {
   DeckModel deckModel = DeckModel();
 
   RandomGenerator cardgenerator = RandomGenerator();
+  String _filter = "all";
 
-  late String profileBanner;
+  BoxDecoration _isActive() {
+    return BoxDecoration(
+      borderRadius: BorderRadius.circular(16),
+      color: Color.fromARGB(100, 124, 120, 120),
+    );
+  }
 
-  // _responsive(BuildContext context) {
+  BoxDecoration _isNotActive() {
+    return BoxDecoration();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final userData = model.userDataList();
-    final height = 128.67;
-    final width = 133.67;
+    final userData = model.userDataList(filter: _filter);
     return Scaffold(
       body: Container(
         height: 1000,
@@ -141,15 +148,18 @@ class _AdminUsersState extends State<AdminUsers> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Container(
-                  width: 63,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   height: 31,
                   alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: Color.fromARGB(100, 124, 120, 120),
-                  ),
+                  decoration: _filter == "all" ? _isActive() : _isNotActive(),
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      if (_filter != "all") {
+                        setState(() {
+                          _filter = "all";
+                        });
+                      }
+                    },
                     child: Text(
                       "All",
                       style: TextStyle(
@@ -160,25 +170,51 @@ class _AdminUsersState extends State<AdminUsers> {
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {},
-                  child: Text(
-                    "Banned",
-                    style: TextStyle(
-                      fontFamily: "PolySans_Slim",
-                      color: Colors.black,
-                      fontSize: 22,
+                Container(
+                  height: 31,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  alignment: Alignment.center,
+                  decoration:
+                      _filter == "banned" ? _isActive() : _isNotActive(),
+                  child: GestureDetector(
+                    onTap: () {
+                      if (_filter != "banned") {
+                        setState(() {
+                          _filter = "banned";
+                        });
+                      }
+                    },
+                    child: Text(
+                      "Banned",
+                      style: TextStyle(
+                        fontFamily: "PolySans_Slim",
+                        color: Colors.black,
+                        fontSize: 22,
+                      ),
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {},
-                  child: Text(
-                    "Normal",
-                    style: TextStyle(
-                      fontFamily: "PolySans_Slim",
-                      color: Colors.black,
-                      fontSize: 22,
+                Container(
+                  height: 31,
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  alignment: Alignment.center,
+                  decoration:
+                      _filter == "normal" ? _isActive() : _isNotActive(),
+                  child: GestureDetector(
+                    onTap: () {
+                      if (_filter != "normal") {
+                        setState(() {
+                          _filter = "normal";
+                        });
+                      }
+                    },
+                    child: Text(
+                      "Normal",
+                      style: TextStyle(
+                        fontFamily: "PolySans_Slim",
+                        color: Colors.black,
+                        fontSize: 22,
+                      ),
                     ),
                   ),
                 ),

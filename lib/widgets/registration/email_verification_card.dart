@@ -194,7 +194,7 @@ class _EmailVerificationCardState extends ConsumerState<EmailVerificationCard> {
                               
                               widget.model
                                   .save(value.user!, widget.user.toJSON())
-                                  .then(() {
+                                  .then((value) {
                                 DeckModel()
                                     .getUserPreference(widget.user.tags)
                                     .then((value) {

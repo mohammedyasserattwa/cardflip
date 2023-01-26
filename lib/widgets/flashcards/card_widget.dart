@@ -1,7 +1,10 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cardflip/models/deck_model.dart';
 import 'package:flip_card/flip_card.dart';
 import "package:flutter/material.dart";
 import 'package:cardflip/data/card.dart' as card_handler;
+import 'package:recase/recase.dart';
+import 'package:text_to_speech/text_to_speech.dart';
 
 class CardWidget extends StatefulWidget {
   CardWidget({
@@ -70,8 +73,17 @@ class CardWidget extends StatefulWidget {
 
 class _CardWidgetState extends State<CardWidget> {
   late IconData star = widget.star;
+  TextToSpeech tts = TextToSpeech();
   @override
   void initState() {
+    double volume = 1.0;
+    tts.setVolume(volume);
+    double rate = 1.0;
+    tts.setRate(rate);
+    double pitch = 1.0;
+    tts.setPitch(pitch);
+    String language = 'en-US';
+    tts.setLanguage(language);
     if (widget.card != null) {
       star = widget.star;
     }
@@ -80,8 +92,8 @@ class _CardWidgetState extends State<CardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final double _cardWidth = widget.width;
-    final double _cardHeight = widget.height;
+    final double cardWidth = widget.width;
+    final double cardHeight = widget.height;
     if (widget.card != null) {
       if (widget.card!.isFavourite && star == Icons.star_border) {
         setState(() {
@@ -101,15 +113,16 @@ class _CardWidgetState extends State<CardWidget> {
             return Transform(
               transform: Matrix4.identity()..translate(pos),
               child: FlipCard(
+                direction: FlipDirection.HORIZONTAL,
                 front: Container(
                   width: (MediaQuery.of(context).size.height > 652)
-                      ? _cardWidth
-                      : _cardWidth - 50,
+                      ? cardWidth
+                      : cardWidth - 50,
                   height: (MediaQuery.of(context).size.height > 751)
-                      ? _cardHeight
+                      ? cardHeight
                       : (MediaQuery.of(context).size.height > 652)
-                          ? _cardHeight - 100
-                          : _cardHeight - 200,
+                          ? cardHeight - 100
+                          : cardHeight - 200,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage(widget.image), fit: BoxFit.fill),
@@ -119,8 +132,16 @@ class _CardWidgetState extends State<CardWidget> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 30.0, top: 60),
+                            child: GestureDetector(
+                                onTap: () {
+                                  tts.speak(widget.card!.term);
+                                },
+                                child: const Icon(Icons.volume_up, size: 36)),
+                          ),
                           // Text(widget.card!.isFavourite.toString()),
                           // Text((star == Icons.star) ? "Star" : "Border"),
                           Padding(
@@ -146,12 +167,15 @@ class _CardWidgetState extends State<CardWidget> {
                         ],
                       ),
                       Center(
-                          child: Text(
-                        widget.card!.getTerm,
+                          child: AutoSizeText(
+                        ReCase(widget.card!.getTerm).titleCase,
+                        maxLines: 4,
+                        minFontSize: 35,
+                        maxFontSize: 48,
+                        stepGranularity: 1,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontFamily: "PolySans_Median",
-                          fontSize: 48,
                           fontWeight: FontWeight.w600,
                           color: Color(0xff1B4F55),
                         ),
@@ -173,28 +197,85 @@ class _CardWidgetState extends State<CardWidget> {
                 ),
                 back: Container(
                   width: (MediaQuery.of(context).size.height > 652)
-                      ? _cardWidth
-                      : _cardWidth - 50,
+                      ? cardWidth
+                      : cardWidth - 50,
                   height: (MediaQuery.of(context).size.height > 751)
-                      ? _cardHeight
+                      ? cardHeight
                       : (MediaQuery.of(context).size.height > 652)
-                          ? _cardHeight - 100
-                          : _cardHeight - 200,
+                          ? cardHeight - 100
+                          : cardHeight - 200,
                   decoration: BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage(widget.image), fit: BoxFit.fill),
                   ),
-                  child: Center(
-                      child: Text(
-                    widget.card!.getDefinitions,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontFamily: "PolySans_Median",
-                      fontSize: 25,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xff1B4F55),
-                    ),
-                  )),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(left: 30.0, top: 60),
+                            child: GestureDetector(
+                                onTap: () {
+                                  tts.speak(widget.card!.getDefinitions);
+                                },
+                                child: Icon(Icons.volume_up, size: 36)),
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(right: 30.0, top: 60),
+                            child: GestureDetector(
+                                onTap: () {
+                                  if (star == Icons.star_border) {
+                                    setState(() {
+                                      star = Icons.star;
+                                      widget.card!.toggleFavourite();
+                                    });
+                                  } else {
+                                    setState(() {
+                                      star = Icons.star_border;
+                                      widget.card!.toggleFavourite();
+                                    });
+                                  }
+                                  widget.updateParent();
+                                },
+                                child: Icon(star, size: 36)),
+                          ),
+                        ],
+                      ),
+                      Center(
+                          child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: AutoSizeText(
+                          widget.card!.getDefinitions,
+                          minFontSize: 22,
+                          maxFontSize: 25,
+                          maxLines: 7,
+                          stepGranularity: 1,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontFamily: "PolySans_Median",
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff1B4F55),
+                          ),
+                        ),
+                      )),
+                      const Padding(
+                        padding: EdgeInsets.only(bottom: 40.0),
+                        child: Center(
+                            child: Text(
+                          "Click to flip the card",
+                          style: TextStyle(
+                              fontFamily: "PolySans_Slim",
+                              fontWeight: FontWeight.w300,
+                              color: Color(0xff484848),
+                              fontSize: 20),
+                        )),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );
@@ -203,13 +284,13 @@ class _CardWidgetState extends State<CardWidget> {
     if (widget.empty) {
       return Container(
         width: (MediaQuery.of(context).size.height > 652)
-            ? _cardWidth
-            : _cardWidth - 50,
+            ? cardWidth
+            : cardWidth - 50,
         height: (MediaQuery.of(context).size.height > 751)
-            ? _cardHeight
+            ? cardHeight
             : (MediaQuery.of(context).size.height > 652)
-                ? _cardHeight - 100
-                : _cardHeight - 200,
+                ? cardHeight - 100
+                : cardHeight - 200,
         decoration: BoxDecoration(
           image: DecorationImage(
               image: AssetImage(widget.image), fit: BoxFit.fill),
@@ -219,13 +300,13 @@ class _CardWidgetState extends State<CardWidget> {
     }
     return Container(
       width: (MediaQuery.of(context).size.height > 652)
-          ? _cardWidth
-          : _cardWidth - 50,
+          ? cardWidth
+          : cardWidth - 50,
       height: (MediaQuery.of(context).size.height > 751)
-          ? _cardHeight
+          ? cardHeight
           : (MediaQuery.of(context).size.height > 652)
-              ? _cardHeight - 100
-              : _cardHeight - 200,
+              ? cardHeight - 100
+              : cardHeight - 200,
       decoration: BoxDecoration(
         image:
             DecorationImage(image: AssetImage(widget.image), fit: BoxFit.fill),

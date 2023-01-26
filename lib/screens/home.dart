@@ -14,9 +14,9 @@ import '../widgets/deck/deck.dart';
 
 class Home extends StatelessWidget {
   Home({super.key});
-  UserModel user = new UserModel();
-  DeckModel deckModel = new DeckModel();
-  RandomGenerator randomCard = new RandomGenerator();
+  final UserModel user = new UserModel();
+  final DeckModel deckModel = new DeckModel();
+  final RandomGenerator randomCard = new RandomGenerator();
   final List<Map<String, double>> _preferencesSizes = [
     {"width": 127.04, "height": 103.8},
     {"width": 127.04, "height": 125.1},
@@ -44,7 +44,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _kImagePaths = preferencesPath();
+    final kImagePaths = preferencesPath();
     return Consumer(builder: (context, ref, __) {
       final userData = ref.watch(UserDataProvider);
       return Container(
@@ -218,7 +218,7 @@ class Home extends StatelessWidget {
                                     height: _preferencesSizes[i]["height"]!,
                                     // id: userData.userPreferences[0].id,
                                     deck: userData.userPreferences[i],
-                                    path: _kImagePaths[i],
+                                    path: kImagePaths[i],
                                     min: 2),
                                 SizedBox(
                                   height: 8,
@@ -238,7 +238,7 @@ class Home extends StatelessWidget {
                                           ["height"]!,
                                       // id: userData.userPreferences[0].id,
                                       deck: userData.userPreferences[i + 1],
-                                      path: _kImagePaths[i + 1],
+                                      path: kImagePaths[i + 1],
                                       min: 2),
                                 // Text("data")
                               ],

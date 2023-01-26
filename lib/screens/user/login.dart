@@ -53,6 +53,16 @@ class _LoginState extends ConsumerState<Login> {
     await storage.write(key: "${userModel.id}", value: password);
   }
 
+  Future checkEmailVerification() {
+    return _firebaseAuth.currentUser!.reload().then((value) {
+      if (_firebaseAuth.currentUser!.emailVerified) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  }
+
   Future signIn(String email, String password) async {
     bool result = true;
     if (result) {
@@ -82,28 +92,35 @@ class _LoginState extends ConsumerState<Login> {
             }
           } else if (user.get("role") == 'learner') {
             if (user.get("banned") == false) {
-              deckModel.getUserPreference(user.get("tags")).then((value) {
-                ref.read(FavouritesProvider.notifier).state =
-                    (user['favourites'] as List)
-                        .map((item) => item as String)
-                        .toList();
-                ref.read(UserDataProvider.notifier).state =
-                    user_data.User.fromSnapshot(
-                        user, email, password, userModel.id, value);
-                deckModel.getReportsByUserID(userModel.id).then((reports) {
-                  ref.read(ReportProvider.notifier).state = reports;
-                  deckModel.getLikesByUserID(userModel.id).then((likes) {
-                    ref.read(RatingProvider.notifier).state = likes;
-                    if (_rememberMeCheckBox) {
-                      saveUserInVault(
-                              _emailController.text, _passwordController.text)
-                          .then((value) =>
-                              Navigator.pushReplacementNamed(context, '/home'));
-                    } else {
-                      Navigator.pushReplacementNamed(context, '/home');
-                    }
+              checkEmailVerification().then((isVerified) {
+                if (isVerified) {
+                  deckModel.getUserPreference(user.get("tags")).then((value) {
+                    ref.read(FavouritesProvider.notifier).state =
+                        (user['favourites'] as List)
+                            .map((item) => item as String)
+                            .toList();
+                    ref.read(UserDataProvider.notifier).state =
+                        user_data.User.fromSnapshot(
+                            user, email, password, userModel.id, value);
+                    deckModel.getReportsByUserID(userModel.id).then((reports) {
+                      ref.read(ReportProvider.notifier).state = reports;
+                      deckModel.getLikesByUserID(userModel.id).then((likes) {
+                        ref.read(RatingProvider.notifier).state = likes;
+                        if (_rememberMeCheckBox) {
+                          saveUserInVault(_emailController.text,
+                                  _passwordController.text)
+                              .then((value) => Navigator.pushReplacementNamed(
+                                  context, '/home'));
+                        } else {
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, "/home", (route) => true);
+                        }
+                      });
+                    });
                   });
-                });
+                } else {
+                  Navigator.pushNamed(context, "/verifyEmail");
+                }
               });
             } else {
               Navigator.pop(context);
