@@ -129,6 +129,7 @@ flutter:
     - Images/cards/homepage/1_3/9/
     - Images/cards/homepage/1_3/10/
     - Images/cards/homepage/1_3/11/
+    - Images/cards/homepage/1_3/12/
     - Images/cards/categorypage/1/0/
     - Images/cards/categorypage/1/1/
     - Images/cards/categorypage/1/2/
@@ -141,6 +142,7 @@ flutter:
     - Images/cards/categorypage/1/9/
     - Images/cards/categorypage/1/10/
     - Images/cards/categorypage/1/11/
+    - Images/cards/categorypage/1/12/
     - Images/cards/categorypage/2/0/
     - Images/cards/categorypage/2/1/
     - Images/cards/categorypage/2/2/
@@ -153,6 +155,7 @@ flutter:
     - Images/cards/categorypage/2/9/
     - Images/cards/categorypage/2/10/
     - Images/cards/categorypage/2/11/
+    - Images/cards/categorypage/2/12/
     - Images/cards/categorypage/3_1/0/
     - Images/cards/categorypage/3_1/1/
     - Images/cards/categorypage/3_1/2/
@@ -165,6 +168,7 @@ flutter:
     - Images/cards/categorypage/3_1/9/
     - Images/cards/categorypage/3_1/10/
     - Images/cards/categorypage/3_1/11/
+    - Images/cards/categorypage/3_1/12/
     - Images/cards/categorypage/3_2/0/
     - Images/cards/categorypage/3_2/1/
     - Images/cards/categorypage/3_2/2/
@@ -177,6 +181,7 @@ flutter:
     - Images/cards/categorypage/3_2/9/
     - Images/cards/categorypage/3_2/10/
     - Images/cards/categorypage/3_2/11/
+    - Images/cards/categorypage/3_2/12/
     - Images/cards/homepage/2/2_1/0/
     - Images/cards/homepage/2/2_1/1/
     - Images/cards/homepage/2/2_1/2/
@@ -189,6 +194,7 @@ flutter:
     - Images/cards/homepage/2/2_1/9/
     - Images/cards/homepage/2/2_1/10/
     - Images/cards/homepage/2/2_1/11/
+    - Images/cards/homepage/2/2_1/12/
     - Images/cards/homepage/2/2_2/0/
     - Images/cards/homepage/2/2_2/1/
     - Images/cards/homepage/2/2_2/2/
@@ -201,6 +207,7 @@ flutter:
     - Images/cards/homepage/2/2_2/9/
     - Images/cards/homepage/2/2_2/10/
     - Images/cards/homepage/2/2_2/11/
+    - Images/cards/homepage/2/2_2/12/
     - Images/cards/homepage/2/2_4/0/
     - Images/cards/homepage/2/2_4/1/
     - Images/cards/homepage/2/2_4/2/
@@ -213,6 +220,7 @@ flutter:
     - Images/cards/homepage/2/2_4/9/
     - Images/cards/homepage/2/2_4/10/
     - Images/cards/homepage/2/2_4/11/
+    - Images/cards/homepage/2/2_4/12/
     - Images/cards/homepage/2/2_5/0/
     - Images/cards/homepage/2/2_5/1/
     - Images/cards/homepage/2/2_5/2/
@@ -225,6 +233,7 @@ flutter:
     - Images/cards/homepage/2/2_5/9/
     - Images/cards/homepage/2/2_5/10/
     - Images/cards/homepage/2/2_5/11/
+    - Images/cards/homepage/2/2_5/12/
     - Images/cards/homepage/2/2_3/0/
     - Images/cards/homepage/2/2_3/1/
     - Images/cards/homepage/2/2_3/2/
@@ -237,6 +246,7 @@ flutter:
     - Images/cards/homepage/2/2_3/9/
     - Images/cards/homepage/2/2_3/10/
     - Images/cards/homepage/2/2_3/11/
+    - Images/cards/homepage/2/2_3/12/
     - Images/cards/librarypage/0/
     - Images/cards/librarypage/1/
     - Images/cards/librarypage/2/
@@ -249,11 +259,13 @@ flutter:
     - Images/cards/librarypage/9/
     - Images/cards/librarypage/10/
     - Images/cards/librarypage/11/
+    - Images/cards/librarypage/12/
     - Images/cards/leaderboard/
     - Images/cards/testpage/
     - Images/banners/profilepage/
     - Images/banners/deckpage/
     - Images/banners/librarypage/
+    - Images/banners/oldlibrarypage/
     - Images/banners/adddeck/
     - Images/avatars/
     - Images/avatars/0.svg
