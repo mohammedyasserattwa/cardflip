@@ -20,15 +20,15 @@ class _LibraryState extends State<Library> {
   Map<String, bool> status = {"all": true, "user": false, "others": false};
   final List<Widget> _listBuilder = [
     LibraryList(
-      temp:  [],
+      temp: [],
     ),
     LibraryList(
       state: "user",
-      temp:  [],
+      temp: [],
     ),
     LibraryList(
       state: "others",
-      temp:  [],
+      temp: [],
     )
   ];
 
@@ -49,31 +49,10 @@ class _LibraryState extends State<Library> {
       width: 400,
       height: 190,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          SafeArea(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 20.0, top: 20),
-                  child: GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                                image: AssetImage("Images/icons/more-fill.png"),
-                                fit: BoxFit.cover),
-                          ),
-                          width: 40,
-                          height: 40,
-                          child: const Text(""))),
-                ),
-              ],
-            ),
-          ),
           Padding(
-            padding: const EdgeInsets.only(left: 40.0, top: 25.0),
+            padding: const EdgeInsets.only(left: 40.0, bottom: 25),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: const [

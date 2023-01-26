@@ -65,7 +65,6 @@ class UserModel {
 
   Future<List<String>> getBadgesKeys(String id) async {
     final querySnapshot = await _userCollection.doc(id).get();
-    print(querySnapshot.get("badges"));
     final data = querySnapshot.get("badges") as Map<String, dynamic>;
     List<String> badges = [];
 

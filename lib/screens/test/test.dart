@@ -36,7 +36,6 @@ class _TestState extends ConsumerState<Test>
   late Map testCards;
   late List definitions = [];
   late List terms = [];
-  late List correctAnswers = [];
   late bool? isCorrect;
   late List<List<bool?>> jiggle = [];
   final animduration = const Duration(milliseconds: 450);
@@ -92,9 +91,6 @@ class _TestState extends ConsumerState<Test>
         timeTaken = DateTimeFormat.relative(DateTime.now().subtract(
             Duration(minutes: int.parse(min), seconds: int.parse(sec))));
         seconds = Duration(minutes: int.parse(min)).inSeconds + int.parse(sec);
-
-        // timer!.cancel();
-        // timer = null;
       }
     }
 
@@ -237,16 +233,6 @@ class _TestState extends ConsumerState<Test>
                   missedCards.clear();
                   wrongCards.clear();
                   randomize(definitions.length);
-                  // bool allbadgecheck = false;
-                  // Navigator.pop(context);
-                  // for (var entry in badgecheck.entries) {
-                  //   if (entry.value == true) {
-                  //     Navigator.pushNamed(context, '/badges',
-                  //         arguments: {"badgeIndex": badgecheck});
-                  //     break;
-                  //   }
-                  // }
-
                   badgecheck.then((value) {
                     if (value.containsValue(true)) {
                       showDialog(
@@ -263,31 +249,7 @@ class _TestState extends ConsumerState<Test>
                           arguments: {"deck": widget.deck});
                     }
                   });
-                  // badgecheck.then((value) {
-                  //   if (value != null) {
-                  //     showDialog(
-                  //         context: context,
-                  //         builder: (context) {
-                  //           return BadgePopUp(
-                  //               badgecheck: badgecheck, badge: badge);
-                  //         });
-                  //   }
-                  //   Navigator.pushNamed(context, '/deck',
-                  //       arguments: {"deck": widget.deck});
-                  // });
                 },
-                //   for (int b = 0; b < badgecheck.length - 1; b++) {
-
-                //   //   if (badgecheck[b] == true) {
-                //   //     developer.log(badgecheck[b].toString());
-                //   //     Navigator.pushReplacementNamed(context, '/badges',
-                //   //         arguments: {
-                //   //           "badgeIndex": badgecheck.keys.elementAt(b)
-                //   //         });
-                //   //   }
-                //   // }
-                //   // Navigator.pop(context);
-                // },
                 child: Padding(
                   padding: const EdgeInsets.only(top: 40),
                   child: Container(
@@ -368,17 +330,17 @@ class _TestState extends ConsumerState<Test>
                         ],
                       ),
                     ),
-                    PopupMenuItem(
-                      onTap: () {},
-                      child: Wrap(
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: const [
-                          Icon(Icons.dark_mode_outlined),
-                          SizedBox(width: 10),
-                          Text("Dark Page Theme"), //todo provider
-                        ],
-                      ),
-                    ),
+                    // PopupMenuItem(
+                    //   onTap: () {},
+                    //   child: Wrap(
+                    //     crossAxisAlignment: WrapCrossAlignment.center,
+                    //     children: const [
+                    //       Icon(Icons.dark_mode_outlined),
+                    //       SizedBox(width: 10),
+                    //       Text("Dark Page Theme"), //todo provider
+                    //     ],
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

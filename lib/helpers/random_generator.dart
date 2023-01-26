@@ -7,7 +7,7 @@ class RandomGenerator {
 
   int get getcolor {
     while (true) {
-      int color = Random().nextInt(16);
+      int color = Random().nextInt(12);
       if (colorqueue.contains(color)) {
         continue;
       }

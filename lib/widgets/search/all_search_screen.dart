@@ -7,7 +7,6 @@ import 'package:no_glow_scroll/no_glow_scroll.dart';
 import 'package:cardflip/widgets/deck/deck.dart' as deck_ui;
 import 'package:recase/recase.dart';
 
-
 class AllScreen extends ConsumerWidget {
   final List<Deck> decks;
   final dynamic tags;
@@ -158,7 +157,8 @@ class AllScreen extends ConsumerWidget {
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
                                   border: Border.all(
-                                      color: const Color.fromARGB(255, 175, 175, 175),
+                                      color: const Color.fromARGB(
+                                          255, 175, 175, 175),
                                       width: 1),
                                   borderRadius: BorderRadius.circular(16),
                                   color: const Color(0x8FDADADA),
@@ -228,7 +228,7 @@ class AllScreen extends ConsumerWidget {
           child: Column(children: [
             for (int index = 0; index < people.length; index++)
               Padding(
-                padding: const EdgeInsets.only(left: 20.0),
+                padding: const EdgeInsets.only(left: 20.0, bottom: 15),
                 child: Row(
                   children: [
                     SvgPicture.asset(

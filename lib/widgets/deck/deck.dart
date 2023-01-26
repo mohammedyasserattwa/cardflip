@@ -42,7 +42,7 @@ class Deck extends ConsumerWidget {
         width: width,
         height: height,
         child: Padding(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.fromLTRB(15, 0, 12, 12),
           child: Column(
             children: [
               Row(

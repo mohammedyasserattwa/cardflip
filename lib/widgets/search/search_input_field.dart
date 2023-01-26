@@ -64,6 +64,7 @@ class _SearchInputFieldState extends ConsumerState<SearchInputField> {
                       child: Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: TextField(
+                          autofocus: true,
                           textInputAction: TextInputAction.search,
                           onSubmitted: (value) {
                             if (value.isNotEmpty) {

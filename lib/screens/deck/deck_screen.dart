@@ -268,7 +268,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                   style: const TextStyle(
                                     fontFamily: "PolySans_Neutral",
                                     fontWeight: FontWeight.w500,
-                                    color: Color(0xff514F55),
+                                    color: Color.fromARGB(255, 52, 52, 52),
                                     fontSize: 20,
                                   ),
                                 ),
@@ -285,7 +285,8 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                         style: TextStyle(
                                           fontFamily: "PolySans_Median",
                                           fontWeight: FontWeight.w500,
-                                          color: const Color(0xff514F55),
+                                          color: const Color.fromARGB(
+                                              255, 60, 58, 62),
                                           fontSize: (MediaQuery.of(context)
                                                       .size
                                                       .width >
@@ -572,8 +573,8 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                                               "PolySans_Slim",
                                                           fontWeight:
                                                               FontWeight.w500,
-                                                          color:
-                                                              Color(0xff514F55),
+                                                          color: Color.fromARGB(
+                                                              255, 52, 52, 52),
                                                           fontSize: 22,
                                                         ),
                                                       )
