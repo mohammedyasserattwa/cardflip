@@ -275,7 +275,7 @@ class _TagScreenState extends State<TagScreen> {
               height: 150,
               child: Center(
                 child: Text(
-                  "${snapshot.error}",
+                  "Something went wrong.",
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontFamily: "PolySans_Neutral",
@@ -310,7 +310,7 @@ class _TagScreenState extends State<TagScreen> {
               height: 150,
               child: Center(
                 child: Text(
-                  "Something went wrong${snapshot.error}",
+                  "Something went wrong.",
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontFamily: "PolySans_Neutral",

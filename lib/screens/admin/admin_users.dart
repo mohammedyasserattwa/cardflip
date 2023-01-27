@@ -712,7 +712,16 @@ class _AdminUsersState extends State<AdminUsers> {
                     );
                   }
                   if (snapshot.hasError) {
-                    print(snapshot.error);
+                    return Text(
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                                color: const Color(
+                                                                    0xff484848),
+                                                                fontSize: 20,
+                                                                fontFamily:
+                                                                    "PolySans_Neutral"),
+                                                           "Something went wrong.");
                   }
                   return Center(child: CircularProgressIndicator());
                 }),

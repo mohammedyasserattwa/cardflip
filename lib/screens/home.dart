@@ -180,7 +180,13 @@ class Home extends StatelessWidget {
                             }
                             if (snapshot.hasError) {
                               return Center(
-                                child: Text(snapshot.error.toString()),
+                                child: Text(
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: const Color(0xff484848),
+                                        fontSize: 20,
+                                        fontFamily: "PolySans_Neutral"),
+                                    "Something went wrong."),
                               );
                             }
                             return SizedBox(
@@ -304,7 +310,13 @@ class Home extends StatelessWidget {
                                 }
                                 if (snapshot.hasError) {
                                   return Center(
-                                    child: Text(snapshot.error.toString()),
+                                    child: Text(
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: const Color(0xff484848),
+                                            fontSize: 20,
+                                            fontFamily: "PolySans_Neutral"),
+                                        "Something went wrong."),
                                   );
                                 }
                                 return Center(

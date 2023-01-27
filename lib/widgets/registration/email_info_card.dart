@@ -44,8 +44,16 @@ class EmailInfoCard extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Container(
-              color: Colors.red,
-              child: Text(snapshot.error.toString()),
+              child: Text(
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                                color: const Color(
+                                                                    0xff484848),
+                                                                fontSize: 20,
+                                                                fontFamily:
+                                                                    "PolySans_Neutral"),
+                                                           "Something went wrong."),
             );
           }
           if (snapshot.hasData) {

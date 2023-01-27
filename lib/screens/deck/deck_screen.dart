@@ -197,28 +197,10 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                                         .state =
                                                     reports + [model.deck.id];
                                                 isReported = true;
-                                                deckModel
-                                                    .addReport(
-                                                        widget.deck.id,
-                                                        widget.deck.user["id"],
-                                                        userData.id)
-                                                    .then((value) {
-                                                  ScaffoldMessenger.of(context)
-                                                      .showSnackBar(const SnackBar(
-                                                          behavior:
-                                                              SnackBarBehavior
-                                                                  .floating,
-                                                          duration: Duration(
-                                                              seconds: 3),
-                                                          content: Text(
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                      "Poppins"),
-                                                              'Deck reported.')));
-                                                });
+                                                deckModel.addReport(
+                                                    widget.deck.id,
+                                                    widget.deck.user["id"],
+                                                    userData.id);
                                               }
                                             },
                                             child: Wrap(
@@ -662,7 +644,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                                                   style: TextStyle(
                                                                       fontFamily:
                                                                           "Poppins"),
-                                                                  'Deck is now added to your library!')));
+                                                                  'Deck is now liked!')));
                                                     });
                                                   } else {
                                                     widget.deck
@@ -677,30 +659,10 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                                                 .notifier)
                                                             .state =
                                                         <String>[] + temp;
-                                                    deckModel
-                                                        .removeLike(
-                                                            widget.deck.id,
-                                                            userData.id)
-                                                        .then((value) {
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(const SnackBar(
-                                                              behavior:
-                                                                  SnackBarBehavior
-                                                                      .floating,
-                                                              duration:
-                                                                  Duration(
-                                                                      seconds:
-                                                                          3),
-                                                              content: Text(
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                  style: TextStyle(
-                                                                      fontFamily:
-                                                                          "Poppins"),
-                                                                  'Deck is now removed from your library!')));
-                                                    });
+                                                    deckModel.removeLike(
+                                                        widget.deck.id,
+                                                        userData.id);
+
                                                     setState(() {});
                                                   }
                                                 }
@@ -914,15 +876,19 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                           GestureDetector(
                             onTap: () {
                               if (widget.deck.cards.length <= 3) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
                                         behavior: SnackBarBehavior.floating,
                                         duration: Duration(seconds: 3),
                                         content: Text(
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 fontFamily: "Poppins"),
-                                            'You can start a test once you have created at least 3 cards!')));
+                                            'You can start a test once you have created at least 3 cards!')))
+                                    .closed
+                                    .then((value) =>
+                                        ScaffoldMessenger.of(context)
+                                            .clearSnackBars());
                                 return;
                               } else {
                                 Navigator.pushReplacementNamed(context, '/test',

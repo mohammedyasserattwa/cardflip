@@ -440,7 +440,13 @@ class _LoginState extends ConsumerState<Login> {
             future: getSavedUsers(),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
-                return Text("${snapshot.error}");
+                return Text(
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: const Color(0xff484848),
+                        fontSize: 20,
+                        fontFamily: "PolySans_Neutral"),
+                    "Something went wrong.");
               }
               if (snapshot.hasData) {
                 if (snapshot.data!.isNotEmpty && !_anotherUser) {

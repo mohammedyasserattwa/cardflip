@@ -171,7 +171,14 @@ class Search extends ConsumerWidget {
                       }
                       if (snapshot.hasError) {
                         return Center(
-                            child: Text(snapshot.stackTrace.toString()));
+                          child: Text(
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: const Color(0xff484848),
+                                  fontSize: 20,
+                                  fontFamily: "PolySans_Neutral"),
+                              "Something went wrong."),
+                        );
                       }
                       return const Center(child: CircularProgressIndicator());
                     })

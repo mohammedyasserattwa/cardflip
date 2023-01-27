@@ -48,6 +48,7 @@ class OthersProfile extends ConsumerWidget {
                     FutureBuilder(
                         future: userData,
                         builder: (context, snapshot) {
+                          // ugly
                           if (snapshot.hasData) {
                             return Stack(
                               children: [
@@ -240,7 +241,14 @@ class OthersProfile extends ConsumerWidget {
                                   }
                                   if (snapshot.hasError) {
                                     return Center(
-                                        child: Text("${snapshot.error}"));
+                                      child: Text(
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              color: const Color(0xff484848),
+                                              fontSize: 20,
+                                              fontFamily: "PolySans_Neutral"),
+                                          "Something went wrong."),
+                                    );
                                   }
                                   return const Center(
                                       child: CircularProgressIndicator());

@@ -368,7 +368,11 @@ class _CardWidgetState extends State<CardWidget> {
                         content: Text(
                             textAlign: TextAlign.center,
                             style: TextStyle(fontFamily: "Poppins"),
-                            'You can start a test once you have created at least 3 cards!')));
+                            'You can start a test once you have created at least 3 cards!'))).closed
+                                                            .then((value) =>
+                                                                ScaffoldMessenger.of(
+                                                                        context)
+                                                                    .clearSnackBars());
                     return;
                   } else {
                     Navigator.pop(context);

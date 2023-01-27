@@ -38,7 +38,16 @@ class _SearchTagState extends State<SearchTag> {
         future: tagMap,
         builder: (context, snapshot) {
           if (snapshot.hasError)
-            return const Text("Error while loading the tags");
+            return const Text(
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                                color: const Color(
+                                                                    0xff484848),
+                                                                fontSize: 20,
+                                                                fontFamily:
+                                                                    "PolySans_Neutral"),
+                                                           "Something went wrong.");
           if (snapshot.hasData) {
             Map<Map, bool> data = Map.from(snapshot.data!);
             if (search.isNotEmpty) {

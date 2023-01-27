@@ -186,7 +186,16 @@ class _AdminState extends State<Admin> {
                       ),
                     );
                   }
-                  if (snapshot.hasError) return Text("${snapshot.error}");
+                  if (snapshot.hasError) return Text(
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                                color: const Color(
+                                                                    0xff484848),
+                                                                fontSize: 20,
+                                                                fontFamily:
+                                                                    "PolySans_Neutral"),
+                                                           "Something went wrong.");
                   return Center(child: CircularProgressIndicator());
                 }),
           ],

@@ -555,7 +555,11 @@ class _TestResultsState extends State<TestResults> {
                                                                 style: TextStyle(
                                                                     fontFamily:
                                                                         "Poppins"),
-                                                                'You didn\'t have any correct answers.')));
+                                                                'You didn\'t have any correct answers.'))).closed
+                                                            .then((value) =>
+                                                                ScaffoldMessenger.of(
+                                                                        context)
+                                                                    .clearSnackBars());
                                                       } else if (!status[
                                                           "correct"]!) {
                                                         status["all"] = false;
@@ -667,7 +671,11 @@ class _TestResultsState extends State<TestResults> {
                                                                       style: TextStyle(
                                                                           fontFamily:
                                                                               "Poppins"),
-                                                                    )));
+                                                                    ))).closed
+                                                            .then((value) =>
+                                                                ScaffoldMessenger.of(
+                                                                        context)
+                                                                    .clearSnackBars());
                                                       } else {
                                                         status["all"] = false;
                                                         status["false"] = true;
@@ -747,20 +755,29 @@ class _TestResultsState extends State<TestResults> {
                                                       if (testresults["missed"]
                                                               .length ==
                                                           0) {
-                                                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                                                            behavior:
-                                                                SnackBarBehavior
-                                                                    .floating,
-                                                            duration: Duration(
-                                                                seconds: 1),
-                                                            content: Text(
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                                style: TextStyle(
-                                                                    fontFamily:
-                                                                        "Poppins"),
-                                                                'You didn\'t miss any questions!')));
+                                                        ScaffoldMessenger
+                                                                .of(context)
+                                                            .showSnackBar(const SnackBar(
+                                                                behavior:
+                                                                    SnackBarBehavior
+                                                                        .floating,
+                                                                duration:
+                                                                    Duration(
+                                                                        seconds:
+                                                                            1),
+                                                                content: Text(
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style: TextStyle(
+                                                                        fontFamily:
+                                                                            "Poppins"),
+                                                                    'You didn\'t miss any questions!')))
+                                                            .closed
+                                                            .then((value) =>
+                                                                ScaffoldMessenger.of(
+                                                                        context)
+                                                                    .clearSnackBars());
                                                       } else {
                                                         status["all"] = false;
                                                         status["missed"] = true;

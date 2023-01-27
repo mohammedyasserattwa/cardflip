@@ -37,7 +37,15 @@ class _AdminDeckState extends State<AdminDeck> {
         future: widget.deck,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            return Center(child: Text(snapshot.stackTrace.toString()));
+            return Center(
+              child: Text(
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: const Color(0xff484848),
+                      fontSize: 20,
+                      fontFamily: "PolySans_Neutral"),
+                  "Something went wrong."),
+            );
           }
           if (snapshot.hasData) {
             return GestureDetector(
