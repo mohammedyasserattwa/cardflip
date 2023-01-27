@@ -32,7 +32,6 @@ class _LibraryState extends State<Library> {
     )
   ];
 
-  // int counter = 0;
   @override
   void initState() {
     deckModel = DeckModel();

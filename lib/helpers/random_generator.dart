@@ -21,6 +21,6 @@ class RandomGenerator {
   }
 
   int get librarycolor {
-    return Random().nextInt(18);
+    return Random().nextInt(10);
   }
 }
