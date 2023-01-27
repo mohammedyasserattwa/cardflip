@@ -89,10 +89,10 @@ class _EditCredentialsState extends ConsumerState<EditCredentials> {
                       onTap: () {
                         Navigator.pop(context);
                       },
-                      child:  Padding(
-                        padding: const EdgeInsets.only(left: 30.0, top: 20),
-                        child: SvgPicture.asset("Images/icons/svg/arrow-left-s-line.svg")
-                      ),
+                      child: Padding(
+                          padding: const EdgeInsets.only(left: 30.0, top: 20),
+                          child: SvgPicture.asset(
+                              "Images/icons/svg/arrow-left-s-line.svg")),
                     ),
                     const Padding(
                       padding: EdgeInsets.only(left: 30.0, top: 20),
@@ -239,22 +239,49 @@ class _EditCredentialsState extends ConsumerState<EditCredentials> {
                                                 user.email) {
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(const SnackBar(
+                                                      behavior: SnackBarBehavior
+                                                          .floating,
+                                                      duration:
+                                                          Duration(seconds: 3),
                                                       content: Text(
-                                                          "Please enter a new email address")));
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  "Poppins"),
+                                                          'Please enter a new email address.')));
                                             } else if (!RegExp(
                                                     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+.[a-zA-Z]+")
                                                 .hasMatch(
                                                     _emailController.text)) {
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(const SnackBar(
+                                                      behavior: SnackBarBehavior
+                                                          .floating,
+                                                      duration:
+                                                          Duration(seconds: 3),
                                                       content: Text(
-                                                          "Please enter a valid email address")));
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  "Poppins"),
+                                                          'Please enter a valid email address.')));
                                             } else if (snapshot.data!.contains(
                                                 _emailController.text)) {
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(const SnackBar(
+                                                      behavior: SnackBarBehavior
+                                                          .floating,
+                                                      duration:
+                                                          Duration(seconds: 3),
                                                       content: Text(
-                                                          "Email already exists")));
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                              fontFamily:
+                                                                  "Poppins"),
+                                                          'Email already exists.')));
                                             }
                                           },
                                           child: Container(
@@ -391,33 +418,63 @@ class _EditCredentialsState extends ConsumerState<EditCredentials> {
                                       if (_oldPasswordController.text.isEmpty) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(
+                                                behavior:
+                                                    SnackBarBehavior.floating,
+                                                duration: Duration(seconds: 3),
                                                 content: Text(
-                                                    "Please enter your current password")));
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontFamily: "Poppins"),
+                                                    'Please enter your current password.')));
                                       } else if (_newPasswordController
                                           .text.isEmpty) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(
+                                                behavior:
+                                                    SnackBarBehavior.floating,
+                                                duration: Duration(seconds: 3),
                                                 content: Text(
-                                                    "Please enter your new password")));
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontFamily: "Poppins"),
+                                                    'Please enter your new password.')));
                                       } else if (_newPasswordController
                                               .text.length <
                                           6) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(
+                                                behavior:
+                                                    SnackBarBehavior.floating,
+                                                duration: Duration(seconds: 3),
                                                 content: Text(
-                                                    "Password must be at least 6 characters")));
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontFamily: "Poppins"),
+                                                    'Password must be at least 6 characters.')));
                                       } else if (_oldPasswordController.text ==
                                           _newPasswordController.text) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(
+                                                behavior:
+                                                    SnackBarBehavior.floating,
+                                                duration: Duration(seconds: 3),
                                                 content: Text(
-                                                    "New password cannot be the same as the old password")));
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontFamily: "Poppins"),
+                                                    'New password cannot be the same as the old password.')));
                                       } else if (_oldPasswordController.text !=
                                           user.password) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(const SnackBar(
+                                                behavior:
+                                                    SnackBarBehavior.floating,
+                                                duration: Duration(seconds: 3),
                                                 content: Text(
-                                                    "Incorrect password")));
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontFamily: "Poppins"),
+                                                    'Incorrect password.')));
                                       } else if (_oldPasswordController.text ==
                                               user.password &&
                                           _newPasswordController.text !=
@@ -446,8 +503,17 @@ class _EditCredentialsState extends ConsumerState<EditCredentials> {
                                               .then((value) {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(const SnackBar(
+                                                    behavior: SnackBarBehavior
+                                                        .floating,
+                                                    duration:
+                                                        Duration(seconds: 3),
                                                     content: Text(
-                                                        "Credentials Updated")));
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                            fontFamily:
+                                                                "Poppins"),
+                                                        'Credentials Updated.')));
                                             Navigator.pop(context);
                                             Navigator.pop(context);
                                           });

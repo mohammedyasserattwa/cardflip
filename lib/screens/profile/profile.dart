@@ -47,7 +47,7 @@ class Profile extends ConsumerWidget {
             child: StickyHeader(
               header: Container(
                 height: 24.0,
-                color: const Color.fromARGB(255, 203, 203, 203),
+                color: const Color.fromARGB(255, 255, 255, 255),
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 alignment: Alignment.centerLeft,
               ),

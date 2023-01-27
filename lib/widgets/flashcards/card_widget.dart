@@ -1,40 +1,37 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:cardflip/models/deck_model.dart';
 import 'package:flip_card/flip_card.dart';
 import "package:flutter/material.dart";
 import 'package:cardflip/data/card.dart' as card_handler;
 import 'package:recase/recase.dart';
 import 'package:text_to_speech/text_to_speech.dart';
+import 'package:cardflip/data/deck.dart';
 
 class CardWidget extends StatefulWidget {
-  CardWidget({
-    Key? key,
-    required this.image,
-    required this.card,
-    this.begin = 0.0,
-    this.end = 0.0,
-    this.empty = false,
-    this.celebration = false,
-    this.width = 343,
-    this.height = 511.97,
-    required this.updateParent,
-    this.star = Icons.star_border,
-    this.deckCards = const [],
-  }) : super(key: key);
-  CardWidget.emptyCard({
-    super.key,
-    required this.image,
-    this.card,
-    this.begin = 0.0,
-    this.end = 0.0,
-    this.empty = true,
-    this.celebration = false,
-    this.width = 343,
-    this.height = 511.97,
-    required this.updateParent,
-    this.star = Icons.star_border,
-    this.deckCards = const [],
-  });
+  CardWidget(
+      {Key? key,
+      required this.image,
+      required this.card,
+      this.begin = 0.0,
+      this.end = 0.0,
+      this.empty = false,
+      this.celebration = false,
+      this.width = 343,
+      this.height = 511.97,
+      required this.updateParent,
+      this.star = Icons.star_border})
+      : super(key: key);
+  CardWidget.emptyCard(
+      {super.key,
+      required this.image,
+      this.card,
+      this.begin = 0.0,
+      this.end = 0.0,
+      this.empty = true,
+      this.celebration = false,
+      this.width = 343,
+      this.height = 511.97,
+      required this.updateParent,
+      this.star = Icons.star_border});
   CardWidget.celebrationCard({
     super.key,
     required this.image,
@@ -48,10 +45,9 @@ class CardWidget extends StatefulWidget {
     required this.updateParent,
     this.star = Icons.star_border,
     required this.startOver,
-    required this.deckCards,
+    required this.deck,
   });
-  List deckCards = [];
-  DeckModel deck = DeckModel();
+  Deck? deck;
   final String image;
   // final String term;
   // final String definition;
@@ -365,15 +361,17 @@ class _CardWidgetState extends State<CardWidget> {
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: GestureDetector(
                 onTap: () {
-                  if (widget.deckCards.length <= 3) {
+                  if (widget.deck!.cards.length <= 3) {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         behavior: SnackBarBehavior.floating,
                         duration: Duration(seconds: 3),
                         content: Text(
+                            textAlign: TextAlign.center,
                             style: TextStyle(fontFamily: "Poppins"),
                             'You can start a test once you have created at least 3 cards!')));
                     return;
                   } else {
+                    Navigator.pop(context);
                     Navigator.pushReplacementNamed(context, '/test',
                         arguments: {"deck": widget.deck});
                   }

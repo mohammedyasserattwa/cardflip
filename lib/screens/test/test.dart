@@ -54,8 +54,8 @@ class _TestState extends ConsumerState<Test>
   var timeTaken;
   var seconds;
   bool gotData = false;
-  String background = "Images/backgrounds/testpage.png";
-  // String background = "Images/backgrounds/finaltest.png";
+  // String background = "Images/backgrounds/testpage.png";
+  String background = "Images/backgrounds/finaltest.png";
   // ugly all red or all pink
 
 // sh then set then use then remove

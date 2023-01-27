@@ -21,7 +21,7 @@ class addflashcard_input extends StatelessWidget {
       key: keys,
       decoration: InputDecoration(
         filled: color,
-        fillColor: Colors.grey.withOpacity(0.5),
+        fillColor: Colors.grey.withOpacity(0.25),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide(

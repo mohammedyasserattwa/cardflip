@@ -22,7 +22,6 @@ class _TestResultsState extends State<TestResults> {
   bool isStuck = false;
   var length = 0;
   Map testresults = {};
-  var key;
   var deckCards;
   var display;
   Map<String, bool> status = {
@@ -166,8 +165,8 @@ class _TestResultsState extends State<TestResults> {
                                         child: Row(
                                           children: [
                                             const Padding(
-                                              padding: EdgeInsets.only(
-                                                  bottom: 15.0),
+                                              padding:
+                                                  EdgeInsets.only(bottom: 15.0),
                                               child: AutoSizeText(
                                                 "you got",
                                                 maxLines: 1,
@@ -186,8 +185,7 @@ class _TestResultsState extends State<TestResults> {
                                             Padding(
                                               padding:
                                                   const EdgeInsets.all(0.0),
-                                              child:
-                                                  CircularPercentIndicator(
+                                              child: CircularPercentIndicator(
                                                 radius: 35.0,
                                                 lineWidth: 6.0,
                                                 animation: true,
@@ -197,7 +195,7 @@ class _TestResultsState extends State<TestResults> {
                                                 center: Text(
                                                   "${testresults['percentage']}%",
                                                   style: const TextStyle(
-                                                    color:  Color(0xff6B8C8E),
+                                                    color: Color(0xff6B8C8E),
                                                     fontFamily:
                                                         "PolySans_Median",
                                                     fontSize: 20,
@@ -319,7 +317,8 @@ class _TestResultsState extends State<TestResults> {
                                                           TextOverflow.ellipsis,
                                                       stepGranularity: 1,
                                                       style: const TextStyle(
-                                                        color:Color(0xff636363),
+                                                        color:
+                                                            Color(0xff636363),
                                                         fontFamily:
                                                             "PolySans_Median",
                                                         fontSize: 16,
@@ -329,7 +328,8 @@ class _TestResultsState extends State<TestResults> {
                                                         CircularStrokeCap.round,
                                                     progressColor:
                                                         const Color(0xffA5A5A5),
-                                                    backgroundColor:const Color(0x8CC6C6C6),
+                                                    backgroundColor:
+                                                        const Color(0x8CC6C6C6),
                                                   ),
                                                   const Center(
                                                     child: Text("missed",
@@ -369,7 +369,8 @@ class _TestResultsState extends State<TestResults> {
                                                     ),
                                                     circularStrokeCap:
                                                         CircularStrokeCap.round,
-                                                    progressColor:const Color(0xffF4A2A2),
+                                                    progressColor:
+                                                        const Color(0xffF4A2A2),
                                                     backgroundColor:
                                                         const Color(0x8CC6C6C6),
                                                   ),
@@ -464,9 +465,10 @@ class _TestResultsState extends State<TestResults> {
                                                         status["false"] = false;
                                                         status["missed"] =
                                                             false;
+                                                        display = [
+                                                          ...deckCards
+                                                        ];
                                                       }
-                                                      display = [...deckCards];
-                                                      developer.log("all $display");
                                                     });
                                                   },
                                                   child: Container(
@@ -496,32 +498,80 @@ class _TestResultsState extends State<TestResults> {
                                                                 0xff484848),
                                                             fontSize: 20,
                                                             fontFamily:
-                                                                // (status["all"]! == true)?
-                                                                //     "PolySans_Median":
                                                                 "PolySans_Neutral"),
                                                       )))),
                                               GestureDetector(
                                                   onTap: () {
                                                     setState(() {
-                                                      if (!status["correct"]!) {
+                                                      if (!status["correct"]! &&
+                                                          deckCards
+                                                                  .map((e) =>
+                                                                      e.getTerm)
+                                                                  .toSet()
+                                                                  .difference(testresults[
+                                                                          "wrong"]
+                                                                      .keys
+                                                                      .toSet()
+                                                                      .union(testresults[
+                                                                              "missed"]
+                                                                          .toSet()))
+                                                                  .length ==
+                                                              0) {
+                                                        status["correct"] =
+                                                            false;
+                                                        status["false"] = false;
+                                                        status["missed"] =
+                                                            false;
+                                                        status["all"] = true;
+                                                        if (display.isNotEmpty)
+                                                          display.clear();
+                                                        display = [
+                                                          ...deckCards
+                                                        ];
+                                                      }
+                                                      if (deckCards
+                                                              .map((e) =>
+                                                                  e.getTerm)
+                                                              .toSet()
+                                                              .difference(testresults[
+                                                                      "wrong"]
+                                                                  .keys
+                                                                  .toSet()
+                                                                  .union(testresults[
+                                                                          "missed"]
+                                                                      .toSet()))
+                                                              .length ==
+                                                          0) {
+                                                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                                            behavior:
+                                                                SnackBarBehavior
+                                                                    .floating,
+                                                            duration: Duration(
+                                                                seconds: 1),
+                                                            content: Text(
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style: TextStyle(
+                                                                    fontFamily:
+                                                                        "Poppins"),
+                                                                'You didn\'t have any correct answers.')));
+                                                      } else if (!status[
+                                                          "correct"]!) {
                                                         status["all"] = false;
                                                         status["correct"] =
                                                             true;
                                                         status["false"] = false;
                                                         status["missed"] =
                                                             false;
-                                                        //  testresults[
-                                                        //           'wrong']
-                                                        //       .containsKey(
-                                                        //           deckCards[i]
-                                                        //               .getterm
-                                                        display.clear();
+                                                        if (display.isNotEmpty)
+                                                          display.clear();
                                                         display = [
                                                           ...deckCards
                                                         ];
                                                         for (int x = 0;
                                                             x <
-                                                                testresults
+                                                                deckCards
                                                                     .length;
                                                             x++) {
                                                           if (testresults[
@@ -540,8 +590,8 @@ class _TestResultsState extends State<TestResults> {
                                                                 deckCards[x]);
                                                           }
                                                         }
-                                                        developer.log(
-                                                            "correct $display");
+                                                        developer
+                                                            .log("$status");
                                                       }
                                                     });
                                                   },
@@ -577,27 +627,73 @@ class _TestResultsState extends State<TestResults> {
                                               GestureDetector(
                                                   onTap: () {
                                                     setState(() {
-                                                      if (!status["false"]!) {
-                                                        status["all"] = false;
+                                                      if (!status["false"]! &&
+                                                          testresults["wrong"]
+                                                                  .length ==
+                                                              0) {
+                                                        status["false"] = false;
                                                         status["correct"] =
                                                             false;
-                                                        status["false"] = true;
                                                         status["missed"] =
                                                             false;
+                                                        status["all"] = true;
+
+                                                        if (display.isNotEmpty)
+                                                          display.clear();
+                                                        display = [
+                                                          ...deckCards
+                                                        ];
                                                       }
-                                                      display.clear();
-                                                      for (int x = 0;
-                                                          x < deckCards.length;
-                                                          x++) {
-                                                        if (testresults['wrong']
-                                                            .containsKey(
-                                                                deckCards[x]
-                                                                    .getTerm)) {
-                                                          display.add(
-                                                              deckCards[x]);
+                                                      if (testresults["wrong"]
+                                                              .length ==
+                                                          0) {
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                                SnackBar(
+                                                                    behavior:
+                                                                        SnackBarBehavior
+                                                                            .floating,
+                                                                    duration:
+                                                                        Duration(
+                                                                            seconds:
+                                                                                1),
+                                                                    content:
+                                                                        Text(
+                                                                      'You don\'t have any wrong answers!',
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                      style: TextStyle(
+                                                                          fontFamily:
+                                                                              "Poppins"),
+                                                                    )));
+                                                      } else {
+                                                        status["all"] = false;
+                                                        status["false"] = true;
+                                                        status["correct"] =
+                                                            false;
+                                                        status["missed"] =
+                                                            false;
+                                                        if (display.isNotEmpty)
+                                                          display.clear();
+                                                        for (int x = 0;
+                                                            x <
+                                                                deckCards
+                                                                    .length;
+                                                            x++) {
+                                                          if (testresults[
+                                                                  "wrong"]
+                                                              .containsKey(
+                                                                  deckCards[x]
+                                                                      .getTerm)) {
+                                                            display.add(
+                                                                deckCards[x]);
+                                                          }
                                                         }
+                                                        developer.log(
+                                                            display.toString());
                                                       }
-                                                      developer.log("false $display");
                                                     });
                                                   },
                                                   child: Container(
@@ -631,29 +727,63 @@ class _TestResultsState extends State<TestResults> {
                                               GestureDetector(
                                                   onTap: () {
                                                     setState(() {
-                                                      if (!status["missed"]!) {
+                                                      if (!status["missed"]! &&
+                                                          testresults["missed"]
+                                                                  .length ==
+                                                              0) {
+                                                        status["missed"] =
+                                                            false;
+                                                        status["false"] = false;
+                                                        status["correct"] =
+                                                            false;
+                                                        status["all"] = true;
+
+                                                        if (display.isNotEmpty)
+                                                          display.clear();
+                                                        display = [
+                                                          ...deckCards
+                                                        ];
+                                                      }
+                                                      if (testresults["missed"]
+                                                              .length ==
+                                                          0) {
+                                                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                                            behavior:
+                                                                SnackBarBehavior
+                                                                    .floating,
+                                                            duration: Duration(
+                                                                seconds: 1),
+                                                            content: Text(
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
+                                                                style: TextStyle(
+                                                                    fontFamily:
+                                                                        "Poppins"),
+                                                                'You didn\'t miss any questions!')));
+                                                      } else {
                                                         status["all"] = false;
+                                                        status["missed"] = true;
                                                         status["correct"] =
                                                             false;
                                                         status["false"] = false;
-                                                        status["missed"] = true;
-                                                      }
-                                                      display.clear();
-                                                      for (int x = 0;
-                                                          x <
-                                                              testresults
-                                                                  .length;
-                                                          x++) {
-                                                        if (testresults[
-                                                                'missed']
-                                                            .contains(
-                                                                deckCards[x]
-                                                                    .getTerm)) {
-                                                          display.add(
-                                                              deckCards[x]);
+                                                        if (display.isNotEmpty)
+                                                          display.clear();
+                                                        for (int x = 0;
+                                                            x <
+                                                                deckCards
+                                                                    .length;
+                                                            x++) {
+                                                          if (testresults[
+                                                                  "missed"]
+                                                              .contains(
+                                                                  deckCards[x]
+                                                                      .getTerm)) {
+                                                            display.add(
+                                                                deckCards[x]);
+                                                          }
                                                         }
                                                       }
-                                                      developer.log("missed $display");
                                                     });
                                                   },
                                                   child: Container(
@@ -701,12 +831,11 @@ class _TestResultsState extends State<TestResults> {
                                                 "Terms",
                                                 maxLines: 1,
                                                 minFontSize: 16,
-                                                wrapWords: true,
+                                                wrapWords: false,
                                                 overflow: TextOverflow.ellipsis,
                                                 stepGranularity: 1,
                                                 style: TextStyle(
-                                                    color:
-                                                        Color(0xff484848),
+                                                    color: Color(0xff484848),
                                                     fontSize: 18,
                                                     fontFamily:
                                                         "PolySans_Median"),
@@ -717,12 +846,11 @@ class _TestResultsState extends State<TestResults> {
                                                 "Defintions",
                                                 maxLines: 1,
                                                 minFontSize: 16,
-                                                wrapWords: true,
+                                                wrapWords: false,
                                                 overflow: TextOverflow.ellipsis,
                                                 stepGranularity: 1,
                                                 style: TextStyle(
-                                                    color:
-                                                        Color(0xff484848),
+                                                    color: Color(0xff484848),
                                                     fontSize: 18,
                                                     fontFamily:
                                                         "PolySans_Median"),
@@ -741,7 +869,6 @@ class _TestResultsState extends State<TestResults> {
                                 scrollDirection: Axis.vertical,
                                 child: Column(
                                   children: [
-                                    // todo
                                     for (int i = 0; i < display.length; i++)
                                       Padding(
                                         padding: const EdgeInsets.symmetric(
@@ -781,16 +908,16 @@ class _TestResultsState extends State<TestResults> {
                                                                   : display[i]
                                                                       .getTerm
                                                                       .toString(),
-                                                              maxLines: 2,
+                                                              maxLines: 3,
                                                               minFontSize: 13,
-                                                              wrapWords: true,
+                                                              wrapWords: false,
                                                               overflow:
                                                                   TextOverflow
                                                                       .ellipsis,
                                                               stepGranularity:
                                                                   1,
                                                               style: const TextStyle(
-                                                                  color:  Color(
+                                                                  color: Color(
                                                                       0xff484848),
                                                                   fontSize: 18,
                                                                   fontFamily:
@@ -798,12 +925,7 @@ class _TestResultsState extends State<TestResults> {
                                                             ),
                                                           ),
                                                         ),
-                                                        ((key = testresults[
-                                                                        'wrong']
-                                                                    .containsKey(deckCards[
-                                                                            i]
-                                                                        .getTerm
-                                                                        .toString())) &&
+                                                        (display.isNotEmpty &&
                                                                 (status["all"] ==
                                                                         true ||
                                                                     status["false"] ==
@@ -819,15 +941,15 @@ class _TestResultsState extends State<TestResults> {
                                                                             testresults['wrong'][deckCards[i].getTerm] !=
                                                                                 null)
                                                                         ? 'You picked:\n${testresults['wrong'][deckCards[i].getTerm]}'
-                                                                        : (status['false'] == true &&
-                                                                                testresults['wrong'][display[i].getTerm] != null)
+                                                                        : (status['false']! == true &&
+                                                                                display.isNotEmpty)
                                                                             ? 'You picked:\n${testresults['wrong'][display[i].getTerm]}'
                                                                             : "",
-                                                                    maxLines: 2,
+                                                                    maxLines: 3,
                                                                     minFontSize:
                                                                         13,
                                                                     wrapWords:
-                                                                        true,
+                                                                        false,
                                                                     overflow:
                                                                         TextOverflow
                                                                             .ellipsis,

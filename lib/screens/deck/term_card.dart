@@ -57,14 +57,18 @@ class Card extends ConsumerWidget {
             width: resposiveSize["width"],
             height: resposiveSize["height"],
             child: Center(
-              child: AutoSizeText(
-                cardName,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                minFontSize: double.parse(resposiveSize["fontSize"].toString()),
-                stepGranularity: 1,
-                style: textStyle,
-                textAlign: TextAlign.center,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: AutoSizeText(
+                  cardName,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  minFontSize:
+                      double.parse(resposiveSize["fontSize"].toString()),
+                  stepGranularity: 1,
+                  style: textStyle,
+                  textAlign: TextAlign.center,
+                ),
               ),
             )));
   }

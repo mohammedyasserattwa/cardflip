@@ -153,7 +153,7 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                                                   child: index == 0
                                                       ? Container()
                                                       : Opacity(
-                                                          opacity: 0.85,
+                                                          opacity: 0.758,
                                                           child: Container(
                                                             height: 40,
                                                             width: 40,
@@ -212,8 +212,8 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                                                 left: 17, right: 17, top: 10),
                                             child: Container(
                                               decoration: BoxDecoration(
-                                                color: Color.fromARGB(
-                                                    93, 167, 167, 167),
+                                                color: Colors.grey
+                                                    .withOpacity(0.25),
                                                 borderRadius:
                                                     BorderRadius.circular(16),
                                               ),
@@ -291,9 +291,16 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                                     } else {
                                       error = true;
                                       ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
+                                          .showSnackBar(const SnackBar(
+                                              behavior:
+                                                  SnackBarBehavior.floating,
+                                              duration: Duration(seconds: 3),
                                               content: Text(
-                                                  'Please fill all the fields')));
+                                                                                                      textAlign: TextAlign.center,
+
+                                                  style: TextStyle(
+                                                      fontFamily: "Poppins"),
+                                                  'Please fill all the fields.')));
                                     }
                                   }
                                   if (error == false) {
@@ -313,9 +320,16 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                                           context, "/deck",
                                           arguments: {"deck": widget.deck});
                                       ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
+                                          .showSnackBar(const SnackBar(
+                                              behavior:
+                                                  SnackBarBehavior.floating,
+                                              duration: Duration(seconds: 3),
                                               content: Text(
-                                                  'Flashcards added successfully')));
+                                                                                                      textAlign: TextAlign.center,
+
+                                                  style: TextStyle(
+                                                      fontFamily: "Poppins"),
+                                                  'Flashcards added successfully.')));
                                     });
                                   }
                                 },

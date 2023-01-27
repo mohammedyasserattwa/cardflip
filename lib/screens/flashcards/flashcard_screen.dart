@@ -33,14 +33,11 @@ class _FlashcardState extends ConsumerState<Flashcard>
   bool _viewFav = false;
   int _progress = 0;
   late List<card_data.Card> currentList;
-  
 
   @override
   void initState() {
     super.initState();
     model = FlashcardModel(deck: widget.deck);
-
-    
 
     // model.pushForward(0);
     // print(widget.id);
@@ -79,7 +76,6 @@ class _FlashcardState extends ConsumerState<Flashcard>
 
   @override
   Widget build(BuildContext context) {
-    
     final flashcardState = ref.watch(FlashcardStateProvider);
     final userData = ref.watch(UserDataProvider);
     try {
@@ -209,7 +205,7 @@ class _FlashcardState extends ConsumerState<Flashcard>
                         },
                         updateParent: () {},
                         image: model.getImages[2],
-                        deckCards: widget.deck.cards,
+                        deck: widget.deck,
                       ),
                     ],
                   ),

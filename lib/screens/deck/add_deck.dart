@@ -91,7 +91,7 @@ class _AdddeckState extends ConsumerState<Adddeck> {
                             )),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 10, left: 20),
+                        padding: const EdgeInsets.only(top: 10, left: 30),
                         child: Text(
                             (widget.screens == "edit")
                                 ? "Edit Deck"
@@ -104,131 +104,134 @@ class _AdddeckState extends ConsumerState<Adddeck> {
                                 fontWeight: FontWeight.w500)),
                       ),
                       Expanded(
-                        child: ListView(children: [
-                          Text(
-                            "Title",
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              fontFamily: "PolySans_Median",
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
-                              fontSize: 24,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10.0),
-                            child: TextField(
-                              controller: _controllerTitle,
-                              key: _nameKey,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.all(20),
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide.none,
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
-                                filled: true,
-                                fillColor: Colors.black.withOpacity(0.1),
-                                hintText: 'Enter the deck title',
+                        child: NoGlowScroll(
+                          child: ListView(children: [
+                            Text(
+                              "Title",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontFamily: "PolySans_Median",
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                                fontSize: 24,
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                            "Description",
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              fontFamily: "PolySans_Median",
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
-                              fontSize: 24,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10.0),
-                            child: TextField(
-                              controller: _controllerDescription,
-                              key: _descriptionKey,
-                              maxLines: 5,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  //<-- SEE HERE
-                                  borderSide: BorderSide.none,
-                                  borderRadius: BorderRadius.circular(20.0),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: TextField(
+                                controller: _controllerTitle,
+                                key: _nameKey,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(20),
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.black.withOpacity(0.1),
+                                  hintText: 'Enter the deck title',
                                 ),
-                                filled: true,
-                                fillColor: Colors.black.withOpacity(0.1),
-                                hintText: 'Enter the deck description',
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                            "Tags",
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              fontFamily: "PolySans_Median",
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
-                              fontSize: 24,
+                            SizedBox(
+                              height: 20,
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: MultiSelectContainer(
-                                textStyles: MultiSelectTextStyles(
-                                    textStyle: TextStyle(
-                                        fontFamily: "PolySans_Neutral",
-                                        fontSize: 15,
-                                        color: Color(0xff212523)),
-                                    selectedTextStyle: TextStyle(
-                                        fontFamily: "PolySans_Neutral",
-                                        fontSize: 15,
-                                        color: Color(0xff212523))),
-                                itemsDecoration: MultiSelectDecorations(
-                                    decoration: BoxDecoration(
-                                        gradient: LinearGradient(colors: [
-                                          Colors.black.withOpacity(0.1),
-                                          Colors.black.withOpacity(0.1),
-                                        ]),
+                            Text(
+                              "Description",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontFamily: "PolySans_Median",
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                                fontSize: 24,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 10.0),
+                              child: TextField(
+                                controller: _controllerDescription,
+                                key: _descriptionKey,
+                                maxLines: 5,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    //<-- SEE HERE
+                                    borderSide: BorderSide.none,
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.black.withOpacity(0.1),
+                                  hintText: 'Enter the deck description',
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              "Tags",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontFamily: "PolySans_Median",
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                                fontSize: 24,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: MultiSelectContainer(
+                                  textStyles: MultiSelectTextStyles(
+                                      textStyle: TextStyle(
+                                          fontFamily: "PolySans_Neutral",
+                                          fontSize: 15,
+                                          color: Color(0xff212523)),
+                                      selectedTextStyle: TextStyle(
+                                          fontFamily: "PolySans_Neutral",
+                                          fontSize: 15,
+                                          color: Color(0xff212523))),
+                                  itemsDecoration: MultiSelectDecorations(
+                                      decoration: BoxDecoration(
+                                          gradient: LinearGradient(colors: [
+                                            Colors.black.withOpacity(0.1),
+                                            Colors.black.withOpacity(0.1),
+                                          ]),
+                                          border: Border.all(
+                                              color: Colors.black
+                                                  .withOpacity(0.1)),
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      selectedDecoration: BoxDecoration(
                                         border: Border.all(
-                                            color:
-                                                Colors.black.withOpacity(0.1)),
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    selectedDecoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: const Color(0xffA000A4),
-                                          width: 1),
-                                      borderRadius: BorderRadius.circular(16),
-                                      color: const Color(0xffF4B1EB),
-                                    )),
-                                items: [
-                                  for (int i = 0;
-                                      i < snapshot.data!.length;
-                                      i++)
-                                    MultiSelectCard(
-                                      selected: _selectedTags
-                                          .contains(snapshot.data![i]["id"]),
-                                      value: snapshot.data![i]["id"],
-                                      label: ReCase(snapshot.data![i]["name"])
-                                          .titleCase,
-                                    ),
-                                ],
-                                onChange: (allSelectedItems, selectedItem) {
-                                  setState(() {
-                                    if (_selectedTags.contains(selectedItem)) {
-                                      _selectedTags.remove(selectedItem);
-                                    } else {
-                                      _selectedTags.add(selectedItem);
-                                    }
-                                  });
-                                }),
-                          ),
-                        ]),
+                                            color: const Color(0xffA000A4),
+                                            width: 1),
+                                        borderRadius: BorderRadius.circular(16),
+                                        color: const Color(0xffF4B1EB),
+                                      )),
+                                  items: [
+                                    for (int i = 0;
+                                        i < snapshot.data!.length;
+                                        i++)
+                                      MultiSelectCard(
+                                        selected: _selectedTags
+                                            .contains(snapshot.data![i]["id"]),
+                                        value: snapshot.data![i]["id"],
+                                        label: ReCase(snapshot.data![i]["name"])
+                                            .titleCase,
+                                      ),
+                                  ],
+                                  onChange: (allSelectedItems, selectedItem) {
+                                    setState(() {
+                                      if (_selectedTags
+                                          .contains(selectedItem)) {
+                                        _selectedTags.remove(selectedItem);
+                                      } else {
+                                        _selectedTags.add(selectedItem);
+                                      }
+                                    });
+                                  }),
+                            ),
+                          ]),
+                        ),
                       ),
                       Container(
                         padding: EdgeInsets.only(right: 20, bottom: 35),
@@ -272,33 +275,38 @@ class _AdddeckState extends ConsumerState<Adddeck> {
                                       );
                                     });
                               } else {
-                                if(widget.screens == "edit"){
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Center(
-                                        child: LoadingWidget(),
-                                      );
-                                    });
-                                deckModel
-                                    .updateDeck(
-                                        _controllerTitle.text,
-                                        _controllerDescription.text,
-                                        _selectedTags,
-                                        widget.deck!.id)
-                                    .then((value) {
-                                  widget.deck!.name = _controllerTitle.text;
-                                  widget.deck!.description =
-                                      _controllerDescription.text;
-                                  widget.deck!.tags = _selectedTags;
-                                  Navigator.pop(context);
-                                  Navigator.pop(context);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content: Text(
-                                              "Deck updated successfully")));
-                                });}
-                                else if(widget.screens == "add"){
+                                if (widget.screens == "edit") {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Center(
+                                          child: LoadingWidget(),
+                                        );
+                                      });
+                                  deckModel
+                                      .updateDeck(
+                                          _controllerTitle.text,
+                                          _controllerDescription.text,
+                                          _selectedTags,
+                                          widget.deck!.id)
+                                      .then((value) {
+                                    widget.deck!.name = _controllerTitle.text;
+                                    widget.deck!.description =
+                                        _controllerDescription.text;
+                                    widget.deck!.tags = _selectedTags;
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            behavior: SnackBarBehavior.floating,
+                                            duration: Duration(seconds: 3),
+                                            content: Text(
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontFamily: "Poppins"),
+                                                'Deck updated successfully.')));
+                                  });
+                                } else if (widget.screens == "add") {
                                   showDialog(
                                       context: context,
                                       builder: (context) {
@@ -308,18 +316,22 @@ class _AdddeckState extends ConsumerState<Adddeck> {
                                       });
                                   deckModel
                                       .createDeck(
-                                      _controllerTitle.text,
-                                      _controllerDescription.text,
-                                      _selectedTags,
-                                      userData!.id
-                                      )
+                                          _controllerTitle.text,
+                                          _controllerDescription.text,
+                                          _selectedTags,
+                                          userData!.id)
                                       .then((value) {
                                     Navigator.pop(context);
                                     Navigator.pop(context);
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(
+                                        const SnackBar(
+                                            behavior: SnackBarBehavior.floating,
+                                            duration: Duration(seconds: 3),
                                             content: Text(
-                                                "Deck created successfully")));
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontFamily: "Poppins"),
+                                                'Deck created successfully.')));
                                   });
                                 }
                               }

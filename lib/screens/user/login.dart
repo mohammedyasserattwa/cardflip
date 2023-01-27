@@ -717,24 +717,38 @@ class _LoginState extends ConsumerState<Login> {
                                                         _emailController.text,
                                                         context)
                                                     .then((value) => {
-                                                          ScaffoldMessenger.of(
-                                                                  context)
-                                                              .showSnackBar(
-                                                                  SnackBar(
-                                                            content: Text(
-                                                                "A mail has been sent to your email address"),
-                                                            duration: Duration(
-                                                                seconds: 2),
-                                                          ))
+                                                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                                              behavior:
+                                                                  SnackBarBehavior
+                                                                      .floating,
+                                                              duration:
+                                                                  Duration(
+                                                                      seconds:
+                                                                          3),
+                                                              content: Text(
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  style: TextStyle(
+                                                                      fontFamily:
+                                                                          "Poppins"),
+                                                                  "A mail has been sent to your email address.")))
                                                         });
                                               } else {
                                                 ScaffoldMessenger.of(context)
-                                                    .showSnackBar(SnackBar(
-                                                  content: Text(
-                                                      "Please enter your email in the field above in order to send a mail"),
-                                                  duration:
-                                                      Duration(seconds: 2),
-                                                ));
+                                                    .showSnackBar(const SnackBar(
+                                                        behavior:
+                                                            SnackBarBehavior
+                                                                .floating,
+                                                        duration: Duration(
+                                                            seconds: 3),
+                                                        content: Text(
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                                fontFamily:
+                                                                    "Poppins"),
+                                                            "Please enter your email in the field above in order to send a mail.")));
                                               }
                                             },
                                             child: Text(

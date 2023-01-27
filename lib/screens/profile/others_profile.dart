@@ -8,7 +8,7 @@ import 'package:no_glow_scroll/no_glow_scroll.dart';
 import "package:flutter/material.dart";
 import 'package:recase/recase.dart';
 
-import '../models/user_model.dart';
+import '../../models/user_model.dart';
 
 class OthersProfile extends ConsumerWidget {
   final String id;

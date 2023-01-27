@@ -388,11 +388,62 @@ class Leaderboard extends ConsumerWidget {
                                             () => getData(userData!.id)),
                                         builder: (context, snapshot) {
                                           if (snapshot.hasError) {
-                                            return Center(
-                                                // child: Text(snapshot.stackTrace
-                                                //     .toString()));
-                                                child: Text(
-                                                    snapshot.error.toString()));
+                                            return Column(
+                                              children: [
+                                                SizedBox(
+                                                  height: 140,
+                                                ),
+                                                Center(
+                                                  child: SizedBox(
+                                                    width: 265,
+                                                    child: Column(
+                                                      children: [
+                                                        Text(
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                                color: const Color(
+                                                                    0xff484848),
+                                                                fontSize: 20,
+                                                                fontFamily:
+                                                                    "PolySans_Neutral"),
+                                                            "Oops! It looks like we hit a snag while loading the leaderboard."),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  left: 8.0),
+                                                          child: Text(
+                                                            "Don't worry, our team is working on it. In the meantime, why not take a break and come back later?",
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        82,
+                                                                        82,
+                                                                        82),
+                                                                fontSize: 15,
+                                                                fontFamily:
+                                                                    "PolySans_Neutral"),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                            // child: Text(snapshot.stackTrace
+                                            //     .toString()));
+                                            // child: Text(
+                                            //     snapshot.error.toString())
+                                            //     );
+
                                           }
                                           if (snapshot.hasData) {
                                             if (snapshot.data.isEmpty) {
