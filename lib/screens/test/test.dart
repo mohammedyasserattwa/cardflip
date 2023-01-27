@@ -144,7 +144,6 @@ class _TestState extends ConsumerState<Test>
       borderRadius: BorderRadius.circular(16),
       color: const Color(0x40fff4f4),
     );
-    // }
     super.initState();
   }
 
@@ -421,7 +420,7 @@ class _TestState extends ConsumerState<Test>
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               AutoSizeText(
-                                                // 150 chars max
+                                                //todo 150 chars max
                                                 // definitions[0].toString()[0].toUpperCase()+definitions[0].toString().substring(1),
                                                 definitions[j].toString(),
                                                 maxLines: 6,

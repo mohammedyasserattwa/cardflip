@@ -5,14 +5,19 @@ import 'package:cardflip/models/badges_model.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
 
+import 'package:recase/recase.dart';
+
 class BadgePopUp extends StatefulWidget {
   final Future<Map<String, bool>> badgecheck;
   BadgesModel badge;
-  Deck deck;
+  Deck? deck;
 
   BadgePopUp(
       {required this.badgecheck, required this.badge, required this.deck});
-
+  BadgePopUp.nodeck({
+    required this.badgecheck,
+    required this.badge,
+  });
   @override
   _BadgePopUpState createState() => _BadgePopUpState();
 }
@@ -65,7 +70,9 @@ class _BadgePopUpState extends State<BadgePopUp> {
                       title: Column(
                         children: <Widget>[
                           SizedBox(height: 10),
-                          Text("Achievement Unlocked!"),
+                          (widget.deck != null)
+                              ? Text("Achievement Unlocked!")
+                              : SizedBox(height: 10),
                           SizedBox(height: 10),
                           Text(
                             currentBadge.title,
@@ -89,7 +96,8 @@ class _BadgePopUpState extends State<BadgePopUp> {
                               fit: BoxFit.cover),
                           SizedBox(height: 15),
                           Center(
-                              child: Text(currentBadge.description,
+                              child: Text(
+                                  currentBadge.description,
                                   textAlign: TextAlign.center)),
                           SizedBox(height: 25),
                           Center(
@@ -103,20 +111,36 @@ class _BadgePopUpState extends State<BadgePopUp> {
                               ),
                             ),
                             onTap: () {
+                              // if deck empty pop bs
                               Navigator.pop(context);
                               if (badgeQueue.isEmpty) {
-                                Navigator.pushReplacementNamed(context, '/deck',
-                                    arguments: {"deck": widget.deck});
+                                if (widget.deck == null) {
+                                  Navigator.pop(context);
+                                } else {
+                                  Navigator.pushReplacementNamed(
+                                      context, '/deck',
+                                      arguments: {"deck": widget.deck});
+                                }
                                 showingDialog = false;
                               } else {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return BadgePopUp(
-                                          badgecheck: widget.badgecheck,
-                                          badge: widget.badge,
-                                          deck: widget.deck);
-                                    });
+                                if (widget.deck == null) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return BadgePopUp.nodeck(
+                                            badgecheck: widget.badgecheck,
+                                            badge: widget.badge);
+                                      });
+                                } else {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return BadgePopUp(
+                                            badgecheck: widget.badgecheck,
+                                            badge: widget.badge,
+                                            deck: widget.deck);
+                                      });
+                                }
                                 setState(() {});
                               }
                             },

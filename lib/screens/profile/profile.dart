@@ -2,8 +2,10 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cardflip/data/Repositories/user_state.dart';
 import 'package:cardflip/data/deck.dart' as deck_data;
 import 'package:cardflip/helpers/random_generator.dart';
+import 'package:cardflip/models/badges_model.dart';
 import 'package:cardflip/models/deck_model.dart';
 import 'package:cardflip/models/user_model.dart';
+import 'package:cardflip/widgets/badges/badges.dart';
 import 'package:cardflip/widgets/deck/deck.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -15,6 +17,7 @@ import 'package:sticky_headers/sticky_headers/widget.dart';
 class Profile extends ConsumerWidget {
   final DeckModel deckModel = DeckModel();
   final RandomGenerator cardgenerator = RandomGenerator();
+  late BadgesModel badge;
 
   Profile({super.key});
 
@@ -34,6 +37,11 @@ class Profile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userData = ref.watch(UserDataProvider);
     final height = _responsive(context)["height"];
+    try {
+      badge = BadgesModel(currentUser: userData!);
+    } catch (e) {
+      print(e.toString());
+    }
     return Container(
         width: double.infinity,
         decoration: const BoxDecoration(
@@ -210,15 +218,37 @@ class Profile extends ConsumerWidget {
                                           i++)
                                         Row(
                                           children: [
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                    image: AssetImage(
-                                                        "Images/vectors/badges/${snapshot.data![i]}.png"),
-                                                    fit: BoxFit.cover),
+                                            GestureDetector(
+                                              onTap: () {
+                                                String title = badge.badges
+                                                    .firstWhere((e) =>
+                                                        e.image ==
+                                                        snapshot.data![i])
+                                                    .id;
+                                                showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return BadgePopUp.nodeck(
+                                                          badgecheck:
+                                                              Future.value({
+                                                            // return id where pic == snap
+                                                            title
+                                                                // snapshot.data![i]:
+                                                                : true
+                                                          }),
+                                                          badge: badge);
+                                                    });
+                                              },
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                      image: AssetImage(
+                                                          "Images/vectors/badges/${snapshot.data![i]}.png"),
+                                                      fit: BoxFit.cover),
+                                                ),
+                                                height: 70,
+                                                width: 70,
                                               ),
-                                              height: 70,
-                                              width: 70,
                                             ),
                                             const SizedBox(
                                               width: 25,
@@ -232,8 +262,16 @@ class Profile extends ConsumerWidget {
                                   return Center(
                                       child: Text("${snapshot.error}"));
                                 }
-                                return const Center(
-                                    child: CircularProgressIndicator());
+                                return Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 150,
+                                    ),
+                                    const Align(
+                                        alignment: Alignment.center,
+                                        child: CircularProgressIndicator()),
+                                  ],
+                                );
                               }),
                         ],
                       ),
@@ -287,9 +325,11 @@ class Profile extends ConsumerWidget {
                                                           },
                                                         ));
                                               }
-                                              return const Center(
-                                                  child:
-                                                      CircularProgressIndicator());
+                                              return const Align(
+                                                alignment: Alignment.center,
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              );
                                             }),
                                         const SizedBox(
                                           width: 15,
@@ -314,7 +354,8 @@ class Profile extends ConsumerWidget {
                               return Center(
                                   child: Text(snapshot.error.toString()));
                             }
-                            return const Center(
+                            return const Align(
+                              alignment: Alignment.center,
                               child: CircularProgressIndicator(),
                             );
                           }),
@@ -392,7 +433,8 @@ class Profile extends ConsumerWidget {
                                 );
                               }
                             } else {
-                              return const Center(
+                              return const Align(
+                                  alignment: Alignment.center,
                                   child: CircularProgressIndicator());
                             }
                           }),
@@ -512,7 +554,8 @@ class Profile extends ConsumerWidget {
                                 );
                               }
                             } else {
-                              return const Center(
+                              return const Align(
+                                  alignment: Alignment.center,
                                   child: CircularProgressIndicator());
                             }
                           }),

@@ -69,7 +69,6 @@ class UserModel {
     List<String> badges = [];
 
     data.forEach((String k, dynamic e) {
-      // int n =
       if (k == "firsttimer") {
         e = e["test"];
       }
@@ -77,12 +76,6 @@ class UserModel {
         badges.add((k == "firsttimer") ? "firsttimer" : k);
       }
     });
-
-    // for () {
-    // for (int j = 0; j < data[i].length; j++) {
-    // badges.add(data[i]);
-    // }
-    // }
     return badges;
   }
 

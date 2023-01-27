@@ -131,7 +131,7 @@ class _EditCredentialsState extends ConsumerState<EditCredentials> {
                                         ),
                                       ),
                                       Text(
-                                        'Please Verify the mail by clicking on the button on the right.',
+                                        'Please verify the mail by clicking on the button on the right.',
                                         style: TextStyle(
                                           fontFamily: 'PolySans_Neutral',
                                           fontSize: 12,
@@ -549,7 +549,7 @@ class _EditCredentialsState extends ConsumerState<EditCredentials> {
                                             color:
                                                 Colors.grey.withOpacity(0.30)),
                                         width: 85,
-                                        height: 45,
+                                        height: 55,
                                         child: const Text("Done",
                                             style: TextStyle(
                                                 color: Color(0xFF191C32),
