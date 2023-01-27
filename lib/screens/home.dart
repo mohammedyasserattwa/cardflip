@@ -139,7 +139,7 @@ class Home extends StatelessWidget {
                                     height: 116.67,
                                     child: Center(
                                         child: Text(
-                                      "No Uncompleted Decks!",
+                                      "No uncompleted decks!",
                                       style: TextStyle(
                                         color:
                                             Color.fromARGB(255, 100, 100, 100),

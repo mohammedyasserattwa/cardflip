@@ -175,7 +175,7 @@ class AllScreen extends ConsumerWidget {
           height: 116.67,
           child: Center(
             child: Text(
-              "No Tags found",
+              "No tags found",
               style: TextStyle(
                 fontFamily: "PolySans_Median",
                 fontWeight: FontWeight.w600,
@@ -285,7 +285,7 @@ class AllScreen extends ConsumerWidget {
           height: 116.67,
           child: Center(
             child: Text(
-              "No People found",
+              "No people found",
               style: TextStyle(
                 fontFamily: "PolySans_Median",
                 fontWeight: FontWeight.w600,

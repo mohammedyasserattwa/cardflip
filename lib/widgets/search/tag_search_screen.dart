@@ -252,7 +252,7 @@ class _TagScreenState extends State<TagScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [
                 Text(
-                  "No Tags found",
+                  "No tags found",
                   style: TextStyle(
                     fontFamily: "PolySans_Median",
                     fontWeight: FontWeight.w600,

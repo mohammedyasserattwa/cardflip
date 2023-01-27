@@ -184,30 +184,6 @@ class Leaderboard extends ConsumerWidget {
                                             fit: BoxFit.contain),
                                       )
                                     : const BoxDecoration(),
-                                // child: Stack(
-                                //   children: [
-                                // Image.network(
-                                //   ((i == 0)
-                                //       ? "Images/icons/1strank.png"
-                                //       : (i == 1)
-                                //           ? "Images/icons/2ndrank.png"
-                                //           : (i == 2)
-                                //               ? "Images/icons/3rdrank.png"
-                                //               : (i == 3 ||
-                                //                       i == 4)
-                                //                   ? "Images/icons/rank.png"
-                                //                   : ""),
-                                //   errorBuilder:
-                                //       (BuildContext
-                                //               context,
-                                //           Objecta
-                                //               exception,
-                                //           StackTrace?
-                                //               stackTrace) {
-                                //     return Text(
-                                //         'Your error widget...');
-                                //   },
-                                // ),
                                 child: (i >= 3)
                                     ? Stack(
                                         alignment: AlignmentDirectional.center,
@@ -240,8 +216,6 @@ class Leaderboard extends ConsumerWidget {
                                         ],
                                       )
                                     : Text(""),
-                                //   ],
-                                // ),
                               ),
                             ],
                           ),
@@ -438,12 +412,6 @@ class Leaderboard extends ConsumerWidget {
                                                 ),
                                               ],
                                             );
-                                            // child: Text(snapshot.stackTrace
-                                            //     .toString()));
-                                            // child: Text(
-                                            //     snapshot.error.toString())
-                                            //     );
-
                                           }
                                           if (snapshot.hasData) {
                                             if (snapshot.data.isEmpty) {

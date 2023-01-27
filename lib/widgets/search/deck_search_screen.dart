@@ -59,7 +59,7 @@ class DeckSearchScreen extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [
                 Text(
-                  "No Decks found",
+                  "No decks found",
                   style: TextStyle(
                     fontFamily: "PolySans_Median",
                     fontWeight: FontWeight.w600,

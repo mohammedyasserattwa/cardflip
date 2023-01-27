@@ -27,7 +27,7 @@ class PeopleScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [
                 Text(
-                  "No People found",
+                  "No people found",
                   style: TextStyle(
                     fontFamily: "PolySans_Median",
                     fontWeight: FontWeight.w600,
