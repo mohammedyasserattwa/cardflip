@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:cardflip/data/badge.dart';
+import 'package:cardflip/data/badge.dart' as badge;
 import 'package:cardflip/data/deck.dart';
 import 'package:cardflip/data/user.dart';
 import 'package:cardflip/models/deck_model.dart';
@@ -14,7 +14,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BadgesModel {
   User currentUser;
-  List<Badge> badges = [];
+  List<badge.Badge> badges = [];
   DeckModel deckModel = DeckModel();
   final _badgeCollection = FirebaseFirestore.instance.collection("badge");
   UserModel userModel = UserModel();
@@ -29,7 +29,7 @@ class BadgesModel {
               var achievements = document.data()['achievements'];
 
               for (var achievementId in achievements.keys) {
-                var newBadge = Badge(
+                var newBadge = badge.Badge(
                     id: document.data()['title'] + '-' + achievementId,
                     title: document.data()['title'],
                     frequency: document.data()['frequency'],
@@ -38,7 +38,7 @@ class BadgesModel {
                 badges.add(newBadge);
               }
             } else if (document.data()['frequency'] != null) {
-              var newBadge = Badge(
+              var newBadge = badge.Badge(
                   id: document.data()['title'],
                   title: document.data()['title'],
                   frequency: document.data()['frequency'],
