@@ -1,5 +1,5 @@
 import 'dart:collection';
-import 'package:cardflip/data/badge.dart';
+import 'package:cardflip/data/badge.dart' as badge;
 import 'package:cardflip/data/deck.dart';
 import 'package:cardflip/models/badges_model.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,7 @@ class BadgePopUp extends StatefulWidget {
 }
 
 class _BadgePopUpState extends State<BadgePopUp> {
-  Queue<Badge> badgeQueue = Queue();
+  Queue<badge.Badge> badgeQueue = Queue();
   bool showingDialog = true;
   @override
   Widget build(BuildContext context) {
@@ -33,15 +33,12 @@ class _BadgePopUpState extends State<BadgePopUp> {
         if (snapshot.hasError) {
           return Center(
             child: Text(
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                                color: const Color(
-                                                                    0xff484848),
-                                                                fontSize: 20,
-                                                                fontFamily:
-                                                                    "PolySans_Neutral"),
-                                                           "Something went wrong."),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                    color: const Color(0xff484848),
+                    fontSize: 20,
+                    fontFamily: "PolySans_Neutral"),
+                "Something went wrong."),
           );
         }
         if (snapshot.hasData) {
@@ -58,7 +55,7 @@ class _BadgePopUpState extends State<BadgePopUp> {
           }
           if (badgeQueue.isNotEmpty && showingDialog) {
             showingDialog = false;
-            Badge currentBadge = badgeQueue.removeFirst();
+            badge.Badge currentBadge = badgeQueue.removeFirst();
             widget.badgecheck.then((value) {
               value.removeWhere((key, value) {
                 return key == currentBadge.id;
@@ -105,8 +102,7 @@ class _BadgePopUpState extends State<BadgePopUp> {
                               fit: BoxFit.cover),
                           SizedBox(height: 15),
                           Center(
-                              child: Text(
-                                  currentBadge.description,
+                              child: Text(currentBadge.description,
                                   textAlign: TextAlign.center)),
                           SizedBox(height: 25),
                           Center(
