@@ -40,7 +40,7 @@ class _AdminUsersState extends State<AdminUsers> {
     final userData = model.userDataList(filter: _filter);
     return Scaffold(
       body: Container(
-        height: 1000,
+        height: double.infinity,
         decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage("Images/backgrounds/dashboardpage.png"),

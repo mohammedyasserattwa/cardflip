@@ -54,8 +54,8 @@ class _TestState extends ConsumerState<Test>
   var timeTaken;
   var seconds;
   bool gotData = false;
-  // String background = "Images/backgrounds/testpage.png";
-  String background = "Images/backgrounds/finaltest.png";
+  String background = "Images/backgrounds/testpage.png";
+  // String background = "Images/backgrounds/finaltest.png";
   // ugly all red or all pink
 
 // sh then set then use then remove
@@ -185,14 +185,6 @@ class _TestState extends ConsumerState<Test>
     return status;
   }
 
-// ugly all red or all pink
-  @override
-  Future<void> setState(VoidCallback fn) async {
-    if (i >= definitions.length)
-      background = 'Images/backgrounds/finaltest.png';
-    super.setState(fn);
-  }
-
   _TestState({key});
 
   @override
@@ -205,7 +197,7 @@ class _TestState extends ConsumerState<Test>
     }
     return Scaffold(
         body: Container(
-      height: 1000,
+      height: double.infinity,
       width: double.infinity,
       decoration: BoxDecoration(
         image: DecorationImage(
@@ -349,610 +341,660 @@ class _TestState extends ConsumerState<Test>
         const SizedBox(
           height: 25,
         ),
-        Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            Column(
-              children: [
-                const SizedBox(
-                  height: 50,
-                ),
-                CardWidget.emptyCard(
-                  width: 350,
-                  height: 512,
-                  image: "Images/cards/testpage/1.png",
-                  updateParent: () {},
-                )
-              ],
-            ),
-            CardWidget.emptyCard(
-              width: 350,
-              height: 512,
-              image: "Images/cards/testpage/2.png",
-              updateParent: () {},
-            ),
-            Column(
-              children: [
-                const SizedBox(
-                  height: 100,
-                ),
-                (i < definitions.length && !missed)
-                    ? Stack(
-                        children: [
-                          for (int j = definitions.length - 1; j >= 0; j--)
-                            TweenAnimationBuilder(
-                                tween:
-                                    Tween<double>(begin: start[j], end: end[j]),
-                                duration: animduration,
-                                builder: (context, pos, __) {
-                                  return Transform(
-                                    transform: Matrix4.identity()
-                                      ..translate(pos),
-                                    child: Container(
-                                        width: (MediaQuery.of(context)
-                                                    .size
-                                                    .height >
-                                                652)
-                                            ? 350
-                                            : 300,
-                                        height: (MediaQuery.of(context)
-                                                    .size
-                                                    .height >
-                                                751)
-                                            ? 512
-                                            : (MediaQuery.of(context)
-                                                        .size
-                                                        .height >
-                                                    652)
-                                                ? 512
-                                                : 312,
-                                        decoration: const BoxDecoration(
-                                          image: DecorationImage(
-                                              image: AssetImage(
-                                                  "Images/cards/testpage/0.png"),
-                                              fit: BoxFit.fill),
+        SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Stack(
+            alignment: Alignment.topCenter,
+            children: [
+              Column(
+                children: [
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  CardWidget.emptyCard(
+                    // width: 350,
+                    // height: 512,
+                    width:
+                        (MediaQuery.of(context).size.height > 652) ? 350 : 300,
+                    height: (MediaQuery.of(context).size.height > 751)
+                        ? 580
+                        : (MediaQuery.of(context).size.height > 652)
+                            ? 590
+                            : 490,
+                    image: "Images/cards/testpage/1.png",
+                    updateParent: () {},
+                  )
+                ],
+              ),
+              CardWidget.emptyCard(
+                // width: 350,
+                // height: 512,
+                width: (MediaQuery.of(context).size.height > 652) ? 350 : 300,
+                height: (MediaQuery.of(context).size.height > 751)
+                    ? 540
+                    : (MediaQuery.of(context).size.height > 652)
+                        ? 540
+                        : 440,
+                image: "Images/cards/testpage/2.png",
+                updateParent: () {},
+              ),
+              Column(
+                children: [
+                  const SizedBox(
+                    height: 100,
+                  ),
+                  (i < definitions.length && !missed)
+                      ? Stack(
+                          children: [
+                            for (int j = definitions.length - 1; j >= 0; j--)
+                              Wrap(
+                                children: [
+                                  TweenAnimationBuilder(
+                                      tween: Tween<double>(
+                                          begin: start[j], end: end[j]),
+                                      duration: animduration,
+                                      builder: (context, pos, __) {
+                                        return Transform(
+                                          transform: Matrix4.identity()
+                                            ..translate(pos),
+                                          child: Container(
+                                              width: (MediaQuery.of(context)
+                                                          .size
+                                                          .height >
+                                                      652)
+                                                  ? 350
+                                                  : 300,
+                                              height: (MediaQuery.of(context)
+                                                          .size
+                                                          .height >
+                                                      751)
+                                                  ? 530
+                                                  : (MediaQuery.of(context)
+                                                              .size
+                                                              .height >
+                                                          652)
+                                                      ? 440
+                                                      : 340,
+                                              decoration: const BoxDecoration(
+                                                image: DecorationImage(
+                                                    image: AssetImage(
+                                                        "Images/cards/testpage/0.png"),
+                                                    fit: BoxFit.fill),
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        vertical: 35.0,
+                                                        horizontal: 20.0),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    SizedBox(
+                                                      width: (MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height >
+                                                              652)
+                                                          ? 350
+                                                          : 300,
+                                                      height: (MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height >
+                                                              751)
+                                                          ? 200
+                                                          : (MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .height >
+                                                                  652)
+                                                              ? 100
+                                                              : 50,
+                                                      child: AutoSizeText(
+                                                        //todo 150 chars max
+                                                        // definitions[0].toString()[0].toUpperCase()+definitions[0].toString().substring(1),
+                                                        definitions[j]
+                                                            .toString(),
+                                                        maxLines: 6,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        minFontSize: 16,
+                                                        stepGranularity: 1,
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              "PolySans_Median",
+                                                          color:
+                                                              Color(0xff551B1B),
+                                                          fontSize: 23,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    ),
+                                                    FittedBox(
+                                                      fit: BoxFit.contain,
+                                                      child: Column(
+                                                        children: [
+                                                          for (int k = 0;
+                                                              k < 3;
+                                                              k++)
+                                                            Column(
+                                                              children: [
+                                                                GestureDetector(
+                                                                  onTap: () {
+                                                                    if (isActive[
+                                                                        j])
+                                                                      // ignore: curly_braces_in_flow_control_structures
+                                                                      setState(
+                                                                          () {
+                                                                        isActive[j] =
+                                                                            false;
+                                                                        if (j + 1 <
+                                                                            definitions.length)
+                                                                          // ignore: curly_braces_in_flow_control_structures
+                                                                          isActive[j + 1] =
+                                                                              true;
+                                                                        jiggle = List.filled(
+                                                                            definitions
+                                                                                .length,
+                                                                            List.filled(3,
+                                                                                null));
+                                                                        if (terms[j][randomlist[j][k]] ==
+                                                                            testCardsList[j][1]) {
+                                                                          jiggle[j] =
+                                                                              [
+                                                                            for (int f = 0;
+                                                                                f <
+                                                                                    3;
+                                                                                f++)
+                                                                              if (f == k)
+                                                                                false
+                                                                              else
+                                                                                null
+                                                                          ];
+                                                                        } else {
+                                                                          jiggle[j] =
+                                                                              [
+                                                                            for (int f = 0;
+                                                                                f <
+                                                                                    3;
+                                                                                f++)
+                                                                              if (f == k)
+                                                                                true
+                                                                              else
+                                                                                null
+                                                                          ];
+                                                                          wrongCards[testCardsList[j]
+                                                                              [
+                                                                              1]] = terms[
+                                                                                  j]
+                                                                              [
+                                                                              randomlist[j][k]];
+                                                                        }
+                                                                        Timer(
+                                                                            Duration(milliseconds: 85),
+                                                                            () {
+                                                                          if (i <
+                                                                              definitions.length)
+                                                                            end[j] =
+                                                                                500;
+                                                                          i++;
+                                                                        });
+                                                                        if (j ==
+                                                                            definitions.length -
+                                                                                1) {
+                                                                          end[j] =
+                                                                              500;
+                                                                          i++;
+                                                                          stopwatchsubscrip!
+                                                                              .pause();
+                                                                          model
+                                                                              .addTestResults(wrongCards, missedCards, timeTaken, seconds, userData!.id)
+                                                                              .then(
+                                                                                (value) => gotData = true,
+                                                                              );
+                                                                          badgecheck =
+                                                                              badge.testCheck(widget.deck);
+                                                                        }
+                                                                      });
+                                                                  },
+                                                                  child:
+                                                                      ShakeWidget(
+                                                                    shakeConstant:
+                                                                        ShakeRotateConstant2(),
+                                                                    autoPlay: jiggle[j]
+                                                                            [
+                                                                            k] ??
+                                                                        false,
+                                                                    duration: Duration(
+                                                                        milliseconds:
+                                                                            200),
+                                                                    enableWebMouseHover:
+                                                                        true,
+                                                                    child: Container(
+                                                                        width: 305,
+                                                                        height: 71,
+                                                                        decoration: checkBox((jiggle[j][k] != null) ? !jiggle[j][k]! : null),
+                                                                        child: Padding(
+                                                                          padding:
+                                                                              const EdgeInsets.symmetric(horizontal: 8.0),
+                                                                          child:
+                                                                              Align(
+                                                                            alignment:
+                                                                                Alignment.center,
+                                                                            child:
+                                                                                AutoSizeText(
+                                                                              terms[j][randomlist[j][k]].toString(),
+                                                                              maxLines: 1,
+                                                                              overflow: TextOverflow.ellipsis,
+                                                                              minFontSize: 16,
+                                                                              // 37 around 35 chars max
+                                                                              stepGranularity: 1,
+                                                                              style: const TextStyle(
+                                                                                fontFamily: "PolySans_Neutral",
+                                                                                color: Color.fromARGB(255, 56, 18, 18),
+                                                                                fontSize: 26,
+                                                                                fontWeight: FontWeight.bold,
+                                                                              ),
+                                                                              textAlign: TextAlign.center,
+                                                                            ),
+                                                                          ),
+                                                                        )),
+                                                                  ),
+                                                                ),
+                                                                if (k != 2)
+                                                                  const SizedBox(
+                                                                    height: 20,
+                                                                  ),
+                                                              ],
+                                                            ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )),
+                                        );
+                                      }),
+                                ],
+                              )
+                          ],
+                        )
+                      : Center(
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
+                                width:
+                                    (MediaQuery.of(context).size.height > 652)
+                                        ? 350
+                                        : 300,
+                                height: (MediaQuery.of(context).size.height >
+                                        751)
+                                    ? 530
+                                    : (MediaQuery.of(context).size.height > 652)
+                                        ? 440
+                                        : 340,
+                                decoration: const BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage(
+                                          "Images/cards/testpage/0.png"),
+                                      fit: BoxFit.fill),
+                                ),
+                                child: FittedBox(
+                                  fit: BoxFit.contain,
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    // crossAxisAlignment:
+                                    //     CrossAxisAlignment.stretch,
+                                    children: [
+                                      const SizedBox(
+                                        height: 50,
+                                      ),
+                                      Row(
+                                        children: [
+                                          // const SizedBox(
+                                          //   width: 55,
+                                          // ),
+                                          const Text(
+                                            "Way to go!",
+                                            style: TextStyle(
+                                              fontFamily: "PolySans_Median",
+                                              fontSize: 48,
+                                              fontWeight: FontWeight.w600,
+                                              color: Color(0xff39131C),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 5.0, left: 20),
+                                        child: Row(
+                                          children: [
+                                            // const SizedBox(width: 85),
+                                            const Text(
+                                              "You're done with your test!",
+                                              style: TextStyle(
+                                                  fontFamily: "PolySans_Slim",
+                                                  fontWeight: FontWeight.w300,
+                                                  color: Color(0xff1B1B1B),
+                                                  fontSize: 20),
+                                            ),
+                                          ],
                                         ),
+                                      ),
+                                      const SizedBox(
+                                        height: 30,
+                                      ),
+                                      Center(
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 35.0, horizontal: 20.0),
                                           child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
                                             children: [
-                                              AutoSizeText(
-                                                //todo 150 chars max
-                                                // definitions[0].toString()[0].toUpperCase()+definitions[0].toString().substring(1),
-                                                definitions[j].toString(),
-                                                maxLines: 6,
-                                                overflow: TextOverflow.ellipsis,
-                                                minFontSize: 17,
-                                                stepGranularity: 1,
-                                                style: TextStyle(
-                                                  fontFamily: "PolySans_Median",
-                                                  color: Color(0xff551B1B),
-                                                  fontSize: 23,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                              Column(
-                                                children: [
-                                                  for (int k = 0; k < 3; k++)
-                                                    Column(
+                                              (gotData)
+                                                  ? Stack(
+                                                      alignment:
+                                                          Alignment.bottomRight,
                                                       children: [
-                                                        GestureDetector(
-                                                          onTap: () {
-                                                            if (isActive[j])
-                                                              // ignore: curly_braces_in_flow_control_structures
-                                                              setState(() {
-                                                                isActive[j] =
-                                                                    false;
-                                                                if (j + 1 <
-                                                                    definitions
-                                                                        .length)
-                                                                  // ignore: curly_braces_in_flow_control_structures
-                                                                  isActive[j +
-                                                                      1] = true;
-                                                                jiggle = List.filled(
-                                                                    definitions
-                                                                        .length,
-                                                                    List.filled(
-                                                                        3,
-                                                                        null));
-                                                                if (terms[
-                                                                        j][randomlist[
-                                                                            j]
-                                                                        [k]] ==
-                                                                    testCardsList[
-                                                                        j][1]) {
-                                                                  jiggle[j] = [
-                                                                    for (int f =
-                                                                            0;
-                                                                        f < 3;
-                                                                        f++)
-                                                                      if (f ==
-                                                                          k)
-                                                                        false
-                                                                      else
-                                                                        null
-                                                                  ];
-                                                                } else {
-                                                                  jiggle[j] = [
-                                                                    for (int f =
-                                                                            0;
-                                                                        f < 3;
-                                                                        f++)
-                                                                      if (f ==
-                                                                          k)
-                                                                        true
-                                                                      else
-                                                                        null
-                                                                  ];
-                                                                  wrongCards[
-                                                                      testCardsList[
-                                                                              j]
-                                                                          [
-                                                                          1]] = terms[j]
-                                                                      [
-                                                                      randomlist[
-                                                                              j]
-                                                                          [k]];
-                                                                }
-                                                                Timer(
-                                                                    Duration(
-                                                                        milliseconds:
-                                                                            85),
-                                                                    () {
-                                                                  if (i <
-                                                                      definitions
-                                                                          .length)
-                                                                    end[j] =
-                                                                        500;
-                                                                  i++;
-                                                                });
-                                                                if (j ==
-                                                                    definitions
-                                                                            .length -
-                                                                        1) {
-                                                                  end[j] = 500;
-                                                                  i++;
-                                                                  stopwatchsubscrip!
-                                                                      .pause();
-                                                                  model
-                                                                      .addTestResults(
-                                                                          wrongCards,
-                                                                          missedCards,
-                                                                          timeTaken,
-                                                                          seconds,
-                                                                          userData!
-                                                                              .id)
-                                                                      .then(
-                                                                        (value) =>
-                                                                            gotData =
-                                                                                true,
-                                                                      );
-                                                                  badgecheck = badge
-                                                                      .testCheck(
-                                                                          widget
-                                                                              .deck);
-                                                                }
-                                                              });
-                                                          },
-                                                          child: ShakeWidget(
-                                                            shakeConstant:
-                                                                ShakeRotateConstant2(),
-                                                            autoPlay: jiggle[j]
-                                                                    [k] ??
-                                                                false,
-                                                            duration: Duration(
-                                                                milliseconds:
-                                                                    200),
-                                                            enableWebMouseHover:
-                                                                true,
-                                                            child: Container(
-                                                                width: 305,
-                                                                height: 71,
-                                                                decoration: checkBox(
-                                                                    (jiggle[j][k] !=
-                                                                            null)
-                                                                        ? !jiggle[j]
-                                                                            [k]!
-                                                                        : null),
-                                                                child: Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .symmetric(
-                                                                      horizontal:
-                                                                          8.0),
-                                                                  child: Align(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .center,
-                                                                    child:
-                                                                        AutoSizeText(
-                                                                      terms[j][randomlist[j]
-                                                                              [
-                                                                              k]]
-                                                                          .toString(),
-                                                                      maxLines:
-                                                                          1,
-                                                                      overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis,
-                                                                      minFontSize:
-                                                                          16,
-                                                                      // 37 around 35 chars max
-                                                                      stepGranularity:
-                                                                          1,
-                                                                      style:
-                                                                          const TextStyle(
-                                                                        fontFamily:
-                                                                            "PolySans_Neutral",
-                                                                        color: Color.fromARGB(
+                                                        PhysicalShape(
+                                                          clipBehavior:
+                                                              Clip.hardEdge,
+                                                          color: Colors
+                                                              .transparent,
+                                                          clipper: ShapeBorderClipper(
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              16),
+                                                                  side: BorderSide(
+                                                                      width:
+                                                                          2))),
+                                                          child: Shimmer(
+                                                            color:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    253,
+                                                                    255,
+                                                                    226),
+                                                            colorOpacity: 0.5,
+                                                            interval: Duration(
+                                                                seconds: 5),
+                                                            direction:
+                                                                ShimmerDirection
+                                                                    .fromRTLB(),
+                                                            child:
+                                                                RawMaterialButton(
+                                                                    enableFeedback:
+                                                                        false,
+                                                                    splashColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    highlightColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                    elevation:
+                                                                        0,
+                                                                    focusElevation:
+                                                                        0,
+                                                                    highlightElevation:
+                                                                        0,
+                                                                    disabledElevation:
+                                                                        0,
+                                                                    padding:
+                                                                        EdgeInsets.all(
+                                                                            0),
+                                                                    materialTapTargetSize:
+                                                                        MaterialTapTargetSize
+                                                                            .shrinkWrap,
+                                                                    fillColor: Color
+                                                                        .fromARGB(
+                                                                            230,
+                                                                            200,
                                                                             255,
-                                                                            56,
-                                                                            18,
-                                                                            18),
-                                                                        fontSize:
-                                                                            26,
-                                                                        fontWeight:
-                                                                            FontWeight.bold,
+                                                                            209),
+                                                                    constraints: BoxConstraints(
+                                                                        maxWidth:
+                                                                            305.0,
+                                                                        maxHeight:
+                                                                            61.0),
+                                                                    shape:
+                                                                        RoundedRectangleBorder(
+                                                                            borderRadius: BorderRadius.circular(
+                                                                                16.0),
+                                                                            side:
+                                                                                BorderSide(
+                                                                              width: 2,
+                                                                              color: Color(0xCC6BFFA6),
+                                                                            )),
+                                                                    onPressed:
+                                                                        () {},
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .symmetric(
+                                                                          horizontal:
+                                                                              8.0),
+                                                                      child:
+                                                                          Align(
+                                                                        alignment:
+                                                                            Alignment.center,
+                                                                        child:
+                                                                            AutoSizeText(
+                                                                          "View Leaderboard",
+                                                                          maxLines:
+                                                                              1,
+                                                                          overflow:
+                                                                              TextOverflow.ellipsis,
+                                                                          minFontSize:
+                                                                              16,
+                                                                          stepGranularity:
+                                                                              1,
+                                                                          style:
+                                                                              TextStyle(
+                                                                            fontFamily:
+                                                                                "PolySans_Neutral",
+                                                                            color: Color.fromARGB(
+                                                                                255,
+                                                                                36,
+                                                                                36,
+                                                                                36),
+                                                                            fontSize:
+                                                                                22,
+                                                                          ),
+                                                                          textAlign:
+                                                                              TextAlign.center,
+                                                                        ),
                                                                       ),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .center,
-                                                                    ),
-                                                                  ),
-                                                                )),
+                                                                    )),
                                                           ),
                                                         ),
-                                                        if (k != 2)
-                                                          const SizedBox(
-                                                            height: 20,
-                                                          ),
+                                                        GestureDetector(
+                                                          onTap: () {
+                                                            if (gotData)
+                                                              Future((() =>
+                                                                  Navigator.pushNamed(
+                                                                      context,
+                                                                      '/leaderboard',
+                                                                      arguments: {
+                                                                        "deck":
+                                                                            widget.deck
+                                                                      })));
+                                                          },
+                                                          child: Container(
+                                                              width: 305,
+                                                              height: 70,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                image: DecorationImage(
+                                                                    image: AssetImage(
+                                                                        "Images/icons/stars.png")),
+                                                              )),
+                                                        )
                                                       ],
-                                                    ),
-                                                ],
+                                                    )
+                                                  : Container(),
+                                              SizedBox(
+                                                height: 30,
                                               ),
+                                              RawMaterialButton(
+                                                  enableFeedback: false,
+                                                  splashColor:
+                                                      Colors.transparent,
+                                                  highlightColor:
+                                                      Colors.transparent,
+                                                  elevation: 0,
+                                                  focusElevation: 0,
+                                                  highlightElevation: 0,
+                                                  disabledElevation: 0,
+                                                  padding: EdgeInsets.all(0),
+                                                  materialTapTargetSize:
+                                                      MaterialTapTargetSize
+                                                          .shrinkWrap,
+                                                  fillColor: Colors.white54,
+                                                  constraints: BoxConstraints(
+                                                      maxWidth: 305.0,
+                                                      maxHeight: 61.0),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            16.0),
+                                                  ),
+                                                  onPressed: () => {
+                                                        Future((() =>
+                                                            Navigator.pushNamed(
+                                                                context,
+                                                                '/testresults',
+                                                                arguments: {
+                                                                  "model":
+                                                                      model,
+                                                                })))
+                                                      },
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 8.0),
+                                                    child: Align(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: AutoSizeText(
+                                                        "View Test Results",
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        minFontSize: 16,
+                                                        stepGranularity: 1,
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              "PolySans_Neutral",
+                                                          color: Color.fromARGB(
+                                                              255, 36, 36, 36),
+                                                          fontSize: 22,
+                                                        ),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    ),
+                                                  )),
+                                              SizedBox(
+                                                height: 30,
+                                              ),
+                                              RawMaterialButton(
+                                                  enableFeedback: false,
+                                                  splashColor:
+                                                      Colors.transparent,
+                                                  highlightColor:
+                                                      Colors.transparent,
+                                                  elevation: 0,
+                                                  focusElevation: 0,
+                                                  highlightElevation: 0,
+                                                  disabledElevation: 0,
+                                                  padding: EdgeInsets.all(0),
+                                                  materialTapTargetSize:
+                                                      MaterialTapTargetSize
+                                                          .shrinkWrap,
+                                                  fillColor: Colors.white30,
+                                                  constraints: BoxConstraints(
+                                                      maxWidth: 305.0,
+                                                      maxHeight: 61.0),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            16.0),
+                                                  ),
+                                                  onPressed: () => {
+                                                        setState(() {
+                                                          stopwatchsubscrip!
+                                                              .cancel();
+                                                          stopwatch = null;
+                                                          setState(() {
+                                                            min = '0';
+                                                            sec = '00';
+                                                          });
+                                                          jiggle = List.filled(
+                                                              definitions
+                                                                  .length,
+                                                              List.filled(
+                                                                  3, null));
+                                                          Navigator
+                                                              .popAndPushNamed(
+                                                                  context,
+                                                                  '/test',
+                                                                  result: false,
+                                                                  arguments: {
+                                                                "deck":
+                                                                    widget.deck
+                                                              });
+                                                        })
+                                                      },
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 8.0),
+                                                    child: Align(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: AutoSizeText(
+                                                        "Try Again",
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        minFontSize: 16,
+                                                        stepGranularity: 1,
+                                                        style: TextStyle(
+                                                          fontFamily:
+                                                              "PolySans_Neutral",
+                                                          color: Color.fromARGB(
+                                                              255, 36, 36, 36),
+                                                          fontSize: 22,
+                                                        ),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    ),
+                                                  )),
                                             ],
                                           ),
-                                        )),
-                                  );
-                                })
-                        ],
-                      )
-                    : Center(
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Container(
-                              width: (MediaQuery.of(context).size.height > 652)
-                                  ? 350
-                                  : 300,
-                              height: (MediaQuery.of(context).size.height > 751)
-                                  ? 512
-                                  : (MediaQuery.of(context).size.height > 652)
-                                      ? 512
-                                      : 312,
-                              decoration: const BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        "Images/cards/testpage/0.png"),
-                                    fit: BoxFit.fill),
-                              ),
-                            ),
-                            Column(
-                              // mainAxisAlignment:
-                              //     MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                const SizedBox(
-                                  height: 50,
-                                ),
-                                Row(
-                                  children: [
-                                    const SizedBox(
-                                      width: 55,
-                                    ),
-                                    const Text(
-                                      "Way to go!",
-                                      style: TextStyle(
-                                        fontFamily: "PolySans_Median",
-                                        fontSize: 48,
-                                        fontWeight: FontWeight.w600,
-                                        color: Color(0xff39131C),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 5.0),
-                                  child: Row(
-                                    children: [
-                                      const SizedBox(width: 85),
-                                      const Text(
-                                        "You're done with your test!",
-                                        style: TextStyle(
-                                            fontFamily: "PolySans_Slim",
-                                            fontWeight: FontWeight.w300,
-                                            color: Color(0xff1B1B1B),
-                                            fontSize: 20),
+                                        ),
                                       ),
                                     ],
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 30,
-                                ),
-                                Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 35.0, horizontal: 20.0),
-                                    child: Column(
-                                      children: [
-                                        (gotData)
-                                            ? Stack(
-                                                alignment:
-                                                    Alignment.bottomRight,
-                                                children: [
-                                                  PhysicalShape(
-                                                    clipBehavior: Clip.hardEdge,
-                                                    color: Colors.transparent,
-                                                    clipper: ShapeBorderClipper(
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        16),
-                                                            side: BorderSide(
-                                                                width: 2))),
-                                                    child: Shimmer(
-                                                      color: Color.fromARGB(
-                                                          255, 253, 255, 226),
-                                                      colorOpacity: 0.5,
-                                                      interval:
-                                                          Duration(seconds: 5),
-                                                      direction:
-                                                          ShimmerDirection
-                                                              .fromRTLB(),
-                                                      child: RawMaterialButton(
-                                                          enableFeedback: false,
-                                                          splashColor: Colors
-                                                              .transparent,
-                                                          highlightColor: Colors
-                                                              .transparent,
-                                                          elevation: 0,
-                                                          focusElevation: 0,
-                                                          highlightElevation: 0,
-                                                          disabledElevation: 0,
-                                                          padding:
-                                                              EdgeInsets.all(0),
-                                                          materialTapTargetSize:
-                                                              MaterialTapTargetSize
-                                                                  .shrinkWrap,
-                                                          fillColor:
-                                                              Color.fromARGB(
-                                                                  230,
-                                                                  200,
-                                                                  255,
-                                                                  209),
-                                                          constraints:
-                                                              BoxConstraints(
-                                                                  maxWidth:
-                                                                      305.0,
-                                                                  maxHeight:
-                                                                      61.0),
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              16.0),
-                                                                  side:
-                                                                      BorderSide(
-                                                                    width: 2,
-                                                                    color: Color(
-                                                                        0xCC6BFFA6),
-                                                                  )),
-                                                          onPressed: () {},
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .symmetric(
-                                                                    horizontal:
-                                                                        8.0),
-                                                            child: Align(
-                                                              alignment:
-                                                                  Alignment
-                                                                      .center,
-                                                              child:
-                                                                  AutoSizeText(
-                                                                "View Leaderboard",
-                                                                maxLines: 1,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                minFontSize: 16,
-                                                                stepGranularity:
-                                                                    1,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontFamily:
-                                                                      "PolySans_Neutral",
-                                                                  color: Color
-                                                                      .fromARGB(
-                                                                          255,
-                                                                          36,
-                                                                          36,
-                                                                          36),
-                                                                  fontSize: 22,
-                                                                ),
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                              ),
-                                                            ),
-                                                          )),
-                                                    ),
-                                                  ),
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      if (gotData)
-                                                        Future((() =>
-                                                            Navigator.pushNamed(
-                                                                context,
-                                                                '/leaderboard',
-                                                                arguments: {
-                                                                  "deck": widget
-                                                                      .deck
-                                                                })));
-                                                    },
-                                                    child: Container(
-                                                        width: 305,
-                                                        height: 70,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          image: DecorationImage(
-                                                              image: AssetImage(
-                                                                  "Images/icons/stars.png")),
-                                                        )),
-                                                  )
-                                                ],
-                                              )
-                                            : Container(),
-                                        SizedBox(
-                                          height: 30,
-                                        ),
-                                        RawMaterialButton(
-                                            enableFeedback: false,
-                                            splashColor: Colors.transparent,
-                                            highlightColor: Colors.transparent,
-                                            elevation: 0,
-                                            focusElevation: 0,
-                                            highlightElevation: 0,
-                                            disabledElevation: 0,
-                                            padding: EdgeInsets.all(0),
-                                            materialTapTargetSize:
-                                                MaterialTapTargetSize
-                                                    .shrinkWrap,
-                                            fillColor: Colors.white54,
-                                            constraints: BoxConstraints(
-                                                maxWidth: 305.0,
-                                                maxHeight: 61.0),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(16.0),
-                                            ),
-                                            onPressed: () => {
-                                                  Future((() =>
-                                                      Navigator.pushNamed(
-                                                          context,
-                                                          '/testresults',
-                                                          arguments: {
-                                                            "model": model,
-                                                          })))
-                                                },
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 8.0),
-                                              child: Align(
-                                                alignment: Alignment.center,
-                                                child: AutoSizeText(
-                                                  "View Test Results",
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  minFontSize: 16,
-                                                  stepGranularity: 1,
-                                                  style: TextStyle(
-                                                    fontFamily:
-                                                        "PolySans_Neutral",
-                                                    color: Color.fromARGB(
-                                                        255, 36, 36, 36),
-                                                    fontSize: 22,
-                                                  ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ),
-                                            )),
-                                        SizedBox(
-                                          height: 30,
-                                        ),
-                                        RawMaterialButton(
-                                            enableFeedback: false,
-                                            splashColor: Colors.transparent,
-                                            highlightColor: Colors.transparent,
-                                            elevation: 0,
-                                            focusElevation: 0,
-                                            highlightElevation: 0,
-                                            disabledElevation: 0,
-                                            padding: EdgeInsets.all(0),
-                                            materialTapTargetSize:
-                                                MaterialTapTargetSize
-                                                    .shrinkWrap,
-                                            fillColor: Colors.white30,
-                                            constraints: BoxConstraints(
-                                                maxWidth: 305.0,
-                                                maxHeight: 61.0),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(16.0),
-                                            ),
-                                            onPressed: () => {
-                                                  setState(() {
-                                                    stopwatchsubscrip!.cancel();
-                                                    stopwatch = null;
-                                                    setState(() {
-                                                      min = '0';
-                                                      sec = '00';
-                                                    });
-                                                    jiggle = List.filled(
-                                                        definitions.length,
-                                                        List.filled(3, null));
-                                                    Navigator.popAndPushNamed(
-                                                        context, '/test',
-                                                        result: false,
-                                                        arguments: {
-                                                          "deck": widget.deck
-                                                        });
-                                                  })
-                                                },
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 8.0),
-                                              child: Align(
-                                                alignment: Alignment.center,
-                                                child: AutoSizeText(
-                                                  "Try Again",
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  minFontSize: 16,
-                                                  stepGranularity: 1,
-                                                  style: TextStyle(
-                                                    fontFamily:
-                                                        "PolySans_Neutral",
-                                                    color: Color.fromARGB(
-                                                        255, 36, 36, 36),
-                                                    fontSize: 22,
-                                                  ),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ),
-                                            )),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-              ],
-            )
-          ],
+                ],
+              )
+            ],
+          ),
         )
       ]),
     ));

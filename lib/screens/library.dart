@@ -45,7 +45,7 @@ class _LibraryState extends State<Library> {
           fit: BoxFit.cover,
         ),
       ),
-      width: 400,
+      // width: 400,
       height: 190,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -80,7 +80,7 @@ class _LibraryState extends State<Library> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 1000,
+      height: double.infinity,
       width: double.infinity,
       decoration: const BoxDecoration(
         image: DecorationImage(

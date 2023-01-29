@@ -12,6 +12,7 @@ class Leaderboard extends ConsumerWidget {
   Deck deck;
   late Leaderboard model;
   late Map leaderboard = {};
+
   Leaderboard({super.key, required this.deck});
 
   Widget userRank(var value, String id) {
@@ -263,14 +264,18 @@ class Leaderboard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userData = ref.watch(UserDataProvider);
-
+    final String background = (MediaQuery.of(context).size.height > 750)
+        ? "Images/backgrounds/leaderboardpage.png"
+        : (MediaQuery.of(context).size.height > 652)
+            ? "Images/backgrounds/leaderboardpage2.png"
+            : "Images/backgrounds/leaderboardpage3.png";
     return Scaffold(
       body: Container(
-        height: 1000,
+        height: double.infinity,
         width: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("Images/backgrounds/leaderboardpage.png"),
+            image: AssetImage(background),
             fit: BoxFit.cover,
           ),
         ),
@@ -298,7 +303,11 @@ class Leaderboard extends ConsumerWidget {
               ),
             ),
             SizedBox(
-              height: 175,
+              height: (MediaQuery.of(context).size.height > 751)
+                  ? 175
+                  : (MediaQuery.of(context).size.height > 652)
+                      ? 120
+                      : 35,
             ),
             Center(
               child: Column(
@@ -309,12 +318,18 @@ class Leaderboard extends ConsumerWidget {
                     children: [
                       Column(
                         children: [
-                          SizedBox(
-                            height: 60,
-                          ),
+                          // SizedBox(
+                          //   height: 60,
+                          // ),
                           Container(
-                            width: 342,
-                            height: 452,
+                            width: (MediaQuery.of(context).size.height > 652)
+                                ? 350
+                                : 300,
+                            height: (MediaQuery.of(context).size.height > 751)
+                                ? 530
+                                : (MediaQuery.of(context).size.height > 652)
+                                    ? 440
+                                    : 340,
                             decoration: const BoxDecoration(
                               image: DecorationImage(
                                   image: AssetImage(

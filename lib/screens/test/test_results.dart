@@ -60,7 +60,7 @@ class _TestResultsState extends State<TestResults> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-            height: 1000,
+            height: double.infinity,
             width: double.infinity,
             decoration: const BoxDecoration(
               image: DecorationImage(

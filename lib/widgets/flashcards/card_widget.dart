@@ -362,17 +362,17 @@ class _CardWidgetState extends State<CardWidget> {
               child: GestureDetector(
                 onTap: () {
                   if (widget.deck!.cards.length <= 3) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        behavior: SnackBarBehavior.floating,
-                        duration: Duration(seconds: 3),
-                        content: Text(
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontFamily: "Poppins"),
-                            'You can start a test once you have created at least 3 cards!'))).closed
-                                                            .then((value) =>
-                                                                ScaffoldMessenger.of(
-                                                                        context)
-                                                                    .clearSnackBars());
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(const SnackBar(
+                            behavior: SnackBarBehavior.floating,
+                            duration: Duration(seconds: 3),
+                            content: Text(
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontFamily: "Poppins"),
+                                'You can start a test once you have created at least 3 cards!')))
+                        .closed
+                        .then((value) =>
+                            ScaffoldMessenger.of(context).clearSnackBars());
                     return;
                   } else {
                     Navigator.pop(context);

@@ -38,7 +38,7 @@ class AdminReports extends StatelessWidget {
     final width = 133.67;
     return Scaffold(
       body: Container(
-        height: 1000,
+        height: double.infinity,
         decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage("Images/backgrounds/dashboardpage.png"),

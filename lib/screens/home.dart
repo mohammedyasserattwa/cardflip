@@ -49,7 +49,7 @@ class Home extends StatelessWidget {
     return Consumer(builder: (context, ref, __) {
       final userData = ref.watch(UserDataProvider);
       return Container(
-        height: 1000,
+        height: double.infinity,
         width: double.infinity,
         decoration: const BoxDecoration(
           image: DecorationImage(
