@@ -213,19 +213,19 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                                               ],
                                             ),
                                           ),
-                                        PopupMenuItem(
-                                          onTap: () => filter(),
-                                          child: Wrap(
-                                            crossAxisAlignment:
-                                                WrapCrossAlignment.center,
-                                            children: const [
-                                              Icon(Icons.sort_by_alpha_rounded,
-                                                  size: 23),
-                                              SizedBox(width: 10),
-                                              Text("Sort alphabetically"),
-                                            ],
-                                          ),
-                                        ),
+                                        // PopupMenuItem(
+                                        //   onTap: () => filter(),
+                                        //   child: Wrap(
+                                        //     crossAxisAlignment:
+                                        //         WrapCrossAlignment.center,
+                                        //     children: const [
+                                        //       Icon(Icons.sort_by_alpha_rounded,
+                                        //           size: 23),
+                                        //       SizedBox(width: 10),
+                                        //       Text("Sort alphabetically"),
+                                        //     ],
+                                        //   ),
+                                        // ),
                                         PopupMenuItem(
                                           onTap: () {
                                             deckModel
@@ -875,7 +875,7 @@ class _MyDeckScreenState extends ConsumerState<DeckScreen> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              if (widget.deck.cards.length <= 3) {
+                              if (widget.deck.cards.length < 3) {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(const SnackBar(
                                         behavior: SnackBarBehavior.floating,

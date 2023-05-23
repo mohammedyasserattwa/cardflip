@@ -296,8 +296,7 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                                                   SnackBarBehavior.floating,
                                               duration: Duration(seconds: 3),
                                               content: Text(
-                                                                                                      textAlign: TextAlign.center,
-
+                                                  textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontFamily: "Poppins"),
                                                   'Please fill all the fields.')));
@@ -325,11 +324,10 @@ class _AddFlashcardsState extends State<AddFlashcards> {
                                                   SnackBarBehavior.floating,
                                               duration: Duration(seconds: 3),
                                               content: Text(
-                                                                                                      textAlign: TextAlign.center,
-
+                                                  textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontFamily: "Poppins"),
-                                                  'Flashcards added successfully.')));
+                                                  'Flashcards updated successfully.')));
                                     });
                                   }
                                 },

@@ -11,6 +11,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class LeaderboardModel {
   // String id;
   // late Leaderboard leaderboard;
+  final _deckCollection = FirebaseFirestore.instance.collection("deck");
+
   late Deck deck;
   UserModel userModel = UserModel();
   DeckModel deckModel = DeckModel();
@@ -55,40 +57,43 @@ class LeaderboardModel {
   Future updateLeaderboard(int percentage, int time, String userID,
       dynamic testCollection, String deckID) async {
     int rank = 1;
-    // int rank = 1;
 
-    QuerySnapshot snapshot =
-        await testCollection.where('deckID', isEqualTo: deckID).get();
+    DocumentSnapshot<Map<String, dynamic>> snapshot =
+        await _deckCollection.doc(deckID).get();
 
     Query rankCalc = testCollection
+        .where('deckID', isEqualTo: deckID)
         .where('percentage', isGreaterThanOrEqualTo: percentage)
         .orderBy('percentage', descending: true)
-        .orderBy('seconds');
+        .orderBy('seconds', descending: false);
 
     QuerySnapshot snapshot4 = await rankCalc.get();
-    if (snapshot4.docs.isEmpty) {
-      rank = 1;
-    }
-    for (var i = 0; i < snapshot4.docs.length; i++) {
-      if ((snapshot4.docs[i].data() as Map<String, dynamic>)['percentage'] ==
-              percentage &&
-          (snapshot4.docs[i].data() as Map<String, dynamic>)['seconds'] ==
-              time) {
-        rank += i;
-        break;
-      } else if ((snapshot4.docs[i].data()
-                  as Map<String, dynamic>)['percentage'] ==
-              percentage &&
-          (snapshot4.docs[i].data() as Map<String, dynamic>)['seconds'] <
-              time) {
-        rank += i + 1;
-        break;
-      } else if ((snapshot4.docs[i].data()
-              as Map<String, dynamic>)['percentage'] <
-          percentage) {
-        rank += i + 1;
-        break;
+    if (snapshot4.docs.isNotEmpty) {
+      for (var i = 0; i < snapshot4.docs.length; i++) {
+        developer.log(snapshot4.docs[i].data().toString());
+        if ((snapshot4.docs[i].data() as Map<String, dynamic>)['percentage'] ==
+                percentage &&
+            (snapshot4.docs[i].data() as Map<String, dynamic>)['seconds'] ==
+                time) {
+          rank += i;
+          break;
+        } else if ((snapshot4.docs[i].data()
+                    as Map<String, dynamic>)['percentage'] ==
+                percentage &&
+            (snapshot4.docs[i].data() as Map<String, dynamic>)['seconds'] <
+                time) {
+          rank += i + 1;
+          break;
+        } else if ((snapshot4.docs[i].data()
+                as Map<String, dynamic>)['percentage'] <
+            percentage) {
+          rank += i + 1;
+          break;
+        }
       }
+    }
+    if (snapshot['leaderboard'].isEmpty) {
+      rank = 1;
     }
 
     DocumentSnapshot doc =
@@ -97,8 +102,7 @@ class LeaderboardModel {
     if (doc.exists) {
       var leaderboard = (doc.data() as Map<String, dynamic>)["leaderboard"];
       if (leaderboard.length == 0) {
-        // Add new user to the leaderboard
-        Map<String, dynamic> newUser = {"rank": rank, "userID": userID};
+        Map<String, dynamic> newUser = {"rank": 1, "userID": userID};
         await FirebaseFirestore.instance.collection("deck").doc(deckID).update({
           "leaderboard": FieldValue.arrayUnion([newUser])
         });
@@ -115,8 +119,10 @@ class LeaderboardModel {
           }
         }
         if (userFound) {
+          if (leaderboard.length == 1) {
+            rank = 1;
+          }
           if (rank > 50) {
-            // update myrank and subtract 1 from everyone whose rank < myoldrank
             FirebaseFirestore.instance.runTransaction((transaction) async {
               DocumentSnapshot snapshot5 = await transaction.get(doc.reference);
               List<dynamic> leaderboard =
@@ -133,6 +139,8 @@ class LeaderboardModel {
               transaction.update(doc.reference, {"leaderboard": leaderboard});
             });
           } else if (rank <= 50) {
+            developer.log(rank.toString());
+            developer.log(myoldrank.toString());
             FirebaseFirestore.instance.runTransaction((transaction) async {
               DocumentSnapshot snapshot5 = await transaction.get(doc.reference);
               List<dynamic> leaderboard =
@@ -164,7 +172,6 @@ class LeaderboardModel {
             });
           }
         } else if (!userFound && rank <= 50) {
-// add 1 to everyone's ranks below myrank in the database then add myrank and myuserID into leaderboard
           FirebaseFirestore.instance.runTransaction((transaction) async {
             DocumentSnapshot snapshot5 = await transaction.get(doc.reference);
             var leaderboard =

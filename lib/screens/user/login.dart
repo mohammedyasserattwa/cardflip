@@ -616,14 +616,14 @@ class _LoginState extends ConsumerState<Login> {
                                     child: Column(
                                       children: [
                                         Input(
-                                          hintTextOne: "Email or Username",
+                                          hintTextOne: "Email",
                                           icon: Icons.person_outline_outlined,
                                           obscureText: false,
                                           controller: _emailController,
                                           color: Color(0xFFF98800),
                                           validator: (val) {
                                             if (val == null || val.isEmpty) {
-                                              return "Please enter your email or username";
+                                              return "Please enter your email";
                                             }
                                             return null;
                                           },
