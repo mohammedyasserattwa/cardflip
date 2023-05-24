@@ -58,7 +58,7 @@ dependencies:
   flutter_secure_storage: ^7.0.1
   email_validator: ^2.0.1
   text_to_speech: ^0.2.3
-  responsive_framework: 
+  responsive_framework: ^0.2.0
 
 
 flutter_icons:
