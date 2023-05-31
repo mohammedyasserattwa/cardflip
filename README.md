@@ -36,7 +36,7 @@
 
 ## Download
 
-The application wil published on Google Play Store.
+To Download the application: [Download Link](https://play.google.com/store/apps/details?id=com.CardFlip&pli=1)
 
 
 ## Credits
